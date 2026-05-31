@@ -26,9 +26,12 @@ export function ActionsGrid() {
 
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          display: "flex",
           gap: 12,
+          overflowX: "auto",
+          paddingBottom: 6,
+          scrollSnapType: "x mandatory",
+          WebkitOverflowScrolling: "touch",
         }}
       >
         {ACTIONS.map((a) => (
@@ -36,6 +39,8 @@ export function ActionsGrid() {
             key={a.label}
             className="kv-tap"
             style={{
+              minWidth: 140,
+              flex: "0 0 auto",
               background: a.bg,
               border: "2px solid #0F0F0F",
               borderRadius: 0,
@@ -46,6 +51,7 @@ export function ActionsGrid() {
               alignItems: "center",
               gap: 8,
               cursor: "pointer",
+              scrollSnapAlign: "start",
             }}
           >
             <span style={{ fontSize: 32, lineHeight: 1 }}>{a.emoji}</span>
