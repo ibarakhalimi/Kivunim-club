@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Frank_Ruhl_Libre, Rubik } from "next/font/google";
 import "./globals.css";
+import SwRegister from "./sw-register";   // ← add this
 
 const displayFont = Frank_Ruhl_Libre({
   variable: "--font-display",
@@ -32,7 +33,10 @@ export default function RootLayout({
       dir="rtl"
       className={`${displayFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SwRegister />   {/* ← add this */}
+        {children}
+      </body>
     </html>
   );
 }
