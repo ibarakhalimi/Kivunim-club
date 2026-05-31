@@ -1,0 +1,53 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px 32px; background: var(--bg-canvas); height: 280px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+  .head { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .perk {
+    background: var(--bg-surface); border: 1px solid var(--border-subtle);
+    border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px;
+    box-shadow: var(--shadow-sm); cursor: pointer; transition: all 200ms var(--ease-out);
+    min-height: 130px;
+  }
+  .perk:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .perk.locked { background: var(--bg-sunken); color: var(--fg-3); }
+  .perk.featured { background: var(--grad-soft); border-color: transparent; }
+  .icbox { width: 36px; height: 36px; border-radius: 10px; background: var(--bg-tint); display: flex; align-items: center; justify-content: center; color: var(--magenta-600); }
+  .icbox svg { width: 18px; height: 18px; stroke-width: 1.75; }
+  .perk.featured .icbox { background: white; color: var(--magenta-600); }
+  .perk.locked .icbox { background: white; color: var(--fg-4); }
+  .biz { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.06em; font-weight: 600; color: var(--fg-3); }
+  .perk.featured .biz { color: var(--magenta-700); }
+  .title { font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.05; letter-spacing: -0.015em; color: var(--fg-1); }
+  .title em { font-style: normal; color: var(--magenta-600); }
+  .perk.locked .title { color: var(--fg-3); }
+  .foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 6px; }
+  .save { font-family: var(--font-mono); font-size: 12px; color: var(--magenta-600); font-weight: 600; direction: ltr; }
+  .perk.locked .save { color: var(--fg-4); }
+  .lock { font-family: var(--font-sans); font-size: 11px; font-weight: 600; padding: 3px 8px; background: white; border-radius: 999px; color: var(--fg-3); border: 1px solid var(--border-subtle); }
+</style></head>
+<body>
+  <div class="head">הטבות</div>
+  <div class="grid">
+    <div class="perk featured">
+      <div class="icbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8M12 15v7M5 2h14l-2 9a5 5 0 0 1-10 0Z"/></svg></div>
+      <div class="biz">יינות פלורנטין</div>
+      <div class="title">20% הנחה, <em>תמיד.</em></div>
+      <div class="foot"><span class="save">חסכת ₪320</span></div>
+    </div>
+    <div class="perk">
+      <div class="icbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4ZM7 1v3M11 1v3M15 1v3"/></svg></div>
+      <div class="biz">אלנבי 40</div>
+      <div class="title">קפה חופשי, <em>חול.</em></div>
+      <div class="foot"><span class="save">12× שימושים</span></div>
+    </div>
+    <div class="perk locked">
+      <div class="icbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+      <div class="biz">מייסדים בלבד</div>
+      <div class="title">סופ"ש <em>במעיינות.</em></div>
+      <div class="foot"><span class="lock">נעול</span></div>
+    </div>
+  </div>
+</body></html>

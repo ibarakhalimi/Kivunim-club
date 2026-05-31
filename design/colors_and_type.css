@@ -1,0 +1,190 @@
+/* ============================================================
+   מועדון כיוונים — Design Tokens · v3 (Modern Editorial · RTL)
+   Light theme. Magenta/pink/purple. Frank Ruhl Libre + Heebo.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Rubik:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ---------- TYPE FAMILIES (Hebrew-native) ---------- */
+  --font-display: "Frank Ruhl Libre", "Times New Roman", serif;
+  --font-sans: "Rubik", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* ---------- PRIMARY / MAGENTA SCALE (hue 340) ---------- */
+  --magenta-50:  oklch(0.975 0.012 340);
+  --magenta-100: oklch(0.945 0.035 340);
+  --magenta-200: oklch(0.885 0.075 340);
+  --magenta-300: oklch(0.800 0.130 340);
+  --magenta-400: oklch(0.720 0.175 340);
+  --magenta-500: oklch(0.640 0.215 340); /* primary */
+  --magenta-600: oklch(0.565 0.225 340);
+  --magenta-700: oklch(0.470 0.210 340);
+  --magenta-800: oklch(0.365 0.165 340);
+  --magenta-900: oklch(0.255 0.115 340);
+
+  /* ---------- PURPLE SCALE (hue 305) ---------- */
+  --purple-50:  oklch(0.975 0.012 305);
+  --purple-100: oklch(0.945 0.030 305);
+  --purple-200: oklch(0.880 0.070 305);
+  --purple-300: oklch(0.790 0.125 305);
+  --purple-400: oklch(0.690 0.180 305);
+  --purple-500: oklch(0.580 0.215 305);
+  --purple-600: oklch(0.485 0.215 305);
+  --purple-700: oklch(0.395 0.190 305);
+  --purple-800: oklch(0.305 0.150 305);
+  --purple-900: oklch(0.215 0.100 305);
+
+  /* ---------- PINK ACCENT (hue 10) ---------- */
+  --pink-50:  oklch(0.975 0.012 10);
+  --pink-200: oklch(0.890 0.070 10);
+  --pink-400: oklch(0.750 0.170 10);
+  --pink-500: oklch(0.700 0.200 10);
+  --pink-600: oklch(0.620 0.215 10);
+
+  /* ---------- NEUTRALS — warm, magenta-tinted ---------- */
+  --neutral-0:   #FFFFFF;
+  --neutral-25:  oklch(0.992 0.004 340);
+  --neutral-50:  oklch(0.980 0.006 340);
+  --neutral-100: oklch(0.962 0.008 340);
+  --neutral-200: oklch(0.925 0.012 340);
+  --neutral-300: oklch(0.870 0.015 340);
+  --neutral-400: oklch(0.760 0.018 340);
+  --neutral-500: oklch(0.620 0.020 340);
+  --neutral-600: oklch(0.490 0.020 340);
+  --neutral-700: oklch(0.380 0.018 340);
+  --neutral-800: oklch(0.270 0.018 340);
+  --neutral-900: oklch(0.180 0.015 340);
+  --neutral-950: oklch(0.110 0.012 340);
+
+  /* ---------- SEMANTIC SURFACES ---------- */
+  --bg-canvas: oklch(0.985 0.008 340);
+  --bg-surface: #FFFFFF;
+  --bg-sunken: oklch(0.962 0.012 340);
+  --bg-overlay: oklch(0.99 0.005 340 / 0.85);
+  --bg-tint: oklch(0.97 0.025 340);
+
+  /* ---------- TEXT ---------- */
+  --fg-1: oklch(0.180 0.020 320);
+  --fg-2: oklch(0.380 0.025 320);
+  --fg-3: oklch(0.560 0.020 320);
+  --fg-4: oklch(0.720 0.015 320);
+  --fg-on-primary: #FFFFFF;
+  --fg-on-tint: var(--magenta-800);
+
+  /* ---------- BORDERS ---------- */
+  --border-subtle: oklch(0.940 0.012 340);
+  --border-default: oklch(0.900 0.018 340);
+  --border-strong: oklch(0.820 0.025 340);
+  --border-primary: var(--magenta-500);
+
+  /* ---------- SEMANTIC STATES ---------- */
+  --success-500: oklch(0.65 0.16 155);
+  --success-bg:  oklch(0.96 0.04 155);
+  --warning-500: oklch(0.78 0.16 75);
+  --warning-bg:  oklch(0.97 0.05 75);
+  --danger-500:  oklch(0.62 0.22 25);
+  --danger-bg:   oklch(0.97 0.04 25);
+  --info-500:    oklch(0.65 0.18 250);
+  --info-bg:     oklch(0.96 0.04 250);
+
+  /* ---------- BRAND GRADIENTS ---------- */
+  --grad-primary: linear-gradient(135deg, var(--magenta-500) 0%, var(--pink-500) 50%, var(--purple-500) 100%);
+  --grad-soft:    linear-gradient(135deg, var(--magenta-100) 0%, var(--pink-200) 60%, var(--purple-200) 100%);
+  --grad-card:    linear-gradient(160deg, var(--magenta-600) 0%, var(--purple-700) 100%);
+  --grad-glow:    radial-gradient(60% 80% at 20% 0%, var(--pink-400) 0%, transparent 60%),
+                  radial-gradient(70% 90% at 90% 20%, var(--purple-500) 0%, transparent 70%),
+                  linear-gradient(160deg, var(--magenta-700) 0%, var(--purple-800) 100%);
+
+  /* ---------- SPACING (4px base) ---------- */
+  --space-0: 0;  --space-1: 4px; --space-2: 8px; --space-3: 12px;
+  --space-4: 16px; --space-5: 20px; --space-6: 24px;
+  --space-8: 32px; --space-10: 40px; --space-12: 48px;
+  --space-16: 64px; --space-20: 80px; --space-24: 96px;
+
+  /* ---------- RADII ---------- */
+  --radius-xs: 4px;  --radius-sm: 8px;
+  --radius-md: 12px; --radius-lg: 16px;
+  --radius-xl: 20px; --radius-2xl: 28px;
+  --radius-3xl: 36px; --radius-pill: 999px;
+
+  /* ---------- SHADOWS — warm, pink-tinted ---------- */
+  --shadow-xs: 0 1px 2px oklch(0.40 0.10 340 / 0.06);
+  --shadow-sm: 0 2px 4px oklch(0.40 0.10 340 / 0.06), 0 1px 2px oklch(0.40 0.10 340 / 0.04);
+  --shadow-md: 0 4px 12px oklch(0.40 0.12 340 / 0.08), 0 2px 4px oklch(0.40 0.10 340 / 0.04);
+  --shadow-lg: 0 12px 32px oklch(0.40 0.15 340 / 0.10), 0 4px 8px oklch(0.40 0.10 340 / 0.04);
+  --shadow-xl: 0 24px 64px oklch(0.40 0.18 340 / 0.14), 0 8px 16px oklch(0.40 0.10 340 / 0.06);
+  --shadow-glow: 0 0 0 4px oklch(0.64 0.22 340 / 0.18);
+  --shadow-card: 0 20px 48px oklch(0.30 0.20 320 / 0.28), 0 4px 12px oklch(0.30 0.15 320 / 0.16);
+
+  /* ---------- MOTION ---------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-1: 120ms; --dur-2: 200ms; --dur-3: 320ms; --dur-4: 520ms;
+
+  /* ---------- TYPE SCALE ---------- */
+  --text-xs:   11px;  --text-sm:   13px;
+  --text-base: 15px;  --text-md:   17px;
+  --text-lg:   20px;  --text-xl:   24px;
+  --text-2xl:  30px;  --text-3xl:  38px;
+  --text-4xl:  48px;  --text-5xl:  64px;  --text-6xl: 84px;
+
+  /* ---------- SEMANTIC TYPE STYLES ---------- */
+  --display-1-size: 84px;  --display-1-lh: 0.95; --display-1-tracking: -0.025em;
+  --display-2-size: 64px;  --display-2-lh: 1.00; --display-2-tracking: -0.02em;
+  --h1-size: 48px;  --h1-lh: 1.05; --h1-tracking: -0.02em;
+  --h2-size: 38px;  --h2-lh: 1.10; --h2-tracking: -0.015em;
+  --h3-size: 30px;  --h3-lh: 1.15; --h3-tracking: -0.01em;
+  --h4-size: 24px;  --h4-lh: 1.25; --h4-tracking: -0.005em;
+  --h5-size: 20px;  --h5-lh: 1.30;
+}
+
+/* ============ BASELINE ============ */
+html { direction: rtl; }
+html, body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--fg-1);
+  background: var(--bg-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  direction: rtl;
+}
+
+/* Latin/numeric runs stay LTR */
+.ltr, [dir="ltr"] { direction: ltr; unicode-bidi: isolate; }
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "ss01", "zero";
+  direction: ltr; unicode-bidi: isolate; display: inline-block;
+}
+
+/* ============ TYPOGRAPHIC ROLES ============ */
+.display-1, .display-2 {
+  font-family: var(--font-display); font-weight: 400; color: var(--fg-1);
+}
+.display-1 { font-size: var(--display-1-size); line-height: var(--display-1-lh); letter-spacing: var(--display-1-tracking); }
+.display-2 { font-size: var(--display-2-size); line-height: var(--display-2-lh); letter-spacing: var(--display-2-tracking); }
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
+  font-family: var(--font-display); font-weight: 700;
+  color: var(--fg-1); margin: 0;
+}
+h1, .h1 { font-size: var(--h1-size); line-height: var(--h1-lh); letter-spacing: var(--h1-tracking); }
+h2, .h2 { font-size: var(--h2-size); line-height: var(--h2-lh); letter-spacing: var(--h2-tracking); }
+h3, .h3 { font-size: var(--h3-size); line-height: var(--h3-lh); letter-spacing: var(--h3-tracking); }
+h4, .h4 { font-size: var(--h4-size); line-height: var(--h4-lh); letter-spacing: var(--h4-tracking); font-family: var(--font-sans); font-weight: 600; }
+h5, .h5 { font-size: var(--h5-size); line-height: var(--h5-lh); font-family: var(--font-sans); font-weight: 600; }
+
+.body-lg { font-size: 17px; line-height: 1.55; color: var(--fg-1); font-weight: 400; }
+.body    { font-size: 15px; line-height: 1.55; color: var(--fg-1); font-weight: 400; }
+.body-sm { font-size: 13px; line-height: 1.5;  color: var(--fg-2); font-weight: 400; }
+.caption { font-size: 11px; line-height: 1.4;  color: var(--fg-3); letter-spacing: 0.04em; font-weight: 600; }
+
+/* "Emphasis" in display — magenta color shift in lieu of italic (since FRL has no italic for Hebrew) */
+.em-display, .display-1 em, .display-2 em, h1 em, h2 em, h3 em {
+  font-style: normal;
+  color: var(--magenta-600);
+}

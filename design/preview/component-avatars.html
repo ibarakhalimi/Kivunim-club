@@ -1,0 +1,54 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px 32px; background: var(--bg-canvas); height: 240px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+  .head { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); }
+  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .av {
+    border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-sans); font-weight: 500; color: white;
+    position: relative; overflow: hidden;
+  }
+  .av-xs { width: 24px; height: 24px; font-size: 10px; }
+  .av-sm { width: 32px; height: 32px; font-size: 12px; }
+  .av-md { width: 44px; height: 44px; font-size: 15px; }
+  .av-lg { width: 64px; height: 64px; font-size: 22px; }
+  .av-xl { width: 96px; height: 96px; font-size: 32px; font-family: var(--font-display); font-weight: 500; }
+  .c1 { background: linear-gradient(135deg, var(--magenta-500), var(--pink-500)); }
+  .c2 { background: linear-gradient(135deg, var(--purple-500), var(--magenta-600)); }
+  .c3 { background: linear-gradient(135deg, var(--pink-500), var(--purple-500)); }
+  .c4 { background: linear-gradient(135deg, var(--magenta-700), var(--purple-700)); }
+  .c5 { background: linear-gradient(135deg, var(--pink-400), var(--magenta-500)); }
+  .ring { box-shadow: 0 0 0 3px white, 0 0 0 5px var(--magenta-500); }
+  .pres::after {
+    content: ""; position: absolute; bottom: 2px; left: 2px; width: 12px; height: 12px;
+    border-radius: 999px; background: var(--success-500); box-shadow: 0 0 0 2px white;
+  }
+  .stack { display: flex; }
+  .stack .av { box-shadow: 0 0 0 2px var(--bg-canvas); }
+  .stack .av:not(:first-child) { margin-right: -10px; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); width: 88px; flex-shrink: 0; direction: ltr; }
+</style></head>
+<body>
+  <div class="head">אווטרים</div>
+  <div class="row">
+    <div class="lbl">Sizes</div>
+    <div class="av av-xs c1">ע</div>
+    <div class="av av-sm c2">נ</div>
+    <div class="av av-md c3">רש</div>
+    <div class="av av-lg c4 pres">יק</div>
+    <div class="av av-xl c5">ע</div>
+    <div class="av av-md c2 ring">+</div>
+  </div>
+  <div class="row">
+    <div class="lbl">Stack · 17 מגיעים</div>
+    <div class="stack">
+      <div class="av av-md c1">ע</div>
+      <div class="av av-md c2">נ</div>
+      <div class="av av-md c3">ר</div>
+      <div class="av av-md c4">י</div>
+      <div class="av av-md c5" style="background: var(--bg-tint); color: var(--magenta-700)">+13</div>
+    </div>
+  </div>
+</body></html>

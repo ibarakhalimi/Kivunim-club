@@ -5,14 +5,7 @@ import { addBenefit } from "./actions";
 
 const init = { error: undefined as string | undefined, success: false };
 
-const BG_OPTIONS = [
-  { label: "אפרסק", value: "var(--color-card-peach)" },
-  { label: "לבנדר", value: "var(--color-card-lavender)" },
-  { label: "נענע", value: "var(--color-card-mint)" },
-  { label: "תכלת", value: "var(--color-card-sky)" },
-  { label: "חמאה", value: "var(--color-card-butter)" },
-  { label: "ליים", value: "var(--color-card-lime)" },
-];
+const CATEGORIES = ["בריאות", "כושר", "מסעדות"];
 
 export function AddBenefitForm() {
   const [state, formAction, pending] = useActionState(
@@ -27,32 +20,32 @@ export function AddBenefitForm() {
     <div style={cardStyle}>
       <h2 style={headingStyle}>+ הוסף הטבה חדשה</h2>
       <form ref={formRef} action={formAction} style={formStyle} encType="multipart/form-data">
+        <Field label="שם העסק *">
+          <input name="business" required placeholder="שם העסק..." style={inputStyle} />
+        </Field>
+        <Field label="תיאור העסק">
+          <textarea name="business_description" rows={2} placeholder="מי העסק, מה הוא מציע..." style={{ ...inputStyle, resize: "vertical" }} />
+        </Field>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <Field label="שם העסק *">
-            <input name="business" required placeholder="שם העסק..." style={inputStyle} />
-          </Field>
           <Field label="קטגוריה *">
-            <input name="category" required placeholder="מזון, בידור..." style={inputStyle} />
-          </Field>
-        </div>
-        <Field label="הטבה *">
-          <input name="deal" required placeholder='20% הנחה / 2+1...' style={inputStyle} />
-        </Field>
-        <Field label="תיאור *">
-          <textarea name="description" required rows={3} placeholder="פרטי ההטבה..." style={{ ...inputStyle, resize: "vertical" }} />
-        </Field>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <Field label="צבע רקע">
-            <select name="bg_color" style={inputStyle}>
-              {BG_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
+            <select name="category" required style={inputStyle}>
+              <option value="">בחר קטגוריה...</option>
+              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </Field>
-          <Field label="סדר תצוגה">
-            <input name="sort_order" type="number" defaultValue={0} min={0} style={inputStyle} />
+          <Field label="הטבה *">
+            <input name="deal" required placeholder='20% הנחה / 2+1...' style={inputStyle} />
           </Field>
         </div>
+        <Field label="תיאור ההטבה *">
+          <textarea name="description" required rows={3} placeholder="פרטי ההטבה..." style={{ ...inputStyle, resize: "vertical" }} />
+        </Field>
+        <Field label="כתובת">
+          <input name="location" placeholder="רחוב, עיר..." style={inputStyle} />
+        </Field>
+        <Field label="תוקף ההטבה">
+          <input name="expires_at" type="date" style={inputStyle} />
+        </Field>
         <Field label="לוגו / תמונה">
           <ImagePicker name="image" preview={preview} onPreview={setPreview} />
         </Field>

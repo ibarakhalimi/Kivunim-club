@@ -1,0 +1,33 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px 28px; background: var(--bg-canvas); height: 180px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; }
+  .row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+  .sw { aspect-ratio: 1; border-radius: 10px; position: relative; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
+  .sw .step { position: absolute; top: 6px; right: 6px; font-family: var(--font-mono); font-size: 9px; color: rgba(255,255,255,0.7); direction: ltr; }
+  .sw .step.dark { color: rgba(0,0,0,0.4); }
+  .sw .hex { position: absolute; bottom: 6px; right: 6px; font-family: var(--font-sans); font-weight: 600; font-size: 9px; color: white; }
+  .ring { box-shadow: 0 0 0 2px var(--magenta-500), inset 0 0 0 1px rgba(0,0,0,0.04), 0 4px 12px oklch(0.6 0.2 340 / 0.3); }
+  .head { display: flex; justify-content: space-between; align-items: baseline; }
+  .name { font-family: var(--font-display); font-weight: 500; font-size: 18px; color: var(--fg-1); }
+  .meta { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); direction: ltr; }
+</style></head>
+<body>
+  <div class="head">
+    <div class="name">מגנטה — צבע הזהב</div>
+    <div class="meta">--magenta-50 → 900 · hue 340</div>
+  </div>
+  <div class="row">
+    <div class="sw" style="background:var(--magenta-50)"><span class="step dark">50</span></div>
+    <div class="sw" style="background:var(--magenta-100)"><span class="step dark">100</span></div>
+    <div class="sw" style="background:var(--magenta-200)"><span class="step dark">200</span></div>
+    <div class="sw" style="background:var(--magenta-300)"><span class="step dark">300</span></div>
+    <div class="sw" style="background:var(--magenta-400)"><span class="step">400</span></div>
+    <div class="sw ring" style="background:var(--magenta-500)"><span class="step">500</span><span class="hex">ראשי</span></div>
+    <div class="sw" style="background:var(--magenta-600)"><span class="step">600</span></div>
+    <div class="sw" style="background:var(--magenta-700)"><span class="step">700</span></div>
+    <div class="sw" style="background:var(--magenta-800)"><span class="step">800</span></div>
+    <div class="sw" style="background:var(--magenta-900)"><span class="step">900</span></div>
+  </div>
+</body></html>

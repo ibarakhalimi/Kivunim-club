@@ -1,19 +1,17 @@
-const ACTIONS = [
-  { emoji: "📅", label: "אירועים",   bg: "var(--color-card-sky)" },
-  { emoji: "🎁", label: "הטבות",     bg: "var(--color-card-peach)" },
-  { emoji: "📊", label: "סקרים",     bg: "var(--color-card-lime)" },
-  { emoji: "💬", label: "פורום",     bg: "var(--color-card-lavender)" },
-  { emoji: "🖼️", label: "גלריה",    bg: "var(--color-card-mint)" },
-  { emoji: "📞", label: "צור קשר",  bg: "var(--color-card-butter)" },
+import { CheckInButton } from "./check-in-button";
+
+const STATIC_ACTIONS = [
+  { emoji: "📞", label: "יצירת קשר" },
+  { emoji: "📋", label: "מידע חשוב" },
+  { emoji: "💡", label: "יש לי רעיון" },
 ];
 
 export function ActionsGrid() {
   return (
-    <section style={{ padding: "4px 16px 8px" }}>
+    <section>
       <h2
         style={{
           margin: "0 0 14px",
-          paddingInline: 2,
           fontFamily: "var(--font-rubik)",
           fontWeight: 800,
           fontSize: 20,
@@ -23,46 +21,30 @@ export function ActionsGrid() {
       >
         פעולות מהירות
       </h2>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <CheckInButton bg="rgba(255,255,255,0.75)" />
 
-      <div
-        style={{
-          display: "flex",
-          gap: 12,
-          overflowX: "auto",
-          paddingBottom: 6,
-          scrollSnapType: "x mandatory",
-          WebkitOverflowScrolling: "touch",
-        }}
-      >
-        {ACTIONS.map((a) => (
+        {STATIC_ACTIONS.map((a) => (
           <button
             key={a.label}
             className="kv-tap"
             style={{
-              minWidth: 140,
-              flex: "0 0 auto",
-              background: a.bg,
-              border: "2px solid #0F0F0F",
-              borderRadius: 0,
-              boxShadow: "3px 3px 0 0 #0F0F0F",
-              padding: "16px 8px 14px",
+              background: "rgba(255,255,255,0.75)",
+              border: "1.5px solid rgba(255,255,255,0.7)",
+              borderRadius: "var(--radius-md)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+              padding: "20px 12px 18px",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              gap: 8,
+              alignItems: "flex-start",
+              gap: 10,
               cursor: "pointer",
-              scrollSnapAlign: "start",
+              textAlign: "right",
+              width: "100%",
             }}
           >
-            <span style={{ fontSize: 32, lineHeight: 1 }}>{a.emoji}</span>
-            <span
-              style={{
-                fontFamily: "var(--font-heebo)",
-                fontWeight: 700,
-                fontSize: 13,
-                color: "var(--color-text-primary)",
-              }}
-            >
+            <span style={{ fontSize: 20, lineHeight: 1 }}>{a.emoji}</span>
+            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 16, color: "var(--color-text-primary)" }}>
               {a.label}
             </span>
           </button>

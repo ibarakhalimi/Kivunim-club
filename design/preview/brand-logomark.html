@@ -1,0 +1,35 @@
+<!-- @dsCard group="Brand" -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 32px 40px; background: var(--bg-canvas); display: flex; align-items: center; gap: 32px; height: 220px; box-sizing: border-box; }
+  .mark {
+    width: 120px; height: 120px; border-radius: 28px;
+    background: var(--grad-glow);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-card);
+    position: relative; overflow: hidden; flex-shrink: 0;
+  }
+  .mark::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(80% 60% at 20% 20%, rgba(255,255,255,0.35), transparent 60%);
+  }
+  .mark span {
+    font-family: var(--font-display); font-weight: 400;
+    color: white; font-size: 80px; line-height: 1;
+    letter-spacing: -0.02em; position: relative; z-index: 1;
+  }
+  .info { display: flex; flex-direction: column; gap: 8px; }
+  .name { font-family: var(--font-display); font-weight: 500; font-size: 44px; line-height: 1; color: var(--fg-1); letter-spacing: -0.02em; }
+  .name em { font-style: normal; color: var(--magenta-600); }
+  .tag { font-family: var(--font-sans); font-size: 13px; color: var(--fg-3); letter-spacing: 0.12em; font-weight: 500; }
+  .desc { font-family: var(--font-sans); font-size: 15px; color: var(--fg-2); max-width: 380px; line-height: 1.5; margin-top: 8px; }
+</style></head>
+<body>
+  <div class="mark"><span>כ.</span></div>
+  <div class="info">
+    <div class="tag">חברים בלבד — נוסד 2026</div>
+    <div class="name">מועדון <em>כיוונים</em></div>
+    <div class="desc">פלטפורמת חברים לאירועים, הטבות, ולאנשים שעושים את העיר שווה לחיות בה.</div>
+  </div>
+</body></html>

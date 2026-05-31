@@ -14,41 +14,68 @@ export type Database = {
   }
   public: {
     Tables: {
+      check_ins: {
+        Row: {
+          id: string
+          user_id: string
+          checked_in_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          checked_in_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          checked_in_at?: string
+        }
+        Relationships: []
+      }
       benefits: {
         Row: {
           bg_color: string
           business: string
+          business_description: string | null
           category: string
           created_at: string
           deal: string
           description: string
+          expires_at: string | null
           id: string
           image_url: string | null
           is_active: boolean
+          location: string | null
           sort_order: number
         }
         Insert: {
           bg_color?: string
           business: string
+          business_description?: string | null
           category: string
           created_at?: string
           deal: string
           description: string
+          expires_at?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean
+          location?: string | null
           sort_order?: number
         }
         Update: {
           bg_color?: string
           business?: string
+          business_description?: string | null
           category?: string
           created_at?: string
           deal?: string
           description?: string
+          expires_at?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean
+          location?: string | null
           sort_order?: number
         }
         Relationships: []
@@ -134,6 +161,71 @@ export type Database = {
           role?: string
           study_year?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      poll_votes: {
+        Row: {
+          created_at: string
+          id: string
+          option_index: number
+          poll_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          option_index: number
+          poll_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          option_index?: number
+          poll_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "poll_votes_poll_id_fkey"
+            columns: ["poll_id"]
+            isOneToOne: false
+            referencedRelation: "polls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      polls: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          option_1: string
+          option_2: string
+          option_3: string
+          option_4: string
+          question: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          option_1: string
+          option_2: string
+          option_3: string
+          option_4: string
+          question: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          option_1?: string
+          option_2?: string
+          option_3?: string
+          option_4?: string
+          question?: string
         }
         Relationships: []
       }

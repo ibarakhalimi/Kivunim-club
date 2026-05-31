@@ -1,24 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabase/client";
 
 const DEGREES = ["תואר ראשון", "תואר שני", "תואר שלישי", "עמיתות מחקר", "אחר"];
-const STUDY_YEARS = ["שנה א׳", "שנה ב׳", "שנה ג׳", "שנה ד׳", "שנה ה׳", "בוגר"];
-const REGIONS = [
-  "תל אביב והמרכז",
-  "ירושלים",
-  "חיפה והצפון",
-  "באר שבע והדרום",
-  "השרון",
-  "השפלה",
-  "אחר",
+const STUDY_YEARS = ["שנה א׳", "שנה ב׳", "שנה ג׳"];
+const REGIONS = ["א׳", "ב׳", "ג׳", "ד׳", "סיטי", "ה׳"];
+const INSTITUTIONS = ["המכללה למנהל", "סמי שמעון", "אונ׳ תל אביב"];
+
+const BENEFITS = [
+  { emoji: "📅", text: "להתעדכן באירועים סטודנטיאליים בעיר" },
+  { emoji: "🎁", text: "לקבל הטבות מועדון שוות" },
+  { emoji: "🌱", text: "לפתח ולהצטרף ליוזמות בעיר" },
+  { emoji: "💬", text: "להציע רעיונות" },
+  { emoji: "📢", text: "לקבל מידע חשוב" },
+  { emoji: "🎓", text: "ובקיצור כ-ל מה שצריך כדי לעבור את התואר בשלום" },
 ];
+
+const BG = "linear-gradient(160deg, #FFE4CC 0%, #EDE8FF 35%, #C6F0DE 70%, #FAFAF5 100%)";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [step, setStep] = useState<"intro" | "form">("intro");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -75,38 +81,221 @@ export default function RegisterPage() {
     }
 
     setLoading(false);
-    router.push("/");
+    router.push("/register/success");
+  }
+
+  if (step === "intro") {
+    return (
+      <div
+        style={{
+          height: "100dvh",
+          background: BG,
+          direction: "rtl",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+        }}
+      >
+        {/* Top bar — fixed height */}
+        <div style={{ padding: "48px 24px 0", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Image src="/logo-aguda.png" alt="לוגו האגודה" width={80} height={80} style={{ display: "block" }} />
+        </div>
+
+        {/* Scrollable content */}
+        <div style={{ flex: 1, overflowY: "auto", padding: "28px 24px 0" }}>
+          <div style={{ maxWidth: 480, margin: "0 auto" }}>
+            {/* Heading */}
+            <div style={{ marginBottom: 24, textAlign: "center" }}>
+              <h1
+                style={{
+                  margin: "0 0 10px",
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 800,
+                  fontSize: 38,
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.02em",
+                  color: "var(--color-text-primary)",
+                }}
+              >
+                וולקאם למועדון
+              </h1>
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 500,
+                  fontSize: 18,
+                  lineHeight: 1.5,
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                מועדון ההטבות והפעילויות<br />הסטודנטיאלי של אשדוד
+              </p>
+            </div>
+
+            {/* Box 1 — About */}
+            <div style={boxStyle}>
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "var(--color-text-muted)",
+                  marginBottom: 10,
+                }}
+              >
+                מי אנחנו
+              </p>
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 400,
+                  fontSize: 15,
+                  lineHeight: 1.7,
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                אגודת הסטודנטים העירונית באשדוד הוקמה על ידי קבוצת ׳בקטע מקומי׳ במרכז כיוונים כדי לייצג את כלל הסטודנטים והסטודנטיות בעיר ללא הבדלי מוסד, תואר או שנתון. במטרה לייצג את כל ענייניהם בתחומי אקדמיה, תרבות, חיי היום יום בעיר, הקמת מועדון הטבות והגשמה של רעיונות שבאים מתוך הסטודנטים. ועוד ועוד ועוד.
+              </p>
+            </div>
+
+            {/* Box 2 — Benefits list */}
+            <div style={{ ...boxStyle, marginTop: 12 }}>
+              <p
+                style={{
+                  margin: "0 0 12px",
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "var(--color-text-muted)",
+                }}
+              >
+                למה להצטרף?
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {BENEFITS.map(({ emoji, text }) => (
+                  <div key={text} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <span style={{ fontSize: 20, lineHeight: 1.4, flexShrink: 0 }}>{emoji}</span>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-rubik)",
+                        fontSize: 15,
+                        lineHeight: 1.55,
+                        color: "var(--color-text-secondary)",
+                      }}
+                    >
+                      {text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* bottom spacer so last box clears the sticky button */}
+            <div style={{ height: 24 }} />
+          </div>
+        </div>
+
+        {/* Sticky bottom CTA */}
+        <div
+          style={{
+            flexShrink: 0,
+            padding: "16px 24px 44px",
+            background: "linear-gradient(to top, rgba(255,255,255,0.6) 0%, transparent 100%)",
+          }}
+        >
+          <div style={{ maxWidth: 480, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
+            <button
+              onClick={() => setStep("form")}
+              style={{
+                width: "100%",
+                padding: "16px 0",
+                background: "var(--color-accent-primary)",
+                color: "#fff",
+                border: "2px solid var(--color-accent-primary)",
+                borderRadius: "var(--radius-md)",
+                boxShadow: "none",
+                fontFamily: "var(--font-rubik)",
+                fontWeight: 800,
+                fontSize: 18,
+                cursor: "pointer",
+                letterSpacing: "0.01em",
+              }}
+            >
+              הרשמה למועדון
+            </button>
+            <Link href="/welcome" style={{ textDecoration: "none" }}>
+              <div
+                style={{
+                  width: "100%",
+                  padding: "15px 0",
+                  background: "rgba(255,255,255,0.75)",
+                  color: "var(--color-text-primary)",
+                  border: "2px solid var(--color-accent-primary)",
+                  borderRadius: "var(--radius-md)",
+                  boxShadow: "none",
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 700,
+                  fontSize: 16,
+                  textAlign: "center",
+                  cursor: "pointer",
+                  backdropFilter: "blur(4px)",
+                }}
+              >
+                ← חזרה
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div
       style={{
         minHeight: "100dvh",
-        background: "var(--color-bg-primary)",
-        padding: "32px 16px 48px",
+        background: BG,
+        padding: "48px 24px 56px",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
       }}
     >
+      {/* Logo */}
+      <div style={{ marginBottom: 28 }}>
+        <Image src="/logo-aguda.png" alt="לוגו האגודה" width={80} height={80} style={{ display: "block" }} />
+      </div>
+
       {/* Header */}
       <div style={{ width: "100%", maxWidth: 480, marginBottom: 24 }}>
-        <Link href="/welcome" style={{ fontSize: 13, color: "var(--color-text-muted)", textDecoration: "none", fontWeight: 500 }}>
+        <button
+          onClick={() => setStep("intro")}
+          style={{ fontSize: 13, color: "var(--color-text-muted)", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 600, fontFamily: "var(--font-rubik)" }}
+        >
           ← חזרה
-        </Link>
+        </button>
         <h1
           style={{
-            margin: "16px 0 4px",
+            margin: "16px 0 6px",
             fontFamily: "var(--font-rubik)",
             fontWeight: 800,
             fontSize: 32,
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
             color: "var(--color-text-primary)",
           }}
         >
           הרשמה לכיוונים
         </h1>
-        <p style={{ margin: 0, fontSize: 15, color: "var(--color-text-muted)", fontFamily: "var(--font-heebo)" }}>
+        <p style={{ margin: 0, fontSize: 16, color: "var(--color-text-secondary)", fontFamily: "var(--font-rubik)", fontWeight: 500 }}>
           מלאו את הפרטים כדי להצטרף למועדון
         </p>
       </div>
@@ -117,6 +306,10 @@ export default function RegisterPage() {
           width: "100%",
           maxWidth: 480,
           padding: "24px 20px 28px",
+          background: "rgba(255,255,255,0.75)",
+          backdropFilter: "blur(8px)",
+          borderRadius: "var(--radius-md)",
+          border: "1.5px solid rgba(255,255,255,0.6)",
           display: "flex",
           flexDirection: "column",
           gap: 0,
@@ -158,7 +351,7 @@ export default function RegisterPage() {
         {/* ── Academic ── */}
         <Section label="פרטי לימודים">
           <Field label="מוסד לימוד">
-            <input type="text" value={form.institution} onChange={(e) => set("institution", e.target.value)} placeholder="שם האוניברסיטה / המכללה" style={inputStyle} />
+            <InstitutionInput value={form.institution} onChange={(v) => set("institution", v)} />
           </Field>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <Field label="תואר">
@@ -185,7 +378,7 @@ export default function RegisterPage() {
               type="checkbox"
               checked={form.privacy_consent}
               onChange={(e) => set("privacy_consent", e.target.checked)}
-              style={{ width: 20, height: 20, marginTop: 2, flexShrink: 0, cursor: "pointer", accentColor: "#0F0F0F" }}
+              style={{ width: 20, height: 20, marginTop: 2, flexShrink: 0, cursor: "pointer", accentColor: "var(--color-accent-primary)" }}
             />
             <span style={{ fontSize: 14, lineHeight: 1.55, color: "var(--color-text-secondary)", fontFamily: "var(--font-heebo)" }}>
               קראתי ואני מסכים/ה{" "}
@@ -209,15 +402,15 @@ export default function RegisterPage() {
           style={{
             marginTop: 24,
             width: "100%",
-            padding: "15px 0",
-            background: loading ? "#ccc" : "#0F0F0F",
-            color: loading ? "#888" : "var(--color-accent-highlight)",
-            border: "2px solid #0F0F0F",
-            borderRadius: 0,
-            boxShadow: loading ? "none" : "3px 3px 0 0 #555",
+            padding: "16px 0",
+            background: loading ? "rgba(0,0,0,0.2)" : "var(--color-accent-primary)",
+            color: "#fff",
+            border: "2px solid " + (loading ? "rgba(0,0,0,0.1)" : "var(--color-accent-primary)"),
+            borderRadius: "var(--radius-md)",
+            boxShadow: "none",
             fontFamily: "var(--font-rubik)",
             fontWeight: 800,
-            fontSize: 17,
+            fontSize: 18,
             cursor: loading ? "not-allowed" : "pointer",
             letterSpacing: "0.01em",
           }}
@@ -236,6 +429,59 @@ export default function RegisterPage() {
   );
 }
 
+function InstitutionInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const matches = value.length >= 2 ? INSTITUTIONS.filter((i) => i.includes(value)) : [];
+
+  return (
+    <div style={{ position: "relative" }}>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => { onChange(e.target.value); setOpen(true); }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        placeholder="הקלידו שם מוסד..."
+        style={inputStyle}
+        autoComplete="off"
+      />
+      {open && matches.length > 0 && (
+        <div
+          style={{
+            position: "absolute",
+            top: "calc(100% + 4px)",
+            right: 0,
+            left: 0,
+            background: "rgba(255,255,255,0.97)",
+            border: "1.5px solid rgba(0,0,0,0.12)",
+            borderRadius: "var(--radius-md)",
+            overflow: "hidden",
+            zIndex: 10,
+            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+          }}
+        >
+          {matches.map((inst) => (
+            <div
+              key={inst}
+              onMouseDown={() => { onChange(inst); setOpen(false); }}
+              style={{
+                padding: "11px 14px",
+                fontSize: 15,
+                fontFamily: "var(--font-rubik)",
+                color: "var(--color-text-primary)",
+                cursor: "pointer",
+                borderBottom: "1px solid rgba(0,0,0,0.06)",
+              }}
+            >
+              {inst}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ padding: "16px 0", display: "flex", flexDirection: "column", gap: 12 }}>
@@ -248,7 +494,7 @@ function Section({ label, children }: { label: string; children: React.ReactNode
 }
 
 function Divider() {
-  return <div style={{ height: 1, background: "#E0E0E0", margin: "0 -20px" }} />;
+  return <div style={{ height: 1, background: "rgba(0,0,0,0.08)", margin: "0 -20px" }} />;
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -266,12 +512,20 @@ const inputStyle: React.CSSProperties = {
   padding: "11px 13px",
   fontSize: 15,
   fontFamily: "var(--font-heebo)",
-  border: "2px solid #0F0F0F",
-  borderRadius: 0,
-  background: "#FAFAFA",
+  border: "1.5px solid rgba(0,0,0,0.15)",
+  borderRadius: "var(--radius-md)",
+  background: "rgba(255,255,255,0.9)",
   color: "var(--color-text-primary)",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
   direction: "rtl",
+};
+
+const boxStyle: React.CSSProperties = {
+  padding: "18px 16px",
+  background: "rgba(255,255,255,0.75)",
+  backdropFilter: "blur(8px)",
+  borderRadius: "var(--radius-md)",
+  border: "1.5px solid rgba(255,255,255,0.6)",
 };

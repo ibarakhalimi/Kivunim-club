@@ -7,14 +7,7 @@ import { ImagePicker, labelStyle, inputStyle } from "./add-benefit-form";
 
 type Benefit = Tables<"benefits">;
 
-const BG_OPTIONS = [
-  { label: "אפרסק", value: "var(--color-card-peach)" },
-  { label: "לבנדר", value: "var(--color-card-lavender)" },
-  { label: "נענע", value: "var(--color-card-mint)" },
-  { label: "תכלת", value: "var(--color-card-sky)" },
-  { label: "חמאה", value: "var(--color-card-butter)" },
-  { label: "ליים", value: "var(--color-card-lime)" },
-];
+const CATEGORIES = ["בריאות", "כושר", "מסעדות"];
 
 const init = { error: undefined as string | undefined, success: false };
 
@@ -37,7 +30,10 @@ function EditForm({ benefit, onDone }: { benefit: Benefit; onDone: () => void })
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
           <label style={labelStyle}>קטגוריה *</label>
-          <input name="category" required defaultValue={benefit.category} style={inputStyle} />
+          <select name="category" required defaultValue={benefit.category} style={inputStyle}>
+            <option value="">בחר קטגוריה...</option>
+            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
@@ -45,20 +41,20 @@ function EditForm({ benefit, onDone }: { benefit: Benefit; onDone: () => void })
         <input name="deal" required defaultValue={benefit.deal} style={inputStyle} />
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-        <label style={labelStyle}>תיאור *</label>
+        <label style={labelStyle}>תיאור ההטבה *</label>
         <textarea name="description" required rows={3} defaultValue={benefit.description} style={{ ...inputStyle, resize: "vertical" }} />
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-          <label style={labelStyle}>צבע רקע</label>
-          <select name="bg_color" defaultValue={benefit.bg_color} style={inputStyle}>
-            {BG_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-          </select>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-          <label style={labelStyle}>סדר תצוגה</label>
-          <input name="sort_order" type="number" defaultValue={benefit.sort_order} min={0} style={inputStyle} />
-        </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <label style={labelStyle}>תיאור העסק</label>
+        <textarea name="business_description" rows={2} defaultValue={benefit.business_description ?? ""} style={{ ...inputStyle, resize: "vertical" }} />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <label style={labelStyle}>כתובת</label>
+        <input name="location" defaultValue={benefit.location ?? ""} style={inputStyle} />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <label style={labelStyle}>תוקף ההטבה</label>
+        <input name="expires_at" type="date" defaultValue={benefit.expires_at ?? ""} style={inputStyle} />
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={labelStyle}>לוגו / תמונה</label>
@@ -102,7 +98,6 @@ function BenefitRow({ benefit }: { benefit: Benefit }) {
         {/* Color swatch + thumbnail + info */}
         <div style={{ display: "flex", gap: 12, flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", gap: 8, flexShrink: 0, alignItems: "center" }}>
-            <div style={{ width: 8, height: 48, background: benefit.bg_color, border: "1.5px solid #0F0F0F", flexShrink: 0 }} />
             {benefit.image_url ? (
               <img src={benefit.image_url} alt={benefit.business}
                 style={{ width: 48, height: 48, objectFit: "cover", border: "2px solid #0F0F0F", flexShrink: 0 }} />
@@ -126,9 +121,6 @@ function BenefitRow({ benefit }: { benefit: Benefit }) {
             </div>
             <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "var(--color-text-primary)", fontFamily: "var(--font-rubik)" }}>
               {benefit.deal}
-            </p>
-            <p style={{ margin: 0, fontSize: 12, color: "var(--color-text-muted)", fontFamily: "var(--font-heebo)" }}>
-              סדר: {benefit.sort_order}
             </p>
           </div>
         </div>

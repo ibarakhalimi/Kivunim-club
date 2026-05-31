@@ -1,0 +1,50 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px 32px; background: var(--bg-canvas); height: 280px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+  .head { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+    border: none; border-radius: 999px; padding: 12px 22px;
+    cursor: pointer; transition: all 200ms var(--ease-out);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary { background: var(--magenta-500); color: white; }
+  .btn-primary:hover { background: var(--magenta-600); }
+  .btn-secondary { background: var(--neutral-900); color: white; }
+  .btn-ghost { background: transparent; color: var(--fg-1); border: 1px solid var(--border-default); }
+  .btn-ghost:hover { background: var(--bg-tint); border-color: var(--magenta-400); color: var(--magenta-700); }
+  .btn-tint { background: var(--bg-tint); color: var(--magenta-700); }
+  .btn-danger { background: var(--bg-surface); color: var(--danger-500); border: 1px solid var(--danger-500); }
+  .btn.lg { padding: 16px 28px; font-size: 16px; }
+  .btn.sm { padding: 8px 16px; font-size: 13px; }
+  .btn.xs { padding: 6px 12px; font-size: 12px; }
+  .btn-grad { background: var(--grad-primary); color: white; box-shadow: 0 8px 24px oklch(0.64 0.22 340 / 0.32); }
+  .focus { box-shadow: var(--shadow-glow); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); width: 88px; flex-shrink: 0; direction: ltr; }
+</style></head>
+<body>
+  <div class="head">כפתורים</div>
+  <div class="row">
+    <div class="lbl">Primary</div>
+    <button class="btn btn-primary">הצטרפו כחברים</button>
+    <button class="btn btn-primary focus">מיקוד</button>
+    <button class="btn btn-grad">אישור — מקום אחד</button>
+  </div>
+  <div class="row">
+    <div class="lbl">Variants</div>
+    <button class="btn btn-secondary">פתחו כרטיס</button>
+    <button class="btn btn-ghost">אולי אחר כך</button>
+    <button class="btn btn-tint">שמרו</button>
+    <button class="btn btn-danger">בטלו אישור</button>
+  </div>
+  <div class="row">
+    <div class="lbl">Sizes</div>
+    <button class="btn btn-primary lg">גדול</button>
+    <button class="btn btn-primary">רגיל</button>
+    <button class="btn btn-primary sm">קטן</button>
+    <button class="btn btn-primary xs">זעיר</button>
+  </div>
+</body></html>

@@ -1,133 +1,91 @@
-import { Bell } from "lucide-react";
+"use client";
 
-interface TopBarProps {
-  unread?: number;
-}
+import { useEffect, useState } from "react";
+import { Menu, User } from "lucide-react";
+import supabase from "@/lib/supabase/client";
 
-export function TopBar({ unread = 0 }: TopBarProps) {
+export function TopBar() {
+  const [name, setName] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      const raw = data.user?.user_metadata?.name as string | undefined;
+      setName(raw ? raw.split(" ")[0] : null);
+    });
+  }, []);
+
   return (
     <header
+      dir="rtl"
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "6px 20px 14px",
+        padding: "14px 20px",
       }}
     >
-      {/* Brand */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <div
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 999,
-            background: "var(--color-text-primary)",
-            color: "var(--color-accent-highlight)",
-            display: "grid",
-            placeItems: "center",
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 800,
-            fontSize: 18,
-            letterSpacing: "-0.04em",
-            flexShrink: 0,
-          }}
-        >
-          כ
-        </div>
-        <div style={{ lineHeight: 1 }}>
-          <div
-            style={{
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 800,
-              fontSize: 18,
-              letterSpacing: "-0.03em",
-              color: "var(--color-text-primary)",
-            }}
-          >
-            כיוונים
-          </div>
-          <div
-            style={{
-              fontSize: 10,
-              fontWeight: 600,
-              color: "var(--color-text-muted)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              marginTop: 2,
-            }}
-          >
-            מועדון · תל אביב
-          </div>
-        </div>
+      {/* Right: greeting chip */}
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          background: "var(--color-accent-primary)",
+          color: "#fff",
+          borderRadius: "var(--radius-full)",
+          padding: "6px 16px",
+          fontFamily: "var(--font-rubik)",
+          fontWeight: 700,
+          fontSize: 14,
+          letterSpacing: "0.01em",
+          whiteSpace: "nowrap",
+        }}
+      >
+        <span style={{ fontSize: 16 }}>👋</span>
+        {name ? `שלום, ${name}` : "שלום!"}
       </div>
 
-      {/* Actions */}
+      {/* Left: icon buttons */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        {/* Bell */}
+        {/* Profile */}
         <button
-          aria-label="התראות"
-          className="kv-tap"
+          aria-label="פרופיל"
           style={{
-            width: 40,
-            height: 40,
+            width: 42,
+            height: 42,
             borderRadius: 999,
             background: "var(--color-bg-card)",
-            border: "1px solid var(--color-border)",
+            border: "1.5px solid var(--color-border)",
             display: "grid",
             placeItems: "center",
-            position: "relative",
             color: "var(--color-text-primary)",
             cursor: "pointer",
             padding: 0,
             flexShrink: 0,
           }}
         >
-          <Bell size={20} strokeWidth={1.8} />
-          {unread > 0 && (
-            <span
-              style={{
-                position: "absolute",
-                top: 5,
-                right: 5,
-                minWidth: 16,
-                height: 16,
-                padding: "0 4px",
-                borderRadius: 999,
-                background: "var(--color-accent-primary)",
-                color: "#fff",
-                fontSize: 10,
-                fontWeight: 700,
-                display: "grid",
-                placeItems: "center",
-                border: "2px solid var(--color-bg-card)",
-              }}
-            >
-              {unread}
-            </span>
-          )}
+          <User size={20} strokeWidth={1.8} />
         </button>
 
-        {/* Avatar */}
-        <div
-          className="kv-tap"
+        {/* Menu */}
+        <button
+          aria-label="תפריט"
           style={{
-            width: 40,
-            height: 40,
+            width: 42,
+            height: 42,
             borderRadius: 999,
-            background: "linear-gradient(135deg, #FFD9B8 0%, #FF8C42 100%)",
-            border: "2px solid var(--color-text-primary)",
+            background: "var(--color-bg-card)",
+            border: "1.5px solid var(--color-border)",
             display: "grid",
             placeItems: "center",
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 700,
-            fontSize: 14,
             color: "var(--color-text-primary)",
             cursor: "pointer",
+            padding: 0,
             flexShrink: 0,
           }}
         >
-          מ
-        </div>
+          <Menu size={20} strokeWidth={1.8} />
+        </button>
       </div>
     </header>
   );

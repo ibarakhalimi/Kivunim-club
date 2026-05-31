@@ -31,8 +31,9 @@ export async function addBenefit(formData: FormData) {
   const category = (formData.get("category") as string)?.trim();
   const deal = (formData.get("deal") as string)?.trim();
   const description = (formData.get("description") as string)?.trim();
-  const bg_color = (formData.get("bg_color") as string) || "var(--color-card-peach)";
-  const sort_order = parseInt(formData.get("sort_order") as string) || 0;
+  const business_description = (formData.get("business_description") as string)?.trim() || null;
+  const location = (formData.get("location") as string)?.trim() || null;
+  const expires_at = (formData.get("expires_at") as string)?.trim() || null;
   const is_active = formData.get("is_active") === "on";
 
   if (!business || !category || !deal || !description) {
@@ -43,7 +44,7 @@ export async function addBenefit(formData: FormData) {
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("benefits")
-    .insert({ business, category, deal, description, bg_color, sort_order, is_active, image_url });
+    .insert({ business, category, deal, description, business_description, location, expires_at, is_active, image_url });
 
   if (error) return { error: "שגיאה בשמירת ההטבה" };
   revalidate();
@@ -55,8 +56,9 @@ export async function updateBenefit(id: string, formData: FormData) {
   const category = (formData.get("category") as string)?.trim();
   const deal = (formData.get("deal") as string)?.trim();
   const description = (formData.get("description") as string)?.trim();
-  const bg_color = (formData.get("bg_color") as string) || "var(--color-card-peach)";
-  const sort_order = parseInt(formData.get("sort_order") as string) || 0;
+  const business_description = (formData.get("business_description") as string)?.trim() || null;
+  const location = (formData.get("location") as string)?.trim() || null;
+  const expires_at = (formData.get("expires_at") as string)?.trim() || null;
   const is_active = formData.get("is_active") === "on";
   const existing_image_url = (formData.get("existing_image_url") as string) || null;
 
@@ -68,7 +70,7 @@ export async function updateBenefit(id: string, formData: FormData) {
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("benefits")
-    .update({ business, category, deal, description, bg_color, sort_order, is_active, image_url })
+    .update({ business, category, deal, description, business_description, location, expires_at, is_active, image_url })
     .eq("id", id);
 
   if (error) return { error: "שגיאה בעדכון ההטבה" };

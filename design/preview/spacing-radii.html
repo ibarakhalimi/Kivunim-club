@@ -1,0 +1,24 @@
+<!-- @dsCard group="Spacing" -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px 32px; background: var(--bg-canvas); height: 200px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+  .head { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); }
+  .row { display: flex; align-items: center; gap: 16px; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
+  .swatch { width: 76px; height: 60px; background: var(--magenta-100); border: 1.5px solid var(--magenta-400); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); direction: ltr; }
+</style></head>
+<body>
+  <div class="head">פינות מעוגלות</div>
+  <div class="row">
+    <div class="item"><div class="swatch" style="border-radius:4px"></div><div class="lbl">xs · 4</div></div>
+    <div class="item"><div class="swatch" style="border-radius:8px"></div><div class="lbl">sm · 8</div></div>
+    <div class="item"><div class="swatch" style="border-radius:12px"></div><div class="lbl">md · 12</div></div>
+    <div class="item"><div class="swatch" style="border-radius:16px"></div><div class="lbl">lg · 16</div></div>
+    <div class="item"><div class="swatch" style="border-radius:20px"></div><div class="lbl">xl · 20</div></div>
+    <div class="item"><div class="swatch" style="border-radius:28px"></div><div class="lbl">2xl · 28</div></div>
+    <div class="item"><div class="swatch" style="border-radius:36px"></div><div class="lbl">3xl · 36</div></div>
+    <div class="item"><div class="swatch" style="border-radius:999px"></div><div class="lbl">pill</div></div>
+  </div>
+</body></html>

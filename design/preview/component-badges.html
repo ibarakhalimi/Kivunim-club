@@ -1,0 +1,57 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px 32px; background: var(--bg-canvas); height: 260px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+  .head { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .badge {
+    font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+    padding: 4px 10px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .b-magenta { background: var(--magenta-100); color: var(--magenta-700); }
+  .b-purple { background: var(--purple-100); color: var(--purple-700); }
+  .b-pink { background: oklch(0.95 0.04 10); color: var(--pink-600); }
+  .b-neutral { background: var(--neutral-100); color: var(--fg-2); }
+  .b-success { background: var(--success-bg); color: oklch(0.40 0.15 155); }
+  .b-warning { background: var(--warning-bg); color: oklch(0.40 0.15 75); }
+  .b-danger { background: var(--danger-bg); color: oklch(0.40 0.18 25); }
+  .b-info { background: var(--info-bg); color: oklch(0.40 0.15 250); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .tier {
+    font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .t-found { background: var(--neutral-900); color: white; }
+  .t-prime { background: var(--grad-primary); color: white; }
+  .t-core  { background: var(--magenta-100); color: var(--magenta-700); }
+  .t-trial { background: white; color: var(--fg-2); border: 1px solid var(--border-default); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); width: 88px; flex-shrink: 0; direction: ltr; }
+</style></head>
+<body>
+  <div class="head">תגיות ושכבות חברות</div>
+  <div class="row">
+    <div class="lbl">Status</div>
+    <span class="badge b-magenta"><span class="dot"></span>חי עכשיו</span>
+    <span class="badge b-success"><span class="dot"></span>נכנס</span>
+    <span class="badge b-warning">נסגר ב-18:00</span>
+    <span class="badge b-danger">המתנה</span>
+    <span class="badge b-info">חדש</span>
+    <span class="badge b-neutral">עבר</span>
+  </div>
+  <div class="row">
+    <div class="lbl">Tone</div>
+    <span class="badge b-magenta">הערב</span>
+    <span class="badge b-purple">מייסדים</span>
+    <span class="badge b-pink">+1 בסדר</span>
+    <span class="badge b-neutral">12 אישרו</span>
+  </div>
+  <div class="row">
+    <div class="lbl">Tiers</div>
+    <span class="tier t-trial">ניסיון</span>
+    <span class="tier t-core">ליבה</span>
+    <span class="tier t-prime">פריים</span>
+    <span class="tier t-found">מייסדים</span>
+  </div>
+</body></html>

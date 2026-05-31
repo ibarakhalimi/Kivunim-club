@@ -1,0 +1,35 @@
+<!-- @dsCard group="Spacing" -->
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px 32px; background: var(--bg-canvas); height: 240px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+  .head { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); }
+  .row { display: flex; gap: 16px; align-items: stretch; }
+  .ease { flex: 1; padding: 14px 16px; border-radius: 14px; background: var(--bg-surface); border: 1px solid var(--border-subtle); }
+  .name { font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--fg-1); }
+  .val  { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); margin-top: 2px; direction: ltr; }
+  .curve { margin-top: 10px; height: 60px; }
+  .dur { display: flex; gap: 12px; margin-top: 6px; direction: ltr; align-self: flex-start; }
+  .dur span { font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); padding: 3px 8px; background: var(--bg-sunken); border-radius: 6px; }
+</style></head>
+<body>
+  <div class="head">תנועה — easings ומשכים</div>
+  <div class="row">
+    <div class="ease">
+      <div class="name">ease-out</div>
+      <div class="val">cubic-bezier(.16, 1, .3, 1)</div>
+      <svg class="curve" viewBox="0 0 100 60" preserveAspectRatio="none"><path d="M0,60 C16,0 30,0 100,0" stroke="var(--magenta-500)" stroke-width="2" fill="none"/></svg>
+    </div>
+    <div class="ease">
+      <div class="name">ease-in-out</div>
+      <div class="val">cubic-bezier(.65, 0, .35, 1)</div>
+      <svg class="curve" viewBox="0 0 100 60" preserveAspectRatio="none"><path d="M0,60 C65,60 35,0 100,0" stroke="var(--purple-500)" stroke-width="2" fill="none"/></svg>
+    </div>
+    <div class="ease">
+      <div class="name">spring</div>
+      <div class="val">cubic-bezier(.34, 1.56, .64, 1)</div>
+      <svg class="curve" viewBox="0 0 100 60" preserveAspectRatio="none"><path d="M0,60 C34,-34 64,0 100,0" stroke="var(--pink-500)" stroke-width="2" fill="none"/></svg>
+    </div>
+  </div>
+  <div class="dur"><span>dur-1 · 120ms</span><span>dur-2 · 200ms</span><span>dur-3 · 320ms</span><span>dur-4 · 520ms</span></div>
+</body></html>

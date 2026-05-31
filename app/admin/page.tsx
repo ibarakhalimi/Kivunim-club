@@ -4,6 +4,7 @@ export default function AdminPage() {
     { label: "אירועים", emoji: "📅", href: "/admin/events", bg: "var(--color-card-sky)" },
     { label: "הטבות", emoji: "🎁", href: "/admin/benefits", bg: "var(--color-card-mint)" },
     { label: "סקרים", emoji: "📊", href: "/admin/polls", bg: "var(--color-card-peach)" },
+    { label: "הגעות", emoji: "🚪", href: "/admin/check-ins", bg: "var(--color-card-lavender)" },
   ];
 
   return (

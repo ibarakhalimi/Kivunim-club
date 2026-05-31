@@ -10,9 +10,5 @@ export async function UpdateSection() {
 
   if (!updates || updates.length === 0) return null;
 
-  return (
-    <section style={{ padding: "4px 16px 8px" }}>
-      <UpdateList updates={updates} />
-    </section>
-  );
+  return <UpdateList updates={updates} />;
 }
