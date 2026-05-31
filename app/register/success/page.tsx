@@ -84,7 +84,7 @@ export default function RegisterSuccessPage() {
               color: "var(--color-text-secondary)",
             }}
           >
-            ברוכים הבאים למועדון כיוונים!<br />עכשיו שמרו את הכרטיס לנוחות שלכם
+            שלחנו לכם קישור כניסה לאימייל.<br />לחצו עליו כדי להיכנס למועדון כיוונים
           </p>
         </div>
 

@@ -6,10 +6,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabase/client";
 
-const DEGREES = ["תואר ראשון", "תואר שני", "תואר שלישי", "עמיתות מחקר", "אחר"];
-const STUDY_YEARS = ["שנה א׳", "שנה ב׳", "שנה ג׳"];
-const REGIONS = ["א׳", "ב׳", "ג׳", "ד׳", "סיטי", "ה׳"];
-const INSTITUTIONS = ["המכללה למנהל", "סמי שמעון", "אונ׳ תל אביב"];
+const STUDY_YEARS = ["שנה א׳", "שנה ב׳", "שנה ג׳", "שנה ד׳", "אחר"];
+const REGIONS = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ז׳", "ח׳", "ט׳", "י׳", "יא׳", "יב׳", "יג׳", "יד׳", "טו׳", "טז׳", "סיטי", "מע״ר"];
+const INSTITUTIONS = [
+  "שנקר", "המכללה למנהל - ראשל״צ", "ספיר", "אונו - המכללה האקדמית", "מכללת פרס",
+  "סמי שמעון - אשדוד", "האוניברסיטה הפתוחה", "גבעת וושינגטון", "אונ׳ בר אילן",
+  "אונ׳ תל אביב", "מכללת אחווה", "מכללת אשקלון", "המכללה האקדמית לוינסקי וינגייט",
+  "Hit חולון", "רייכמן", "אונ׳ עברית ירושלים", "המרכז החרדי להכשרה מקצועית",
+  "המכללה למינהל אשדוד", "אפקה", "אונ׳ בן גוריון", "בית ספר לאחיות ע״ש זיוה טל",
+  "אונ׳ חיפה", "המרכז האקדמי הרב תחומי ירושלים", "כללי", "המכללה האקדמית חמדת",
+  "מכללת הדסה", "האקדמית רמת גן", "אונ׳ אריאל", "האקדמית תל אביב-יפו", "בצלאל",
+  "הטכניון", "המוסד האקדמי למשפט ועסקים", "מכללת אורות", "מכללת קיי", "מכללת תלפיות",
+  "סמינר בנות אלישבע", "המכללה החרדית", "בראודה", "אחר",
+];
 
 const BENEFITS = [
   { emoji: "📅", text: "להתעדכן באירועים סטודנטיאליים בעיר" },
@@ -30,7 +39,6 @@ export default function RegisterPage() {
 
   const [form, setForm] = useState({
     email: "",
-    password: "",
     name: "",
     phone: "",
     institution: "",
@@ -57,10 +65,10 @@ export default function RegisterPage() {
 
     // All profile fields are passed as user metadata so the DB trigger
     // can insert them into members in one atomic operation — no session required.
-    const { error: signUpError } = await supabase.auth.signUp({
+    const { error: signUpError } = await supabase.auth.signInWithOtp({
       email: form.email,
-      password: form.password,
       options: {
+        emailRedirectTo: `${window.location.origin}/`,
         data: {
           name: form.name || null,
           phone: form.phone || null,
@@ -316,12 +324,9 @@ export default function RegisterPage() {
         }}
       >
         {/* ── Account ── */}
-        <Section label="פרטי התחברות">
+        <Section label="כתובת אימייל">
           <Field label="אימייל *">
             <input type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="your@email.com" style={inputStyle} />
-          </Field>
-          <Field label="סיסמה * (לפחות 6 תווים)">
-            <input type="password" required minLength={6} value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="••••••" style={inputStyle} />
           </Field>
         </Section>
 
@@ -353,20 +358,15 @@ export default function RegisterPage() {
           <Field label="מוסד לימוד">
             <InstitutionInput value={form.institution} onChange={(v) => set("institution", v)} />
           </Field>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            <Field label="תואר">
-              <select value={form.degree} onChange={(e) => set("degree", e.target.value)} style={inputStyle}>
-                <option value="">בחר...</option>
-                {DEGREES.map((d) => <option key={d} value={d}>{d}</option>)}
-              </select>
-            </Field>
-            <Field label="שנתון">
-              <select value={form.study_year} onChange={(e) => set("study_year", e.target.value)} style={inputStyle}>
-                <option value="">בחר...</option>
-                {STUDY_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
-              </select>
-            </Field>
-          </div>
+          <Field label="תואר לימוד">
+            <input type="text" value={form.degree} onChange={(e) => set("degree", e.target.value)} placeholder="לדוגמה: תקשורת, מנהל עסקים" style={inputStyle} />
+          </Field>
+          <Field label="שנתון">
+            <select value={form.study_year} onChange={(e) => set("study_year", e.target.value)} style={inputStyle}>
+              <option value="">בחר...</option>
+              {STUDY_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+            </select>
+          </Field>
         </Section>
 
         <Divider />
