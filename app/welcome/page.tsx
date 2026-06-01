@@ -8,37 +8,64 @@ export default function WelcomePage() {
         height: "100dvh",
         width: "100%",
         overflow: "hidden",
-        background:
-          "linear-gradient(160deg, #FFE4CC 0%, #EDE8FF 35%, #C6F0DE 70%, #FAFAF5 100%)",
+        background: "#e7e3da",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        padding: "32px 28px 52px",
+        padding: "0 28px 52px",
         textAlign: "center",
+        position: "relative",
       }}
     >
 
-      {/* Logo at the very top */}
-      <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: 24 }}>
+      {/* Background hero image — square, top, fades into page */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          aspectRatio: "1 / 1",
+          zIndex: 0,
+        }}
+      >
         <Image
-          src="/logo-aguda.png"
-          alt="לוגו האגודה"
-          width={140}
-          height={140}
-          style={{ display: "block" }}
+          src="/ChatGPT Image Jun 1, 2026, 01_12_22 PM.png"
+          alt=""
+          fill
+          style={{ objectFit: "cover" }}
+          priority
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to bottom, transparent 50%, #e7e3da 100%)",
+          }}
         />
       </div>
 
+      {/* Spacer to push content below the image */}
+      <div style={{ width: "100%", aspectRatio: "1 / 1", flexShrink: 0 }} />
+
       {/* Brand + tagline — vertically centred in remaining space */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, position: "relative", zIndex: 1 }}>
+        <Image
+          src="/logo-aguda.png"
+          alt="לוגו האגודה"
+          width={160}
+          height={160}
+          style={{ display: "block" }}
+        />
+
         {/* Chip */}
         <div
           style={{
             display: "inline-block",
-            background: "var(--color-accent-primary)",
+            background: "#5250DB",
             color: "#fff",
-            border: "2px solid var(--color-accent-primary)",
+            
             borderRadius: "var(--radius-full)",
             padding: "4px 16px",
             fontFamily: "var(--font-rubik)",
@@ -50,29 +77,16 @@ export default function WelcomePage() {
           וולקאם טו דה קלאב
         </div>
 
-        <h1
-          style={{
-            margin: 0,
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 900,
-            fontSize: 56,
-            lineHeight: 1.1,
-            letterSpacing: "-0.05em",
-            color: "var(--color-text-primary)",
-          }}
-        >
-          מועדון כיוונים
-        </h1>
-
         <p
           style={{
             margin: 0,
-            maxWidth: 340,
+            maxWidth: 360,
             fontFamily: "var(--font-rubik)",
-            fontWeight: 600,
-            fontSize: 24,
+            fontWeight: 900,
+            fontSize: 36,
             lineHeight: 1.1,
-            color: "var(--color-text-secondary)",
+            letterSpacing: "-2px",
+            color: "#000000",
           }}
         >
           מועדון ההטבות והפעילויות<br />הסטודנטיאלי של אשדוד
@@ -80,19 +94,19 @@ export default function WelcomePage() {
       </div>
 
         {/* Bottom: CTA buttons */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, position: "relative", zIndex: 1 }}>
           <Link href="/register" style={{ textDecoration: "none" }}>
             <div
               style={{
                 width: "100%",
                 padding: "16px 0",
-                background: "var(--color-accent-primary)",
+                background: "#5250DB",
                 color: "#fff",
-                border: "2px solid var(--color-accent-primary)",
+                border: "3px solid #000",
                 borderRadius: "var(--radius-md)",
-                boxShadow: "none",
+                boxShadow: "4px 4px 0px rgba(0, 0, 0, 1)",
                 fontFamily: "var(--font-rubik)",
-                fontWeight: 800,
+                fontWeight: 900,
                 fontSize: 18,
                 textAlign: "center",
                 cursor: "pointer",
@@ -107,18 +121,18 @@ export default function WelcomePage() {
             <div
               style={{
                 width: "100%",
-                padding: "15px 0",
-                background: "rgba(255,255,255,0.75)",
-                color: "var(--color-text-primary)",
-                border: "2px solid var(--color-accent-primary)",
+                padding: "16px 0",
+                background: "#fff",
+                color: "#000",
+                border: "3px solid #000",
                 borderRadius: "var(--radius-md)",
-                boxShadow: "none",
+                boxShadow: "4px 4px 0px rgba(0, 0, 0, 1)",
                 fontFamily: "var(--font-rubik)",
-                fontWeight: 700,
-                fontSize: 17,
+                fontWeight: 900,
+                fontSize: 18,
                 textAlign: "center",
                 cursor: "pointer",
-                backdropFilter: "blur(4px)",
+                letterSpacing: "0.01em",
               }}
             >
               כבר יש לי חשבון

@@ -7,7 +7,7 @@ import { ActionsGrid } from "@/components/home/actions-grid";
 import { TopBar } from "@/components/home/top-bar";
 import { PollLoader } from "@/components/home/poll-loader";
 
-const BG = "linear-gradient(160deg, #FFE4CC 0%, #EDE8FF 35%, #C6F0DE 70%, #FAFAF5 100%)";
+const BG = "#e7e3da";
 
 export default function HomePage() {
   return (
