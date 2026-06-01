@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AuthRedirect } from "./auth-redirect";
 
 export default function WelcomePage() {
   return (
@@ -17,6 +18,7 @@ export default function WelcomePage() {
         overflow: "hidden",
       }}
     >
+      <AuthRedirect />
       {/* Hero image — top half, fades into background */}
       <div style={{ position: "relative", width: "100%", height: "48dvh", flexShrink: 0 }}>
         <Image

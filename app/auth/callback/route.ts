@@ -16,8 +16,8 @@ export async function GET(request: NextRequest) {
     // Check the allowlist
     const { data: member } = await supabase
       .from("members")
-      .select("id")
-      .eq("email", data.user.email)
+      .select("user_id")
+      .eq("user_id", data.user.id)
       .maybeSingle();
 
     if (!member) {
