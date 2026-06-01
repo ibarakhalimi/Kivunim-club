@@ -7,23 +7,7 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     const supabase = await createClient();
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
-    if (error || !data.user?.email) {
-      return NextResponse.redirect(`${origin}/?error=auth_failed`);
-    }
-
-    // Check the allowlist
-    const { data: member } = await supabase
-      .from("members")
-      .select("user_id")
-      .eq("user_id", data.user.id)
-      .maybeSingle();
-
-    if (!member) {
-      await supabase.auth.signOut();
-      return NextResponse.redirect(`${origin}/?error=not_a_member`);
-    }
+    await supabase.auth.exchangeCodeForSession(code);
   }
 
   return NextResponse.redirect(`${origin}/`);
