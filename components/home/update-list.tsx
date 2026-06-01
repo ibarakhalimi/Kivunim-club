@@ -12,6 +12,15 @@ type Update = {
 
 const GAP = 16;
 
+const GRADIENTS = [
+  "linear-gradient(135deg, #B8A7E8, #7DC8E8)",
+  "linear-gradient(135deg, #EEC84A, #F4A07A)",
+  "linear-gradient(135deg, #A8D464, #7DC8E8)",
+  "linear-gradient(135deg, #F4C2D4, #B8A7E8)",
+  "linear-gradient(135deg, #7DC8E8, #A8D464)",
+  "linear-gradient(135deg, #F4A07A, #EEC84A)",
+];
+
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -64,7 +73,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
         >
           {/* spacer pushes first card away from the right edge so its shadow shows */}
           <div style={{ flexShrink: 0, width: 2 }} />
-          {updates.map((update) => (
+          {updates.map((update, i) => (
             <div
               key={update.id}
               onClick={() => setSelected(update)}
@@ -75,7 +84,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
                 borderRadius: 20,
                 border: "3px solid #000",
                 boxShadow: "5px 5px 0px #000",
-                background: "#fff",
+                background: GRADIENTS[i % GRADIENTS.length],
                 scrollSnapAlign: "start",
                 display: "flex",
                 flexDirection: "column",
@@ -92,7 +101,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
                   fontFamily: "var(--font-rubik)",
                   fontWeight: 500,
                   fontSize: 11,
-                  color: "#888",
+                  color: "rgba(0,0,0,0.5)",
                 }}
               >
                 {timeAgo(update.published_at)}

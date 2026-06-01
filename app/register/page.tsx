@@ -29,13 +29,15 @@ const BENEFITS = [
   { emoji: "🎓", text: "ובקיצור כ-ל מה שצריך כדי לעבור את התואר בשלום" },
 ];
 
-const BG = "linear-gradient(160deg, #FFE4CC 0%, #EDE8FF 35%, #C6F0DE 70%, #FAFAF5 100%)";
+const BG = "#e7e3da";
+const DOTS = "radial-gradient(circle, rgba(0,0,0,0.1) 1.2px, transparent 1.2px)";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [step, setStep] = useState<"intro" | "form">("intro");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [termsOpen, setTermsOpen] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
@@ -98,6 +100,8 @@ export default function RegisterPage() {
         style={{
           height: "100dvh",
           background: BG,
+          backgroundImage: DOTS,
+          backgroundSize: "18px 18px",
           direction: "rtl",
           display: "flex",
           flexDirection: "column",
@@ -105,41 +109,40 @@ export default function RegisterPage() {
         }}
       >
         {/* Top bar — fixed height */}
-        <div style={{ padding: "48px 24px 0", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <Image src="/logo-aguda.png" alt="לוגו האגודה" width={80} height={80} style={{ display: "block" }} />
+        <div style={{ padding: "40px 24px 0", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 14, position: "relative" }}>
+          <Link href="/welcome" style={{ position: "absolute", top: 44, right: 24, textDecoration: "none", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, color: "#111" }}>
+            → חזרה
+          </Link>
+          <Image src="/logo-aguda.png" alt="לוגו האגודה" width={110} height={110} style={{ display: "block" }} />
+          <span style={{
+            background: "#A8D464",
+            border: "2.5px solid #000",
+            borderRadius: 99,
+            padding: "4px 16px",
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 800,
+            fontSize: 14,
+            color: "#111",
+          }}>
+            הרשמה
+          </span>
+          <h1 style={{
+            margin: 0,
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 900,
+            fontSize: 36,
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+            color: "#111",
+            textAlign: "center",
+          }}>
+            הקלאב הסטודנטיאלי
+          </h1>
         </div>
 
         {/* Scrollable content */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "28px 24px 0" }}>
+        <div style={{ flex: 1, overflowY: "auto", padding: "24px 28px 0" }}>
           <div style={{ maxWidth: 480, margin: "0 auto" }}>
-            {/* Heading */}
-            <div style={{ marginBottom: 24, textAlign: "center" }}>
-              <h1
-                style={{
-                  margin: "0 0 10px",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 800,
-                  fontSize: 38,
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.02em",
-                  color: "var(--color-text-primary)",
-                }}
-              >
-                וולקאם למועדון
-              </h1>
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 500,
-                  fontSize: 18,
-                  lineHeight: 1.5,
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                מועדון ההטבות והפעילויות<br />הסטודנטיאלי של אשדוד
-              </p>
-            </div>
 
             {/* Box 1 — About */}
             <div style={boxStyle}>
@@ -172,7 +175,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Box 2 — Benefits list */}
-            <div style={{ ...boxStyle, marginTop: 12 }}>
+            <div style={{ ...boxStyle, marginTop: 16 }}>
               <p
                 style={{
                   margin: "0 0 12px",
@@ -215,50 +218,28 @@ export default function RegisterPage() {
           style={{
             flexShrink: 0,
             padding: "16px 24px 44px",
-            background: "linear-gradient(to top, rgba(255,255,255,0.6) 0%, transparent 100%)",
+            background: "linear-gradient(to top, #e7e3da 60%, transparent 100%)",
           }}
         >
-          <div style={{ maxWidth: 480, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ maxWidth: 480, margin: "0 auto" }}>
             <button
               onClick={() => setStep("form")}
               style={{
                 width: "100%",
                 padding: "16px 0",
-                background: "var(--color-accent-primary)",
+                background: "#5250DB",
                 color: "#fff",
-                border: "2px solid var(--color-accent-primary)",
+                border: "3px solid #000",
                 borderRadius: "var(--radius-md)",
-                boxShadow: "none",
-                fontFamily: "var(--font-rubik)",
+                boxShadow: "4px 4px 0px #000",
+                fontFamily: "'Comic Sans MS', cursive, sans-serif",
                 fontWeight: 800,
                 fontSize: 18,
                 cursor: "pointer",
-                letterSpacing: "0.01em",
               }}
             >
               הרשמה למועדון
             </button>
-            <Link href="/welcome" style={{ textDecoration: "none" }}>
-              <div
-                style={{
-                  width: "100%",
-                  padding: "15px 0",
-                  background: "rgba(255,255,255,0.75)",
-                  color: "var(--color-text-primary)",
-                  border: "2px solid var(--color-accent-primary)",
-                  borderRadius: "var(--radius-md)",
-                  boxShadow: "none",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 700,
-                  fontSize: 16,
-                  textAlign: "center",
-                  cursor: "pointer",
-                  backdropFilter: "blur(4px)",
-                }}
-              >
-                ← חזרה
-              </div>
-            </Link>
           </div>
         </div>
       </div>
@@ -270,6 +251,8 @@ export default function RegisterPage() {
       style={{
         minHeight: "100dvh",
         background: BG,
+        backgroundImage: DOTS,
+        backgroundSize: "18px 18px",
         padding: "48px 24px 56px",
         direction: "rtl",
         display: "flex",
@@ -277,63 +260,54 @@ export default function RegisterPage() {
         alignItems: "center",
       }}
     >
-      {/* Logo */}
-      <div style={{ marginBottom: 28 }}>
-        <Image src="/logo-aguda.png" alt="לוגו האגודה" width={80} height={80} style={{ display: "block" }} />
-      </div>
-
-      {/* Header */}
-      <div style={{ width: "100%", maxWidth: 480, marginBottom: 24 }}>
+      {/* Same header as intro */}
+      <div style={{ padding: "0 0 28px", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 14, position: "relative", width: "100%", maxWidth: 480 }}>
         <button
           onClick={() => setStep("intro")}
-          style={{ fontSize: 13, color: "var(--color-text-muted)", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 600, fontFamily: "var(--font-rubik)" }}
+          style={{ position: "absolute", top: 0, right: 24, background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, color: "#111" }}
         >
-          ← חזרה
+          → חזרה
         </button>
-        <h1
-          style={{
-            margin: "16px 0 6px",
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 800,
-            fontSize: 32,
-            lineHeight: 1.1,
-            letterSpacing: "-0.02em",
-            color: "var(--color-text-primary)",
-          }}
-        >
-          הרשמה לכיוונים
+        <Image src="/logo-aguda.png" alt="לוגו האגודה" width={110} height={110} style={{ display: "block" }} />
+        <span style={{
+          background: "#A8D464",
+          border: "2.5px solid #000",
+          borderRadius: 99,
+          padding: "4px 16px",
+          fontFamily: "var(--font-rubik)",
+          fontWeight: 800,
+          fontSize: 14,
+          color: "#111",
+        }}>
+          הרשמה
+        </span>
+        <h1 style={{
+          margin: 0,
+          fontFamily: "var(--font-rubik)",
+          fontWeight: 900,
+          fontSize: 36,
+          lineHeight: 1.1,
+          letterSpacing: "-0.02em",
+          color: "#111",
+          textAlign: "center",
+        }}>
+          הקלאב הסטודנטיאלי
         </h1>
-        <p style={{ margin: 0, fontSize: 16, color: "var(--color-text-secondary)", fontFamily: "var(--font-rubik)", fontWeight: 500 }}>
-          מלאו את הפרטים כדי להצטרף למועדון
-        </p>
       </div>
 
       <form
         onSubmit={handleSubmit}
         style={{
           width: "100%",
-          maxWidth: 480,
-          padding: "24px 20px 28px",
-          background: "rgba(255,255,255,0.75)",
-          backdropFilter: "blur(8px)",
-          borderRadius: "var(--radius-md)",
-          border: "1.5px solid rgba(255,255,255,0.6)",
           display: "flex",
           flexDirection: "column",
           gap: 0,
         }}
       >
-        {/* ── Account ── */}
-        <Section label="כתובת אימייל">
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <Field label="אימייל *">
             <input type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="your@email.com" style={inputStyle} />
           </Field>
-        </Section>
-
-        <Divider />
-
-        {/* ── Personal ── */}
-        <Section label="פרטים אישיים">
           <Field label="שם מלא">
             <input type="text" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="שם פרטי ומשפחה" style={inputStyle} />
           </Field>
@@ -349,12 +323,6 @@ export default function RegisterPage() {
               {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
           </Field>
-        </Section>
-
-        <Divider />
-
-        {/* ── Academic ── */}
-        <Section label="פרטי לימודים">
           <Field label="מוסד לימוד">
             <InstitutionInput value={form.institution} onChange={(v) => set("institution", v)} />
           </Field>
@@ -367,23 +335,21 @@ export default function RegisterPage() {
               {STUDY_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
             </select>
           </Field>
-        </Section>
+        </div>
 
-        <Divider />
-
-        {/* ── Privacy ── */}
-        <div style={{ padding: "16px 0 4px" }}>
+        {/* Privacy */}
+        <div style={{ marginTop: 20 }}>
           <label style={{ display: "flex", alignItems: "flex-start", gap: 12, cursor: "pointer" }}>
             <input
               type="checkbox"
               checked={form.privacy_consent}
               onChange={(e) => set("privacy_consent", e.target.checked)}
-              style={{ width: 20, height: 20, marginTop: 2, flexShrink: 0, cursor: "pointer", accentColor: "var(--color-accent-primary)" }}
+              style={{ width: 20, height: 20, marginTop: 2, flexShrink: 0, cursor: "pointer", accentColor: "#5250DB" }}
             />
-            <span style={{ fontSize: 14, lineHeight: 1.55, color: "var(--color-text-secondary)", fontFamily: "var(--font-heebo)" }}>
+            <span style={{ fontSize: 15, lineHeight: 1.6, color: "#333", fontFamily: "var(--font-rubik)" }}>
               קראתי ואני מסכים/ה{" "}
-              <span style={{ textDecoration: "underline", color: "var(--color-text-primary)" }}>לתנאי השימוש ומדיניות הפרטיות</span>{" "}
-              של מועדון כיוונים. הפרטים שמסרתי ישמשו לצורכי חברות במועדון בלבד.
+              <button type="button" onClick={() => setTermsOpen(true)} style={{ textDecoration: "underline", color: "#111", fontWeight: 700, background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "var(--font-rubik)", fontSize: 15 }}>לתנאי השימוש ומדיניות הפרטיות</button>{" "}
+              של מועדון כיוונים.
             </span>
           </label>
         </div>
@@ -403,16 +369,15 @@ export default function RegisterPage() {
             marginTop: 24,
             width: "100%",
             padding: "16px 0",
-            background: loading ? "rgba(0,0,0,0.2)" : "var(--color-accent-primary)",
+            background: loading ? "#aaa" : "#5250DB",
             color: "#fff",
-            border: "2px solid " + (loading ? "rgba(0,0,0,0.1)" : "var(--color-accent-primary)"),
+            border: "3px solid #000",
             borderRadius: "var(--radius-md)",
-            boxShadow: "none",
-            fontFamily: "var(--font-rubik)",
+            boxShadow: loading ? "none" : "4px 4px 0px #000",
+            fontFamily: "'Comic Sans MS', cursive, sans-serif",
             fontWeight: 800,
             fontSize: 18,
             cursor: loading ? "not-allowed" : "pointer",
-            letterSpacing: "0.01em",
           }}
         >
           {loading ? "נרשם..." : "הירשם למועדון"}
@@ -425,6 +390,74 @@ export default function RegisterPage() {
           </Link>
         </p>
       </form>
+
+      {/* Terms modal */}
+      {termsOpen && (
+        <>
+          <div onClick={() => setTermsOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 100 }} />
+          <div
+            style={{
+              position: "fixed",
+              bottom: 0, left: 0, right: 0,
+              zIndex: 101,
+              background: "#fff",
+              borderRadius: "20px 20px 0 0",
+              border: "3px solid #000",
+              borderBottom: "none",
+              boxShadow: "0 -5px 0 #000",
+              direction: "rtl",
+              maxHeight: "85dvh",
+              overflowY: "auto",
+              padding: "24px 24px 48px",
+            }}
+          >
+            <button
+              onClick={() => setTermsOpen(false)}
+              style={{ position: "absolute", top: 14, left: 16, width: 34, height: 34, background: "#fff", border: "2.5px solid #000", borderRadius: "50%", boxShadow: "2px 2px 0 #000", fontSize: 16, cursor: "pointer", fontWeight: 900 }}
+            >
+              ✕
+            </button>
+
+            <h2 style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, color: "#111" }}>
+              תנאי שימוש ומדיניות פרטיות
+            </h2>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 20, fontFamily: "var(--font-rubik)", fontSize: 15, lineHeight: 1.75, color: "#333" }}>
+              <div>
+                <p style={{ margin: "0 0 6px", fontWeight: 800, fontSize: 16, color: "#111" }}>1. מטרת השירות</p>
+                <p style={{ margin: 0 }}>מועדון כיוונים הוא מועדון הטבות ופעילויות לסטודנטים בעיר אשדוד. ההרשמה מאפשרת גישה להטבות, אירועים ועדכונים הרלוונטיים לחיי הסטודנט.</p>
+              </div>
+              <div>
+                <p style={{ margin: "0 0 6px", fontWeight: 800, fontSize: 16, color: "#111" }}>2. איסוף מידע</p>
+                <p style={{ margin: 0 }}>במסגרת ההרשמה נאסף מידע אישי הכולל: שם, כתובת אימייל, מספר טלפון, מוסד לימוד, תואר, שנתון, אזור מגורים ותאריך לידה. המידע נשמר בצורה מאובטחת ומשמש לצורך ניהול החברות במועדון בלבד.</p>
+              </div>
+              <div>
+                <p style={{ margin: "0 0 6px", fontWeight: 800, fontSize: 16, color: "#111" }}>3. שימוש במידע</p>
+                <p style={{ margin: 0 }}>המידע שנאסף ישמש לצורך: שליחת עדכונים ומידע על אירועים, הפעלת מועדון ההטבות, יצירת קשר עם חברי המועדון ושיפור השירותים המוצעים. לא יועבר מידע לגורמים שלישיים ללא הסכמתך.</p>
+              </div>
+              <div>
+                <p style={{ margin: "0 0 6px", fontWeight: 800, fontSize: 16, color: "#111" }}>4. אבטחת מידע</p>
+                <p style={{ margin: 0 }}>המידע מאוחסן בצורה מוצפנת ומאובטחת באמצעות Supabase. אנו נוקטים בכל האמצעים הסבירים להגן על פרטיותך.</p>
+              </div>
+              <div>
+                <p style={{ margin: "0 0 6px", fontWeight: 800, fontSize: 16, color: "#111" }}>5. זכויות המשתמש</p>
+                <p style={{ margin: 0 }}>יש לך הזכות לעיין במידע שנשמר עליך, לתקנו או לבקש את מחיקתו בכל עת על ידי פנייה אלינו ישירות.</p>
+              </div>
+              <div>
+                <p style={{ margin: "0 0 6px", fontWeight: 800, fontSize: 16, color: "#111" }}>6. יצירת קשר</p>
+                <p style={{ margin: 0 }}>לכל שאלה בנוגע לתנאי השימוש ומדיניות הפרטיות ניתן לפנות אלינו דרך פרטי הקשר באתר.</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setTermsOpen(false)}
+              style={{ marginTop: 28, width: "100%", padding: "14px 0", background: "#111", color: "#fff", border: "3px solid #000", borderRadius: 12, boxShadow: "4px 4px 0 #000", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, cursor: "pointer" }}
+            >
+              הבנתי, סגור
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -499,8 +532,8 @@ function Divider() {
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-      <label style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-primary)", fontFamily: "var(--font-heebo)" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+      <label style={{ fontSize: 16, fontWeight: 800, color: "#111", fontFamily: "var(--font-rubik)" }}>
         {label}
       </label>
       {children}
@@ -509,23 +542,25 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 const inputStyle: React.CSSProperties = {
-  padding: "11px 13px",
-  fontSize: 15,
-  fontFamily: "var(--font-heebo)",
-  border: "1.5px solid rgba(0,0,0,0.15)",
-  borderRadius: "var(--radius-md)",
-  background: "rgba(255,255,255,0.9)",
-  color: "var(--color-text-primary)",
+  padding: "13px 16px",
+  fontSize: 16,
+  fontFamily: "var(--font-rubik)",
+  border: "3px solid #000",
+  borderRadius: 12,
+  boxShadow: "4px 4px 0px #000",
+  background: "#fff",
+  color: "#111",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
   direction: "rtl",
+  fontWeight: 500,
 };
 
 const boxStyle: React.CSSProperties = {
   padding: "18px 16px",
-  background: "rgba(255,255,255,0.75)",
-  backdropFilter: "blur(8px)",
-  borderRadius: "var(--radius-md)",
-  border: "1.5px solid rgba(255,255,255,0.6)",
+  background: "#fff",
+  borderRadius: 16,
+  border: "3px solid #000",
+  boxShadow: "5px 5px 0px #000",
 };

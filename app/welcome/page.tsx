@@ -9,6 +9,8 @@ export default function WelcomePage() {
         width: "100%",
         overflow: "hidden",
         background: "#e7e3da",
+        backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.1) 1.2px, transparent 1.2px)",
+        backgroundSize: "18px 18px",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
