@@ -15,6 +15,7 @@ function formatDate(dateStr: string) {
 
 export function EventsSection({ events }: { events: Event[] }) {
   const [selected, setSelected] = useState<Event | null>(null);
+  const [allOpen, setAllOpen] = useState(false);
 
   if (events.length === 0) return null;
 
@@ -28,9 +29,27 @@ export function EventsSection({ events }: { events: Event[] }) {
           <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
             אירועים קרובים
           </h2>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#555", fontFamily: "var(--font-rubik)" }}>
-            כל האירועים ←
-          </span>
+          {events.length > 1 && (
+            <button
+              onClick={() => setAllOpen(true)}
+              style={{
+                background: "#B8A7E8",
+                border: "2px solid #000",
+                borderRadius: 99,
+                padding: "3px 12px",
+                fontSize: 13,
+                fontWeight: 700,
+                color: "#111",
+                fontFamily: "var(--font-rubik)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              + {events.length - 1} אירועים נוספים
+            </button>
+          )}
         </div>
 
         {/* Card — padding wrapper for shadow room */}
@@ -193,6 +212,122 @@ export function EventsSection({ events }: { events: Event[] }) {
                   הרשמה לאירוע
                 </button>
               )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* All events off-canvas */}
+      {allOpen && (
+        <>
+          <div onClick={() => setAllOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50 }} />
+          <div
+            style={{
+              position: "fixed",
+              bottom: 0, left: 0, right: 0,
+              zIndex: 51,
+              background: "#fff",
+              borderRadius: "20px 20px 0 0",
+              border: "3px solid #000",
+              borderBottom: "none",
+              boxShadow: "0 -5px 0 #000",
+              direction: "rtl",
+              maxHeight: "85dvh",
+              overflowY: "auto",
+              padding: "24px 20px 48px",
+            }}
+          >
+            <button
+              onClick={() => setAllOpen(false)}
+              style={{
+                position: "absolute", top: 14, left: 16,
+                width: 34, height: 34,
+                background: "#fff",
+                border: "2.5px solid #000",
+                borderRadius: "50%",
+                boxShadow: "2px 2px 0 #000",
+                fontSize: 16,
+                cursor: "pointer",
+                fontWeight: 900,
+              }}
+            >
+              ✕
+            </button>
+
+            <p style={{ margin: "0 0 18px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
+              כל האירועים
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, padding: "4px 6px 6px 0" }}>
+              {events.map((ev, i) => {
+                const GRADIENTS = [
+                  "linear-gradient(135deg, #B8A7E8, #7DC8E8)",
+                  "linear-gradient(135deg, #EEC84A, #F4A07A)",
+                  "linear-gradient(135deg, #A8D464, #7DC8E8)",
+                  "linear-gradient(135deg, #F4A07A, #F4C2D4)",
+                  "linear-gradient(135deg, #7DC8E8, #B8A7E8)",
+                ];
+                return (
+                  <div
+                    key={ev.id}
+                    onClick={() => { setAllOpen(false); setSelected(ev); }}
+                    style={{
+                      border: "3px solid #000",
+                      borderRadius: 16,
+                      boxShadow: "5px 5px 0 #000",
+                      background: "#fff",
+                      overflow: "hidden",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {/* Image / gradient top */}
+                    <div
+                      style={{
+                        width: "100%",
+                        height: 140,
+                        position: "relative",
+                        background: ev.image_url ? undefined : GRADIENTS[i % GRADIENTS.length],
+                        borderBottom: "3px solid #000",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {ev.image_url && (
+                        <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      )}
+                      {/* Date chip */}
+                      <span
+                        style={{
+                          position: "absolute",
+                          bottom: 10,
+                          right: 10,
+                          background: "#fff",
+                          border: "2px solid #000",
+                          borderRadius: 99,
+                          padding: "3px 10px",
+                          fontFamily: "var(--font-rubik)",
+                          fontWeight: 700,
+                          fontSize: 12,
+                          color: "#111",
+                        }}
+                      >
+                        {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
+                      </span>
+                    </div>
+
+                    {/* Text */}
+                    <div style={{ padding: "12px 16px 14px", display: "flex", flexDirection: "column", gap: 4 }}>
+                      <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.2, color: "#111" }}>
+                        {ev.title}
+                      </p>
+                      {ev.location && (
+                        <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#666" }}>
+                          📍 {ev.location}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </>

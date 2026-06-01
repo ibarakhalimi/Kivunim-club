@@ -27,7 +27,7 @@ export function CheckInButton() {
       <button
         onClick={() => setOpen(true)}
         style={{
-          background: "#fff",
+          background: "#F4C2D4",
           border: "3px solid #000",
           borderRadius: 20,
           boxShadow: "4px 4px 0px #000",

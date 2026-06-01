@@ -72,7 +72,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
                 flexShrink: 0,
                 width: "100%",
                 height: 180,
-                borderRadius: 12,
+                borderRadius: 20,
                 border: "3px solid #000",
                 boxShadow: "5px 5px 0px #000",
                 background: "#fff",

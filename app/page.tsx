@@ -8,6 +8,7 @@ import { TopBar } from "@/components/home/top-bar";
 import { PollLoader } from "@/components/home/poll-loader";
 
 const BG = "#e7e3da";
+const DOTS = "radial-gradient(circle, rgba(0,0,0,0.1) 1.2px, transparent 1.2px)";
 
 export default function HomePage() {
   return (
@@ -16,7 +17,8 @@ export default function HomePage() {
       style={{
         minHeight: "100dvh",
         background: BG,
-        backgroundAttachment: "fixed",
+        backgroundImage: DOTS,
+        backgroundSize: "18px 18px",
         paddingBottom: 40,
       }}
     >

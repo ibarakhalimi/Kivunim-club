@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, User } from "lucide-react";
+import { User } from "lucide-react";
+import Image from "next/image";
 import supabase from "@/lib/supabase/client";
 
 export function TopBar() {
@@ -10,7 +11,7 @@ export function TopBar() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       const raw = data.user?.user_metadata?.name as string | undefined;
-      setName(raw ? raw.split(" ")[0] : null);
+      setName(raw ?? null);
     });
   }, []);
 
@@ -24,68 +25,60 @@ export function TopBar() {
         padding: "14px 20px",
       }}
     >
-      {/* Right: greeting chip */}
+      {/* Right: logo + title */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <Image
+          src="/logo-aguda.png"
+          alt="לוגו"
+          width={40}
+          height={40}
+          style={{ display: "block" }}
+        />
+        <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
+          קלאב סטודנטיאלי
+        </p>
+      </div>
+
+      {/* Left: profile chip */}
       <div
         style={{
           display: "inline-flex",
           alignItems: "center",
-          gap: 6,
-          background: "var(--color-accent-primary)",
-          color: "#fff",
-          borderRadius: "var(--radius-full)",
-          padding: "6px 16px",
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 700,
-          fontSize: 14,
-          letterSpacing: "0.01em",
-          whiteSpace: "nowrap",
+          gap: 8,
+          background: "#EEC84A",
+          border: "2.5px solid #000",
+          borderRadius: 99,
+          padding: "6px 14px 6px 8px",
+          cursor: "pointer",
         }}
       >
-        <span style={{ fontSize: 16 }}>👋</span>
-        {name ? `שלום, ${name}` : "שלום!"}
-      </div>
-
-      {/* Left: icon buttons */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        {/* Profile */}
-        <button
-          aria-label="פרופיל"
+        <div
           style={{
-            width: 42,
-            height: 42,
-            borderRadius: 999,
-            background: "var(--color-bg-card)",
-            border: "1.5px solid var(--color-border)",
-            display: "grid",
-            placeItems: "center",
-            color: "var(--color-text-primary)",
-            cursor: "pointer",
-            padding: 0,
+            width: 28,
+            height: 28,
+            borderRadius: "50%",
+            background: "#fff",
+            border: "2px solid #000",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             flexShrink: 0,
           }}
         >
-          <User size={20} strokeWidth={1.8} />
-        </button>
-
-        {/* Menu */}
-        <button
-          aria-label="תפריט"
+          <User size={15} strokeWidth={2} color="#111" />
+        </div>
+        <span
+          suppressHydrationWarning
           style={{
-            width: 42,
-            height: 42,
-            borderRadius: 999,
-            background: "var(--color-bg-card)",
-            border: "1.5px solid var(--color-border)",
-            display: "grid",
-            placeItems: "center",
-            color: "var(--color-text-primary)",
-            cursor: "pointer",
-            padding: 0,
-            flexShrink: 0,
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 700,
+            fontSize: 14,
+            color: "#111",
+            whiteSpace: "nowrap",
           }}
         >
-          <Menu size={20} strokeWidth={1.8} />
-        </button>
+          {name ?? "פרופיל"}
+        </span>
       </div>
     </header>
   );
