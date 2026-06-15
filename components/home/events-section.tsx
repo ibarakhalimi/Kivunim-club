@@ -18,30 +18,6 @@ const TEMP_EVENTS: Event[] = [
     is_featured: true,
     created_at: "2026-06-15T00:00:00.000Z",
   },
-  {
-    id: "temp-event-career-meetup",
-    title: "מפגש קריירה לסטודנטים",
-    description: "שיחה פתוחה עם בוגרים ומעסיקים מקומיים על צעדים ראשונים בעולם העבודה.",
-    event_date: "2026-06-23",
-    start_hour: "17:30",
-    location: "אודיטוריום כיוונים",
-    registration_url: null,
-    image_url: null,
-    is_featured: false,
-    created_at: "2026-06-15T00:00:00.000Z",
-  },
-  {
-    id: "temp-event-community-breakfast",
-    title: "בוקר קהילה ונטוורקינג",
-    description: "מפגש בוקר קליל להיכרות בין סטודנטים בעיר, עדכונים והזדמנויות חדשות.",
-    event_date: "2026-06-30",
-    start_hour: "09:00",
-    location: "מרכז צעירים אשדוד",
-    registration_url: null,
-    image_url: null,
-    is_featured: false,
-    created_at: "2026-06-15T00:00:00.000Z",
-  },
 ];
 
 function formatDate(dateStr: string) {
@@ -91,16 +67,18 @@ export function EventsSection({ events }: { events: Event[] }) {
   const [selected, setSelected] = useState<Event | null>(null);
   const [allOpen, setAllOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
 
   const displayEvents = [...events, ...TEMP_EVENTS];
   const ev = displayEvents[activeIndex] ?? displayEvents[0];
-  const extraCount = Math.max(0, displayEvents.length - 1);
 
   function showNextEvent() {
+    setSwipeDirection("next");
     setActiveIndex((current) => (current + 1) % displayEvents.length);
   }
 
   function showPrevEvent() {
+    setSwipeDirection("prev");
     setActiveIndex((current) => (current - 1 + displayEvents.length) % displayEvents.length);
   }
 
@@ -112,7 +90,7 @@ export function EventsSection({ events }: { events: Event[] }) {
     if (Math.abs(distance) < 36) return;
 
     didEventSwipe.current = true;
-    if (distance < 0) showNextEvent();
+    if (distance > 0) showNextEvent();
     else showPrevEvent();
   }
 
@@ -127,6 +105,20 @@ export function EventsSection({ events }: { events: Event[] }) {
 
   return (
     <>
+      <style>
+        {`
+          @keyframes eventCardIn {
+            from {
+              opacity: 0.72;
+              transform: translateX(${swipeDirection === "next" ? "-14px" : "14px"}) scale(0.985);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0) scale(1);
+            }
+          }
+        `}
+      </style>
       <section>
         <div
           style={{
@@ -138,117 +130,103 @@ export function EventsSection({ events }: { events: Event[] }) {
             overflow: "hidden",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#0F172A" }}>
-              אירועים
-            </p>
-            <button
-              onClick={() => setAllOpen(true)}
-              style={{
-                background: "#EFF6FF",
-                border: "1px solid #BFDBFE",
-                borderRadius: 99,
-                padding: "5px 10px",
-                fontSize: 12,
-                fontWeight: 700,
-                color: "#1E40AF",
-                fontFamily: "var(--font-rubik)",
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {extraCount > 0 ? `עוד ${extraCount}` : "כל האירועים"}
-            </button>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              gap: 8,
-              overflowX: "auto",
-              paddingBottom: 10,
-              marginBottom: 2,
-              scrollbarWidth: "none",
-            }}
-          >
-            {displayEvents.map((event, i) => {
-              const active = i === activeIndex;
-              const tabDate = formatTabDate(event.event_date);
-              return (
-                <button
-                  key={event.id}
-                  onClick={() => setActiveIndex(i)}
-                  style={{
-                    flexShrink: 0,
-                    border: `1px solid ${active ? "#BFDBFE" : "#E2E8F0"}`,
-                    borderRadius: 14,
-                    background: active ? "#EFF6FF" : "#F8FAFC",
-                    color: active ? "#1E40AF" : "#64748B",
-                    padding: "7px 10px",
-                    minWidth: 54,
-                    fontFamily: "var(--font-rubik)",
-                    cursor: "pointer",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 1,
-                  }}
-                >
-                  <span style={{ fontWeight: 800, fontSize: 16, lineHeight: 1 }}>
-                    {tabDate.day}
-                  </span>
-                  <span style={{ fontWeight: 700, fontSize: 10, lineHeight: 1.1 }}>
-                    {tabDate.month}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div
-            onClick={handleEventClick}
-            onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
-            onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              border: "1px solid #E2E8F0",
-              borderRadius: 14,
-              overflow: "hidden",
-              cursor: "pointer",
-              background: "#F8FAFC",
-              touchAction: "pan-y",
-              userSelect: "none",
-            }}
-          >
+          <div style={{ display: "flex", alignItems: "stretch", gap: 10 }}>
             <div
               style={{
-                height: 132,
-                background: "#EFF6FF",
-                overflow: "hidden",
+                width: 58,
+                flexShrink: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                overflowY: "auto",
+                maxHeight: 278,
+                scrollbarWidth: "none",
               }}
             >
-              {ev.image_url ? (
-                <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              ) : (
-                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 }}>
-                  📅
-                </div>
-              )}
+              {displayEvents.map((event, i) => {
+                const active = i === activeIndex;
+                const tabDate = formatTabDate(event.event_date);
+                return (
+                  <button
+                    key={event.id}
+                    onClick={() => setActiveIndex(i)}
+                    style={{
+                      flexShrink: 0,
+                      border: `1px solid ${active ? "#BFDBFE" : "#E2E8F0"}`,
+                      borderRadius: 14,
+                      background: active ? "#EFF6FF" : "#F8FAFC",
+                      color: active ? "#1E40AF" : "#64748B",
+                      padding: "8px 7px",
+                      minHeight: 62,
+                      fontFamily: "var(--font-rubik)",
+                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <span style={{ fontWeight: 800, fontSize: 16, lineHeight: 1 }}>
+                      {tabDate.day}
+                    </span>
+                    <span style={{ fontWeight: 700, fontSize: 10, lineHeight: 1.1 }}>
+                      {tabDate.month}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
-            <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#1E40AF" }}>
-                {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
-              </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, lineHeight: 1.22, color: "#0F172A" }}>
-                {ev.title}
-              </p>
-              {ev.location && (
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#64748B" }}>
-                  📍 {ev.location}
+            <div
+              key={ev.id}
+              onClick={handleEventClick}
+              onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
+              onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                border: "1px solid #E2E8F0",
+                borderRadius: 14,
+                overflow: "hidden",
+                cursor: "pointer",
+                background: "#F8FAFC",
+                touchAction: "pan-y",
+                userSelect: "none",
+                animation: "eventCardIn 0.22s ease",
+                minWidth: 0,
+              }}
+            >
+              <div
+                style={{
+                  height: 172,
+                  background: "#EFF6FF",
+                  overflow: "hidden",
+                }}
+              >
+                {ev.image_url ? (
+                  <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                ) : (
+                  <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 }}>
+                    📅
+                  </div>
+                )}
+              </div>
+
+              <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#1E40AF" }}>
+                  {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
                 </p>
-              )}
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, lineHeight: 1.22, color: "#0F172A" }}>
+                  {ev.title}
+                </p>
+                {ev.location && (
+                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#64748B" }}>
+                    📍 {ev.location}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -56,11 +56,17 @@ const closeBtn: React.CSSProperties = {
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [selected, setSelected] = useState<Benefit | null>(null);
   const [allOpen, setAllOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("all");
 
   if (benefits.length === 0) return null;
 
-  const visible = benefits.slice(0, VISIBLE_COUNT);
-  const extraCount = benefits.length - VISIBLE_COUNT;
+  const categories = Array.from(new Set(benefits.map((b) => b.category).filter(Boolean))) as string[];
+  const filteredBenefits = activeFilter === "all"
+    ? benefits
+    : activeFilter === "new"
+      ? [...benefits].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      : benefits.filter((b) => b.category === activeFilter);
+  const visible = filteredBenefits.slice(0, VISIBLE_COUNT);
 
   return (
     <>
@@ -74,26 +80,80 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             padding: 14,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#0F172A" }}>
-              הטבות כרגע
-            </p>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 8,
+              overflowX: "auto",
+              scrollbarWidth: "none",
+              margin: "0 -4px 12px",
+              padding: "0 4px 2px",
+            }}
+          >
+            <div style={{ flexShrink: 0, width: 52, display: "flex", flexDirection: "column", alignItems: "center", gap: 5 }}>
+              <button
+                onClick={() => setActiveFilter("new")}
+                aria-label="חדשים"
+                style={{
+                  width: 46,
+                  height: 46,
+                  borderRadius: "50%",
+                  background: activeFilter === "new" ? "#FEF3C7" : "#F8FAFC",
+                  border: `1px solid ${activeFilter === "new" ? "#FCD34D" : "#E2E8F0"}`,
+                  cursor: "pointer",
+                  fontSize: 18,
+                }}
+              >
+                ✨
+              </button>
+              <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 10, color: "#64748B", whiteSpace: "nowrap" }}>
+                חדשים
+              </span>
+            </div>
+
+            {categories.map((category) => (
+              <div key={category} style={{ flexShrink: 0, width: 52, display: "flex", flexDirection: "column", alignItems: "center", gap: 5 }}>
+                <button
+                  onClick={() => setActiveFilter(category)}
+                  aria-label={category}
+                  style={{
+                    width: 46,
+                    height: 46,
+                    borderRadius: "50%",
+                    background: activeFilter === category ? categoryBg(category) : "#F8FAFC",
+                    border: `1px solid ${activeFilter === category ? "#BFDBFE" : "#E2E8F0"}`,
+                    cursor: "pointer",
+                    fontSize: 20,
+                  }}
+                >
+                  {categoryEmoji(category)}
+                </button>
+                <span style={{ maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 10, color: "#64748B", whiteSpace: "nowrap" }}>
+                  {category}
+                </span>
+              </div>
+            ))}
+
             <button
               onClick={() => setAllOpen(true)}
               style={{
-                background: "#F0FDF4",
-                border: "1px solid #BBF7D0",
+                flexShrink: 0,
+                marginRight: "auto",
+                height: 46,
+                background: "#0F172A",
+                border: "1px solid #0F172A",
                 borderRadius: 99,
-                padding: "5px 10px",
+                padding: "0 14px",
                 fontSize: 12,
-                fontWeight: 700,
-                color: "#15803D",
+                fontWeight: 800,
+                color: "#fff",
                 fontFamily: "var(--font-rubik)",
                 cursor: "pointer",
                 whiteSpace: "nowrap",
               }}
             >
-              {extraCount > 0 ? `עוד ${extraCount}` : "כל ההטבות"}
+              כל ההטבות
             </button>
           </div>
 
