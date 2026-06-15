@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { User } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabase/client";
@@ -55,8 +55,8 @@ export function TopBar() {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "12px 16px",
-          background: "#fff",
-          borderBottom: "1px solid #E2E8F0",
+          background: "transparent",
+          borderBottom: "none",
           position: "sticky",
           top: 0,
           zIndex: 10,
@@ -70,41 +70,42 @@ export function TopBar() {
           </span>
         </div>
 
-        {/* Profile chip */}
-        <button
-          onClick={() => setOpen(true)}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            background: "#F1F5F9",
-            border: "1px solid #E2E8F0",
-            borderRadius: 99,
-            padding: "6px 12px 6px 8px",
-            cursor: "pointer",
-          }}
-        >
-          <div
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <button
+            onClick={() => setOpen(true)}
+            aria-label="פרופיל"
             style={{
-              width: 26,
-              height: 26,
+              width: 38,
+              height: 38,
               borderRadius: "50%",
               background: "#DBEAFE",
+              border: "1px solid #BFDBFE",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flexShrink: 0,
+              cursor: "pointer",
             }}
           >
-            <User size={14} strokeWidth={2} color="#1E40AF" />
-          </div>
-          <span
-            suppressHydrationWarning
-            style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#0F172A", whiteSpace: "nowrap" }}
+            <User size={18} strokeWidth={2} color="#1E40AF" />
+          </button>
+          <button
+            onClick={() => setOpen(true)}
+            aria-label="תפריט"
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: "50%",
+              background: "#F1F5F9",
+              border: "1px solid #E2E8F0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
           >
-            {profile.name ?? "פרופיל"}
-          </span>
-        </button>
+            <Menu size={19} strokeWidth={2} color="#0F172A" />
+          </button>
+        </div>
       </header>
 
       {/* Profile drawer */}

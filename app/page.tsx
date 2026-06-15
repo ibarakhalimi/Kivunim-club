@@ -8,6 +8,7 @@ import { TopBar } from "@/components/home/top-bar";
 import { PollLoader } from "@/components/home/poll-loader";
 import { ProfileCard } from "@/components/home/profile-card";
 import { OpenHoursSection } from "@/components/home/open-hours-section";
+import { BottomNav } from "@/components/home/bottom-nav";
 
 export default function HomePage() {
   return (
@@ -29,6 +30,7 @@ export default function HomePage() {
         <BenefitsLoader />
         <PollLoader />
       </div>
+      <BottomNav />
     </main>
   );
 }
