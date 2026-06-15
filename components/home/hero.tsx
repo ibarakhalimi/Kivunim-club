@@ -100,7 +100,7 @@ export function Hero() {
             letterSpacing: "0.04em",
           }}
         >
-          Ashdod Student Club
+          מועדון הסטודנטים של אשדוד
         </p>
       </div>
     </section>

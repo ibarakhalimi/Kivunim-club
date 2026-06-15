@@ -2,13 +2,13 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Kivunim Club',
-    short_name: 'Kivunim',
-    description: 'Your app description',
+    name: 'כיוונים · מועדון הסטודנטים',
+    short_name: 'כיוונים',
+    description: 'מועדון ההטבות והפעילויות הסטודנטיאלי של אשדוד',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
-    theme_color: '#000000',
+    theme_color: '#1E40AF',
     icons: [
       { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
       { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },

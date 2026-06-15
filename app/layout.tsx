@@ -18,8 +18,8 @@ const bodyFont = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "Kivunim Club · Membership App",
-  description: "A modern membership app for members to explore updates, events, benefits, and polls.",
+  title: "כיוונים · מועדון הסטודנטים",
+  description: "אפליקציית המועדון הסטודנטיאלי — עדכונים, אירועים, הטבות וסקרים.",
 };
 
 export default function RootLayout({
