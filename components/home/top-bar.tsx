@@ -19,6 +19,7 @@ export function TopBar() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile>({ name: null, email: null, phone: null, institution: null, study_year: null, region: null });
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -46,6 +47,16 @@ export function TopBar() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 6);
+    }
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
       <header
@@ -55,11 +66,16 @@ export function TopBar() {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "12px 16px",
-          background: "transparent",
-          borderBottom: "none",
+          background: scrolled
+            ? "linear-gradient(to bottom, rgba(248,250,252,0.78) 0%, rgba(248,250,252,0.62) 68%, rgba(248,250,252,0) 100%)"
+            : "transparent",
+          borderBottom: "1px solid transparent",
+          backdropFilter: scrolled ? "blur(18px) saturate(1.25)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(18px) saturate(1.25)" : "none",
           position: "sticky",
           top: 0,
           zIndex: 10,
+          transition: "background 0.18s ease, border-color 0.18s ease, backdrop-filter 0.18s ease",
         }}
       >
         {/* Logo + title */}

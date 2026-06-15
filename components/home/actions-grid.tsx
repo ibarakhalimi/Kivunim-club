@@ -75,7 +75,7 @@ export function ActionsGrid() {
   const [actionsOpen, setActionsOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [activeActionIndex, setActiveActionIndex] = useState(0);
-  const actionPointerStartY = useRef<number | null>(null);
+  const actionPointerStartX = useRef<number | null>(null);
   const didActionSwipe = useRef(false);
   const activeAction = ALL_ACTIONS[activeActionIndex];
 
@@ -87,11 +87,11 @@ export function ActionsGrid() {
     setActiveActionIndex((current) => (current - 1 + ALL_ACTIONS.length) % ALL_ACTIONS.length);
   }
 
-  function handleActionSwipe(endY: number) {
-    if (actionPointerStartY.current === null) return;
+  function handleActionSwipe(endX: number) {
+    if (actionPointerStartX.current === null) return;
 
-    const distance = endY - actionPointerStartY.current;
-    actionPointerStartY.current = null;
+    const distance = endX - actionPointerStartX.current;
+    actionPointerStartX.current = null;
     if (Math.abs(distance) < 28) return;
 
     didActionSwipe.current = true;
@@ -115,11 +115,11 @@ export function ActionsGrid() {
           @keyframes actionWidgetIn {
             from {
               opacity: 0;
-              transform: translateY(10px) scale(0.98);
+              transform: translateX(10px) scale(0.98);
             }
             to {
               opacity: 1;
-              transform: translateY(0) scale(1);
+              transform: translateX(0) scale(1);
             }
           }
         `}
@@ -129,8 +129,8 @@ export function ActionsGrid() {
         {/* ── פעולות ── */}
         <div
           onClick={handleActionsClick}
-          onPointerDown={(event) => { actionPointerStartY.current = event.clientY; }}
-          onPointerUp={(event) => { handleActionSwipe(event.clientY); }}
+          onPointerDown={(event) => { actionPointerStartX.current = event.clientX; }}
+          onPointerUp={(event) => { handleActionSwipe(event.clientX); }}
           role="button"
           style={{
             background: activeAction.bg,
@@ -199,12 +199,12 @@ export function ActionsGrid() {
             aria-hidden="true"
             style={{
               position: "absolute",
-              top: 16,
-              bottom: 16,
-              left: 12,
+              left: 0,
+              right: 0,
+              bottom: 12,
               display: "flex",
-              flexDirection: "column",
               justifyContent: "center",
+              alignItems: "center",
               gap: 4,
             }}
           >
@@ -212,11 +212,11 @@ export function ActionsGrid() {
               <span
                 key={a.label}
                 style={{
-                  width: 4,
-                  height: activeActionIndex === i ? 14 : 4,
+                  width: activeActionIndex === i ? 14 : 4,
+                  height: 4,
                   borderRadius: 99,
                   background: activeActionIndex === i ? activeAction.color : "rgba(15,23,42,0.18)",
-                  transition: "height 0.2s ease, background 0.2s ease",
+                  transition: "width 0.2s ease, background 0.2s ease",
                 }}
               />
             ))}
