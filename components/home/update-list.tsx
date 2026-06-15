@@ -10,15 +10,37 @@ type Update = {
   author: string;
 };
 
-const GAP = 16;
+const CARD_COLORS = [
+  { bg: "#EFF6FF", accent: "#1E40AF" },
+  { bg: "#F0FDF4", accent: "#15803D" },
+  { bg: "#FFFBEB", accent: "#B45309" },
+  { bg: "#FFF1F2", accent: "#BE123C" },
+  { bg: "#F5F3FF", accent: "#6D28D9" },
+  { bg: "#ECFDF5", accent: "#059669" },
+];
 
-const GRADIENTS = [
-  "linear-gradient(135deg, #B8A7E8, #7DC8E8)",
-  "linear-gradient(135deg, #EEC84A, #F4A07A)",
-  "linear-gradient(135deg, #A8D464, #7DC8E8)",
-  "linear-gradient(135deg, #F4C2D4, #B8A7E8)",
-  "linear-gradient(135deg, #7DC8E8, #A8D464)",
-  "linear-gradient(135deg, #F4A07A, #EEC84A)",
+const TEMP_UPDATES: Update[] = [
+  {
+    id: "temp-campus-evening",
+    title: "ערב סטודנטים במרכז העיר",
+    description: "מפגש פתוח לסטודנטים עם מוזיקה, אוכל קל והיכרות עם סטודנטים נוספים מהעיר.",
+    published_at: new Date().toISOString(),
+    author: "צוות כיוונים",
+  },
+  {
+    id: "temp-exam-benefits",
+    title: "הטבות חדשות לתקופת מבחנים",
+    description: "ריכזנו עבורכם הטבות בקפה, הדפסות וחללי למידה שיעזרו לעבור את התקופה קצת יותר בנוח.",
+    published_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    author: "צוות כיוונים",
+  },
+  {
+    id: "temp-volunteer-call",
+    title: "מחפשים נציגי סטודנטים לפעילות הבאה",
+    description: "רוצים לקחת חלק בהפקת אירועים ולייצג את הסטודנטים בעיר? זה הזמן להצטרף לצוות המתנדבים.",
+    published_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+    author: "צוות כיוונים",
+  },
 ];
 
 function timeAgo(dateStr: string): string {
@@ -32,20 +54,46 @@ function timeAgo(dateStr: string): string {
 }
 
 export function UpdateList({ updates }: { updates: Update[] }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const pointerStart = useRef<{ x: number; y: number } | null>(null);
+  const didSwipe = useRef(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
   const [selected, setSelected] = useState<Update | null>(null);
+  const displayUpdates = [...updates, ...TEMP_UPDATES];
+  const activeUpdate = displayUpdates[activeIndex];
+  const activeColor = CARD_COLORS[activeIndex % CARD_COLORS.length];
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const index = Math.round(el.scrollLeft / (el.clientWidth + GAP));
-      setActiveIndex(index);
-    };
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, []);
+  function moveToNext() {
+    setSwipeDirection("next");
+    setActiveIndex((current) => (current + 1) % displayUpdates.length);
+  }
+
+  function moveToPrev() {
+    setSwipeDirection("prev");
+    setActiveIndex((current) => (current - 1 + displayUpdates.length) % displayUpdates.length);
+  }
+
+  function handleSwipeEnd(start: { x: number; y: number } | null, end: { x: number; y: number }) {
+    if (start === null) return;
+
+    const distanceX = end.x - start.x;
+    const distanceY = end.y - start.y;
+    const dominantDistance = Math.abs(distanceY) > Math.abs(distanceX) ? distanceY : distanceX;
+    if (Math.abs(dominantDistance) < 36) return;
+
+    didSwipe.current = true;
+    if (dominantDistance < 0) moveToNext();
+    else moveToPrev();
+  }
+
+  function handleCardClick() {
+    if (didSwipe.current) {
+      didSwipe.current = false;
+      return;
+    }
+
+    setSelected(activeUpdate);
+  }
 
   useEffect(() => {
     document.body.style.overflow = selected ? "hidden" : "";
@@ -54,98 +102,150 @@ export function UpdateList({ updates }: { updates: Update[] }) {
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {/* Negative margin wrapper lets shadows bleed outside the visible area */}
-        <div style={{ margin: "0 -8px" }}>
+      <style>
+        {`
+          @keyframes postCardIn {
+            from {
+              opacity: 0.72;
+              transform: translateX(${swipeDirection === "next" ? "-18px" : "18px"}) scale(0.98);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0) scale(1);
+            }
+          }
+        `}
+      </style>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <div
-          ref={scrollRef}
+          onPointerDown={(event) => { pointerStart.current = { x: event.clientX, y: event.clientY }; }}
+          onPointerUp={(event) => {
+            handleSwipeEnd(pointerStart.current, { x: event.clientX, y: event.clientY });
+            pointerStart.current = null;
+          }}
           style={{
-            overflowX: "auto",
-            display: "flex",
-            gap: GAP,
-            scrollSnapType: "x mandatory",
-            scrollPaddingInlineStart: 8,
-            WebkitOverflowScrolling: "touch",
-            msOverflowStyle: "none",
-            scrollbarWidth: "none",
-            padding: "4px 8px 8px 8px",
+            position: "relative",
+            height: 220,
+            touchAction: "none",
+            userSelect: "none",
           }}
         >
-          {/* spacer pushes first card away from the right edge so its shadow shows */}
-          <div style={{ flexShrink: 0, width: 2 }} />
-          {updates.map((update, i) => (
-            <div
-              key={update.id}
-              onClick={() => setSelected(update)}
+          {[2, 1].map((depth) => {
+            const stackIndex = (activeIndex + depth) % displayUpdates.length;
+            const stackColor = CARD_COLORS[stackIndex % CARD_COLORS.length].bg;
+            return (
+              <div
+                key={depth}
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  right: depth * 6,
+                  left: depth * 6,
+                  bottom: 0,
+                  height: 214,
+                  borderRadius: 14,
+                  border: "1px solid #E2E8F0",
+                  background: stackColor,
+                  boxShadow: "0 4px 12px rgba(15,23,42,0.06)",
+                  transform: `translateY(-${depth * 3}px)`,
+                  transformOrigin: "center bottom",
+                  opacity: depth === 1 ? 0.82 : 0.58,
+                  zIndex: depth,
+                  transition: "transform 0.24s ease, background 0.24s ease",
+                }}
+              />
+            );
+          })}
+
+          <div
+            style={{
+              position: "absolute",
+              inset: "auto 0 0",
+              zIndex: 4,
+            }}
+          >
+            <button
+              key={activeUpdate.id}
+              onClick={handleCardClick}
               style={{
-                flexShrink: 0,
                 width: "100%",
-                height: 180,
-                borderRadius: 20,
-                border: "3px solid #000",
-                boxShadow: "5px 5px 0px #000",
-                background: GRADIENTS[i % GRADIENTS.length],
-                scrollSnapAlign: "start",
+                height: 214,
+                borderRadius: 14,
+                border: "1px solid #E2E8F0",
+                boxShadow: "0 12px 24px rgba(15,23,42,0.13)",
+                background: activeColor.bg,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-end",
-                gap: 4,
-                padding: "18px 20px",
+                gap: 8,
+                padding: "22px",
                 cursor: "pointer",
+                textAlign: "right",
+                position: "relative",
+                overflow: "hidden",
+                animation: "postCardIn 0.24s ease",
               }}
             >
-              <p
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  bottom: 18,
+                  left: 16,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 5,
+                }}
+              >
+                {displayUpdates.map((_, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      width: 6,
+                      height: activeIndex === i ? 18 : 6,
+                      borderRadius: 99,
+                      background: activeIndex === i ? activeColor.accent : "rgba(15,23,42,0.18)",
+                      transition: "height 0.24s ease, background 0.24s ease",
+                    }}
+                  />
+                ))}
+              </span>
+
+              <span
                 suppressHydrationWarning
                 style={{
                   margin: 0,
                   fontFamily: "var(--font-rubik)",
-                  fontWeight: 500,
-                  fontSize: 11,
-                  color: "rgba(0,0,0,0.5)",
+                  fontWeight: 600,
+                  fontSize: 13,
+                  color: activeColor.accent,
+                  opacity: 0.7,
                 }}
               >
-                {timeAgo(update.published_at)}
-              </p>
-
-              <p
+                {timeAgo(activeUpdate.published_at)}
+              </span>
+              <span
                 style={{
                   margin: 0,
                   fontFamily: "var(--font-rubik)",
-                  fontWeight: 900,
-                  fontSize: 20,
-                  lineHeight: 1.3,
-                  color: "#111",
+                  fontWeight: 800,
+                  fontSize: 25,
+                  lineHeight: 1.22,
+                  color: "#0F172A",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
                 }}
               >
-                {update.title}
-              </p>
-            </div>
-          ))}
-        </div>
-        </div>{/* end negative margin wrapper */}
-
-        {/* Pagination dots */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 6 }}>
-          {updates.map((_, i) => (
-            <div
-              key={i}
-              style={{
-                width: activeIndex === i ? 20 : 7,
-                height: 7,
-                borderRadius: 99,
-                background: activeIndex === i ? "#555" : "#ccc",
-                transition: "width 0.25s ease",
-              }}
-            />
-          ))}
+                {activeUpdate.title}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Full post modal */}
+      {/* Modal */}
       {selected && (
         <div
           onClick={() => setSelected(null)}
@@ -153,7 +253,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
             position: "fixed",
             inset: 0,
             zIndex: 1000,
-            background: "rgba(0,0,0,0.4)",
+            background: "rgba(0,0,0,0.35)",
             display: "flex",
             alignItems: "flex-end",
           }}
@@ -165,7 +265,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
               maxHeight: "85dvh",
               borderRadius: "16px 16px 0 0",
               background: "#fff",
-              border: "1.5px solid #ccc",
+              border: "1px solid #E2E8F0",
               borderBottom: "none",
               overflow: "hidden",
               display: "flex",
@@ -173,55 +273,37 @@ export function UpdateList({ updates }: { updates: Update[] }) {
             }}
           >
             {/* Header */}
-            <div
-              style={{
-                padding: "20px 20px 16px",
-                borderBottom: "1.5px solid #eee",
-                display: "flex",
-                flexDirection: "column",
-                gap: 6,
-              }}
-            >
+            <div style={{ padding: "18px 20px 14px", borderBottom: "1px solid #F1F5F9", display: "flex", flexDirection: "column", gap: 5 }}>
               <button
                 onClick={() => setSelected(null)}
                 style={{
                   alignSelf: "flex-start",
-                  background: "none",
+                  background: "#F1F5F9",
                   border: "none",
-                  fontSize: 20,
+                  borderRadius: "50%",
+                  width: 30,
+                  height: 30,
+                  fontSize: 14,
                   cursor: "pointer",
-                  color: "#888",
-                  padding: 0,
+                  color: "#64748B",
+                  display: "flex", alignItems: "center", justifyContent: "center",
                 }}
               >
                 ✕
               </button>
-              <h2
-                style={{
-                  margin: 0,
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 800,
-                  fontSize: 20,
-                  color: "#111",
-                }}
-              >
+              <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 19, color: "#0F172A" }}>
                 {selected.title}
               </h2>
               <p
                 suppressHydrationWarning
-                style={{
-                  margin: 0,
-                  fontSize: 12,
-                  color: "#999",
-                  fontFamily: "var(--font-rubik)",
-                }}
+                style={{ margin: 0, fontSize: 12, color: "#94A3B8", fontFamily: "var(--font-rubik)" }}
               >
                 {timeAgo(selected.published_at)} · {selected.author}
               </p>
             </div>
 
             {/* Body */}
-            <div style={{ padding: "20px", overflowY: "auto", flex: 1 }}>
+            <div style={{ padding: "18px 20px", overflowY: "auto", flex: 1 }}>
               <p
                 style={{
                   margin: 0,
@@ -229,7 +311,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
                   fontWeight: 400,
                   fontSize: 15,
                   lineHeight: 1.75,
-                  color: "#333",
+                  color: "#334155",
                   whiteSpace: "pre-wrap",
                 }}
               >

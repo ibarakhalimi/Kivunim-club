@@ -22,29 +22,16 @@ export default async function AdminUpdatesPage() {
     <div
       style={{
         minHeight: "100dvh",
-        background: "var(--color-bg-primary)",
+        background: "#F8FAFC",
         padding: "24px 16px 40px",
-        fontFamily: "var(--font-heebo)",
+        fontFamily: "var(--font-rubik)",
         direction: "rtl",
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          marginBottom: 28,
-        }}
-      >
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
         <a
           href="/admin"
-          style={{
-            fontSize: 13,
-            color: "var(--color-text-muted)",
-            textDecoration: "none",
-            fontWeight: 500,
-          }}
+          style={{ fontSize: 13, color: "#64748B", textDecoration: "none", fontWeight: 500 }}
         >
           ← פאנל ניהול
         </a>
@@ -52,73 +39,40 @@ export default async function AdminUpdatesPage() {
           style={{
             margin: 0,
             fontFamily: "var(--font-rubik)",
-            fontWeight: 800,
-            fontSize: 26,
-            color: "var(--color-text-primary)",
+            fontWeight: 700,
+            fontSize: 24,
+            color: "#0F172A",
           }}
         >
           עדכונים
         </h1>
       </div>
 
-      {/* Add Form */}
       <AddUpdateForm />
 
-      {/* Existing Updates */}
       {updates && updates.length > 0 && (
-        <div style={{ marginTop: 32 }}>
-          <h2
-            style={{
-              margin: "0 0 16px",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 700,
-              fontSize: 18,
-              color: "var(--color-text-primary)",
-            }}
-          >
+        <div style={{ marginTop: 28 }}>
+          <h2 style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 16, color: "#0F172A" }}>
             עדכונים קיימים
           </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {updates.map((u) => (
               <div
                 key={u.id}
                 style={{
-                  background: "var(--color-card-butter)",
-                  border: "2px solid #0F0F0F",
-                  borderRadius: 0,
-                  boxShadow: "4px 4px 0 0 #0F0F0F",
-                  padding: "14px 18px",
+                  background: "#fff",
+                  border: "1px solid #E2E8F0",
+                  borderRadius: 10,
+                  padding: "14px 16px",
                 }}
               >
-                <p
-                  style={{
-                    margin: "0 0 4px",
-                    fontSize: 12,
-                    color: "var(--color-text-muted)",
-                    fontWeight: 500,
-                  }}
-                >
+                <p style={{ margin: "0 0 4px", fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>
                   {formatDate(u.published_at)} · {u.author}
                 </p>
-                <p
-                  style={{
-                    margin: "0 0 6px",
-                    fontFamily: "var(--font-rubik)",
-                    fontWeight: 800,
-                    fontSize: 18,
-                    color: "var(--color-text-primary)",
-                  }}
-                >
+                <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 16, color: "#0F172A" }}>
                   {u.title}
                 </p>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: 14,
-                    lineHeight: 1.5,
-                    color: "var(--color-text-secondary)",
-                  }}
-                >
+                <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#475569" }}>
                   {u.description}
                 </p>
               </div>

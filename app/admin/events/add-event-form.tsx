@@ -20,7 +20,7 @@ export function AddEventForm() {
 
   return (
     <div style={cardStyle}>
-      <h2 style={headingStyle}>+ הוסף אירוע חדש</h2>
+      <h2 style={headingStyle}>הוספת אירוע חדש</h2>
       <form ref={formRef} action={formAction} style={formStyle} encType="multipart/form-data">
         <Field label="כותרת *">
           <input name="title" required placeholder="שם האירוע..." style={inputStyle} />
@@ -39,18 +39,15 @@ export function AddEventForm() {
         <Field label="מיקום *">
           <input name="location" required placeholder="כתובת / שם המקום..." style={inputStyle} />
         </Field>
-
         <Field label="קישור להרשמה">
           <input name="registration_url" type="url" placeholder="https://..." style={inputStyle} />
         </Field>
-
         <Field label="תמונה">
           <ImagePicker name="image" preview={preview} onPreview={setPreview} />
         </Field>
-
         <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-          <input name="is_featured" type="checkbox" style={{ width: 18, height: 18, cursor: "pointer" }} />
-          <span style={labelStyle}>מוצג בראש הדף (Featured)</span>
+          <input name="is_featured" type="checkbox" style={{ width: 16, height: 16, cursor: "pointer", accentColor: "#1E40AF" }} />
+          <span style={labelStyle}>מוצג בראש הדף</span>
         </label>
 
         {state.error && <p style={errorStyle}>{state.error}</p>}
@@ -81,60 +78,26 @@ export function ImagePicker({
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) { onPreview(null); return; }
-    const url = URL.createObjectURL(file);
-    onPreview(url);
+    onPreview(URL.createObjectURL(file));
   }
 
   return (
     <div>
-      <input
-        ref={inputRef}
-        name={name}
-        type="file"
-        accept="image/*"
-        onChange={handleChange}
-        style={{ display: "none" }}
-      />
+      <input ref={inputRef} name={name} type="file" accept="image/*" onChange={handleChange} style={{ display: "none" }} />
       {displayed ? (
-        <div style={{ position: "relative", width: "100%", height: 160, border: "2px solid #0F0F0F" }}>
+        <div style={{ position: "relative", width: "100%", height: 140, borderRadius: 8, overflow: "hidden", border: "1px solid #E2E8F0" }}>
           <img src={displayed} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           <button
             type="button"
             onClick={() => { onPreview(null); if (inputRef.current) inputRef.current.value = ""; }}
-            style={{
-              position: "absolute",
-              top: 8,
-              left: 8,
-              width: 28,
-              height: 28,
-              background: "#0F0F0F",
-              color: "#fff",
-              border: "none",
-              fontSize: 13,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={{ position: "absolute", top: 8, left: 8, width: 28, height: 28, background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: "50%", fontSize: 12, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
           >
             ✕
           </button>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            style={{
-              position: "absolute",
-              bottom: 8,
-              left: 8,
-              padding: "4px 10px",
-              background: "#0F0F0F",
-              color: "#fff",
-              border: "none",
-              fontSize: 12,
-              fontFamily: "var(--font-heebo)",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
+            style={{ position: "absolute", bottom: 8, left: 8, padding: "4px 10px", background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: 99, fontSize: 12, fontFamily: "var(--font-rubik)", fontWeight: 600, cursor: "pointer" }}
           >
             החלף
           </button>
@@ -143,23 +106,9 @@ export function ImagePicker({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          style={{
-            width: "100%",
-            padding: "28px 0",
-            border: "2px dashed #0F0F0F",
-            background: "#FAFAFA",
-            cursor: "pointer",
-            fontSize: 14,
-            fontFamily: "var(--font-heebo)",
-            fontWeight: 600,
-            color: "var(--color-text-muted)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 8,
-          }}
+          style={{ width: "100%", padding: "24px 0", border: "1.5px dashed #CBD5E1", borderRadius: 8, background: "#F8FAFC", cursor: "pointer", fontSize: 13, fontFamily: "var(--font-rubik)", fontWeight: 600, color: "#64748B", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
         >
-          <span style={{ fontSize: 28 }}>📷</span>
+          <span style={{ fontSize: 26 }}>📷</span>
           לחץ להעלאת תמונה
         </button>
       )}
@@ -176,52 +125,51 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-const cardStyle: React.CSSProperties = {
+export const cardStyle: React.CSSProperties = {
   background: "#fff",
-  border: "2px solid #0F0F0F",
-  borderRadius: 0,
-  boxShadow: "4px 4px 0 0 #0F0F0F",
+  border: "1px solid #E2E8F0",
+  borderRadius: 12,
+  boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
   padding: "20px 18px",
 };
-const headingStyle: React.CSSProperties = {
-  margin: "0 0 18px",
+export const headingStyle: React.CSSProperties = {
+  margin: "0 0 16px",
   fontFamily: "var(--font-rubik)",
-  fontWeight: 800,
-  fontSize: 20,
-  color: "var(--color-text-primary)",
+  fontWeight: 700,
+  fontSize: 18,
+  color: "#0F172A",
 };
-const formStyle: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 14 };
+export const formStyle: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 14 };
 export const labelStyle: React.CSSProperties = {
-  fontSize: 14,
+  fontSize: 13,
   fontWeight: 600,
-  color: "var(--color-text-primary)",
-  fontFamily: "var(--font-heebo)",
+  color: "#475569",
+  fontFamily: "var(--font-rubik)",
 };
 export const inputStyle: React.CSSProperties = {
   padding: "10px 12px",
-  fontSize: 15,
-  fontFamily: "var(--font-heebo)",
-  border: "2px solid #0F0F0F",
-  borderRadius: 0,
-  background: "#FAFAFA",
-  color: "var(--color-text-primary)",
+  fontSize: 14,
+  fontFamily: "var(--font-rubik)",
+  border: "1px solid #CBD5E1",
+  borderRadius: 8,
+  background: "#fff",
+  color: "#0F172A",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
   direction: "rtl",
 };
-const errorStyle: React.CSSProperties = { margin: 0, fontSize: 14, color: "#e53e3e", fontWeight: 600 };
-const successStyle: React.CSSProperties = { margin: 0, fontSize: 14, color: "#276749", fontWeight: 600 };
+const errorStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 };
+const successStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#16A34A", fontWeight: 600 };
 const submitStyle = (pending: boolean): React.CSSProperties => ({
   marginTop: 4,
-  padding: "12px 24px",
-  background: pending ? "#ccc" : "#0F0F0F",
+  padding: "11px 24px",
+  background: pending ? "#94A3B8" : "#1E40AF",
   color: "#fff",
-  border: "2px solid #0F0F0F",
-  borderRadius: 0,
-  boxShadow: pending ? "none" : "3px 3px 0 0 #555",
+  border: "none",
+  borderRadius: 8,
   fontFamily: "var(--font-rubik)",
   fontWeight: 700,
-  fontSize: 16,
+  fontSize: 15,
   cursor: pending ? "not-allowed" : "pointer",
 });

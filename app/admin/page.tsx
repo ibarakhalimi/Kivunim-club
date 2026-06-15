@@ -1,38 +1,38 @@
 export default function AdminPage() {
   const sections = [
-    { label: "עדכונים", emoji: "📢", href: "/admin/updates", bg: "var(--color-card-butter)" },
-    { label: "אירועים", emoji: "📅", href: "/admin/events", bg: "var(--color-card-sky)" },
-    { label: "הטבות", emoji: "🎁", href: "/admin/benefits", bg: "var(--color-card-mint)" },
-    { label: "סקרים", emoji: "📊", href: "/admin/polls", bg: "var(--color-card-peach)" },
-    { label: "הגעות", emoji: "🚪", href: "/admin/check-ins", bg: "var(--color-card-lavender)" },
+    { label: "עדכונים", emoji: "📢", href: "/admin/updates", bg: "#FFFBEB", color: "#B45309" },
+    { label: "אירועים", emoji: "📅", href: "/admin/events", bg: "#EFF6FF", color: "#1E40AF" },
+    { label: "הטבות",   emoji: "🎁", href: "/admin/benefits", bg: "#F0FDF4", color: "#15803D" },
+    { label: "סקרים",   emoji: "📊", href: "/admin/polls", bg: "#F5F3FF", color: "#6D28D9" },
+    { label: "הגעות",   emoji: "🚪", href: "/admin/check-ins", bg: "#FFF1F2", color: "#BE123C" },
   ];
 
   return (
     <div
       style={{
         minHeight: "100dvh",
-        background: "var(--color-bg-primary)",
+        background: "#F8FAFC",
         padding: "32px 16px 40px",
-        fontFamily: "var(--font-heebo)",
+        fontFamily: "var(--font-rubik)",
         direction: "rtl",
       }}
     >
       <h1
         style={{
-          margin: "0 0 8px",
+          margin: "0 0 4px",
           fontFamily: "var(--font-rubik)",
           fontWeight: 800,
-          fontSize: 30,
-          color: "var(--color-text-primary)",
+          fontSize: 28,
+          color: "#0F172A",
         }}
       >
         פאנל ניהול
       </h1>
       <p
         style={{
-          margin: "0 0 32px",
-          fontSize: 15,
-          color: "var(--color-text-muted)",
+          margin: "0 0 28px",
+          fontSize: 14,
+          color: "#64748B",
           fontWeight: 500,
         }}
       >
@@ -43,7 +43,7 @@ export default function AdminPage() {
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: 14,
+          gap: 12,
         }}
       >
         {sections.map((s) => (
@@ -56,19 +56,19 @@ export default function AdminPage() {
               alignItems: "center",
               justifyContent: "center",
               gap: 10,
-              padding: "28px 16px",
+              padding: "24px 12px",
               background: s.bg,
-              border: "2px solid #0F0F0F",
-              borderRadius: 0,
-              boxShadow: "4px 4px 0 0 #0F0F0F",
+              border: "1px solid #E2E8F0",
+              borderRadius: 14,
+              boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
               textDecoration: "none",
-              color: "var(--color-text-primary)",
+              color: s.color,
               fontFamily: "var(--font-rubik)",
               fontWeight: 700,
-              fontSize: 17,
+              fontSize: 16,
             }}
           >
-            <span style={{ fontSize: 36 }}>{s.emoji}</span>
+            <span style={{ fontSize: 32 }}>{s.emoji}</span>
             {s.label}
           </a>
         ))}

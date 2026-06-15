@@ -50,90 +50,148 @@ export function TopBar() {
     <>
       <header
         dir="rtl"
-        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 16px",
+          background: "#fff",
+          borderBottom: "1px solid #E2E8F0",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+        }}
       >
-        {/* Right: logo + title */}
+        {/* Logo + title */}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <Image src="/logo-aguda.png" alt="לוגו" width={40} height={40} style={{ display: "block" }} />
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
+          <Image src="/logo-aguda.png" alt="לוגו" width={36} height={36} style={{ display: "block" }} />
+          <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 17, color: "#0F172A" }}>
             קלאב סטודנטיאלי
-          </p>
+          </span>
         </div>
 
-        {/* Left: profile chip */}
-        <div
+        {/* Profile chip */}
+        <button
           onClick={() => setOpen(true)}
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: 8,
-            background: "#EEC84A",
-            border: "2.5px solid #000",
+            background: "#F1F5F9",
+            border: "1px solid #E2E8F0",
             borderRadius: 99,
-            padding: "6px 14px 6px 8px",
+            padding: "6px 12px 6px 8px",
             cursor: "pointer",
           }}
         >
-          <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#fff", border: "2px solid #000", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <User size={15} strokeWidth={2} color="#111" />
+          <div
+            style={{
+              width: 26,
+              height: 26,
+              borderRadius: "50%",
+              background: "#DBEAFE",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <User size={14} strokeWidth={2} color="#1E40AF" />
           </div>
-          <span suppressHydrationWarning style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, color: "#111", whiteSpace: "nowrap" }}>
+          <span
+            suppressHydrationWarning
+            style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#0F172A", whiteSpace: "nowrap" }}
+          >
             {profile.name ?? "פרופיל"}
           </span>
-        </div>
+        </button>
       </header>
 
-      {/* Off-canvas */}
+      {/* Profile drawer */}
       {open && (
         <>
-          <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 100 }} />
+          <div
+            onClick={() => setOpen(false)}
+            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 100 }}
+          />
           <div
             style={{
               position: "fixed",
               bottom: 0, left: 0, right: 0,
               zIndex: 101,
               background: "#fff",
-              borderRadius: "20px 20px 0 0",
-              border: "3px solid #000",
+              borderRadius: "16px 16px 0 0",
+              border: "1px solid #E2E8F0",
               borderBottom: "none",
-              boxShadow: "0 -5px 0 #000",
               direction: "rtl",
               padding: "24px 20px 48px",
             }}
           >
             <button
               onClick={() => setOpen(false)}
-              style={{ position: "absolute", top: 14, left: 16, width: 34, height: 34, background: "#fff", border: "2.5px solid #000", borderRadius: "50%", boxShadow: "2px 2px 0 #000", fontSize: 16, cursor: "pointer", fontWeight: 900 }}
+              style={{
+                position: "absolute", top: 14, left: 16,
+                width: 32, height: 32,
+                background: "#F1F5F9",
+                border: "none",
+                borderRadius: "50%",
+                fontSize: 14,
+                cursor: "pointer",
+                color: "#64748B",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
             >
               ✕
             </button>
 
-            {/* Header */}
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
-              <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#EEC84A", border: "3px solid #000", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <User size={26} strokeWidth={2} color="#111" />
+            {/* Profile header */}
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
+              <div
+                style={{
+                  width: 52,
+                  height: 52,
+                  borderRadius: "50%",
+                  background: "#DBEAFE",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <User size={24} strokeWidth={1.8} color="#1E40AF" />
               </div>
               <div>
-                <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
+                <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#0F172A" }}>
                   {profile.name ?? "משתמש"}
                 </p>
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, color: "#888" }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 13, color: "#64748B" }}>
                   {profile.email ?? ""}
                 </p>
               </div>
             </div>
 
             {/* Details */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
               {[
                 { label: "טלפון", value: profile.phone },
                 { label: "מוסד לימוד", value: profile.institution },
                 { label: "שנתון", value: profile.study_year },
                 { label: "אזור", value: profile.region },
               ].filter(r => r.value).map(({ label, value }) => (
-                <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "#f5f5f5", borderRadius: 10, border: "2px solid #e0e0e0" }}>
-                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, color: "#555" }}>{label}</span>
-                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#111" }}>{value}</span>
+                <div
+                  key={label}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "10px 14px",
+                    background: "#F8FAFC",
+                    borderRadius: 8,
+                    border: "1px solid #F1F5F9",
+                  }}
+                >
+                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 13, color: "#64748B" }}>{label}</span>
+                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#0F172A" }}>{value}</span>
                 </div>
               ))}
             </div>
@@ -143,15 +201,14 @@ export function TopBar() {
               onClick={handleLogout}
               style={{
                 width: "100%",
-                padding: "14px 0",
+                padding: "13px 0",
                 background: "#fff",
-                color: "#111",
-                border: "3px solid #000",
-                borderRadius: 12,
-                boxShadow: "4px 4px 0 #000",
+                color: "#DC2626",
+                border: "1px solid #FECACA",
+                borderRadius: 10,
                 fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 16,
+                fontWeight: 700,
+                fontSize: 15,
                 cursor: "pointer",
               }}
             >

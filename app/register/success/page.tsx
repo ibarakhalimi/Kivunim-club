@@ -1,17 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const BG = "#e7e3da";
-const DOTS = "radial-gradient(circle, rgba(0,0,0,0.1) 1.2px, transparent 1.2px)";
-
 export default function RegisterSuccessPage() {
   return (
     <div
       style={{
         height: "100dvh",
-        background: BG,
-        backgroundImage: DOTS,
-        backgroundSize: "18px 18px",
+        background: "#F8FAFC",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -19,56 +14,124 @@ export default function RegisterSuccessPage() {
       }}
     >
       {/* Header */}
-      <div style={{ padding: "48px 24px 0", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
-        <Image src="/logo-aguda.png" alt="לוגו האגודה" width={110} height={110} style={{ display: "block" }} />
-        <span style={{
-          background: "#A8D464",
-          border: "2.5px solid #000",
-          borderRadius: 99,
-          padding: "4px 16px",
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 800,
-          fontSize: 14,
-          color: "#111",
-        }}>
-          ברוך הבא לקלאב 🎉
+      <div
+        style={{
+          padding: "48px 24px 0",
+          flexShrink: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
+        <Image src="/logo-aguda.png" alt="לוגו האגודה" width={80} height={80} style={{ display: "block" }} />
+        <span
+          style={{
+            display: "inline-block",
+            background: "#DCFCE7",
+            borderRadius: 20,
+            padding: "3px 14px",
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 600,
+            fontSize: 13,
+            color: "#16A34A",
+          }}
+        >
+          ברוך הבא למועדון
         </span>
-        <h1 style={{
-          margin: 0,
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 900,
-          fontSize: 36,
-          lineHeight: 1.1,
-          letterSpacing: "-0.02em",
-          color: "#111",
-          textAlign: "center",
-        }}>
+        <h1
+          style={{
+            margin: 0,
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 800,
+            fontSize: 28,
+            lineHeight: 1.2,
+            color: "#0F172A",
+            textAlign: "center",
+          }}
+        >
           הקלאב הסטודנטיאלי
         </h1>
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 24px", textAlign: "center" }}>
-        <div style={{ fontSize: 64, marginBottom: 20 }}>🎉</div>
-        <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 20, color: "#555" }}>
-          ההרשמה התקבלה
-        </p>
-        <h2 style={{ margin: 0, fontFamily: "'Comic Sans MS', cursive, var(--font-rubik)", fontWeight: 900, fontSize: 42, lineHeight: 1.1, color: "#111" }}>
-          וולקאם טו דה קלאב
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 24px",
+          textAlign: "center",
+          gap: 12,
+        }}
+      >
+        <div
+          style={{
+            width: 72,
+            height: 72,
+            borderRadius: "50%",
+            background: "#DCFCE7",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 36,
+            marginBottom: 8,
+          }}
+        >
+          🎉
+        </div>
+        <h2
+          style={{
+            margin: 0,
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 800,
+            fontSize: 26,
+            color: "#0F172A",
+          }}
+        >
+          ההרשמה התקבלה!
         </h2>
+        <p
+          style={{
+            margin: 0,
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 400,
+            fontSize: 16,
+            color: "#475569",
+            lineHeight: 1.6,
+            maxWidth: 300,
+          }}
+        >
+          ברוך הבא למועדון הסטודנטים. בדוק את תיבת האימייל שלך לאישור הרשמה.
+        </p>
       </div>
 
-      {/* Sticky bottom */}
-      <div style={{ flexShrink: 0, padding: "16px 24px 44px", background: `linear-gradient(to top, ${BG} 60%, transparent 100%)` }}>
+      {/* CTA */}
+      <div
+        style={{
+          flexShrink: 0,
+          padding: "16px 24px 48px",
+        }}
+      >
         <div style={{ maxWidth: 480, margin: "0 auto" }}>
           <Link href="/" style={{ textDecoration: "none" }}>
-            <div style={{
-              width: "100%", padding: "16px 0",
-              background: "#5250DB", color: "#fff",
-              border: "3px solid #000", borderRadius: "var(--radius-md)", boxShadow: "4px 4px 0 #000",
-              fontFamily: "'Comic Sans MS', cursive, sans-serif",
-              fontWeight: 800, fontSize: 18, textAlign: "center", cursor: "pointer",
-            }}>
+            <div
+              style={{
+                width: "100%",
+                padding: "15px 0",
+                background: "#1E40AF",
+                color: "#fff",
+                border: "none",
+                borderRadius: 10,
+                fontFamily: "var(--font-rubik)",
+                fontWeight: 700,
+                fontSize: 17,
+                textAlign: "center",
+                cursor: "pointer",
+              }}
+            >
               כניסה למועדון
             </div>
           </Link>

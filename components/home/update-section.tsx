@@ -8,7 +8,5 @@ export async function UpdateSection() {
     .select("*")
     .order("published_at", { ascending: false });
 
-  if (!updates || updates.length === 0) return null;
-
-  return <UpdateList updates={updates} />;
+  return <UpdateList updates={updates ?? []} />;
 }

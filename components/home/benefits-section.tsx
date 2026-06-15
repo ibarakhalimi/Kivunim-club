@@ -6,40 +6,52 @@ import type { Tables } from "@/src/types/database";
 type Benefit = Tables<"benefits">;
 
 const CATEGORY_EMOJI: Record<string, string> = {
-  "אוכל": "🍕",
-  "קפה": "☕",
-  "ספורט": "⚽",
-  "בריאות": "💊",
-  "יופי": "💅",
-  "בידור": "🎬",
-  "קניות": "🛍️",
-  "טכנולוגיה": "💻",
-  "תחבורה": "🚗",
-  "חינוך": "📚",
+  "אוכל": "🍕", "קפה": "☕", "ספורט": "⚽", "בריאות": "💊",
+  "יופי": "💅", "בידור": "🎬", "קניות": "🛍️", "טכנולוגיה": "💻",
+  "תחבורה": "🚗", "חינוך": "📚",
 };
 
-const CATEGORY_COLORS = ["#B8A7E8", "#EEC84A", "#A8D464", "#F4A07A", "#7DC8E8", "#F4C2D4"];
-
-function categoryColor(category: string): string {
-  let hash = 0;
-  for (let i = 0; i < category.length; i++) hash = category.charCodeAt(i) + ((hash << 5) - hash);
-  return CATEGORY_COLORS[Math.abs(hash) % CATEGORY_COLORS.length];
-}
+const CATEGORY_BG: Record<string, string> = {
+  "אוכל": "#FFF1F2", "קפה": "#FFFBEB", "ספורט": "#F0FDF4",
+  "בריאות": "#EFF6FF", "יופי": "#FDF4FF", "בידור": "#F5F3FF",
+  "קניות": "#FFF7ED", "טכנולוגיה": "#ECFDF5", "תחבורה": "#F0F9FF",
+  "חינוך": "#FEFCE8",
+};
 
 function categoryEmoji(category: string): string {
   return CATEGORY_EMOJI[category] ?? "🎁";
 }
 
-const GRADIENTS = [
-  "linear-gradient(135deg, #B8A7E8, #7DC8E8)",
-  "linear-gradient(135deg, #EEC84A, #F4A07A)",
-  "linear-gradient(135deg, #A8D464, #7DC8E8)",
-  "linear-gradient(135deg, #F4A07A, #F4C2D4)",
-  "linear-gradient(135deg, #7DC8E8, #B8A7E8)",
-  "linear-gradient(135deg, #EEC84A, #A8D464)",
-];
+function categoryBg(category: string): string {
+  return CATEGORY_BG[category] ?? "#F8FAFC";
+}
 
 const VISIBLE_COUNT = 5;
+
+const drawerStyle: React.CSSProperties = {
+  position: "fixed",
+  bottom: 0, left: 0, right: 0,
+  zIndex: 51,
+  background: "#fff",
+  borderRadius: "16px 16px 0 0",
+  border: "1px solid #E2E8F0",
+  borderBottom: "none",
+  direction: "rtl",
+  maxHeight: "80dvh",
+  overflowY: "auto",
+};
+
+const closeBtn: React.CSSProperties = {
+  position: "absolute", top: 14, left: 16,
+  width: 32, height: 32,
+  background: "#F1F5F9",
+  border: "none",
+  borderRadius: "50%",
+  fontSize: 14,
+  cursor: "pointer",
+  color: "#64748B",
+  display: "flex", alignItems: "center", justifyContent: "center",
+};
 
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [selected, setSelected] = useState<Benefit | null>(null);
@@ -53,36 +65,28 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   return (
     <>
       <section>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
-            הטבות ומבצעים
-          </h2>
-          {extraCount > 0 && (
+        {extraCount > 0 && (
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
             <button
               onClick={() => setAllOpen(true)}
               style={{
-                background: "#F4C2D4",
-                border: "2px solid #000",
+                background: "#F0FDF4",
+                border: "1px solid #BBF7D0",
                 borderRadius: 99,
                 padding: "3px 12px",
                 fontSize: 13,
-                fontWeight: 700,
-                color: "#111",
+                fontWeight: 600,
+                color: "#15803D",
                 fontFamily: "var(--font-rubik)",
                 cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
               }}
             >
-              + {extraCount} הטבות נוספות
+              + {extraCount} נוספות
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* List */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, padding: "4px 6px 6px 0" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {visible.map((b) => (
             <div
               key={b.id}
@@ -91,46 +95,46 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                border: "3px solid #000",
-                borderRadius: 20,
-                boxShadow: "5px 5px 0px #000",
+                border: "1px solid #E2E8F0",
+                borderRadius: 12,
+                boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
                 background: "#fff",
                 overflow: "hidden",
                 cursor: "pointer",
-                minHeight: 90,
+                minHeight: 76,
                 padding: 10,
-                gap: 14,
+                gap: 12,
               }}
             >
-              {/* Category square — right side (RTL start) */}
+              {/* Category icon */}
               <div
                 style={{
                   flexShrink: 0,
-                  width: 70,
-                  height: 70,
-                  borderRadius: 20,
-                  background: categoryColor(b.category ?? ""),
-                  border: "2px solid #000",
+                  width: 56,
+                  height: 56,
+                  borderRadius: 10,
+                  background: categoryBg(b.category ?? ""),
+                  border: "1px solid #E2E8F0",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: 30,
+                  fontSize: 26,
                 }}
               >
                 {categoryEmoji(b.category ?? "")}
               </div>
 
               {/* Content */}
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, minWidth: 0 }}>
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.2, color: "#111" }}>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 3, minWidth: 0 }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, lineHeight: 1.2, color: "#0F172A" }}>
                   {b.business}
                 </p>
                 {b.business_description && (
-                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 12, color: "#888", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 12, color: "#94A3B8", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
                     {b.business_description}
                   </p>
                 )}
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, color: "#111" }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, color: "#1E40AF" }}>
                   {b.deal}
                 </p>
               </div>
@@ -142,73 +146,52 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
       {/* Detail drawer */}
       {selected && (
         <>
-          <div onClick={() => setSelected(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50 }} />
-          <div
-            style={{
-              position: "fixed",
-              bottom: 0, left: 0, right: 0,
-              zIndex: 51,
-              background: "#fff",
-              borderRadius: "20px 20px 0 0",
-              border: "3px solid #000",
-              borderBottom: "none",
-              boxShadow: "0 -5px 0 #000",
-              direction: "rtl",
-              maxHeight: "75dvh",
-              overflowY: "auto",
-            }}
-          >
-            <button
-              onClick={() => setSelected(null)}
-              style={{
-                position: "absolute", top: 14, left: 16,
-                width: 34, height: 34,
-                background: "#fff",
-                border: "2.5px solid #000",
-                borderRadius: "50%",
-                boxShadow: "2px 2px 0 #000",
-                fontSize: 16,
-                cursor: "pointer",
-                fontWeight: 900,
-              }}
-            >
-              ✕
-            </button>
+          <div onClick={() => setSelected(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div style={{ ...drawerStyle }}>
+            <button onClick={() => setSelected(null)} style={closeBtn}>✕</button>
 
             <div style={{ padding: "24px 20px 40px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-                {selected.image_url && (
-                  <div style={{ width: 64, height: 64, borderRadius: 12, border: "3px solid #000", overflow: "hidden", flexShrink: 0 }}>
+                {selected.image_url ? (
+                  <div style={{ width: 60, height: 60, borderRadius: 10, border: "1px solid #E2E8F0", overflow: "hidden", flexShrink: 0 }}>
                     <img src={selected.image_url} alt={selected.business} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  </div>
+                ) : (
+                  <div style={{ width: 60, height: 60, borderRadius: 10, background: categoryBg(selected.category ?? ""), border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, flexShrink: 0 }}>
+                    {categoryEmoji(selected.category ?? "")}
                   </div>
                 )}
                 <div>
-                  <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, color: "#111" }}>
+                  <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 20, color: "#0F172A" }}>
                     {selected.business}
                   </p>
                   {selected.category && (
-                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 13, color: "#888" }}>
+                    <span style={{ display: "inline-block", background: "#F1F5F9", borderRadius: 99, padding: "2px 10px", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#64748B" }}>
                       {selected.category}
-                    </p>
+                    </span>
                   )}
                 </div>
               </div>
 
               {selected.business_description && (
-                <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontSize: 14, lineHeight: 1.6, color: "#555" }}>
+                <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontSize: 14, lineHeight: 1.6, color: "#475569" }}>
                   {selected.business_description}
                 </p>
               )}
               {selected.location && (
-                <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontSize: 13, fontWeight: 600, color: "#555" }}>
+                <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontSize: 13, fontWeight: 600, color: "#64748B" }}>
                   📍 {selected.location}
                 </p>
               )}
-              <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 26, color: "#111" }}>
-                {selected.deal}
-              </p>
+
+              <div style={{ background: "#EFF6FF", borderRadius: 10, padding: "12px 14px", marginBottom: 16, border: "1px solid #BFDBFE" }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 20, color: "#1E40AF" }}>
+                  {selected.deal}
+                </p>
+              </div>
+
               {selected.description && (
-                <p style={{ margin: "0 0 24px", fontFamily: "var(--font-rubik)", fontSize: 15, lineHeight: 1.7, color: "#333" }}>
+                <p style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontSize: 15, lineHeight: 1.7, color: "#334155" }}>
                   {selected.description}
                 </p>
               )}
@@ -216,15 +199,14 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
               <button
                 style={{
                   width: "100%",
-                  padding: "15px 0",
-                  background: "#111",
+                  padding: "14px 0",
+                  background: "#1E40AF",
                   color: "#fff",
-                  border: "3px solid #000",
-                  borderRadius: 12,
-                  boxShadow: "4px 4px 0 #000",
+                  border: "none",
+                  borderRadius: 10,
                   fontFamily: "var(--font-rubik)",
-                  fontWeight: 900,
-                  fontSize: 17,
+                  fontWeight: 700,
+                  fontSize: 16,
                   cursor: "pointer",
                 }}
               >
@@ -235,103 +217,41 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
         </>
       )}
 
-      {/* All benefits off-canvas */}
+      {/* All benefits drawer */}
       {allOpen && (
         <>
-          <div onClick={() => setAllOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50 }} />
-          <div
-            style={{
-              position: "fixed",
-              bottom: 0, left: 0, right: 0,
-              zIndex: 51,
-              background: "#fff",
-              borderRadius: "20px 20px 0 0",
-              border: "3px solid #000",
-              borderBottom: "none",
-              boxShadow: "0 -5px 0 #000",
-              direction: "rtl",
-              maxHeight: "85dvh",
-              overflowY: "auto",
-              padding: "24px 20px 48px",
-            }}
-          >
-            <button
-              onClick={() => setAllOpen(false)}
-              style={{
-                position: "absolute", top: 14, left: 16,
-                width: 34, height: 34,
-                background: "#fff",
-                border: "2.5px solid #000",
-                borderRadius: "50%",
-                boxShadow: "2px 2px 0 #000",
-                fontSize: 16,
-                cursor: "pointer",
-                fontWeight: 900,
-              }}
-            >
-              ✕
-            </button>
+          <div onClick={() => setAllOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div style={{ ...drawerStyle, padding: "24px 20px 48px" }}>
+            <button onClick={() => setAllOpen(false)} style={closeBtn}>✕</button>
 
-            <p style={{ margin: "0 0 18px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
+            <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#0F172A" }}>
               כל ההטבות
             </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 14, padding: "4px 6px 6px 0" }}>
-              {benefits.map((b, i) => (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {benefits.map((b) => (
                 <div
                   key={b.id}
                   onClick={() => { setAllOpen(false); setSelected(b); }}
                   style={{
-                    border: "3px solid #000",
-                    borderRadius: 16,
-                    boxShadow: "5px 5px 0 #000",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    border: "1px solid #E2E8F0",
+                    borderRadius: 12,
                     background: "#fff",
-                    overflow: "hidden",
+                    padding: 10,
                     cursor: "pointer",
                   }}
                 >
-                  {/* Image / gradient top */}
-                  <div
-                    style={{
-                      width: "100%",
-                      height: 140,
-                      position: "relative",
-                      background: b.image_url ? undefined : GRADIENTS[i % GRADIENTS.length],
-                      borderBottom: "3px solid #000",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {b.image_url && (
-                      <img src={b.image_url} alt={b.business} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    )}
-                    {/* Category chip */}
-                    {b.category && (
-                      <span
-                        style={{
-                          position: "absolute",
-                          bottom: 10,
-                          right: 10,
-                          background: "#fff",
-                          border: "2px solid #000",
-                          borderRadius: 99,
-                          padding: "3px 10px",
-                          fontFamily: "var(--font-rubik)",
-                          fontWeight: 700,
-                          fontSize: 12,
-                          color: "#111",
-                        }}
-                      >
-                        {b.category}
-                      </span>
-                    )}
+                  <div style={{ width: 44, height: 44, borderRadius: 8, background: categoryBg(b.category ?? ""), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
+                    {categoryEmoji(b.category ?? "")}
                   </div>
-
-                  {/* Text */}
-                  <div style={{ padding: "12px 16px 14px", display: "flex", flexDirection: "column", gap: 4 }}>
-                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.2, color: "#111" }}>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, color: "#0F172A" }}>
                       {b.business}
                     </p>
-                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, color: "#111" }}>
+                    <p style={{ margin: "2px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 13, color: "#1E40AF" }}>
                       {b.deal}
                     </p>
                   </div>

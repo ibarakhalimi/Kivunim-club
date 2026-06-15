@@ -6,9 +6,8 @@ import { EventsLoader } from "@/components/home/events-loader";
 import { ActionsGrid } from "@/components/home/actions-grid";
 import { TopBar } from "@/components/home/top-bar";
 import { PollLoader } from "@/components/home/poll-loader";
-
-const BG = "#e7e3da";
-const DOTS = "radial-gradient(circle, rgba(0,0,0,0.1) 1.2px, transparent 1.2px)";
+import { ProfileCard } from "@/components/home/profile-card";
+import { OpenHoursSection } from "@/components/home/open-hours-section";
 
 export default function HomePage() {
   return (
@@ -16,15 +15,15 @@ export default function HomePage() {
       dir="rtl"
       style={{
         minHeight: "100dvh",
-        background: BG,
-        backgroundImage: DOTS,
-        backgroundSize: "18px 18px",
-        paddingBottom: 40,
+        background: "#F8FAFC",
+        paddingBottom: 88,
       }}
     >
       <TopBar />
-      <div style={{ display: "flex", flexDirection: "column", gap: 36, padding: "0 20px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 28, padding: "8px 16px 0" }}>
+        <ProfileCard />
         <UpdateSection />
+        <OpenHoursSection />
         <ActionsGrid />
         <EventsLoader />
         <BenefitsLoader />

@@ -20,92 +20,24 @@ export function AddUpdateForm() {
   }
 
   return (
-    <div
-      style={{
-        background: "#fff",
-        border: "2px solid #0F0F0F",
-        borderRadius: 0,
-        boxShadow: "4px 4px 0 0 #0F0F0F",
-        padding: "20px 18px",
-      }}
-    >
-      <h2
-        style={{
-          margin: "0 0 18px",
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 800,
-          fontSize: 20,
-          color: "var(--color-text-primary)",
-        }}
-      >
-        + הוסף עדכון חדש
-      </h2>
+    <div style={cardStyle}>
+      <h2 style={headingStyle}>הוספת עדכון חדש</h2>
 
       <form ref={formRef} action={formAction} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        {/* Title */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          <label style={labelStyle}>כותרת *</label>
-          <input
-            name="title"
-            required
-            placeholder="כותרת העדכון..."
-            style={inputStyle}
-          />
-        </div>
+        <Field label="כותרת *">
+          <input name="title" required placeholder="כותרת העדכון..." style={inputStyle} />
+        </Field>
+        <Field label="תוכן *">
+          <textarea name="description" required rows={4} placeholder="תוכן העדכון..." style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }} />
+        </Field>
+        <Field label="מאת">
+          <input name="author" placeholder="צוות כיוונים" style={inputStyle} />
+        </Field>
 
-        {/* Description */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          <label style={labelStyle}>תוכן *</label>
-          <textarea
-            name="description"
-            required
-            rows={4}
-            placeholder="תוכן העדכון..."
-            style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }}
-          />
-        </div>
+        {state.error && <p style={errorStyle}>{state.error}</p>}
+        {state.success && <p style={successStyle}>✓ העדכון נשמר בהצלחה</p>}
 
-        {/* Author */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          <label style={labelStyle}>מאת</label>
-          <input
-            name="author"
-            placeholder="צוות כיוונים"
-            style={inputStyle}
-          />
-        </div>
-
-        {/* Feedback */}
-        {state.error && (
-          <p style={{ margin: 0, fontSize: 14, color: "#e53e3e", fontWeight: 600 }}>
-            {state.error}
-          </p>
-        )}
-        {state.success && (
-          <p style={{ margin: 0, fontSize: 14, color: "#276749", fontWeight: 600 }}>
-            ✓ העדכון נשמר בהצלחה
-          </p>
-        )}
-
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={pending}
-          style={{
-            marginTop: 4,
-            padding: "12px 24px",
-            background: pending ? "#ccc" : "#0F0F0F",
-            color: "#fff",
-            border: "2px solid #0F0F0F",
-            borderRadius: 0,
-            boxShadow: pending ? "none" : "3px 3px 0 0 #555",
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 700,
-            fontSize: 16,
-            cursor: pending ? "not-allowed" : "pointer",
-            transition: "box-shadow 0.1s",
-          }}
-        >
+        <button type="submit" disabled={pending} style={submitStyle(pending)}>
           {pending ? "שומר..." : "פרסם עדכון"}
         </button>
       </form>
@@ -113,23 +45,59 @@ export function AddUpdateForm() {
   );
 }
 
-const labelStyle: React.CSSProperties = {
-  fontSize: 14,
-  fontWeight: 600,
-  color: "var(--color-text-primary)",
-  fontFamily: "var(--font-heebo)",
-};
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+      <label style={labelStyle}>{label}</label>
+      {children}
+    </div>
+  );
+}
 
-const inputStyle: React.CSSProperties = {
+export const cardStyle: React.CSSProperties = {
+  background: "#fff",
+  border: "1px solid #E2E8F0",
+  borderRadius: 12,
+  boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+  padding: "20px 18px",
+};
+export const headingStyle: React.CSSProperties = {
+  margin: "0 0 16px",
+  fontFamily: "var(--font-rubik)",
+  fontWeight: 700,
+  fontSize: 18,
+  color: "#0F172A",
+};
+export const labelStyle: React.CSSProperties = {
+  fontSize: 13,
+  fontWeight: 600,
+  color: "#475569",
+  fontFamily: "var(--font-rubik)",
+};
+export const inputStyle: React.CSSProperties = {
   padding: "10px 12px",
-  fontSize: 15,
-  fontFamily: "var(--font-heebo)",
-  border: "2px solid #0F0F0F",
-  borderRadius: 0,
-  background: "#FAFAFA",
-  color: "var(--color-text-primary)",
+  fontSize: 14,
+  fontFamily: "var(--font-rubik)",
+  border: "1px solid #CBD5E1",
+  borderRadius: 8,
+  background: "#fff",
+  color: "#0F172A",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
   direction: "rtl",
 };
+const errorStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 };
+const successStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#16A34A", fontWeight: 600 };
+const submitStyle = (pending: boolean): React.CSSProperties => ({
+  marginTop: 4,
+  padding: "11px 24px",
+  background: pending ? "#94A3B8" : "#1E40AF",
+  color: "#fff",
+  border: "none",
+  borderRadius: 8,
+  fontFamily: "var(--font-rubik)",
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: pending ? "not-allowed" : "pointer",
+});

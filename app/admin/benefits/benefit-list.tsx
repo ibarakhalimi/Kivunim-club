@@ -20,7 +20,7 @@ function EditForm({ benefit, onDone }: { benefit: Benefit; onDone: () => void })
 
   return (
     <form action={formAction} encType="multipart/form-data"
-      style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "2px solid #E0E0E0" }}>
+      style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid #E2E8F0" }}>
       <input type="hidden" name="existing_image_url" value={benefit.image_url ?? ""} />
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -61,14 +61,14 @@ function EditForm({ benefit, onDone }: { benefit: Benefit; onDone: () => void })
         <ImagePicker name="image" preview={preview} onPreview={setPreview} currentUrl={benefit.image_url} />
       </div>
       <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-        <input name="is_active" type="checkbox" defaultChecked={benefit.is_active} style={{ width: 18, height: 18 }} />
+        <input name="is_active" type="checkbox" defaultChecked={benefit.is_active} style={{ width: 16, height: 16, accentColor: "#1E40AF" }} />
         <span style={labelStyle}>פעיל</span>
       </label>
 
-      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#e53e3e", fontWeight: 600 }}>{state.error}</p>}
+      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 }}>{state.error}</p>}
 
       <div style={{ display: "flex", gap: 10 }}>
-        <button type="submit" disabled={pending} style={btnDark(pending)}>{pending ? "שומר..." : "שמור"}</button>
+        <button type="submit" disabled={pending} style={btnPrimary(pending)}>{pending ? "שומר..." : "שמור"}</button>
         <button type="button" onClick={onDone} style={btnGhost}>ביטול</button>
       </div>
     </form>
@@ -93,47 +93,45 @@ function BenefitRow({ benefit }: { benefit: Benefit }) {
   }
 
   return (
-    <div style={{ background: "#fff", border: "2px solid #0F0F0F", borderRadius: 0, boxShadow: "4px 4px 0 0 #0F0F0F", padding: "14px 16px" }}>
+    <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.05)", padding: "14px 16px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-        {/* Color swatch + thumbnail + info */}
         <div style={{ display: "flex", gap: 12, flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", gap: 8, flexShrink: 0, alignItems: "center" }}>
+          <div style={{ flexShrink: 0 }}>
             {benefit.image_url ? (
               <img src={benefit.image_url} alt={benefit.business}
-                style={{ width: 48, height: 48, objectFit: "cover", border: "2px solid #0F0F0F", flexShrink: 0 }} />
+                style={{ width: 46, height: 46, objectFit: "cover", borderRadius: 8, border: "1px solid #E2E8F0" }} />
             ) : (
-              <div style={{ width: 48, height: 48, background: "#E8E8E8", border: "2px solid #0F0F0F", flexShrink: 0 }} />
+              <div style={{ width: 46, height: 46, background: "#F1F5F9", borderRadius: 8, border: "1px solid #E2E8F0" }} />
             )}
           </div>
           <div style={{ minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3, flexWrap: "wrap" }}>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 15, color: "var(--color-text-primary)" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, color: "#0F172A" }}>
                 {benefit.business}
               </p>
-              <span style={{ fontSize: 10, fontWeight: 700, background: "rgba(0,0,0,0.08)", border: "1.5px solid rgba(0,0,0,0.15)", padding: "1px 6px", letterSpacing: "0.04em" }}>
+              <span style={{ fontSize: 11, fontWeight: 600, background: "#F1F5F9", color: "#475569", border: "1px solid #E2E8F0", padding: "2px 7px", borderRadius: 99 }}>
                 {benefit.category}
               </span>
               {!benefit.is_active && (
-                <span style={{ fontSize: 10, fontWeight: 700, background: "#FED7D7", color: "#c53030", border: "1.5px solid #c53030", padding: "1px 6px" }}>
+                <span style={{ fontSize: 11, fontWeight: 600, background: "#FEE2E2", color: "#DC2626", border: "1px solid #FECACA", padding: "2px 7px", borderRadius: 99 }}>
                   לא פעיל
                 </span>
               )}
             </div>
-            <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "var(--color-text-primary)", fontFamily: "var(--font-rubik)" }}>
+            <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#1E40AF", fontFamily: "var(--font-rubik)" }}>
               {benefit.deal}
             </p>
           </div>
         </div>
 
-        {/* Actions */}
-        <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+        <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
           <button onClick={handleToggle} disabled={toggling}
             title={benefit.is_active ? "השבת" : "הפעל"}
-            style={{ ...iconBtn, background: benefit.is_active ? "#0F0F0F" : "#fff", color: benefit.is_active ? "#fff" : "#0F0F0F" }}>
+            style={{ ...iconBtn, background: benefit.is_active ? "#DCFCE7" : "#F1F5F9", color: benefit.is_active ? "#16A34A" : "#94A3B8" }}>
             {benefit.is_active ? "●" : "○"}
           </button>
           <button onClick={() => setEditing((v) => !v)} style={iconBtn} title="עריכה">✏️</button>
-          <button onClick={handleDelete} disabled={deleting} style={{ ...iconBtn, color: "#c53030" }} title="מחיקה">
+          <button onClick={handleDelete} disabled={deleting} style={{ ...iconBtn, color: "#DC2626" }} title="מחיקה">
             {deleting ? "…" : "🗑"}
           </button>
         </div>
@@ -146,15 +144,27 @@ function BenefitRow({ benefit }: { benefit: Benefit }) {
 
 export function BenefitList({ benefits }: { benefits: Benefit[] }) {
   if (benefits.length === 0) {
-    return <p style={{ color: "var(--color-text-muted)", fontSize: 14, fontFamily: "var(--font-heebo)" }}>אין הטבות עדיין.</p>;
+    return <p style={{ color: "#64748B", fontSize: 14, fontFamily: "var(--font-rubik)" }}>אין הטבות עדיין.</p>;
   }
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       {benefits.map((b) => <BenefitRow key={b.id} benefit={b} />)}
     </div>
   );
 }
 
-const iconBtn: React.CSSProperties = { width: 34, height: 34, border: "2px solid #0F0F0F", borderRadius: 0, background: "#fff", cursor: "pointer", fontSize: 15, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-heebo)", fontWeight: 700, flexShrink: 0 };
-const btnDark = (p: boolean): React.CSSProperties => ({ padding: "9px 20px", background: p ? "#ccc" : "#0F0F0F", color: "#fff", border: "2px solid #0F0F0F", borderRadius: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, cursor: p ? "not-allowed" : "pointer" });
-const btnGhost: React.CSSProperties = { padding: "9px 20px", background: "#fff", color: "#0F0F0F", border: "2px solid #0F0F0F", borderRadius: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, cursor: "pointer" };
+const iconBtn: React.CSSProperties = {
+  width: 32, height: 32, border: "1px solid #E2E8F0", borderRadius: 8,
+  background: "#F8FAFC", cursor: "pointer", fontSize: 14, display: "flex",
+  alignItems: "center", justifyContent: "center", flexShrink: 0,
+};
+const btnPrimary = (p: boolean): React.CSSProperties => ({
+  padding: "9px 20px", background: p ? "#94A3B8" : "#1E40AF", color: "#fff",
+  border: "none", borderRadius: 8, fontFamily: "var(--font-rubik)",
+  fontWeight: 700, fontSize: 14, cursor: p ? "not-allowed" : "pointer",
+});
+const btnGhost: React.CSSProperties = {
+  padding: "9px 20px", background: "#fff", color: "#475569",
+  border: "1px solid #E2E8F0", borderRadius: 8, fontFamily: "var(--font-rubik)",
+  fontWeight: 600, fontSize: 14, cursor: "pointer",
+};

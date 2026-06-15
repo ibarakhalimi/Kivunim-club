@@ -13,6 +13,31 @@ function formatDate(dateStr: string) {
   });
 }
 
+const drawerStyle: React.CSSProperties = {
+  position: "fixed",
+  bottom: 0, left: 0, right: 0,
+  zIndex: 51,
+  background: "#fff",
+  borderRadius: "16px 16px 0 0",
+  border: "1px solid #E2E8F0",
+  borderBottom: "none",
+  direction: "rtl",
+  maxHeight: "85dvh",
+  overflowY: "auto",
+};
+
+const closeBtn: React.CSSProperties = {
+  position: "absolute", top: 14, left: 16,
+  width: 32, height: 32,
+  background: "#F1F5F9",
+  border: "none",
+  borderRadius: "50%",
+  fontSize: 14,
+  cursor: "pointer",
+  color: "#64748B",
+  display: "flex", alignItems: "center", justifyContent: "center",
+};
+
 export function EventsSection({ events }: { events: Event[] }) {
   const [selected, setSelected] = useState<Event | null>(null);
   const [allOpen, setAllOpen] = useState(false);
@@ -24,147 +49,106 @@ export function EventsSection({ events }: { events: Event[] }) {
   return (
     <>
       <section>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
-            אירועים קרובים
-          </h2>
-          {events.length > 1 && (
+        {events.length > 1 && (
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
             <button
               onClick={() => setAllOpen(true)}
               style={{
-                background: "#B8A7E8",
-                border: "2px solid #000",
+                background: "#EFF6FF",
+                border: "1px solid #BFDBFE",
                 borderRadius: 99,
                 padding: "3px 12px",
                 fontSize: 13,
-                fontWeight: 700,
-                color: "#111",
+                fontWeight: 600,
+                color: "#1E40AF",
                 fontFamily: "var(--font-rubik)",
                 cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
               }}
             >
-              + {events.length - 1} אירועים נוספים
+              + {events.length - 1} נוספים
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Card — padding wrapper for shadow room */}
-        <div style={{ padding: "4px 6px 6px 0" }}>
+        {/* Featured event card */}
+        <div
+          onClick={() => setSelected(ev)}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "stretch",
+            border: "1px solid #E2E8F0",
+            borderRadius: 14,
+            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+            overflow: "hidden",
+            cursor: "pointer",
+            background: "#fff",
+            minHeight: 100,
+          }}
+        >
+          {/* Content */}
+          <div style={{ flex: 1, padding: "14px 16px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 5, minWidth: 0 }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#94A3B8" }}>
+              {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
+            </p>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 17, lineHeight: 1.25, color: "#0F172A" }}>
+              {ev.title}
+            </p>
+            {ev.location && (
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, color: "#64748B" }}>
+                📍 {ev.location}
+              </p>
+            )}
+          </div>
+
+          {/* Image */}
           <div
-            onClick={() => setSelected(ev)}
             style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "stretch",
-              border: "3px solid #000",
-              borderRadius: 16,
-              boxShadow: "5px 5px 0px #000",
+              flexShrink: 0,
+              width: 90,
+              background: "#EFF6FF",
               overflow: "hidden",
-              cursor: "pointer",
-              background: "#fff",
-              minHeight: 110,
             }}
           >
-            {/* Content — right side (RTL start) */}
-            <div style={{ flex: 1, padding: "16px 18px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 6, minWidth: 0 }}>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#888" }}>
-                {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
-              </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.25, color: "#111" }}>
-                {ev.title}
-              </p>
-              {ev.location && (
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, color: "#666" }}>
-                  📍 {ev.location}
-                </p>
-              )}
-            </div>
-
-            {/* Image — left side (RTL end) */}
-            <div
-              style={{
-                flexShrink: 0,
-                width: 100,
-                background: "#f0f0f0",
-                borderRight: "3px solid #000",
-                overflow: "hidden",
-              }}
-            >
-              {ev.image_url ? (
-                <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              ) : (
-                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32 }}>
-                  📸
-                </div>
-              )}
-            </div>
+            {ev.image_url ? (
+              <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            ) : (
+              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28 }}>
+                📸
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Modal */}
+      {/* Event detail drawer */}
       {selected && (
         <>
-          <div onClick={() => setSelected(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50 }} />
-          <div
-            style={{
-              position: "fixed",
-              bottom: 0, left: 0, right: 0,
-              zIndex: 51,
-              background: "#fff",
-              borderRadius: "20px 20px 0 0",
-              border: "3px solid #000",
-              borderBottom: "none",
-              boxShadow: "0 -5px 0 #000",
-              direction: "rtl",
-              maxHeight: "85dvh",
-              overflowY: "auto",
-            }}
-          >
-            {/* Image */}
-            <div style={{ width: "100%", height: 200, background: "#f0f0f0", borderBottom: "3px solid #000", position: "relative", flexShrink: 0 }}>
+          <div onClick={() => setSelected(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div style={drawerStyle}>
+            <div style={{ width: "100%", height: 180, background: "#EFF6FF", position: "relative", flexShrink: 0 }}>
               {selected.image_url ? (
                 <img src={selected.image_url} alt={selected.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               ) : (
-                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 64 }}>📸</div>
+                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 56 }}>📸</div>
               )}
-              <button
-                onClick={() => setSelected(null)}
-                style={{
-                  position: "absolute", top: 12, left: 12,
-                  width: 34, height: 34,
-                  background: "#fff",
-                  border: "2.5px solid #000",
-                  borderRadius: "50%",
-                  boxShadow: "2px 2px 0 #000",
-                  fontSize: 16,
-                  cursor: "pointer",
-                  fontWeight: 900,
-                }}
-              >
-                ✕
-              </button>
+              <button onClick={() => setSelected(null)} style={closeBtn}>✕</button>
             </div>
 
-            {/* Details */}
             <div style={{ padding: "20px 20px 40px" }}>
-              <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, color: "#888" }}>
+              <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, color: "#94A3B8" }}>
                 {formatDate(selected.event_date)}{selected.start_hour ? ` · ${selected.start_hour}` : ""}
               </p>
-              <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 24, lineHeight: 1.2, color: "#111" }}>
+              <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 22, lineHeight: 1.2, color: "#0F172A" }}>
                 {selected.title}
               </p>
               {selected.location && (
-                <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, color: "#555" }}>
+                <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, color: "#64748B" }}>
                   📍 {selected.location}
                 </p>
               )}
               {selected.description && (
-                <p style={{ margin: "0 0 24px", fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.75, color: "#333", whiteSpace: "pre-wrap" }}>
+                <p style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.75, color: "#334155", whiteSpace: "pre-wrap" }}>
                   {selected.description}
                 </p>
               )}
@@ -177,15 +161,14 @@ export function EventsSection({ events }: { events: Event[] }) {
                   style={{
                     display: "block",
                     width: "100%",
-                    padding: "15px 0",
-                    background: "#111",
+                    padding: "14px 0",
+                    background: "#1E40AF",
                     color: "#fff",
-                    border: "3px solid #000",
-                    borderRadius: 12,
-                    boxShadow: "4px 4px 0 #000",
+                    border: "none",
+                    borderRadius: 10,
                     fontFamily: "var(--font-rubik)",
-                    fontWeight: 900,
-                    fontSize: 17,
+                    fontWeight: 700,
+                    fontSize: 16,
                     textDecoration: "none",
                     textAlign: "center",
                     boxSizing: "border-box",
@@ -198,14 +181,14 @@ export function EventsSection({ events }: { events: Event[] }) {
                   disabled
                   style={{
                     width: "100%",
-                    padding: "15px 0",
-                    background: "#eee",
-                    color: "#aaa",
-                    border: "3px solid #ccc",
-                    borderRadius: 12,
+                    padding: "14px 0",
+                    background: "#F1F5F9",
+                    color: "#94A3B8",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: 10,
                     fontFamily: "var(--font-rubik)",
-                    fontWeight: 700,
-                    fontSize: 17,
+                    fontWeight: 600,
+                    fontSize: 16,
                     cursor: "not-allowed",
                   }}
                 >
@@ -217,117 +200,50 @@ export function EventsSection({ events }: { events: Event[] }) {
         </>
       )}
 
-      {/* All events off-canvas */}
+      {/* All events drawer */}
       {allOpen && (
         <>
-          <div onClick={() => setAllOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50 }} />
-          <div
-            style={{
-              position: "fixed",
-              bottom: 0, left: 0, right: 0,
-              zIndex: 51,
-              background: "#fff",
-              borderRadius: "20px 20px 0 0",
-              border: "3px solid #000",
-              borderBottom: "none",
-              boxShadow: "0 -5px 0 #000",
-              direction: "rtl",
-              maxHeight: "85dvh",
-              overflowY: "auto",
-              padding: "24px 20px 48px",
-            }}
-          >
-            <button
-              onClick={() => setAllOpen(false)}
-              style={{
-                position: "absolute", top: 14, left: 16,
-                width: 34, height: 34,
-                background: "#fff",
-                border: "2.5px solid #000",
-                borderRadius: "50%",
-                boxShadow: "2px 2px 0 #000",
-                fontSize: 16,
-                cursor: "pointer",
-                fontWeight: 900,
-              }}
-            >
-              ✕
-            </button>
+          <div onClick={() => setAllOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div style={{ ...drawerStyle, padding: "24px 20px 48px" }}>
+            <button onClick={() => setAllOpen(false)} style={closeBtn}>✕</button>
 
-            <p style={{ margin: "0 0 18px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#111" }}>
+            <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#0F172A" }}>
               כל האירועים
             </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 14, padding: "4px 6px 6px 0" }}>
-              {events.map((ev, i) => {
-                const GRADIENTS = [
-                  "linear-gradient(135deg, #B8A7E8, #7DC8E8)",
-                  "linear-gradient(135deg, #EEC84A, #F4A07A)",
-                  "linear-gradient(135deg, #A8D464, #7DC8E8)",
-                  "linear-gradient(135deg, #F4A07A, #F4C2D4)",
-                  "linear-gradient(135deg, #7DC8E8, #B8A7E8)",
-                ];
-                return (
-                  <div
-                    key={ev.id}
-                    onClick={() => { setAllOpen(false); setSelected(ev); }}
-                    style={{
-                      border: "3px solid #000",
-                      borderRadius: 16,
-                      boxShadow: "5px 5px 0 #000",
-                      background: "#fff",
-                      overflow: "hidden",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {/* Image / gradient top */}
-                    <div
-                      style={{
-                        width: "100%",
-                        height: 140,
-                        position: "relative",
-                        background: ev.image_url ? undefined : GRADIENTS[i % GRADIENTS.length],
-                        borderBottom: "3px solid #000",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {ev.image_url && (
-                        <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      )}
-                      {/* Date chip */}
-                      <span
-                        style={{
-                          position: "absolute",
-                          bottom: 10,
-                          right: 10,
-                          background: "#fff",
-                          border: "2px solid #000",
-                          borderRadius: 99,
-                          padding: "3px 10px",
-                          fontFamily: "var(--font-rubik)",
-                          fontWeight: 700,
-                          fontSize: 12,
-                          color: "#111",
-                        }}
-                      >
-                        {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
-                      </span>
-                    </div>
-
-                    {/* Text */}
-                    <div style={{ padding: "12px 16px 14px", display: "flex", flexDirection: "column", gap: 4 }}>
-                      <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.2, color: "#111" }}>
-                        {ev.title}
-                      </p>
-                      {ev.location && (
-                        <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#666" }}>
-                          📍 {ev.location}
-                        </p>
-                      )}
-                    </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {events.map((ev) => (
+                <div
+                  key={ev.id}
+                  onClick={() => { setAllOpen(false); setSelected(ev); }}
+                  style={{
+                    border: "1px solid #E2E8F0",
+                    borderRadius: 12,
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+                    background: "#fff",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    padding: 12,
+                  }}
+                >
+                  <div style={{ width: 52, height: 52, borderRadius: 8, background: "#EFF6FF", flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>
+                    {ev.image_url ? (
+                      <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : "📅"}
                   </div>
-                );
-              })}
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, lineHeight: 1.3, color: "#0F172A" }}>
+                      {ev.title}
+                    </p>
+                    <p style={{ margin: "3px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#94A3B8" }}>
+                      {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </>

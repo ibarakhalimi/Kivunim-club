@@ -9,18 +9,29 @@ export default async function AdminPollsPage() {
     .select("*")
     .order("created_at", { ascending: false });
 
-  // Vote counts per poll
   const { data: allVotes } = await supabase.from("poll_votes").select("poll_id, option_index");
 
   return (
-    <main dir="rtl" style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px 60px" }}>
-      <h1 style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 28, marginBottom: 28, color: "var(--color-text-primary)" }}>
-        ניהול סקרים
-      </h1>
+    <div style={{ minHeight: "100dvh", background: "#F8FAFC", padding: "24px 16px 40px", fontFamily: "var(--font-rubik)", direction: "rtl" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
+        <a href="/admin" style={{ fontSize: 13, color: "#64748B", textDecoration: "none", fontWeight: 500 }}>
+          ← פאנל ניהול
+        </a>
+        <h1 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 24, color: "#0F172A" }}>
+          סקרים
+        </h1>
+      </div>
+
       <PollForm />
-      <div style={{ marginTop: 32 }}>
+
+      <div style={{ marginTop: 28 }}>
+        {polls && polls.length > 0 && (
+          <h2 style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 16, color: "#0F172A" }}>
+            סקרים קיימים
+          </h2>
+        )}
         <PollList polls={polls ?? []} allVotes={allVotes ?? []} />
       </div>
-    </main>
+    </div>
   );
 }

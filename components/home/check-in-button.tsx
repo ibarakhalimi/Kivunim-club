@@ -27,28 +27,28 @@ export function CheckInButton() {
       <button
         onClick={() => setOpen(true)}
         style={{
-          background: "#F4C2D4",
-          border: "3px solid #000",
-          borderRadius: 20,
-          boxShadow: "4px 4px 0px #000",
-          padding: "16px 8px",
+          background: "#EFF6FF",
+          border: "1px solid #BFDBFE",
+          borderRadius: 12,
+          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+          padding: "14px 8px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 8,
+          gap: 7,
           cursor: "pointer",
           width: "100%",
           aspectRatio: "1 / 1",
         }}
       >
-        <span style={{ fontSize: 26 }}>📅</span>
+        <span style={{ fontSize: 24 }}>📅</span>
         <span
           style={{
             fontFamily: "var(--font-rubik)",
-            fontWeight: 700,
-            fontSize: 13,
-            color: "#111",
+            fontWeight: 600,
+            fontSize: 12,
+            color: "#1E40AF",
             lineHeight: 1.2,
             textAlign: "center",
           }}
@@ -60,7 +60,7 @@ export function CheckInButton() {
       {open && (
         <div
           onClick={() => setOpen(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 50 }}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }}
         />
       )}
 
@@ -72,7 +72,7 @@ export function CheckInButton() {
             zIndex: 51,
             background: "#fff",
             borderRadius: "16px 16px 0 0",
-            border: "1.5px solid #ccc",
+            border: "1px solid #E2E8F0",
             borderBottom: "none",
             direction: "rtl",
             padding: "28px 24px 48px",
@@ -83,21 +83,23 @@ export function CheckInButton() {
             style={{
               position: "absolute", top: 16, left: 16,
               width: 32, height: 32,
-              background: "none",
+              background: "#F1F5F9",
               border: "none",
-              fontSize: 18,
+              borderRadius: "50%",
+              fontSize: 15,
               cursor: "pointer",
-              color: "#888",
+              color: "#64748B",
+              display: "flex", alignItems: "center", justifyContent: "center",
             }}
           >
             ✕
           </button>
 
-          <div style={{ marginBottom: 24 }}>
-            <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 22, color: "#111" }}>
+          <div style={{ marginBottom: 20 }}>
+            <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 20, color: "#0F172A" }}>
               אישור הגעה בכיוונים
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.6, color: "#666" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.6, color: "#64748B" }}>
               כדי להשתמש בסביבת הלימודים בצורה חופשית יש לציין שהגעת
             </p>
           </div>
@@ -108,13 +110,13 @@ export function CheckInButton() {
             style={{
               width: "100%",
               padding: "14px 0",
-              background: isPending ? "#ccc" : "#111",
+              background: isPending ? "#94A3B8" : "#1E40AF",
               color: "#fff",
               border: "none",
               borderRadius: 10,
               fontFamily: "var(--font-rubik)",
               fontWeight: 700,
-              fontSize: 17,
+              fontSize: 16,
               cursor: isPending ? "not-allowed" : "pointer",
             }}
           >
@@ -131,13 +133,13 @@ export function CheckInButton() {
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 99,
-            background: "#111",
+            background: "#0F172A",
             color: "#fff",
-            padding: "12px 24px",
+            padding: "11px 22px",
             borderRadius: 99,
             fontFamily: "var(--font-rubik)",
             fontWeight: 600,
-            fontSize: 15,
+            fontSize: 14,
             whiteSpace: "nowrap",
             pointerEvents: "none",
           }}

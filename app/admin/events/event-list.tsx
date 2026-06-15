@@ -20,9 +20,8 @@ function EditForm({ event, onDone }: { event: Event; onDone: () => void }) {
     <form
       action={formAction}
       encType="multipart/form-data"
-      style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "2px solid #E0E0E0" }}
+      style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid #E2E8F0" }}
     >
-      {/* carry existing URL so action can fall back to it if no new file */}
       <input type="hidden" name="existing_image_url" value={event.image_url ?? ""} />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
@@ -47,26 +46,23 @@ function EditForm({ event, onDone }: { event: Event; onDone: () => void }) {
         <label style={labelStyle}>מיקום *</label>
         <input name="location" required defaultValue={event.location} style={inputStyle} />
       </div>
-
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={labelStyle}>קישור להרשמה</label>
         <input name="registration_url" type="url" defaultValue={event.registration_url ?? ""} placeholder="https://..." style={inputStyle} />
       </div>
-
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={labelStyle}>תמונה</label>
         <ImagePicker name="image" preview={preview} onPreview={setPreview} currentUrl={event.image_url} />
       </div>
-
       <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-        <input name="is_featured" type="checkbox" defaultChecked={event.is_featured} style={{ width: 18, height: 18 }} />
-        <span style={labelStyle}>Featured</span>
+        <input name="is_featured" type="checkbox" defaultChecked={event.is_featured} style={{ width: 16, height: 16, accentColor: "#1E40AF" }} />
+        <span style={labelStyle}>מוצג בראש הדף</span>
       </label>
 
-      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#e53e3e", fontWeight: 600 }}>{state.error}</p>}
+      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 }}>{state.error}</p>}
 
       <div style={{ display: "flex", gap: 10 }}>
-        <button type="submit" disabled={pending} style={btnDark(pending)}>
+        <button type="submit" disabled={pending} style={btnPrimary(pending)}>
           {pending ? "שומר..." : "שמור"}
         </button>
         <button type="button" onClick={onDone} style={btnGhost}>ביטול</button>
@@ -93,46 +89,44 @@ function EventRow({ event }: { event: Event }) {
   }
 
   return (
-    <div style={{ background: "#fff", border: "2px solid #0F0F0F", borderRadius: 0, boxShadow: "4px 4px 0 0 #0F0F0F", padding: "14px 16px" }}>
+    <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.05)", padding: "14px 16px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-        {/* Thumbnail + info */}
         <div style={{ display: "flex", gap: 12, flex: 1, minWidth: 0 }}>
           {event.image_url && (
             <img
               src={event.image_url}
               alt={event.title}
-              style={{ width: 56, height: 56, objectFit: "cover", border: "2px solid #0F0F0F", flexShrink: 0 }}
+              style={{ width: 52, height: 52, objectFit: "cover", borderRadius: 8, border: "1px solid #E2E8F0", flexShrink: 0 }}
             />
           )}
           <div style={{ minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 16, color: "var(--color-text-primary)" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, color: "#0F172A" }}>
                 {event.title}
               </p>
               {event.is_featured && (
-                <span style={{ fontSize: 11, fontWeight: 700, background: "#0F0F0F", color: "#fff", padding: "2px 7px", letterSpacing: "0.04em" }}>
-                  FEATURED
+                <span style={{ fontSize: 11, fontWeight: 600, background: "#EFF6FF", color: "#1E40AF", border: "1px solid #BFDBFE", padding: "2px 8px", borderRadius: 99 }}>
+                  מוצג
                 </span>
               )}
             </div>
-            <p style={{ margin: 0, fontSize: 13, color: "var(--color-text-muted)", fontFamily: "var(--font-heebo)", fontWeight: 500 }}>
+            <p style={{ margin: 0, fontSize: 13, color: "#64748B", fontFamily: "var(--font-rubik)", fontWeight: 500 }}>
               {event.event_date} · {event.start_hour} · {event.location}
             </p>
           </div>
         </div>
 
-        {/* Actions */}
-        <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+        <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
           <button
             onClick={handleToggle}
             disabled={featuring}
             title={event.is_featured ? "הסר מ-Featured" : "הוסף ל-Featured"}
-            style={{ ...iconBtn, background: event.is_featured ? "#0F0F0F" : "#fff", color: event.is_featured ? "#fff" : "#0F0F0F" }}
+            style={{ ...iconBtn, background: event.is_featured ? "#EFF6FF" : "#F8FAFC", color: event.is_featured ? "#1E40AF" : "#94A3B8" }}
           >
             ★
           </button>
           <button onClick={() => setEditing((v) => !v)} style={iconBtn} title="עריכה">✏️</button>
-          <button onClick={handleDelete} disabled={deleting} style={{ ...iconBtn, color: "#c53030" }} title="מחיקה">
+          <button onClick={handleDelete} disabled={deleting} style={{ ...iconBtn, color: "#DC2626" }} title="מחיקה">
             {deleting ? "…" : "🗑"}
           </button>
         </div>
@@ -145,28 +139,27 @@ function EventRow({ event }: { event: Event }) {
 
 export function EventList({ events }: { events: Event[] }) {
   if (events.length === 0) {
-    return <p style={{ color: "var(--color-text-muted)", fontSize: 14, fontFamily: "var(--font-heebo)" }}>אין אירועים עדיין.</p>;
+    return <p style={{ color: "#64748B", fontSize: 14, fontFamily: "var(--font-rubik)" }}>אין אירועים עדיין.</p>;
   }
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       {events.map((ev) => <EventRow key={ev.id} event={ev} />)}
     </div>
   );
 }
 
 const iconBtn: React.CSSProperties = {
-  width: 34, height: 34, border: "2px solid #0F0F0F", borderRadius: 0,
-  background: "#fff", cursor: "pointer", fontSize: 15, display: "flex",
-  alignItems: "center", justifyContent: "center", fontFamily: "var(--font-heebo)",
-  fontWeight: 700, flexShrink: 0,
+  width: 32, height: 32, border: "1px solid #E2E8F0", borderRadius: 8,
+  background: "#F8FAFC", cursor: "pointer", fontSize: 14, display: "flex",
+  alignItems: "center", justifyContent: "center", flexShrink: 0,
 };
-const btnDark = (pending: boolean): React.CSSProperties => ({
-  padding: "9px 20px", background: pending ? "#ccc" : "#0F0F0F", color: "#fff",
-  border: "2px solid #0F0F0F", borderRadius: 0, fontFamily: "var(--font-rubik)",
+const btnPrimary = (pending: boolean): React.CSSProperties => ({
+  padding: "9px 20px", background: pending ? "#94A3B8" : "#1E40AF", color: "#fff",
+  border: "none", borderRadius: 8, fontFamily: "var(--font-rubik)",
   fontWeight: 700, fontSize: 14, cursor: pending ? "not-allowed" : "pointer",
 });
 const btnGhost: React.CSSProperties = {
-  padding: "9px 20px", background: "#fff", color: "#0F0F0F",
-  border: "2px solid #0F0F0F", borderRadius: 0, fontFamily: "var(--font-rubik)",
-  fontWeight: 700, fontSize: 14, cursor: "pointer",
+  padding: "9px 20px", background: "#fff", color: "#475569",
+  border: "1px solid #E2E8F0", borderRadius: 8, fontFamily: "var(--font-rubik)",
+  fontWeight: 600, fontSize: 14, cursor: "pointer",
 };
