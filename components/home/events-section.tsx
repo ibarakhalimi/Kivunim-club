@@ -1,9 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { Tables } from "@/src/types/database";
 
 type Event = Tables<"events">;
+
+const TEMP_EVENTS: Event[] = [
+  {
+    id: "temp-event-study-night",
+    title: "ליל למידה פתוח",
+    description: "מרחב למידה שקט עם קפה, נשנושים וחדרים לעבודה בקבוצות לקראת תקופת המבחנים.",
+    event_date: "2026-06-18",
+    start_hour: "18:00",
+    location: "מרכז כיוונים, קומה 2",
+    registration_url: null,
+    image_url: null,
+    is_featured: true,
+    created_at: "2026-06-15T00:00:00.000Z",
+  },
+  {
+    id: "temp-event-career-meetup",
+    title: "מפגש קריירה לסטודנטים",
+    description: "שיחה פתוחה עם בוגרים ומעסיקים מקומיים על צעדים ראשונים בעולם העבודה.",
+    event_date: "2026-06-23",
+    start_hour: "17:30",
+    location: "אודיטוריום כיוונים",
+    registration_url: null,
+    image_url: null,
+    is_featured: false,
+    created_at: "2026-06-15T00:00:00.000Z",
+  },
+  {
+    id: "temp-event-community-breakfast",
+    title: "בוקר קהילה ונטוורקינג",
+    description: "מפגש בוקר קליל להיכרות בין סטודנטים בעיר, עדכונים והזדמנויות חדשות.",
+    event_date: "2026-06-30",
+    start_hour: "09:00",
+    location: "מרכז צעירים אשדוד",
+    registration_url: null,
+    image_url: null,
+    is_featured: false,
+    created_at: "2026-06-15T00:00:00.000Z",
+  },
+];
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("he-IL", {
@@ -11,6 +50,14 @@ function formatDate(dateStr: string) {
     day: "numeric",
     month: "long",
   });
+}
+
+function formatTabDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return {
+    day: date.toLocaleDateString("he-IL", { day: "numeric" }),
+    month: date.toLocaleDateString("he-IL", { month: "short" }),
+  };
 }
 
 const drawerStyle: React.CSSProperties = {
@@ -39,84 +86,170 @@ const closeBtn: React.CSSProperties = {
 };
 
 export function EventsSection({ events }: { events: Event[] }) {
+  const eventPointerStartX = useRef<number | null>(null);
+  const didEventSwipe = useRef(false);
   const [selected, setSelected] = useState<Event | null>(null);
   const [allOpen, setAllOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  if (events.length === 0) return null;
+  const displayEvents = [...events, ...TEMP_EVENTS];
+  const ev = displayEvents[activeIndex] ?? displayEvents[0];
+  const extraCount = Math.max(0, displayEvents.length - 1);
 
-  const ev = events[0];
+  function showNextEvent() {
+    setActiveIndex((current) => (current + 1) % displayEvents.length);
+  }
+
+  function showPrevEvent() {
+    setActiveIndex((current) => (current - 1 + displayEvents.length) % displayEvents.length);
+  }
+
+  function handleEventSwipe(endX: number) {
+    if (eventPointerStartX.current === null) return;
+
+    const distance = endX - eventPointerStartX.current;
+    eventPointerStartX.current = null;
+    if (Math.abs(distance) < 36) return;
+
+    didEventSwipe.current = true;
+    if (distance < 0) showNextEvent();
+    else showPrevEvent();
+  }
+
+  function handleEventClick() {
+    if (didEventSwipe.current) {
+      didEventSwipe.current = false;
+      return;
+    }
+
+    setSelected(ev);
+  }
 
   return (
     <>
       <section>
-        {events.length > 1 && (
-          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+        <div
+          style={{
+            background: "#fff",
+            border: "1px solid #E2E8F0",
+            borderRadius: 18,
+            boxShadow: "none",
+            padding: 14,
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#0F172A" }}>
+              אירועים
+            </p>
             <button
               onClick={() => setAllOpen(true)}
               style={{
                 background: "#EFF6FF",
                 border: "1px solid #BFDBFE",
                 borderRadius: 99,
-                padding: "3px 12px",
-                fontSize: 13,
-                fontWeight: 600,
+                padding: "5px 10px",
+                fontSize: 12,
+                fontWeight: 700,
                 color: "#1E40AF",
                 fontFamily: "var(--font-rubik)",
                 cursor: "pointer",
+                whiteSpace: "nowrap",
               }}
             >
-              + {events.length - 1} נוספים
+              {extraCount > 0 ? `עוד ${extraCount}` : "כל האירועים"}
             </button>
           </div>
-        )}
 
-        {/* Featured event card */}
-        <div
-          onClick={() => setSelected(ev)}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "stretch",
-            border: "1px solid #E2E8F0",
-            borderRadius: 14,
-            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-            overflow: "hidden",
-            cursor: "pointer",
-            background: "#fff",
-            minHeight: 100,
-          }}
-        >
-          {/* Content */}
-          <div style={{ flex: 1, padding: "14px 16px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 5, minWidth: 0 }}>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#94A3B8" }}>
-              {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
-            </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 17, lineHeight: 1.25, color: "#0F172A" }}>
-              {ev.title}
-            </p>
-            {ev.location && (
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, color: "#64748B" }}>
-                📍 {ev.location}
-              </p>
-            )}
-          </div>
-
-          {/* Image */}
           <div
             style={{
-              flexShrink: 0,
-              width: 90,
-              background: "#EFF6FF",
-              overflow: "hidden",
+              display: "flex",
+              gap: 8,
+              overflowX: "auto",
+              paddingBottom: 10,
+              marginBottom: 2,
+              scrollbarWidth: "none",
             }}
           >
-            {ev.image_url ? (
-              <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            ) : (
-              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28 }}>
-                📸
-              </div>
-            )}
+            {displayEvents.map((event, i) => {
+              const active = i === activeIndex;
+              const tabDate = formatTabDate(event.event_date);
+              return (
+                <button
+                  key={event.id}
+                  onClick={() => setActiveIndex(i)}
+                  style={{
+                    flexShrink: 0,
+                    border: `1px solid ${active ? "#BFDBFE" : "#E2E8F0"}`,
+                    borderRadius: 14,
+                    background: active ? "#EFF6FF" : "#F8FAFC",
+                    color: active ? "#1E40AF" : "#64748B",
+                    padding: "7px 10px",
+                    minWidth: 54,
+                    fontFamily: "var(--font-rubik)",
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <span style={{ fontWeight: 800, fontSize: 16, lineHeight: 1 }}>
+                    {tabDate.day}
+                  </span>
+                  <span style={{ fontWeight: 700, fontSize: 10, lineHeight: 1.1 }}>
+                    {tabDate.month}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div
+            onClick={handleEventClick}
+            onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
+            onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              border: "1px solid #E2E8F0",
+              borderRadius: 14,
+              overflow: "hidden",
+              cursor: "pointer",
+              background: "#F8FAFC",
+              touchAction: "pan-y",
+              userSelect: "none",
+            }}
+          >
+            <div
+              style={{
+                height: 132,
+                background: "#EFF6FF",
+                overflow: "hidden",
+              }}
+            >
+              {ev.image_url ? (
+                <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              ) : (
+                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 }}>
+                  📅
+                </div>
+              )}
+            </div>
+
+            <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#1E40AF" }}>
+                {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
+              </p>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, lineHeight: 1.22, color: "#0F172A" }}>
+                {ev.title}
+              </p>
+              {ev.location && (
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#64748B" }}>
+                  📍 {ev.location}
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -212,14 +345,14 @@ export function EventsSection({ events }: { events: Event[] }) {
             </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {events.map((ev) => (
+              {displayEvents.map((ev) => (
                 <div
                   key={ev.id}
                   onClick={() => { setAllOpen(false); setSelected(ev); }}
                   style={{
                     border: "1px solid #E2E8F0",
                     borderRadius: 12,
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+                    boxShadow: "none",
                     background: "#fff",
                     overflow: "hidden",
                     cursor: "pointer",

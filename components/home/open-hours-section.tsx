@@ -41,7 +41,7 @@ export function OpenHoursSection() {
                   height: 8,
                   borderRadius: "50%",
                   background: "#16A34A",
-                  boxShadow: "0 0 0 4px rgba(22,163,74,0.12)",
+                  boxShadow: "none",
                   flexShrink: 0,
                 }}
               />

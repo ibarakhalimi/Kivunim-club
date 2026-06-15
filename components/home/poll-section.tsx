@@ -1,10 +1,19 @@
 "use client";
 
-import { useTransition, useState } from "react";
+import { useState, useTransition } from "react";
 import { submitVote } from "@/app/actions/poll";
 import type { Tables } from "@/src/types/database";
 
 type Poll = Tables<"polls">;
+
+type CommunityPoll = {
+  id: string;
+  question: string;
+  options: string[];
+  counts: number[];
+  userVote: number | null;
+  isDemo?: boolean;
+};
 
 interface Props {
   poll: Poll;
@@ -12,24 +21,173 @@ interface Props {
   userVote: number | null;
 }
 
-export function PollSection({ poll, voteCounts: initialCounts, userVote: initialVote }: Props) {
+const DEMO_POLLS: CommunityPoll[] = [
+  {
+    id: "demo-community-poll",
+    question: "איזו פעילות קהילה תרצו שנוסיף החודש?",
+    options: ["ערב משחקים", "סדנת לינקדאין", "מפגש קפה", "קבוצת ריצה"],
+    counts: [18, 24, 12, 9],
+    userVote: null,
+    isDemo: true,
+  },
+  {
+    id: "demo-food-poll",
+    question: "איזה כיבוד הכי מתאים לערב למידה?",
+    options: ["פיצה", "סושי", "קפה ומאפים", "פירות וחטיפים"],
+    counts: [31, 14, 27, 10],
+    userVote: null,
+    isDemo: true,
+  },
+  {
+    id: "demo-hours-poll",
+    question: "באיזה יום הכי נוח לכם להגיע לפעילות?",
+    options: ["ראשון", "שלישי", "רביעי", "חמישי"],
+    counts: [12, 22, 19, 16],
+    userVote: null,
+    isDemo: true,
+  },
+];
+
+function PollCard({ poll }: { poll: CommunityPoll }) {
   const [isPending, startTransition] = useTransition();
-  const [optimisticVote, setOptimisticVote] = useState<number | null>(initialVote);
-  const [optimisticCounts, setOptimisticCounts] = useState(initialCounts);
+  const [optimisticVote, setOptimisticVote] = useState<number | null>(poll.userVote);
+  const [optimisticCounts, setOptimisticCounts] = useState(poll.counts);
 
   const hasVoted = optimisticVote !== null;
-  const total = optimisticCounts.reduce((s, c) => s + c, 0);
-  const options = [poll.option_1, poll.option_2, poll.option_3, poll.option_4];
+  const total = optimisticCounts.reduce((sum, count) => sum + count, 0);
 
   function handleVote(optionIndex: number) {
     if (hasVoted || isPending) return;
+
     const newCounts = [...optimisticCounts];
     newCounts[optionIndex - 1]++;
     setOptimisticVote(optionIndex);
     setOptimisticCounts(newCounts);
+
+    if (poll.isDemo) return;
+
     startTransition(async () => {
       await submitVote(poll.id, optionIndex);
     });
+  }
+
+  return (
+    <div
+      style={{
+        flex: "0 0 100%",
+        background: "linear-gradient(135deg, #EFF6FF 0%, #F8FAFC 100%)",
+        border: "1px solid #BFDBFE",
+        borderRadius: 14,
+        padding: "14px",
+        scrollSnapAlign: "start",
+        boxShadow: "none",
+      }}
+    >
+      <p
+        style={{
+          margin: "0 0 14px",
+          fontFamily: "var(--font-rubik)",
+          fontWeight: 800,
+          fontSize: 17,
+          lineHeight: 1.3,
+          color: "#0F172A",
+        }}
+      >
+        {poll.question}
+      </p>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {poll.options.map((label, i) => {
+          if (!label) return null;
+          const idx = i + 1;
+          const count = optimisticCounts[i] ?? 0;
+          const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+          const isChosen = optimisticVote === idx;
+
+          if (hasVoted) {
+            return (
+              <div
+                key={idx}
+                style={{
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  background: isChosen ? "#EFF6FF" : "#F8FAFC",
+                  border: `1px solid ${isChosen ? "#BFDBFE" : "#E2E8F0"}`,
+                }}
+              >
+                <div style={{ position: "relative", padding: "10px 12px" }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: `${pct}%`,
+                      background: isChosen ? "rgba(30,64,175,0.08)" : "rgba(0,0,0,0.03)",
+                      transition: "width 0.4s ease",
+                    }}
+                  />
+                  <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: isChosen ? 800 : 600, fontSize: 13, color: isChosen ? "#1E40AF" : "#475569" }}>
+                      {isChosen ? "✓ " : ""}{label}
+                    </span>
+                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: isChosen ? "#1E40AF" : "#94A3B8" }}>
+                      {pct}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <button
+              key={idx}
+              onClick={() => handleVote(idx)}
+              disabled={isPending}
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                background: "#F8FAFC",
+                border: "1px solid #E2E8F0",
+                borderRadius: 10,
+                fontFamily: "var(--font-rubik)",
+                fontWeight: 700,
+                fontSize: 13,
+                color: "#0F172A",
+                cursor: isPending ? "not-allowed" : "pointer",
+                textAlign: "right",
+              }}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
+      <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#94A3B8", textAlign: "center" }}>
+        {total} אנשים כבר ענו על הסקר
+      </p>
+    </div>
+  );
+}
+
+export function PollSection({ poll, voteCounts, userVote }: Props) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const communityPolls: CommunityPoll[] = [
+    {
+      id: poll.id,
+      question: poll.question,
+      options: [poll.option_1, poll.option_2, poll.option_3, poll.option_4],
+      counts: voteCounts,
+      userVote,
+    },
+    ...DEMO_POLLS,
+  ];
+
+  function handleScroll(event: React.UIEvent<HTMLDivElement>) {
+    const element = event.currentTarget;
+    const slideWidth = element.clientWidth + 10;
+    const index = Math.round(Math.abs(element.scrollLeft) / slideWidth);
+    setActiveIndex(Math.min(index, communityPolls.length - 1));
   }
 
   return (
@@ -38,97 +196,52 @@ export function PollSection({ poll, voteCounts: initialCounts, userVote: initial
         style={{
           background: "#fff",
           border: "1px solid #E2E8F0",
-          borderRadius: 14,
-          boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-          padding: "18px 16px 20px",
+          borderRadius: 18,
+          boxShadow: "none",
+          padding: 14,
         }}
       >
-        {/* Question */}
-        <p
-          style={{
-            margin: "0 0 16px",
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 700,
-            fontSize: 17,
-            lineHeight: 1.3,
-            color: "#0F172A",
-          }}
-        >
-          {poll.question}
-        </p>
-
-        {/* Options */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {options.map((label, i) => {
-            if (!label) return null;
-            const idx = i + 1;
-            const count = optimisticCounts[i];
-            const pct = total > 0 ? Math.round((count / total) * 100) : 0;
-            const isChosen = optimisticVote === idx;
-
-            if (hasVoted) {
-              return (
-                <div
-                  key={idx}
-                  style={{
-                    borderRadius: 8,
-                    overflow: "hidden",
-                    background: isChosen ? "#EFF6FF" : "#F8FAFC",
-                    border: `1px solid ${isChosen ? "#BFDBFE" : "#E2E8F0"}`,
-                  }}
-                >
-                  <div style={{ position: "relative", padding: "10px 14px" }}>
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        width: `${pct}%`,
-                        background: isChosen ? "rgba(30,64,175,0.08)" : "rgba(0,0,0,0.03)",
-                        transition: "width 0.4s ease",
-                      }}
-                    />
-                    <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontFamily: "var(--font-rubik)", fontWeight: isChosen ? 700 : 500, fontSize: 14, color: isChosen ? "#1E40AF" : "#475569" }}>
-                        {isChosen ? "✓ " : ""}{label}
-                      </span>
-                      <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: isChosen ? "#1E40AF" : "#94A3B8" }}>
-                        {pct}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-
-            return (
-              <button
-                key={idx}
-                onClick={() => handleVote(idx)}
-                disabled={isPending}
-                style={{
-                  width: "100%",
-                  padding: "11px 14px",
-                  background: "#F8FAFC",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: 8,
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 600,
-                  fontSize: 14,
-                  color: "#0F172A",
-                  cursor: isPending ? "not-allowed" : "pointer",
-                  textAlign: "right",
-                  transition: "background 0.1s",
-                }}
-              >
-                {label}
-              </button>
-            );
-          })}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#0F172A" }}>
+            פעילות קהילה
+          </p>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              border: "1px solid #E2E8F0",
+              borderRadius: 99,
+              background: "#F8FAFC",
+              padding: "4px 8px",
+              fontFamily: "var(--font-rubik)",
+              fontWeight: 800,
+              fontSize: 11,
+              color: "#64748B",
+            }}
+          >
+            <span style={{ color: "#1E40AF" }}>{activeIndex + 1}</span>
+            <span>מתוך</span>
+            <span>{communityPolls.length}</span>
+          </div>
         </div>
 
-        <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#94A3B8", textAlign: "center" }}>
-          {total} אנשים כבר ענו על הסקר
-        </p>
+        <div
+          onScroll={handleScroll}
+          style={{
+            display: "flex",
+            gap: 10,
+            overflowX: "auto",
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+            padding: "0 0 2px",
+          }}
+        >
+          {communityPolls.map((item) => (
+            <PollCard key={item.id} poll={item} />
+          ))}
+        </div>
       </div>
     </section>
   );

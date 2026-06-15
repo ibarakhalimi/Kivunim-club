@@ -45,23 +45,23 @@ export function ProfileCard() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 16,
+          gap: 10,
           background: "#FFFFFF",
           border: "1px solid #E2E8F0",
           borderRadius: 14,
-          boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-          padding: "12px 14px",
-          minHeight: 78,
+          boxShadow: "none",
+          padding: "9px 11px",
+          minHeight: 64,
         }}
       >
         <div style={{ minWidth: 0 }}>
           <p
             suppressHydrationWarning
             style={{
-              margin: "0 0 6px",
+              margin: "0 0 3px",
               fontFamily: "var(--font-rubik)",
               fontWeight: 800,
-              fontSize: 21,
+              fontSize: 18,
               lineHeight: 1.15,
               color: "#0F172A",
               overflowWrap: "anywhere",
@@ -74,7 +74,7 @@ export function ProfileCard() {
               margin: 0,
               fontFamily: "var(--font-rubik)",
               fontWeight: 600,
-              fontSize: 13,
+              fontSize: 12,
               color: "#64748B",
             }}
           >
@@ -85,17 +85,17 @@ export function ProfileCard() {
         <div
           style={{
             flexShrink: 0,
-            minWidth: 96,
-            borderRadius: 12,
+            minWidth: 74,
+            borderRadius: 10,
             background: "#EFF6FF",
             border: "1px solid #BFDBFE",
-            padding: "9px 12px",
+            padding: "7px 9px",
             textAlign: "center",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, marginBottom: 3 }}>
-            <Sparkles size={14} strokeWidth={2.2} color="#1E40AF" />
-            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#1E40AF" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, marginBottom: 2 }}>
+            <Sparkles size={12} strokeWidth={2.2} color="#1E40AF" />
+            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 10, color: "#1E40AF" }}>
               נקודות
             </span>
           </div>
@@ -105,7 +105,7 @@ export function ProfileCard() {
               margin: 0,
               fontFamily: "var(--font-rubik)",
               fontWeight: 800,
-              fontSize: 24,
+              fontSize: 20,
               lineHeight: 1,
               color: "#1E40AF",
             }}

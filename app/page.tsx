@@ -20,7 +20,7 @@ export default function HomePage() {
       }}
     >
       <TopBar />
-      <div style={{ display: "flex", flexDirection: "column", gap: 28, padding: "8px 16px 0" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 18, padding: "8px 16px 0" }}>
         <ProfileCard />
         <UpdateSection />
         <OpenHoursSection />

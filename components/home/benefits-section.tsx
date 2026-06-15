@@ -65,81 +65,90 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   return (
     <>
       <section>
-        {extraCount > 0 && (
-          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+        <div
+          style={{
+            background: "#fff",
+            border: "1px solid #E2E8F0",
+            borderRadius: 18,
+            boxShadow: "none",
+            padding: 14,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#0F172A" }}>
+              הטבות כרגע
+            </p>
             <button
               onClick={() => setAllOpen(true)}
               style={{
                 background: "#F0FDF4",
                 border: "1px solid #BBF7D0",
                 borderRadius: 99,
-                padding: "3px 12px",
-                fontSize: 13,
-                fontWeight: 600,
+                padding: "5px 10px",
+                fontSize: 12,
+                fontWeight: 700,
                 color: "#15803D",
                 fontFamily: "var(--font-rubik)",
                 cursor: "pointer",
+                whiteSpace: "nowrap",
               }}
             >
-              + {extraCount} נוספות
+              {extraCount > 0 ? `עוד ${extraCount}` : "כל ההטבות"}
             </button>
           </div>
-        )}
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {visible.map((b) => (
-            <div
-              key={b.id}
-              onClick={() => setSelected(b)}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                border: "1px solid #E2E8F0",
-                borderRadius: 12,
-                boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-                background: "#fff",
-                overflow: "hidden",
-                cursor: "pointer",
-                minHeight: 76,
-                padding: 10,
-                gap: 12,
-              }}
-            >
-              {/* Category icon */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {visible.map((b) => (
               <div
+                key={b.id}
+                onClick={() => setSelected(b)}
                 style={{
-                  flexShrink: 0,
-                  width: 56,
-                  height: 56,
-                  borderRadius: 10,
-                  background: categoryBg(b.category ?? ""),
-                  border: "1px solid #E2E8F0",
                   display: "flex",
+                  flexDirection: "row",
                   alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 26,
+                  border: "1px solid #E2E8F0",
+                  borderRadius: 12,
+                  background: "#F8FAFC",
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  minHeight: 72,
+                  padding: 10,
+                  gap: 12,
                 }}
               >
-                {categoryEmoji(b.category ?? "")}
-              </div>
+                <div
+                  style={{
+                    flexShrink: 0,
+                    width: 52,
+                    height: 52,
+                    borderRadius: 10,
+                    background: categoryBg(b.category ?? ""),
+                    border: "1px solid #E2E8F0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 24,
+                  }}
+                >
+                  {categoryEmoji(b.category ?? "")}
+                </div>
 
-              {/* Content */}
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 3, minWidth: 0 }}>
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, lineHeight: 1.2, color: "#0F172A" }}>
-                  {b.business}
-                </p>
-                {b.business_description && (
-                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 12, color: "#94A3B8", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
-                    {b.business_description}
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 3, minWidth: 0 }}>
+                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, lineHeight: 1.2, color: "#0F172A" }}>
+                    {b.business}
                   </p>
-                )}
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, color: "#1E40AF" }}>
-                  {b.deal}
-                </p>
+                  {b.business_description && (
+                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 12, color: "#94A3B8", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+                      {b.business_description}
+                    </p>
+                  )}
+                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, color: "#1E40AF" }}>
+                    {b.deal}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 

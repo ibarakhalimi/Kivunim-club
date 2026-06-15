@@ -30,7 +30,7 @@ export function CheckInButton() {
           background: "#EFF6FF",
           border: "1px solid #BFDBFE",
           borderRadius: 12,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+          boxShadow: "none",
           padding: "14px 8px",
           display: "flex",
           flexDirection: "column",

@@ -136,7 +136,7 @@ export function ActionsGrid() {
             background: activeAction.bg,
             border: "1px solid #E2E8F0",
             borderRadius: 18,
-            boxShadow: "0 8px 24px rgba(15,23,42,0.08)",
+            boxShadow: "none",
             padding: "14px",
             cursor: "pointer",
             display: "flex",
@@ -158,22 +158,24 @@ export function ActionsGrid() {
               flex: 1,
               display: "flex",
               flexDirection: "column",
+              alignItems: "center",
               justifyContent: "center",
-              gap: 10,
+              gap: 12,
               animation: "actionWidgetIn 0.22s ease",
+              textAlign: "center",
             }}
           >
             <div
               style={{
-                width: 52,
-                height: 52,
-                borderRadius: 14,
+                width: 64,
+                height: 64,
+                borderRadius: 18,
                 background: "rgba(255,255,255,0.72)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 26,
-                boxShadow: "inset 0 0 0 1px rgba(15,23,42,0.06)",
+                fontSize: 34,
+                boxShadow: "none",
               }}
             >
               {activeAction.emoji}
@@ -186,6 +188,7 @@ export function ActionsGrid() {
                 fontSize: 18,
                 lineHeight: 1.18,
                 color: activeAction.color,
+                textAlign: "center",
               }}
             >
               {activeAction.label}
@@ -228,7 +231,7 @@ export function ActionsGrid() {
             background: "#fff",
             border: "1px solid #E2E8F0",
             borderRadius: 18,
-            boxShadow: "0 8px 24px rgba(15,23,42,0.08)",
+            boxShadow: "none",
             padding: "14px",
             cursor: "pointer",
             display: "flex",
