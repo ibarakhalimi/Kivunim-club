@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ALL_ACTIONS = [
   { emoji: "📞", label: "יצירת קשר",      bg: "#EEF2FF", color: "#4338CA" },
@@ -78,6 +78,15 @@ export function ActionsGrid() {
   const actionPointerStartX = useRef<number | null>(null);
   const didActionSwipe = useRef(false);
   const activeAction = ALL_ACTIONS[activeActionIndex];
+
+  useEffect(() => {
+    function openActionsDrawer() {
+      setActionsOpen(true);
+    }
+
+    window.addEventListener("open-actions-drawer", openActionsDrawer);
+    return () => window.removeEventListener("open-actions-drawer", openActionsDrawer);
+  }, []);
 
   function nextAction() {
     setActiveActionIndex((current) => (current + 1) % ALL_ACTIONS.length);
