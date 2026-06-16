@@ -8,5 +8,5 @@ export async function UpdateSection() {
     .select("*")
     .order("published_at", { ascending: false });
 
-  return <UpdateList updates={updates ?? []} />;
+  return <UpdateList updates={updates ?? []} currentTime={new Date().toISOString()} />;
 }

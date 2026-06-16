@@ -229,6 +229,39 @@ export type Database = {
         }
         Relationships: []
       }
+      posts: {
+        Row: {
+          background_image_url: string
+          button_text: string
+          created_at: string
+          id: string
+          is_active: boolean
+          link_url: string
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          background_image_url: string
+          button_text: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          link_url: string
+          sort_order?: number
+          title: string
+        }
+        Update: {
+          background_image_url?: string
+          button_text?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          link_url?: string
+          sort_order?: number
+          title?: string
+        }
+        Relationships: []
+      }
       updates: {
         Row: {
           author: string

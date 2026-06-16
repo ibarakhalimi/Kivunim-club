@@ -1,5 +1,6 @@
 export default function AdminPage() {
   const sections = [
+    { label: "סליידר ראשי", emoji: "🖼️", href: "/admin/posts", bg: "#EEF2FF", color: "#4338CA" },
     { label: "עדכונים", emoji: "📢", href: "/admin/updates", bg: "#FFFBEB", color: "#B45309" },
     { label: "אירועים", emoji: "📅", href: "/admin/events", bg: "#EFF6FF", color: "#1E40AF" },
     { label: "הטבות",   emoji: "🎁", href: "/admin/benefits", bg: "#F0FDF4", color: "#15803D" },

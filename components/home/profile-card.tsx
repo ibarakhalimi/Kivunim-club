@@ -86,10 +86,10 @@ export function ProfileCard() {
         <div style={{ minWidth: 0, minHeight: 42, display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <p
             style={{
-              margin: "0 0 1px",
+              margin: 0,
               fontFamily: "var(--font-rubik)",
               fontWeight: 700,
-              fontSize: 12,
+              fontSize: 13,
               color: "#64748B",
             }}
           >
@@ -101,8 +101,9 @@ export function ProfileCard() {
               margin: 0,
               fontFamily: "var(--font-rubik)",
               fontWeight: 900,
-              fontSize: 24,
-              lineHeight: 1.08,
+              fontSize: 26,
+              lineHeight: 1.04,
+              letterSpacing: 0,
               color: "#0F172A",
               overflowWrap: "anywhere",
             }}

@@ -46,6 +46,14 @@ function formatDate(date: string) {
   });
 }
 
+function dateParts(date: string) {
+  const updateDate = new Date(date);
+  return {
+    day: updateDate.toLocaleDateString("he-IL", { day: "numeric" }),
+    month: updateDate.toLocaleDateString("he-IL", { month: "short" }),
+  };
+}
+
 export default async function UpdatesPage() {
   const supabase = createAdminClient();
   const { data } = await supabase
@@ -112,20 +120,58 @@ export default async function UpdatesPage() {
       </header>
 
       <section style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-        {updates.map((update) => (
-          <div key={update.id}>
-            <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#B45309" }}>
-              {formatDate(update.published_at)}
-            </p>
+        {updates.map((update, index) => (
+          <div key={update.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, position: "relative" }}>
+            <div style={{ width: 46, flexShrink: 0, display: "flex", justifyContent: "center", position: "relative", alignSelf: "stretch" }}>
+              {index < updates.length - 1 && (
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    top: 54,
+                    bottom: -18,
+                    left: "50%",
+                    borderLeft: "2px dashed #FDE68A",
+                    transform: "translateX(-50%)",
+                  }}
+                />
+              )}
+              <div
+                aria-label={formatDate(update.published_at)}
+                style={{
+                  width: 46,
+                  height: 46,
+                  borderRadius: 14,
+                  background: "#FFFBEB",
+                  border: "none",
+                  color: "#B45309",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: "var(--font-rubik)",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
+                <span style={{ fontWeight: 900, fontSize: 18, lineHeight: 1 }}>
+                  {dateParts(update.published_at).day}
+                </span>
+                <span style={{ fontWeight: 800, fontSize: 11, lineHeight: 1.1 }}>
+                  {dateParts(update.published_at).month}
+                </span>
+              </div>
+            </div>
             <article
               style={{
+                flex: 1,
                 background: "#fff",
-                border: "1px solid #E2E8F0",
+                border: "none",
                 borderRadius: 18,
                 padding: 18,
               }}
             >
-              <h2 style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.22, color: "#0F172A" }}>
+              <h2 style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.22, color: "#0F172A" }}>
                 {update.title}
               </h2>
               {update.description && (

@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus } from "lucide-react";
+import { CalendarDays, ClipboardList, Gift, Lightbulb, Phone, Plus, UserCheck } from "lucide-react";
 
 const ALL_ACTIONS = [
-  { emoji: "📞", label: "יצירת קשר", bg: "#EEF2FF", color: "#4338CA" },
-  { emoji: "📋", label: "מידע חשוב", bg: "#FFFBEB", color: "#B45309" },
-  { emoji: "💡", label: "יש לי רעיון", bg: "#F0FDF4", color: "#15803D" },
-  { emoji: "🎁", label: "ההטבות שלי", bg: "#FFF1F2", color: "#BE123C" },
-  { emoji: "📅", label: "אירועים קרובים", bg: "#EFF6FF", color: "#1E40AF" },
-  { emoji: "✅", label: "בדיקת נוכחות", bg: "#F5F3FF", color: "#6D28D9" },
+  { Icon: Phone, label: "יצירת קשר", bg: "#EEF2FF", color: "#4338CA" },
+  { Icon: ClipboardList, label: "מידע חשוב", bg: "#EEF2FF", color: "#4338CA" },
+  { Icon: Lightbulb, label: "יש לי רעיון", bg: "#EEF2FF", color: "#4338CA" },
+  { Icon: Gift, label: "ההטבות שלי", bg: "#EEF2FF", color: "#4338CA" },
+  { Icon: CalendarDays, label: "אירועים קרובים", bg: "#EEF2FF", color: "#4338CA" },
+  { Icon: UserCheck, label: "בדיקת נוכחות", bg: "#EEF2FF", color: "#4338CA" },
 ];
 
 const drawerStyle = (open: boolean): React.CSSProperties => ({
@@ -62,41 +62,41 @@ export function ActionsGrid() {
 
   return (
     <>
-      <section style={{ display: "flex", alignItems: "stretch", gap: 8, overflow: "hidden" }}>
+      <section style={{ width: "100%", display: "flex", alignItems: "stretch", gap: 8, overflow: "hidden", padding: "2px 0" }}>
         {visibleActions.map((action) => (
           <button
-            key={action.label}
+            key={`contained-${action.label}`}
             style={{
               flex: 1,
               minWidth: 0,
-              border: "1px solid #E2E8F0",
+              border: "1px solid rgba(67, 56, 202, 0.12)",
               background: "#fff",
-              borderRadius: 18,
-              padding: "12px 5px",
+              borderRadius: 20,
+              padding: "10px 8px",
               cursor: "pointer",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 7,
-              textAlign: "center",
+              alignItems: "stretch",
+              justifyContent: "space-between",
+              gap: 12,
+              textAlign: "right",
             }}
           >
             <span
               style={{
-                width: 42,
-                height: 42,
-                borderRadius: 14,
+                width: 36,
+                height: 36,
+                borderRadius: 13,
                 background: action.bg,
                 color: action.color,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 22,
                 lineHeight: 1,
+                alignSelf: "flex-start",
               }}
             >
-              {action.emoji}
+              <action.Icon size={20} strokeWidth={2.15} />
             </span>
             <span
               style={{
@@ -119,33 +119,34 @@ export function ActionsGrid() {
           style={{
             flex: 1,
             minWidth: 0,
-            border: "1px solid #E2E8F0",
+            border: "1px solid rgba(67, 56, 202, 0.12)",
             background: "#fff",
-            borderRadius: 18,
-            padding: "12px 5px",
+            borderRadius: 20,
+            padding: "10px 8px",
             color: "#0F172A",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 7,
+            alignItems: "stretch",
+            justifyContent: "space-between",
+            gap: 12,
             cursor: "pointer",
             textAlign: "center",
           }}
         >
           <span
             style={{
-              width: 42,
-              height: 42,
-              borderRadius: 14,
-              background: "#0F172A",
-              color: "#fff",
+              width: 36,
+              height: 36,
+              borderRadius: 13,
+              background: "#EEF2FF",
+              color: "#4338CA",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              alignSelf: "flex-start",
             }}
           >
-            <Plus size={21} strokeWidth={2.4} />
+            <Plus size={20} strokeWidth={2.4} />
           </span>
           <span
             style={{
@@ -155,6 +156,8 @@ export function ActionsGrid() {
               lineHeight: 1.15,
               color: "#0F172A",
               whiteSpace: "nowrap",
+              alignSelf: "stretch",
+              textAlign: "right",
             }}
           >
             כל הפעולות
@@ -185,7 +188,9 @@ export function ActionsGrid() {
                 textAlign: "right",
               }}
             >
-              <span style={{ fontSize: 20 }}>{action.emoji}</span>
+              <span style={{ width: 34, height: 34, borderRadius: 10, background: action.bg, color: action.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <action.Icon size={18} strokeWidth={2.1} />
+              </span>
               <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 15, color: action.color }}>
                 {action.label}
               </span>

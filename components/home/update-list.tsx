@@ -21,32 +21,35 @@ const CARD_COLORS = [
   { bg: "#ECFDF5", accent: "#059669" },
 ];
 
-const TEMP_UPDATES: Update[] = [
-  {
-    id: "temp-campus-evening",
-    title: "ערב סטודנטים במרכז העיר",
-    description: "מפגש פתוח לסטודנטים עם מוזיקה, אוכל קל והיכרות עם סטודנטים נוספים מהעיר.",
-    published_at: new Date().toISOString(),
-    author: "צוות כיוונים",
-  },
-  {
-    id: "temp-exam-benefits",
-    title: "הטבות חדשות לתקופת מבחנים",
-    description: "ריכזנו עבורכם הטבות בקפה, הדפסות וחללי למידה שיעזרו לעבור את התקופה קצת יותר בנוח.",
-    published_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-    author: "צוות כיוונים",
-  },
-  {
-    id: "temp-volunteer-call",
-    title: "מחפשים נציגי סטודנטים לפעילות הבאה",
-    description: "רוצים לקחת חלק בהפקת אירועים ולייצג את הסטודנטים בעיר? זה הזמן להצטרף לצוות המתנדבים.",
-    published_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    author: "צוות כיוונים",
-  },
-];
+function createTempUpdates(currentTime: string): Update[] {
+  const now = new Date(currentTime).getTime();
+  return [
+    {
+      id: "temp-campus-evening",
+      title: "ערב סטודנטים במרכז העיר",
+      description: "מפגש פתוח לסטודנטים עם מוזיקה, אוכל קל והיכרות עם סטודנטים נוספים מהעיר.",
+      published_at: new Date(now).toISOString(),
+      author: "צוות כיוונים",
+    },
+    {
+      id: "temp-exam-benefits",
+      title: "הטבות חדשות לתקופת מבחנים",
+      description: "ריכזנו עבורכם הטבות בקפה, הדפסות וחללי למידה שיעזרו לעבור את התקופה קצת יותר בנוח.",
+      published_at: new Date(now - 3 * 60 * 60 * 1000).toISOString(),
+      author: "צוות כיוונים",
+    },
+    {
+      id: "temp-volunteer-call",
+      title: "מחפשים נציגי סטודנטים לפעילות הבאה",
+      description: "רוצים לקחת חלק בהפקת אירועים ולייצג את הסטודנטים בעיר? זה הזמן להצטרף לצוות המתנדבים.",
+      published_at: new Date(now - 24 * 60 * 60 * 1000).toISOString(),
+      author: "צוות כיוונים",
+    },
+  ];
+}
 
-function timeAgo(dateStr: string): string {
-  const diff = Date.now() - new Date(dateStr).getTime();
+function timeAgo(dateStr: string, currentTime: string): string {
+  const diff = new Date(currentTime).getTime() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
   if (mins < 60) return `לפני ${mins} דקות`;
   const hrs = Math.floor(mins / 60);
@@ -55,14 +58,14 @@ function timeAgo(dateStr: string): string {
   return `לפני ${days} ימים`;
 }
 
-export function UpdateList({ updates }: { updates: Update[] }) {
+export function UpdateList({ updates, currentTime }: { updates: Update[]; currentTime: string }) {
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const didSwipe = useRef(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
   const [selected, setSelected] = useState<Update | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const displayUpdates = [...updates, ...TEMP_UPDATES];
+  const displayUpdates = [...updates, ...createTempUpdates(currentTime)];
   const activeUpdate = displayUpdates[activeIndex];
   const firstUpdate = displayUpdates[0];
   const activeColor = CARD_COLORS[activeIndex % CARD_COLORS.length];
@@ -179,7 +182,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
 
           <div style={{ marginTop: "auto" }}>
             <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#B45309" }}>
-              {timeAgo(firstUpdate.published_at)}
+              {timeAgo(firstUpdate.published_at, currentTime)}
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
               {firstUpdate.title}
@@ -311,7 +314,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
                   opacity: 0.7,
                 }}
               >
-                {timeAgo(activeUpdate.published_at)}
+                {timeAgo(activeUpdate.published_at, currentTime)}
               </span>
               <span
                 style={{
@@ -413,7 +416,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
                 suppressHydrationWarning
                 style={{ margin: 0, fontSize: 12, color: "#94A3B8", fontFamily: "var(--font-rubik)" }}
               >
-                {timeAgo(selected.published_at)} · {selected.author}
+                {timeAgo(selected.published_at, currentTime)} · {selected.author}
               </p>
             </div>
 
