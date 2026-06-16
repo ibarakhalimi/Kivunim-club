@@ -32,22 +32,23 @@ export function OpenHoursSection() {
   }
 
   return (
-    <section style={{ width: "calc(50% - 6px)" }}>
+    <section style={{ width: "100%" }}>
       <div
         style={{
           width: "100%",
-          aspectRatio: "1 / 1",
           border: "1px solid #BBF7D0",
           borderRadius: 22,
           background: "#F0FDF4",
-          padding: 12,
+          padding: "12px 14px",
           display: "flex",
-          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
           overflow: "hidden",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 4 }}>
             <span
               style={{
                 width: 9,
@@ -61,6 +62,12 @@ export function OpenHoursSection() {
               פתוח עכשיו
             </span>
           </div>
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1, color: "#14532D" }}>
+            עד 20:00
+          </p>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
           <button
             onClick={() => setHoursOpen(true)}
             aria-label="שעות פתיחה"
@@ -84,35 +91,27 @@ export function OpenHoursSection() {
           >
             ↗
           </button>
-        </div>
-
-        <div style={{ marginTop: "auto", marginBottom: "auto" }}>
-          <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 24, lineHeight: 1, color: "#14532D" }}>
-            עד 20:00
-          </p>
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 11, color: "#15803D" }}>
-            המתחם פתוח לשימוש
-          </p>
-        </div>
 
         <button
           onClick={handleCheckIn}
           disabled={isPending}
           style={{
-            width: "100%",
+            width: "auto",
             border: "1px solid #86EFAC",
             borderRadius: 999,
             background: isPending ? "#BBF7D0" : "#16A34A",
             color: "#fff",
-            padding: "9px 0",
+            padding: "9px 18px",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
             fontSize: 12,
             cursor: isPending ? "not-allowed" : "pointer",
+            whiteSpace: "nowrap",
           }}
         >
           {isPending ? "מסמן..." : "צ׳קאין"}
         </button>
+        </div>
       </div>
 
       {toast && (
