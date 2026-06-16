@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { addUpdate } from "./actions";
 
 const initialState = { error: undefined as string | undefined, success: false };
@@ -15,9 +15,10 @@ export function AddUpdateForm() {
   );
   const formRef = useRef<HTMLFormElement>(null);
 
-  if (state.success && formRef.current) {
-    formRef.current.reset();
-  }
+  useEffect(() => {
+    if (!state.success) return;
+    formRef.current?.reset();
+  }, [state.success]);
 
   return (
     <div style={cardStyle}>
@@ -33,6 +34,10 @@ export function AddUpdateForm() {
         <Field label="מאת">
           <input name="author" placeholder="צוות כיוונים" style={inputStyle} />
         </Field>
+        <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
+          <input name="is_active" type="checkbox" defaultChecked style={{ width: 16, height: 16, accentColor: "#B45309" }} />
+          <span style={labelStyle}>מוצג באפליקציה</span>
+        </label>
 
         {state.error && <p style={errorStyle}>{state.error}</p>}
         {state.success && <p style={successStyle}>✓ העדכון נשמר בהצלחה</p>}

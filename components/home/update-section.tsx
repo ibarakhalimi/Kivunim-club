@@ -6,6 +6,7 @@ export async function UpdateSection() {
   const { data: updates } = await supabase
     .from("updates")
     .select("*")
+    .eq("is_active", true)
     .order("published_at", { ascending: false });
 
   return <UpdateList updates={updates ?? []} currentTime={new Date().toISOString()} />;

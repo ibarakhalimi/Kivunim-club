@@ -14,30 +14,6 @@ type Update = {
   author: string | null;
 };
 
-const TEMP_UPDATES: Update[] = [
-  {
-    id: "temp-campus-evening",
-    title: "ערב סטודנטים במרכז העיר",
-    description: "מפגש פתוח לסטודנטים עם מוזיקה, אוכל קל והיכרות עם סטודנטים נוספים מהעיר.",
-    published_at: new Date().toISOString(),
-    author: "צוות כיוונים",
-  },
-  {
-    id: "temp-exam-benefits",
-    title: "הטבות חדשות לתקופת מבחנים",
-    description: "ריכזנו עבורכם הטבות בקפה, הדפסות וחללי למידה שיעזרו לעבור את התקופה קצת יותר בנוח.",
-    published_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-    author: "צוות כיוונים",
-  },
-  {
-    id: "temp-volunteer-call",
-    title: "מחפשים נציגי סטודנטים לפעילות הבאה",
-    description: "רוצים לקחת חלק בהפקת אירועים ולייצג את הסטודנטים בעיר? זה הזמן להצטרף לצוות המתנדבים.",
-    published_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    author: "צוות כיוונים",
-  },
-];
-
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString("he-IL", {
     day: "numeric",
@@ -59,9 +35,10 @@ export default async function UpdatesPage() {
   const { data } = await supabase
     .from("updates")
     .select("*")
+    .eq("is_active", true)
     .order("published_at", { ascending: false });
 
-  const updates = [...((data ?? []) as Update[]), ...TEMP_UPDATES];
+  const updates = (data ?? []) as Update[];
 
   return (
     <main

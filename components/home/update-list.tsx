@@ -21,33 +21,6 @@ const CARD_COLORS = [
   { bg: "#ECFDF5", accent: "#059669" },
 ];
 
-function createTempUpdates(currentTime: string): Update[] {
-  const now = new Date(currentTime).getTime();
-  return [
-    {
-      id: "temp-campus-evening",
-      title: "ערב סטודנטים במרכז העיר",
-      description: "מפגש פתוח לסטודנטים עם מוזיקה, אוכל קל והיכרות עם סטודנטים נוספים מהעיר.",
-      published_at: new Date(now).toISOString(),
-      author: "צוות כיוונים",
-    },
-    {
-      id: "temp-exam-benefits",
-      title: "הטבות חדשות לתקופת מבחנים",
-      description: "ריכזנו עבורכם הטבות בקפה, הדפסות וחללי למידה שיעזרו לעבור את התקופה קצת יותר בנוח.",
-      published_at: new Date(now - 3 * 60 * 60 * 1000).toISOString(),
-      author: "צוות כיוונים",
-    },
-    {
-      id: "temp-volunteer-call",
-      title: "מחפשים נציגי סטודנטים לפעילות הבאה",
-      description: "רוצים לקחת חלק בהפקת אירועים ולייצג את הסטודנטים בעיר? זה הזמן להצטרף לצוות המתנדבים.",
-      published_at: new Date(now - 24 * 60 * 60 * 1000).toISOString(),
-      author: "צוות כיוונים",
-    },
-  ];
-}
-
 function timeAgo(dateStr: string, currentTime: string): string {
   const diff = new Date(currentTime).getTime() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -65,11 +38,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
   const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
   const [selected, setSelected] = useState<Update | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const displayUpdates = [...updates, ...createTempUpdates(currentTime)];
-  const activeUpdate = displayUpdates[activeIndex];
-  const firstUpdate = displayUpdates[0];
-  const activeColor = CARD_COLORS[activeIndex % CARD_COLORS.length];
-  const moreUpdates = Math.max(displayUpdates.length - 1, 0);
+  const displayUpdates = updates;
 
   function moveToNext() {
     setSwipeDirection("next");
@@ -107,6 +76,82 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
     document.body.style.overflow = selected || drawerOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [selected, drawerOpen]);
+
+  if (displayUpdates.length === 0) {
+    return (
+      <section style={{ width: "calc(50% - 4px)" }}>
+        <Link
+          href="/updates"
+          style={{
+            width: "100%",
+            aspectRatio: "1 / 1",
+            background: "#fff",
+            border: "1px solid #FEF3C7",
+            borderRadius: 22,
+            boxShadow: "none",
+            padding: 12,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            textAlign: "right",
+            cursor: "pointer",
+            textDecoration: "none",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <div
+              aria-label="הודעות ועדכונים"
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 12,
+                background: "#FFFBEB",
+                border: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#B45309",
+              }}
+            >
+              <Megaphone size={21} strokeWidth={2.1} />
+            </div>
+            <span
+              style={{
+                minWidth: 24,
+                height: 24,
+                borderRadius: "50%",
+                background: "#B45309",
+                color: "#fff",
+                fontFamily: "var(--font-rubik)",
+                fontWeight: 800,
+                fontSize: 10,
+                lineHeight: 1,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              0
+            </span>
+          </div>
+
+          <div style={{ marginTop: "auto" }}>
+            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#B45309" }}>
+              עדכונים
+            </p>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A" }}>
+              אין עדכונים כרגע
+            </p>
+          </div>
+        </Link>
+      </section>
+    );
+  }
+
+  const activeUpdate = displayUpdates[activeIndex];
+  const firstUpdate = displayUpdates[0];
+  const activeColor = CARD_COLORS[activeIndex % CARD_COLORS.length];
+  const moreUpdates = Math.max(displayUpdates.length - 1, 0);
 
   return (
     <>
