@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { CalendarDays } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
@@ -92,8 +93,6 @@ export function EventsSection({ events }: { events: Event[] }) {
       didEventSwipe.current = false;
       return;
     }
-
-    setSelected(ev);
   }
 
   return (
@@ -113,13 +112,14 @@ export function EventsSection({ events }: { events: Event[] }) {
         `}
       </style>
       <section style={{ width: "calc(50% - 4px)" }}>
-        <div
+        <Link
           key={ev.id}
+          href="/events"
           onClick={handleEventClick}
           onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
           onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
           style={{
-            border: "1px solid #E2E8F0",
+            border: "1px solid #FFE4E6",
             borderRadius: 22,
             boxShadow: "none",
             overflow: "hidden",
@@ -129,6 +129,9 @@ export function EventsSection({ events }: { events: Event[] }) {
             touchAction: "pan-y",
             userSelect: "none",
             animation: "eventCardIn 0.22s ease",
+            textDecoration: "none",
+            display: "block",
+            width: "100%",
           }}
         >
           <div style={{ padding: 12, display: "flex", flexDirection: "column", height: "100%", minWidth: 0 }}>
@@ -139,52 +142,47 @@ export function EventsSection({ events }: { events: Event[] }) {
                   width: 34,
                   height: 34,
                   borderRadius: 12,
-                  background: "#ECFDF5",
+                  background: "#FFF1F2",
                   border: "none",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#047857",
+                  color: "#BE123C",
                 }}
               >
                 <CalendarDays size={19} strokeWidth={2.1} />
               </div>
-              <button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setAllOpen(true);
-                }}
-                aria-label="כל האירועים"
+              <span
                 style={{
-                  width: 26,
-                  height: 26,
+                  minWidth: 24,
+                  height: 24,
                   borderRadius: "50%",
-                  border: "1px solid #E2E8F0",
-                  background: "#fff",
-                  color: "#1E40AF",
-                  display: "flex",
+                  border: "none",
+                  background: "#BE123C",
+                  color: "#fff",
+                  display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
                   fontFamily: "var(--font-rubik)",
-                  fontWeight: 900,
-                  fontSize: 14,
+                  fontWeight: 800,
+                  fontSize: 10,
                   lineHeight: 1,
                 }}
               >
-                ←
-              </button>
+                {displayEvents.length}
+              </span>
             </div>
             <div style={{ marginTop: "auto" }}>
-              <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 10, color: "#1E40AF" }}>
-                {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
+              <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#BE123C" }}>
+                {formatDate(ev.event_date)}
               </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, lineHeight: 1.18, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
                 {ev.title}
               </p>
             </div>
           </div>
-        </div>
+        </Link>
       </section>
 
       {/* Event detail drawer */}

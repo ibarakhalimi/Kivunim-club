@@ -57,7 +57,7 @@ export function CardSlider() {
             key={card.id}
             style={{
               flex: "0 0 100%",
-              aspectRatio: "2 / 1",
+              aspectRatio: "1.82 / 1",
               borderRadius: 22,
               background: card.bg,
               border: "1px solid #E2E8F0",

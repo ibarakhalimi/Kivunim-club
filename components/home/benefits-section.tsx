@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { Gift } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
@@ -55,22 +56,21 @@ const closeBtn: React.CSSProperties = {
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [selected, setSelected] = useState<Benefit | null>(null);
   const [allOpen, setAllOpen] = useState(false);
-  const [now] = useState(() => Date.now());
 
-  const newThisWeek = useMemo(() => {
-    const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
-    return benefits.filter((benefit) => new Date(benefit.created_at).getTime() >= weekAgo).length;
-  }, [benefits, now]);
+  const latestBenefit = useMemo(() => {
+    return [...benefits].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
+  }, [benefits]);
 
   if (benefits.length === 0) return null;
 
   return (
     <>
       <section style={{ width: "calc(50% - 4px)" }}>
-        <div
+        <Link
+          href="/benefits"
           style={{
             background: "#fff",
-            border: "1px solid #E2E8F0",
+            border: "1px solid #FCE7F3",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -79,6 +79,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
+            textDecoration: "none",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
@@ -98,42 +99,42 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             >
               <Gift size={19} strokeWidth={2.1} />
             </div>
-            <button
-              onClick={() => setAllOpen(true)}
+            <span
               aria-label="כל ההטבות"
               style={{
-                width: 26,
-                height: 26,
+                minWidth: 24,
+                height: 24,
                 borderRadius: "50%",
-                border: "1px solid #E2E8F0",
-                background: "#F8FAFC",
-                color: "#1E40AF",
-                display: "flex",
+                border: "none",
+                background: "#DB2777",
+                color: "#fff",
+                display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
                 cursor: "pointer",
                 fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 14,
+                fontWeight: 800,
+                fontSize: 10,
                 lineHeight: 1,
+                padding: 0,
               }}
             >
-              ←
-            </button>
+              {benefits.length}
+            </span>
           </div>
 
           <div style={{ marginTop: "auto" }}>
-            <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 34, lineHeight: 1, color: "#0F172A" }}>
-              {benefits.length}
+            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#DB2777" }}>
+              הטבה חדשה
             </p>
-            <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#64748B" }}>
-              הטבות פעילות
+            <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+              {latestBenefit.business}
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#1E40AF" }}>
-              {newThisWeek} חדשים השבוע
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, lineHeight: 1.25, color: "#64748B", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+              {latestBenefit.deal}
             </p>
           </div>
-        </div>
+        </Link>
       </section>
 
       {/* Detail drawer */}

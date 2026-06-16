@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { submitVote } from "@/app/actions/poll";
 import type { Tables } from "@/src/types/database";
@@ -196,13 +197,13 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
   return (
     <>
       <section style={{ width: "calc(50% - 4px)" }}>
-        <button
-          onClick={() => setDrawerOpen(true)}
+        <Link
+          href="/activities"
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
             background: "#fff",
-            border: "1px solid #E2E8F0",
+            border: "1px solid #EDE9FE",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -211,6 +212,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
             overflow: "hidden",
             textAlign: "right",
             cursor: "pointer",
+            textDecoration: "none",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
@@ -220,47 +222,49 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
                 width: 34,
                 height: 34,
                 borderRadius: 12,
-                background: "#EEF2FF",
+                background: "#F5F3FF",
                 border: "none",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#4338CA",
+                color: "#7C3AED",
               }}
             >
               <MessageCircle size={19} strokeWidth={2.1} />
             </div>
             <span
-              aria-hidden="true"
               style={{
-                width: 26,
-                height: 26,
+                minWidth: 24,
+                height: 24,
                 borderRadius: "50%",
-                border: "1px solid #E2E8F0",
-                background: "#F8FAFC",
-                color: "#1E40AF",
-                display: "flex",
+                border: "none",
+                background: "#7C3AED",
+                color: "#fff",
+                display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
                 fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 14,
+                fontWeight: 800,
+                fontSize: 10,
                 lineHeight: 1,
               }}
             >
-              ←
+              {communityPolls.length}
             </span>
           </div>
 
           <div style={{ marginTop: "auto" }}>
-            <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.25, color: "#0F172A" }}>
+            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#7C3AED" }}>
+              סקר
+            </p>
+            <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.25, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
               {poll.question}
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#64748B" }}>
               {totalAnswers} אנשים ענו על הסקר
             </p>
           </div>
-        </button>
+        </Link>
       </section>
 
       {drawerOpen && (

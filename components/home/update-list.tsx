@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 import { Megaphone } from "lucide-react";
 
 type Update = {
@@ -65,7 +66,6 @@ export function UpdateList({ updates }: { updates: Update[] }) {
   const activeUpdate = displayUpdates[activeIndex];
   const firstUpdate = displayUpdates[0];
   const activeColor = CARD_COLORS[activeIndex % CARD_COLORS.length];
-  const firstColor = CARD_COLORS[0];
   const moreUpdates = Math.max(displayUpdates.length - 1, 0);
 
   function moveToNext() {
@@ -122,13 +122,13 @@ export function UpdateList({ updates }: { updates: Update[] }) {
         `}
       </style>
       <section style={{ width: "calc(50% - 4px)" }}>
-        <button
-          onClick={() => setDrawerOpen(true)}
+        <Link
+          href="/updates"
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
             background: "#fff",
-            border: "1px solid #E2E8F0",
+            border: "1px solid #FEF3C7",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -137,6 +137,7 @@ export function UpdateList({ updates }: { updates: Update[] }) {
             overflow: "hidden",
             textAlign: "right",
             cursor: "pointer",
+            textDecoration: "none",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
@@ -154,34 +155,37 @@ export function UpdateList({ updates }: { updates: Update[] }) {
                 color: "#B45309",
               }}
             >
-              <Megaphone size={19} strokeWidth={2.1} />
+              <Megaphone size={21} strokeWidth={2.1} />
             </div>
             <span
               style={{
-                borderRadius: 99,
-                background: "#0F172A",
+                minWidth: 24,
+                height: 24,
+                borderRadius: "50%",
+                background: "#B45309",
                 color: "#fff",
-                padding: "5px 8px",
                 fontFamily: "var(--font-rubik)",
                 fontWeight: 800,
                 fontSize: 10,
                 lineHeight: 1,
-                whiteSpace: "nowrap",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              עוד {moreUpdates}
+              {moreUpdates}
             </span>
           </div>
 
           <div style={{ marginTop: "auto" }}>
-            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: firstColor.accent }}>
-              הודעות ועדכונים
+            <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#B45309" }}>
+              {timeAgo(firstUpdate.published_at)}
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
               {firstUpdate.title}
             </p>
           </div>
-        </button>
+        </Link>
       </section>
 
       {drawerOpen && (

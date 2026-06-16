@@ -1,30 +1,41 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Activity, Calendar, Gift, Home, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Activity, Calendar, Gift, Home, Megaphone, Zap } from "lucide-react";
 
 const ITEMS = [
-  { key: "home", label: "בית", Icon: Home },
-  { key: "events", label: "אירועים", Icon: Calendar },
-  { key: "actions", label: "פעולות", Icon: Zap },
-  { key: "benefits", label: "הטבות", Icon: Gift },
-  { key: "activity", label: "פעילות", Icon: Activity },
+  { key: "home", label: "בית", Icon: Home, href: "/" },
+  { key: "updates", label: "עדכונים", Icon: Megaphone, href: "/updates" },
+  { key: "events", label: "אירועים", Icon: Calendar, href: "/events" },
+  { key: "actions", label: "פעולות", Icon: Zap, href: "/" },
+  { key: "benefits", label: "הטבות", Icon: Gift, href: "/benefits" },
+  { key: "activity", label: "פעילות", Icon: Activity, href: "/activities" },
 ];
 
-export function BottomNav() {
-  const [active, setActive] = useState("home");
-  const [visible, setVisible] = useState(true);
-  const [open, setOpen] = useState(false);
+type BottomNavProps = {
+  activeKey?: string;
+  alwaysOpen?: boolean;
+};
+
+export function BottomNav({ activeKey, alwaysOpen = false }: BottomNavProps) {
+  const router = useRouter();
+  const [active, setActive] = useState(activeKey ?? "home");
+  const [scrolling, setScrolling] = useState(false);
+  const [open, setOpen] = useState(alwaysOpen);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isOpen = alwaysOpen || open;
+  const currentActive = activeKey ?? active;
 
   useEffect(() => {
     function handleScroll() {
-      setVisible(false);
-      setOpen(false);
+      setScrolling(true);
+      if (!alwaysOpen) setOpen(false);
 
       if (scrollTimer.current) clearTimeout(scrollTimer.current);
       scrollTimer.current = setTimeout(() => {
-        setVisible(true);
+        setScrolling(false);
+        if (alwaysOpen) setOpen(true);
       }, 180);
     }
 
@@ -33,7 +44,7 @@ export function BottomNav() {
       window.removeEventListener("scroll", handleScroll);
       if (scrollTimer.current) clearTimeout(scrollTimer.current);
     };
-  }, []);
+  }, [alwaysOpen]);
 
   function openActionsDrawer() {
     setOpen(false);
@@ -46,24 +57,25 @@ export function BottomNav() {
         position: "fixed",
         left: "50%",
         bottom: "calc(env(safe-area-inset-bottom, 0px) + 14px)",
-        width: open ? "min(76vw, 300px)" : 154,
+        width: isOpen ? "min(86vw, 340px)" : 154,
         background: "rgba(255,255,255,0.24)",
         border: "1px solid rgba(255,255,255,0.72)",
         borderRadius: 999,
         padding: 4,
         display: "grid",
-        gridTemplateColumns: open ? "repeat(5, 1fr)" : "1fr 42px",
-        gap: open ? 0 : 6,
+        gridTemplateColumns: isOpen ? `repeat(${ITEMS.length}, 1fr)` : "1fr 42px",
+        gap: isOpen ? 0 : 6,
         zIndex: 20,
         backdropFilter: "blur(26px) saturate(1.55)",
         WebkitBackdropFilter: "blur(26px) saturate(1.55)",
         boxShadow: "0 10px 28px rgba(15,23,42,0.16), inset 0 0 0 1px rgba(255,255,255,0.28)",
-        transform: visible ? "translateX(-50%) translateY(0)" : "translateX(-50%) translateY(110px)",
-        opacity: visible ? 1 : 0,
-        transition: "transform 0.24s ease, opacity 0.2s ease, width 0.22s ease",
+        transform: `translateX(-50%) scale(${scrolling ? 0.9 : 1})`,
+        transformOrigin: "center bottom",
+        opacity: 1,
+        transition: "transform 0.24s ease, width 0.22s ease",
       }}
     >
-      {!open ? (
+      {!isOpen ? (
         <>
           <button
             onClick={() => setOpen(true)}
@@ -105,14 +117,18 @@ export function BottomNav() {
           </button>
         </>
       ) : (
-        ITEMS.map(({ key, label, Icon }) => {
-          const on = active === key;
+        ITEMS.map(({ key, label, Icon, href }) => {
+          const on = currentActive === key;
           return (
             <button
               key={key}
               onClick={() => {
                 setActive(key);
-                setOpen(false);
+                if (!alwaysOpen) setOpen(false);
+                if (key === "actions") {
+                  window.dispatchEvent(new Event("open-actions-drawer"));
+                }
+                router.push(href);
               }}
               aria-label={label}
               style={{

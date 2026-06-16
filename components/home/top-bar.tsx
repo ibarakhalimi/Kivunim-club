@@ -48,6 +48,15 @@ export function TopBar() {
   }, [open]);
 
   useEffect(() => {
+    function openProfileDrawer() {
+      setOpen(true);
+    }
+
+    window.addEventListener("open-profile-drawer", openProfileDrawer);
+    return () => window.removeEventListener("open-profile-drawer", openProfileDrawer);
+  }, []);
+
+  useEffect(() => {
     function handleScroll() {
       setScrolled(window.scrollY > 6);
     }
