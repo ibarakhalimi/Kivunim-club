@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { Megaphone } from "lucide-react";
 
 type Update = {
   id: string;
@@ -59,9 +60,13 @@ export function UpdateList({ updates }: { updates: Update[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
   const [selected, setSelected] = useState<Update | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const displayUpdates = [...updates, ...TEMP_UPDATES];
   const activeUpdate = displayUpdates[activeIndex];
+  const firstUpdate = displayUpdates[0];
   const activeColor = CARD_COLORS[activeIndex % CARD_COLORS.length];
+  const firstColor = CARD_COLORS[0];
+  const moreUpdates = Math.max(displayUpdates.length - 1, 0);
 
   function moveToNext() {
     setSwipeDirection("next");
@@ -96,9 +101,9 @@ export function UpdateList({ updates }: { updates: Update[] }) {
   }
 
   useEffect(() => {
-    document.body.style.overflow = selected ? "hidden" : "";
+    document.body.style.overflow = selected || drawerOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [selected]);
+  }, [selected, drawerOpen]);
 
   return (
     <>
@@ -116,7 +121,112 @@ export function UpdateList({ updates }: { updates: Update[] }) {
           }
         `}
       </style>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <section style={{ width: "calc(50% - 6px)" }}>
+        <button
+          onClick={() => setDrawerOpen(true)}
+          style={{
+            width: "100%",
+            aspectRatio: "1 / 1",
+            background: "#fff",
+            border: "1px solid #E2E8F0",
+            borderRadius: 22,
+            boxShadow: "none",
+            padding: 12,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            textAlign: "right",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <div
+              aria-label="הודעות ועדכונים"
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 12,
+                background: "#FFFBEB",
+                border: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#B45309",
+              }}
+            >
+              <Megaphone size={19} strokeWidth={2.1} />
+            </div>
+            <span
+              style={{
+                borderRadius: 99,
+                background: "#0F172A",
+                color: "#fff",
+                padding: "5px 8px",
+                fontFamily: "var(--font-rubik)",
+                fontWeight: 800,
+                fontSize: 10,
+                lineHeight: 1,
+                whiteSpace: "nowrap",
+              }}
+            >
+              עוד {moreUpdates}
+            </span>
+          </div>
+
+          <div style={{ marginTop: "auto" }}>
+            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: firstColor.accent }}>
+              הודעות ועדכונים
+            </p>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+              {firstUpdate.title}
+            </p>
+          </div>
+        </button>
+      </section>
+
+      {drawerOpen && (
+        <>
+          <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div
+            style={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 51,
+              background: "#fff",
+              borderRadius: "16px 16px 0 0",
+              border: "1px solid #E2E8F0",
+              borderBottom: "none",
+              direction: "rtl",
+              maxHeight: "82dvh",
+              overflowY: "auto",
+              padding: "44px 14px 30px",
+            }}
+          >
+            <button
+              onClick={() => setDrawerOpen(false)}
+              style={{
+                position: "absolute",
+                top: 14,
+                left: 16,
+                width: 32,
+                height: 32,
+                background: "#F1F5F9",
+                border: "none",
+                borderRadius: "50%",
+                fontSize: 14,
+                cursor: "pointer",
+                color: "#64748B",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              ✕
+            </button>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <div
           onPointerDown={(event) => { pointerStart.current = { x: event.clientX, y: event.clientY }; }}
           onPointerUp={(event) => {
@@ -187,31 +297,6 @@ export function UpdateList({ updates }: { updates: Update[] }) {
               }}
             >
               <span
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  bottom: 18,
-                  left: 16,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 5,
-                }}
-              >
-                {displayUpdates.map((_, i) => (
-                  <span
-                    key={i}
-                    style={{
-                      width: 6,
-                      height: activeIndex === i ? 18 : 6,
-                      borderRadius: 99,
-                      background: activeIndex === i ? activeColor.accent : "rgba(15,23,42,0.18)",
-                      transition: "height 0.24s ease, background 0.24s ease",
-                    }}
-                  />
-                ))}
-              </span>
-
-              <span
                 suppressHydrationWarning
                 style={{
                   margin: 0,
@@ -243,7 +328,33 @@ export function UpdateList({ updates }: { updates: Update[] }) {
             </button>
           </div>
         </div>
+        <div
+          aria-hidden="true"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 5,
+            marginTop: 2,
+          }}
+        >
+          {displayUpdates.map((_, i) => (
+            <span
+              key={i}
+              style={{
+                width: activeIndex === i ? 18 : 6,
+                height: 6,
+                borderRadius: 99,
+                background: activeIndex === i ? activeColor.accent : "rgba(15,23,42,0.18)",
+                transition: "width 0.24s ease, background 0.24s ease",
+              }}
+            />
+          ))}
+        </div>
       </div>
+          </div>
+        </>
+      )}
 
       {/* Modal */}
       {selected && (

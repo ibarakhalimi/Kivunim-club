@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { checkIn } from "@/app/actions/check-in";
 
 const HOURS = [
   { day: "ראשון", hours: "08:00-20:00", active: true },
@@ -13,106 +14,195 @@ const HOURS = [
 ];
 
 export function OpenHoursSection() {
-  const [open, setOpen] = useState(false);
+  const [toast, setToast] = useState(false);
+  const [hoursOpen, setHoursOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(false), 3000);
+    return () => clearTimeout(timer);
+  }, [toast]);
+
+  function handleCheckIn() {
+    startTransition(async () => {
+      await checkIn();
+      setToast(true);
+    });
+  }
 
   return (
-    <section>
-      <button
-        onClick={() => setOpen((current) => !current)}
-        aria-expanded={open}
+    <section style={{ width: "calc(50% - 6px)" }}>
+      <div
         style={{
           width: "100%",
+          aspectRatio: "1 / 1",
           border: "1px solid #BBF7D0",
-          borderRadius: 34,
-          background: "linear-gradient(135deg, #DCFCE7 0%, #F0FDF4 100%)",
-          boxShadow: "none",
-          padding: "11px 14px",
-          cursor: "pointer",
-          textAlign: "right",
+          borderRadius: 22,
+          background: "#F0FDF4",
+          padding: 12,
+          display: "flex",
+          flexDirection: "column",
           overflow: "hidden",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-          <div style={{ minWidth: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-              <span
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: "#16A34A",
-                  boxShadow: "none",
-                  flexShrink: 0,
-                }}
-              />
-              <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: "#15803D" }}>
-                פתוח עכשיו
-              </span>
-              <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: "#86EFAC" }}>
-                ·
-              </span>
-              <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: "#14532D" }}>
-                עד 20:00
-              </span>
-            </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+            <span
+              style={{
+                width: 9,
+                height: 9,
+                borderRadius: "50%",
+                background: "#16A34A",
+                flexShrink: 0,
+              }}
+            />
+            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 10, color: "#15803D" }}>
+              פתוח עכשיו
+            </span>
           </div>
-
-          <span
+          <button
+            onClick={() => setHoursOpen(true)}
+            aria-label="שעות פתיחה"
             style={{
-              width: 28,
-              height: 28,
+              width: 25,
+              height: 25,
               borderRadius: "50%",
-              background: "rgba(255,255,255,0.72)",
-              border: "1px solid rgba(21,128,61,0.12)",
+              border: "1px solid #BBF7D0",
+              background: "rgba(255,255,255,0.7)",
+              color: "#15803D",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#15803D",
+              cursor: "pointer",
+              fontFamily: "var(--font-rubik)",
+              fontWeight: 900,
               fontSize: 14,
-              transform: open ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.2s ease",
+              lineHeight: 1,
               flexShrink: 0,
             }}
           >
-           ⌄
-          </span>
+            ↗
+          </button>
         </div>
 
-        {open && (
+        <div style={{ marginTop: "auto", marginBottom: "auto" }}>
+          <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 24, lineHeight: 1, color: "#14532D" }}>
+            עד 20:00
+          </p>
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 11, color: "#15803D" }}>
+            המתחם פתוח לשימוש
+          </p>
+        </div>
+
+        <button
+          onClick={handleCheckIn}
+          disabled={isPending}
+          style={{
+            width: "100%",
+            border: "1px solid #86EFAC",
+            borderRadius: 999,
+            background: isPending ? "#BBF7D0" : "#16A34A",
+            color: "#fff",
+            padding: "9px 0",
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 900,
+            fontSize: 12,
+            cursor: isPending ? "not-allowed" : "pointer",
+          }}
+        >
+          {isPending ? "מסמן..." : "צ׳קאין"}
+        </button>
+      </div>
+
+      {toast && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 32,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 99,
+            background: "#0F172A",
+            color: "#fff",
+            padding: "11px 22px",
+            borderRadius: 99,
+            fontFamily: "var(--font-rubik)",
+            fontWeight: 600,
+            fontSize: 14,
+            whiteSpace: "nowrap",
+            pointerEvents: "none",
+          }}
+        >
+          כיף שבאת, תהנה
+        </div>
+      )}
+
+      {hoursOpen && (
+        <>
+          <div
+            onClick={() => setHoursOpen(false)}
+            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }}
+          />
           <div
             style={{
-              marginTop: 10,
-              paddingTop: 9,
-              borderTop: "1px solid rgba(21,128,61,0.16)",
-              display: "flex",
-              flexDirection: "column",
-              gap: 6,
+              position: "fixed",
+              bottom: 0, left: 0, right: 0,
+              zIndex: 51,
+              background: "#fff",
+              borderRadius: "16px 16px 0 0",
+              border: "1px solid #E2E8F0",
+              borderBottom: "none",
+              direction: "rtl",
+              padding: "24px 20px 44px",
             }}
           >
-            {HOURS.map((row) => (
-              <div
-                key={row.day}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: 10,
-                  padding: "7px 10px",
-                  borderRadius: 18,
-                  background: row.active ? "rgba(255,255,255,0.58)" : "rgba(255,255,255,0.36)",
-                }}
-              >
-                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#14532D" }}>
-                  {row.day}
-                </span>
-                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: row.active ? "#15803D" : "#94A3B8" }}>
-                  {row.hours}
-                </span>
-              </div>
-            ))}
+            <button
+              onClick={() => setHoursOpen(false)}
+              style={{
+                position: "absolute", top: 14, left: 16,
+                width: 32, height: 32,
+                background: "#F1F5F9",
+                border: "none",
+                borderRadius: "50%",
+                fontSize: 14,
+                cursor: "pointer",
+                color: "#64748B",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+            >
+              ✕
+            </button>
+
+            <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, color: "#0F172A" }}>
+              שעות פתיחה
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {HOURS.map((row) => (
+                <div
+                  key={row.day}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "10px 14px",
+                    borderRadius: 12,
+                    border: "1px solid #E2E8F0",
+                    background: row.active ? "#F0FDF4" : "#F8FAFC",
+                  }}
+                >
+                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#0F172A" }}>
+                    {row.day}
+                  </span>
+                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: row.active ? "#15803D" : "#94A3B8" }}>
+                    {row.hours}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-        )}
-      </button>
+        </>
+      )}
     </section>
   );
 }

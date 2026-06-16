@@ -24,11 +24,15 @@ export default function HomePage() {
       <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: "6px 10px 0" }}>
         <ProfileCard />
         <UpdateSection />
-        <OpenHoursSection />
         <ActionsGrid />
-        <EventsLoader />
-        <BenefitsLoader />
-        <PollLoader />
+        <div style={{ display: "flex", gap: 12 }}>
+          <EventsLoader />
+          <OpenHoursSection />
+        </div>
+        <div style={{ display: "flex", gap: 12 }}>
+          <BenefitsLoader />
+          <PollLoader />
+        </div>
       </div>
       <BottomNav />
     </main>
