@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { Gift } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
 type Benefit = Tables<"benefits">;
@@ -25,8 +26,6 @@ function categoryEmoji(category: string): string {
 function categoryBg(category: string): string {
   return CATEGORY_BG[category] ?? "#F8FAFC";
 }
-
-const VISIBLE_COUNT = 5;
 
 const drawerStyle: React.CSSProperties = {
   position: "fixed",
@@ -56,158 +55,83 @@ const closeBtn: React.CSSProperties = {
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [selected, setSelected] = useState<Benefit | null>(null);
   const [allOpen, setAllOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [now] = useState(() => Date.now());
+
+  const newThisWeek = useMemo(() => {
+    const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
+    return benefits.filter((benefit) => new Date(benefit.created_at).getTime() >= weekAgo).length;
+  }, [benefits, now]);
 
   if (benefits.length === 0) return null;
 
-  const categories = Array.from(new Set(benefits.map((b) => b.category).filter(Boolean))) as string[];
-  const filteredBenefits = activeFilter === "all"
-    ? benefits
-    : activeFilter === "new"
-      ? [...benefits].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      : benefits.filter((b) => b.category === activeFilter);
-  const visible = filteredBenefits.slice(0, VISIBLE_COUNT);
-
   return (
     <>
-      <section>
+      <section style={{ width: "calc(50% - 6px)" }}>
         <div
           style={{
             background: "#fff",
             border: "1px solid #E2E8F0",
-            borderRadius: 18,
+            borderRadius: 22,
             boxShadow: "none",
-            padding: 14,
+            padding: 12,
+            aspectRatio: "1 / 1",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: 8,
-              overflowX: "auto",
-              scrollbarWidth: "none",
-              margin: "0 -4px 12px",
-              padding: "0 4px 2px",
-            }}
-          >
-            <div style={{ flexShrink: 0, width: 52, display: "flex", flexDirection: "column", alignItems: "center", gap: 5 }}>
-              <button
-                onClick={() => setActiveFilter("new")}
-                aria-label="חדשים"
-                style={{
-                  width: 46,
-                  height: 46,
-                  borderRadius: "50%",
-                  background: activeFilter === "new" ? "#FEF3C7" : "#F8FAFC",
-                  border: `1px solid ${activeFilter === "new" ? "#FCD34D" : "#E2E8F0"}`,
-                  cursor: "pointer",
-                  fontSize: 18,
-                }}
-              >
-                ✨
-              </button>
-              <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 10, color: "#64748B", whiteSpace: "nowrap" }}>
-                חדשים
-              </span>
-            </div>
-
-            {categories.map((category) => (
-              <div key={category} style={{ flexShrink: 0, width: 52, display: "flex", flexDirection: "column", alignItems: "center", gap: 5 }}>
-                <button
-                  onClick={() => setActiveFilter(category)}
-                  aria-label={category}
-                  style={{
-                    width: 46,
-                    height: 46,
-                    borderRadius: "50%",
-                    background: activeFilter === category ? categoryBg(category) : "#F8FAFC",
-                    border: `1px solid ${activeFilter === category ? "#BFDBFE" : "#E2E8F0"}`,
-                    cursor: "pointer",
-                    fontSize: 20,
-                  }}
-                >
-                  {categoryEmoji(category)}
-                </button>
-                <span style={{ maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 10, color: "#64748B", whiteSpace: "nowrap" }}>
-                  {category}
-                </span>
-              </div>
-            ))}
-
-            <button
-              onClick={() => setAllOpen(true)}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <div
+              aria-label="הטבות"
               style={{
-                flexShrink: 0,
-                marginRight: "auto",
-                height: 46,
-                background: "#0F172A",
-                border: "1px solid #0F172A",
-                borderRadius: 99,
-                padding: "0 14px",
-                fontSize: 12,
-                fontWeight: 800,
-                color: "#fff",
-                fontFamily: "var(--font-rubik)",
-                cursor: "pointer",
-                whiteSpace: "nowrap",
+                width: 34,
+                height: 34,
+                borderRadius: 12,
+                background: "#FFF1F2",
+                border: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#BE123C",
               }}
             >
-              כל ההטבות
+              <Gift size={19} strokeWidth={2.1} />
+            </div>
+            <button
+              onClick={() => setAllOpen(true)}
+              aria-label="כל ההטבות"
+              style={{
+                width: 26,
+                height: 26,
+                borderRadius: "50%",
+                border: "1px solid #E2E8F0",
+                background: "#F8FAFC",
+                color: "#1E40AF",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                fontFamily: "var(--font-rubik)",
+                fontWeight: 900,
+                fontSize: 14,
+                lineHeight: 1,
+              }}
+            >
+              ←
             </button>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {visible.map((b) => (
-              <div
-                key={b.id}
-                onClick={() => setSelected(b)}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: 12,
-                  background: "#F8FAFC",
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  minHeight: 72,
-                  padding: 10,
-                  gap: 12,
-                }}
-              >
-                <div
-                  style={{
-                    flexShrink: 0,
-                    width: 52,
-                    height: 52,
-                    borderRadius: 10,
-                    background: categoryBg(b.category ?? ""),
-                    border: "1px solid #E2E8F0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 24,
-                  }}
-                >
-                  {categoryEmoji(b.category ?? "")}
-                </div>
-
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 3, minWidth: 0 }}>
-                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, lineHeight: 1.2, color: "#0F172A" }}>
-                    {b.business}
-                  </p>
-                  {b.business_description && (
-                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 12, color: "#94A3B8", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
-                      {b.business_description}
-                    </p>
-                  )}
-                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, color: "#1E40AF" }}>
-                    {b.deal}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div style={{ marginTop: "auto" }}>
+            <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 34, lineHeight: 1, color: "#0F172A" }}>
+              {benefits.length}
+            </p>
+            <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#64748B" }}>
+              הטבות פעילות
+            </p>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#1E40AF" }}>
+              {newThisWeek} חדשים השבוע
+            </p>
           </div>
         </div>
       </section>
