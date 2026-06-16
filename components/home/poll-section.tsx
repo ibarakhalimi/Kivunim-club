@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { MessageCircle } from "lucide-react";
 import { submitVote } from "@/app/actions/poll";
 import type { Tables } from "@/src/types/database";
 
@@ -172,6 +173,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
 
 export function PollSection({ poll, voteCounts, userVote }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const communityPolls: CommunityPoll[] = [
     {
       id: poll.id,
@@ -182,6 +184,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
     },
     ...DEMO_POLLS,
   ];
+  const totalAnswers = voteCounts.reduce((sum, count) => sum + count, 0);
 
   function handleScroll(event: React.UIEvent<HTMLDivElement>) {
     const element = event.currentTarget;
@@ -191,7 +194,117 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
   }
 
   return (
-    <section>
+    <>
+      <section style={{ width: "calc(50% - 6px)" }}>
+        <button
+          onClick={() => setDrawerOpen(true)}
+          style={{
+            width: "100%",
+            aspectRatio: "1 / 1",
+            background: "#fff",
+            border: "1px solid #E2E8F0",
+            borderRadius: 22,
+            boxShadow: "none",
+            padding: 12,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            textAlign: "right",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <div
+              aria-label="סקר"
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 12,
+                background: "#EEF2FF",
+                border: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#4338CA",
+              }}
+            >
+              <MessageCircle size={19} strokeWidth={2.1} />
+            </div>
+            <span
+              aria-hidden="true"
+              style={{
+                width: 26,
+                height: 26,
+                borderRadius: "50%",
+                border: "1px solid #E2E8F0",
+                background: "#F8FAFC",
+                color: "#1E40AF",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: "var(--font-rubik)",
+                fontWeight: 900,
+                fontSize: 14,
+                lineHeight: 1,
+              }}
+            >
+              ←
+            </span>
+          </div>
+
+          <div style={{ marginTop: "auto" }}>
+            <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.25, color: "#0F172A" }}>
+              {poll.question}
+            </p>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#64748B" }}>
+              {totalAnswers} אנשים ענו על הסקר
+            </p>
+          </div>
+        </button>
+      </section>
+
+      {drawerOpen && (
+        <>
+          <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div
+            style={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 51,
+              background: "#fff",
+              borderRadius: "16px 16px 0 0",
+              border: "1px solid #E2E8F0",
+              borderBottom: "none",
+              direction: "rtl",
+              maxHeight: "82dvh",
+              overflowY: "auto",
+              padding: "20px 14px 34px",
+            }}
+          >
+            <button
+              onClick={() => setDrawerOpen(false)}
+              style={{
+                position: "absolute",
+                top: 14,
+                left: 16,
+                width: 32,
+                height: 32,
+                background: "#F1F5F9",
+                border: "none",
+                borderRadius: "50%",
+                fontSize: 14,
+                cursor: "pointer",
+                color: "#64748B",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              ✕
+            </button>
+
       <div
         style={{
           background: "#fff",
@@ -243,6 +356,9 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
           ))}
         </div>
       </div>
-    </section>
+          </div>
+        </>
+      )}
+    </>
   );
 }
