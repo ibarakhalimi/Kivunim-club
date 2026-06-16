@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { CalendarDays } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
 type Event = Tables<"events">;
@@ -27,6 +26,14 @@ function formatDate(dateStr: string) {
     day: "numeric",
     month: "long",
   });
+}
+
+function formatTabDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return {
+    day: date.toLocaleDateString("he-IL", { day: "numeric" }),
+    month: date.toLocaleDateString("he-IL", { month: "short" }),
+  };
 }
 
 const drawerStyle: React.CSSProperties = {
@@ -112,76 +119,114 @@ export function EventsSection({ events }: { events: Event[] }) {
           }
         `}
       </style>
-      <section style={{ width: "calc(50% - 6px)" }}>
+      <section>
         <div
-          key={ev.id}
-          onClick={handleEventClick}
-          onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
-          onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
           style={{
-            border: "1px solid #E2E8F0",
-            borderRadius: 22,
-            boxShadow: "none",
-            overflow: "hidden",
-            aspectRatio: "1 / 1",
-            cursor: "pointer",
             background: "#fff",
-            touchAction: "pan-y",
-            userSelect: "none",
-            animation: "eventCardIn 0.22s ease",
+            border: "1px solid #E2E8F0",
+            borderRadius: 18,
+            boxShadow: "none",
+            padding: 14,
+            overflow: "hidden",
           }}
         >
-          <div style={{ padding: 12, display: "flex", flexDirection: "column", height: "100%", minWidth: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
-              <div
-                aria-label="אירוע קרוב"
-                style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: 12,
-                  background: "#ECFDF5",
-                  border: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#047857",
-                }}
-              >
-                <CalendarDays size={19} strokeWidth={2.1} />
-              </div>
-              <button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setAllOpen(true);
-                }}
-                aria-label="כל האירועים"
-                style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: "50%",
-                  border: "1px solid #E2E8F0",
-                  background: "#fff",
-                  color: "#1E40AF",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 900,
-                  fontSize: 14,
-                  lineHeight: 1,
-                }}
-              >
-                ←
-              </button>
+          <div style={{ display: "flex", alignItems: "stretch", gap: 10 }}>
+            <div
+              style={{
+                width: 58,
+                flexShrink: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                overflowY: "auto",
+                maxHeight: 278,
+                scrollbarWidth: "none",
+              }}
+            >
+              {displayEvents.map((event, i) => {
+                const active = i === activeIndex;
+                const tabDate = formatTabDate(event.event_date);
+                return (
+                  <button
+                    key={event.id}
+                    onClick={() => setActiveIndex(i)}
+                    style={{
+                      flexShrink: 0,
+                      border: `1px solid ${active ? "#BFDBFE" : "#E2E8F0"}`,
+                      borderRadius: 14,
+                      background: active ? "#EFF6FF" : "#F8FAFC",
+                      color: active ? "#1E40AF" : "#64748B",
+                      padding: "8px 7px",
+                      minHeight: 62,
+                      fontFamily: "var(--font-rubik)",
+                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <span style={{ fontWeight: 800, fontSize: 16, lineHeight: 1 }}>
+                      {tabDate.day}
+                    </span>
+                    <span style={{ fontWeight: 700, fontSize: 10, lineHeight: 1.1 }}>
+                      {tabDate.month}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            <div style={{ marginTop: "auto" }}>
-              <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 10, color: "#1E40AF" }}>
-                {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
-              </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, lineHeight: 1.18, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                {ev.title}
-              </p>
+
+            <div
+              key={ev.id}
+              onClick={handleEventClick}
+              onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
+              onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                border: "1px solid #E2E8F0",
+                borderRadius: 14,
+                overflow: "hidden",
+                cursor: "pointer",
+                background: "#F8FAFC",
+                touchAction: "pan-y",
+                userSelect: "none",
+                animation: "eventCardIn 0.22s ease",
+                minWidth: 0,
+              }}
+            >
+              <div
+                style={{
+                  height: 172,
+                  background: "#EFF6FF",
+                  overflow: "hidden",
+                }}
+              >
+                {ev.image_url ? (
+                  <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                ) : (
+                  <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 }}>
+                    📅
+                  </div>
+                )}
+              </div>
+
+              <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#1E40AF" }}>
+                  {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
+                </p>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, lineHeight: 1.22, color: "#0F172A" }}>
+                  {ev.title}
+                </p>
+                {ev.location && (
+                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#64748B" }}>
+                    📍 {ev.location}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>
