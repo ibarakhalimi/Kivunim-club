@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Coins } from "lucide-react";
 import supabase from "@/lib/supabase/client";
 
 type ProfileCardState = {
@@ -46,22 +46,33 @@ export function ProfileCard() {
           alignItems: "center",
           justifyContent: "space-between",
           gap: 10,
-          background: "#FFFFFF",
-          border: "1px solid #E2E8F0",
+          background: "transparent",
+          border: "none",
           borderRadius: 14,
           boxShadow: "none",
-          padding: "9px 11px",
+          padding: "5px 2px",
           minHeight: 64,
         }}
       >
         <div style={{ minWidth: 0 }}>
           <p
+            style={{
+              margin: "0 0 1px",
+              fontFamily: "var(--font-rubik)",
+              fontWeight: 700,
+              fontSize: 12,
+              color: "#64748B",
+            }}
+          >
+            וולקאם
+          </p>
+          <p
             suppressHydrationWarning
             style={{
-              margin: "0 0 3px",
+              margin: 0,
               fontFamily: "var(--font-rubik)",
-              fontWeight: 800,
-              fontSize: 18,
+              fontWeight: 900,
+              fontSize: 20,
               lineHeight: 1.15,
               color: "#0F172A",
               overflowWrap: "anywhere",
@@ -69,36 +80,23 @@ export function ProfileCard() {
           >
             {profile.name}
           </p>
-          <p
-            style={{
-              margin: 0,
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 600,
-              fontSize: 12,
-              color: "#64748B",
-            }}
-          >
-            סטודנט
-          </p>
         </div>
 
         <div
           style={{
             flexShrink: 0,
-            minWidth: 74,
-            borderRadius: 10,
-            background: "#EFF6FF",
-            border: "1px solid #BFDBFE",
+            minWidth: 78,
+            borderRadius: 20,
+            background: "#FCE7F3",
+            border: "none",
             padding: "7px 9px",
-            textAlign: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 7,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, marginBottom: 2 }}>
-            <Sparkles size={12} strokeWidth={2.2} color="#1E40AF" />
-            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 10, color: "#1E40AF" }}>
-              נקודות
-            </span>
-          </div>
+          <Coins size={18} strokeWidth={2.2} color="#DB2777" />
           <p
             suppressHydrationWarning
             style={{
@@ -107,10 +105,10 @@ export function ProfileCard() {
               fontWeight: 800,
               fontSize: 20,
               lineHeight: 1,
-              color: "#1E40AF",
+              color: "#DB2777",
             }}
           >
-            {profile.points.toLocaleString("he-IL")}
+            {(57).toLocaleString("he-IL")}
           </p>
         </div>
       </div>
