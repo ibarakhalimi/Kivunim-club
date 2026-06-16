@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Frank_Ruhl_Libre, Rubik } from "next/font/google";
 import "./globals.css";
 import SwRegister from "./sw-register";   // ← add this
-import { AppSplash } from "@/components/app-splash";
 
 const displayFont = Frank_Ruhl_Libre({
   variable: "--font-display",
@@ -36,7 +35,6 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SwRegister />   {/* ← add this */}
-        <AppSplash />
         {children}
       </body>
     </html>
