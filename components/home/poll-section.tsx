@@ -195,7 +195,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
 
   return (
     <>
-      <section style={{ width: "calc(50% - 6px)" }}>
+      <section style={{ width: "calc(50% - 4px)" }}>
         <button
           onClick={() => setDrawerOpen(true)}
           style={{

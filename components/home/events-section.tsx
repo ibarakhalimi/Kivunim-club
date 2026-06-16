@@ -112,7 +112,7 @@ export function EventsSection({ events }: { events: Event[] }) {
           }
         `}
       </style>
-      <section style={{ width: "calc(50% - 6px)" }}>
+      <section style={{ width: "calc(50% - 4px)" }}>
         <div
           key={ev.id}
           onClick={handleEventClick}

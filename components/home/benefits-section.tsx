@@ -66,7 +66,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
 
   return (
     <>
-      <section style={{ width: "calc(50% - 6px)" }}>
+      <section style={{ width: "calc(50% - 4px)" }}>
         <div
           style={{
             background: "#fff",
