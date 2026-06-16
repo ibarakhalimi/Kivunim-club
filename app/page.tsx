@@ -9,6 +9,7 @@ import { PollLoader } from "@/components/home/poll-loader";
 import { ProfileCard } from "@/components/home/profile-card";
 import { OpenHoursSection } from "@/components/home/open-hours-section";
 import { BottomNav } from "@/components/home/bottom-nav";
+import { CardSlider } from "@/components/home/card-slider";
 
 export default function HomePage() {
   return (
@@ -23,10 +24,15 @@ export default function HomePage() {
       <TopBar />
       <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: "6px 10px 0" }}>
         <ProfileCard />
+        <CardSlider />
+        <div style={{ marginTop: 4 }}>
+          <ActionsGrid />
+        </div>
         <OpenHoursSection />
-        <UpdateSection />
-        <ActionsGrid />
-        <EventsLoader />
+        <div style={{ display: "flex", gap: 12 }}>
+          <UpdateSection />
+          <EventsLoader />
+        </div>
         <div style={{ display: "flex", gap: 12 }}>
           <BenefitsLoader />
           <PollLoader />
