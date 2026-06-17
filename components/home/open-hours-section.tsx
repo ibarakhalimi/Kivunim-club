@@ -5,17 +5,32 @@ import { Camera, CheckCircle2, QrCode } from "lucide-react";
 import jsQR from "jsqr";
 import { checkIn } from "@/app/actions/check-in";
 
-const HOURS = [
-  { day: "ראשון", hours: "08:00-20:00", active: true },
-  { day: "שני", hours: "08:00-20:00", active: true },
-  { day: "שלישי", hours: "08:00-20:00", active: true },
-  { day: "רביעי", hours: "08:00-20:00", active: true },
-  { day: "חמישי", hours: "08:00-18:00", active: true },
-  { day: "שישי", hours: "סגור", active: false },
-  { day: "שבת", hours: "סגור", active: false },
-];
+export type OpeningHourRow = {
+  day_key: string;
+  day_label: string;
+  sort_order: number;
+  is_open: boolean;
+  open_time: string | null;
+  close_time: string | null;
+  note: string | null;
+};
 
-export function OpenHoursSection() {
+const DAY_KEYS_BY_JS_DAY = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+
+function formatTime(value: string | null) {
+  return value ? value.slice(0, 5) : "";
+}
+
+function formatHours(row: OpeningHourRow) {
+  if (!row.is_open) return "סגור";
+  const openTime = formatTime(row.open_time);
+  const closeTime = formatTime(row.close_time);
+  if (openTime && closeTime) return `${openTime}-${closeTime}`;
+  if (closeTime) return `עד ${closeTime}`;
+  return "פתוח";
+}
+
+export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
   const [toast, setToast] = useState(false);
   const [hoursOpen, setHoursOpen] = useState(false);
   const [checkInOpen, setCheckInOpen] = useState(false);
@@ -27,6 +42,11 @@ export function OpenHoursSection() {
   const streamRef = useRef<MediaStream | null>(null);
   const animationRef = useRef<number | null>(null);
   const completingRef = useRef(false);
+  const todayKey = DAY_KEYS_BY_JS_DAY[new Date().getDay()];
+  const today = rows.find((row) => row.day_key === todayKey) ?? rows[0];
+  const todayNote = today?.note?.trim() || null;
+  const isOpenToday = Boolean(today?.is_open);
+  const closeTime = formatTime(today?.close_time ?? null);
 
   useEffect(() => {
     if (!toast) return;
@@ -179,12 +199,32 @@ export function OpenHoursSection() {
                 flexShrink: 0,
               }}
             />
-            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 10, color: "#15803D" }}>
-              פתוח עכשיו
+            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 10, color: isOpenToday ? "#15803D" : "#64748B" }}>
+              {isOpenToday ? "פתוח עכשיו" : "סגור עכשיו"}
             </span>
+            {todayNote && (
+              <span
+                style={{
+                  borderRadius: 999,
+                  background: isOpenToday ? "#DCFCE7" : "#F1F5F9",
+                  color: isOpenToday ? "#15803D" : "#64748B",
+                  padding: "2px 7px",
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 900,
+                  fontSize: 10,
+                  lineHeight: 1.2,
+                  maxWidth: 130,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {todayNote}
+              </span>
+            )}
           </div>
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1, color: "#14532D" }}>
-            עד 20:00
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1, color: isOpenToday ? "#14532D" : "#475569" }}>
+            {isOpenToday && closeTime ? `עד ${closeTime}` : isOpenToday ? "פתוח" : "סגור"}
           </p>
         </div>
 
@@ -517,9 +557,9 @@ export function OpenHoursSection() {
               שעות פתיחה
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {HOURS.map((row) => (
+              {rows.map((row) => (
                 <div
-                  key={row.day}
+                  key={row.day_key}
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -527,14 +567,35 @@ export function OpenHoursSection() {
                     padding: "10px 14px",
                     borderRadius: 12,
                     border: "1px solid #E2E8F0",
-                    background: row.active ? "#F0FDF4" : "#F8FAFC",
+                    background: row.is_open ? "#F0FDF4" : "#F8FAFC",
                   }}
                 >
-                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#0F172A" }}>
-                    {row.day}
-                  </span>
-                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: row.active ? "#15803D" : "#94A3B8" }}>
-                    {row.hours}
+                  <div style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>
+                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#0F172A" }}>
+                      {row.day_label}
+                    </span>
+                    {row.note && (
+                      <span
+                        style={{
+                          borderRadius: 999,
+                          background: row.is_open ? "#DCFCE7" : "#E2E8F0",
+                          color: row.is_open ? "#15803D" : "#64748B",
+                          padding: "2px 7px",
+                          fontFamily: "var(--font-rubik)",
+                          fontWeight: 900,
+                          fontSize: 10,
+                          maxWidth: 120,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {row.note}
+                      </span>
+                    )}
+                  </div>
+                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: row.is_open ? "#15803D" : "#94A3B8", flexShrink: 0 }}>
+                    {formatHours(row)}
                   </span>
                 </div>
               ))}

@@ -8,6 +8,7 @@ export default function AdminPage() {
     { label: "פניות",   emoji: "✉️", href: "/admin/inquiries", bg: "#EEF2FF", color: "#4338CA" },
     { label: "רעיונות", emoji: "💡", href: "/admin/ideas", bg: "#FEFCE8", color: "#A16207" },
     { label: "הגעות",   emoji: "🚪", href: "/admin/check-ins", bg: "#FFF1F2", color: "#BE123C" },
+    { label: "הגדרות",  emoji: "⚙️", href: "/admin/settings", bg: "#F0FDF4", color: "#15803D" },
   ];
 
   return (

@@ -233,6 +233,39 @@ export type Database = {
         }
         Relationships: []
       }
+      opening_hours: {
+        Row: {
+          close_time: string | null
+          day_key: string
+          day_label: string
+          is_open: boolean
+          note: string | null
+          open_time: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          close_time?: string | null
+          day_key: string
+          day_label: string
+          is_open?: boolean
+          note?: string | null
+          open_time?: string | null
+          sort_order: number
+          updated_at?: string
+        }
+        Update: {
+          close_time?: string | null
+          day_key?: string
+          day_label?: string
+          is_open?: boolean
+          note?: string | null
+          open_time?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       poll_votes: {
         Row: {
           created_at: string

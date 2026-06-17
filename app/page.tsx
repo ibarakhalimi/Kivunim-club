@@ -6,7 +6,7 @@ import { EventsLoader } from "@/components/home/events-loader";
 import { ActionsGrid } from "@/components/home/actions-grid";
 import { PollLoader } from "@/components/home/poll-loader";
 import { ProfileCard } from "@/components/home/profile-card";
-import { OpenHoursSection } from "@/components/home/open-hours-section";
+import { OpenHoursLoader } from "@/components/home/open-hours-loader";
 import { CardSliderLoader } from "@/components/home/card-slider-loader";
 
 export default function HomePage() {
@@ -25,7 +25,7 @@ export default function HomePage() {
         <div style={{ marginTop: 14 }}>
           <ActionsGrid />
         </div>
-        <OpenHoursSection />
+        <OpenHoursLoader />
         <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 14 }}>
           <div style={{ display: "flex", gap: 8 }}>
             <UpdateSection />
