@@ -51,11 +51,11 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
           const baseStyle: React.CSSProperties = {
               flex: "0 0 100%",
               aspectRatio: "1.82 / 1",
-              borderRadius: 22,
+              borderRadius: 26,
               background: card.background_image_url
-                ? `linear-gradient(180deg, rgba(15,23,42,0.08), rgba(15,23,42,0.54)), url(${card.background_image_url}) center / cover`
-                : "linear-gradient(135deg, #1E293B, #4338CA)",
-              border: "1px solid #E2E8F0",
+                ? `linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.55)), url(${card.background_image_url}) center / cover`
+                : "radial-gradient(ellipse at 20% 20%, #2D3178 0%, #181A23 100%)",
+              border: "1px solid rgba(255,255,255,0.07)",
               scrollSnapAlign: "start",
               position: "relative",
               overflow: "hidden",
@@ -104,8 +104,9 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
                     maxWidth: "34%",
                     padding: "7px 12px",
                     borderRadius: 999,
-                    background: "rgba(255,255,255,0.92)",
-                    color: "#0F172A",
+                    background: "rgba(255,255,255,0.18)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "#fff",
                     fontFamily: "var(--font-rubik)",
                     fontWeight: 800,
                     fontSize: 12,
@@ -167,7 +168,7 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
               width: activeIndex === index ? 18 : 6,
               height: 6,
               borderRadius: 99,
-              background: activeIndex === index ? "#0F172A" : "rgba(15,23,42,0.18)",
+              background: activeIndex === index ? "#FFFFFF" : "rgba(255,255,255,0.25)",
               transition: "width 0.24s ease, background 0.24s ease",
             }}
           />
@@ -181,7 +182,7 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
           position: "fixed",
           inset: 0,
           zIndex: 1000,
-          background: "rgba(0,0,0,0.34)",
+          background: "rgba(0,0,0,0.55)",
           display: "flex",
           alignItems: "flex-end",
         }}
@@ -191,15 +192,17 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
           style={{
             width: "100%",
             maxHeight: "82dvh",
-            borderRadius: "22px 22px 0 0",
-            background: "#fff",
+            borderRadius: "26px 26px 0 0",
+            background: "#252836",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderBottom: "none",
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
             direction: "rtl",
           }}
         >
-          <div style={{ padding: "16px 18px 14px", borderBottom: "1px solid #F1F5F9", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ padding: "16px 18px 14px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: 10 }}>
             <button
               type="button"
               onClick={() => setSelectedPost(null)}
@@ -209,20 +212,20 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
                 height: 32,
                 borderRadius: "50%",
                 border: "none",
-                background: "#F1F5F9",
-                color: "#64748B",
+                background: "#2F3344",
+                color: "#9CA0AE",
                 cursor: "pointer",
               }}
             >
               ✕
             </button>
-            <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1.22, color: "#0F172A" }}>
+            <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1.22, color: "#FFFFFF" }}>
               {selectedPost.title}
             </h2>
           </div>
           <div style={{ padding: "18px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 16 }}>
             {selectedPost.body_text && (
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.75, color: "#334155", whiteSpace: "pre-wrap" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.75, color: "#9CA0AE", whiteSpace: "pre-wrap" }}>
                 {selectedPost.body_text}
               </p>
             )}
@@ -233,7 +236,7 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
                   alignSelf: "flex-start",
                   padding: "10px 16px",
                   borderRadius: 999,
-                  background: "#0F172A",
+                  background: "#FF2E9A",
                   color: "#fff",
                   textDecoration: "none",
                   fontFamily: "var(--font-rubik)",

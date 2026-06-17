@@ -8,6 +8,7 @@ import { PollLoader } from "@/components/home/poll-loader";
 import { ProfileCard } from "@/components/home/profile-card";
 import { OpenHoursLoader } from "@/components/home/open-hours-loader";
 import { CardSliderLoader } from "@/components/home/card-slider-loader";
+import { BottomNav } from "@/components/home/bottom-nav";
 
 export default function HomePage() {
   return (
@@ -15,28 +16,37 @@ export default function HomePage() {
       dir="rtl"
       style={{
         minHeight: "100dvh",
-        background: "#F8FAFC",
-        paddingBottom: 28,
+        background: "#181A23",
+        paddingBottom: 100,
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", gap: 10, padding: "6px 14px 0" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14, padding: "6px 22px 0" }}>
         <ProfileCard />
         <CardSliderLoader />
-        <div style={{ marginTop: 14 }}>
+        <div style={{ marginTop: 0 }}>
           <ActionsGrid />
         </div>
         <OpenHoursLoader />
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 14 }}>
-          <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2px 0 0" }}>
+          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 19, lineHeight: 1.2, color: "#FFFFFF" }}>
+            מה חדש
+          </h2>
+          <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#FF2E9A" }}>
+            הכל
+          </span>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 11, marginTop: -3 }}>
+          <div style={{ display: "flex", gap: 11 }}>
             <UpdateSection />
             <EventsLoader />
           </div>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", gap: 11 }}>
             <BenefitsLoader />
             <PollLoader />
           </div>
         </div>
       </div>
+      <BottomNav />
     </main>
   );
 }

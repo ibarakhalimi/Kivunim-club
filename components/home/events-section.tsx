@@ -34,9 +34,9 @@ const drawerStyle: React.CSSProperties = {
   position: "fixed",
   bottom: 0, left: 0, right: 0,
   zIndex: 51,
-  background: "#fff",
-  borderRadius: "16px 16px 0 0",
-  border: "1px solid #E2E8F0",
+  background: "#252836",
+  borderRadius: "26px 26px 0 0",
+  border: "1px solid rgba(255,255,255,0.06)",
   borderBottom: "none",
   direction: "rtl",
   maxHeight: "85dvh",
@@ -46,12 +46,12 @@ const drawerStyle: React.CSSProperties = {
 const closeBtn: React.CSSProperties = {
   position: "absolute", top: 14, left: 16,
   width: 32, height: 32,
-  background: "#F1F5F9",
+  background: "#2F3344",
   border: "none",
   borderRadius: "50%",
   fontSize: 14,
   cursor: "pointer",
-  color: "#64748B",
+  color: "#9CA0AE",
   display: "flex", alignItems: "center", justifyContent: "center",
 };
 
@@ -119,13 +119,13 @@ export function EventsSection({ events }: { events: Event[] }) {
           onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
           onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
           style={{
-            border: "1px solid #FFE4E6",
+            border: "1px solid rgba(255,255,255,0.06)",
             borderRadius: 22,
             boxShadow: "none",
             overflow: "hidden",
             aspectRatio: "1 / 1",
             cursor: "pointer",
-            background: "#fff",
+            background: "#252836",
             touchAction: "pan-y",
             userSelect: "none",
             animation: "eventCardIn 0.22s ease",
@@ -142,12 +142,12 @@ export function EventsSection({ events }: { events: Event[] }) {
                   width: 34,
                   height: 34,
                   borderRadius: 12,
-                  background: "#FFF1F2",
+                  background: "rgba(255,46,154,0.15)",
                   border: "none",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#BE123C",
+                  color: "#FF2E9A",
                 }}
               >
                 <CalendarDays size={19} strokeWidth={2.1} />
@@ -158,7 +158,7 @@ export function EventsSection({ events }: { events: Event[] }) {
                   height: 24,
                   borderRadius: "50%",
                   border: "none",
-                  background: "#BE123C",
+                  background: "#FF2E9A",
                   color: "#fff",
                   display: "inline-flex",
                   alignItems: "center",
@@ -174,10 +174,10 @@ export function EventsSection({ events }: { events: Event[] }) {
               </span>
             </div>
             <div style={{ marginTop: "auto" }}>
-              <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#BE123C" }}>
+              <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
                 {formatDate(ev.event_date)}
               </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
                 {ev.title}
               </p>
             </div>
@@ -185,12 +185,11 @@ export function EventsSection({ events }: { events: Event[] }) {
         </Link>
       </section>
 
-      {/* Event detail drawer */}
       {selected && (
         <>
-          <div onClick={() => setSelected(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div onClick={() => setSelected(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 50 }} />
           <div style={drawerStyle}>
-            <div style={{ width: "100%", height: 180, background: "#EFF6FF", position: "relative", flexShrink: 0 }}>
+            <div style={{ width: "100%", height: 180, background: "rgba(255,46,154,0.12)", position: "relative", flexShrink: 0 }}>
               {selected.image_url ? (
                 <img src={selected.image_url} alt={selected.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               ) : (
@@ -200,19 +199,19 @@ export function EventsSection({ events }: { events: Event[] }) {
             </div>
 
             <div style={{ padding: "20px 20px 40px" }}>
-              <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, color: "#94A3B8" }}>
+              <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, color: "#9CA0AE" }}>
                 {formatDate(selected.event_date)}{selected.start_hour ? ` · ${selected.start_hour}` : ""}
               </p>
-              <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 22, lineHeight: 1.2, color: "#0F172A" }}>
+              <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 22, lineHeight: 1.2, color: "#FFFFFF" }}>
                 {selected.title}
               </p>
               {selected.location && (
-                <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, color: "#64748B" }}>
+                <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, color: "#9CA0AE" }}>
                   📍 {selected.location}
                 </p>
               )}
               {selected.description && (
-                <p style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.75, color: "#334155", whiteSpace: "pre-wrap" }}>
+                <p style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.75, color: "#9CA0AE", whiteSpace: "pre-wrap" }}>
                   {selected.description}
                 </p>
               )}
@@ -226,7 +225,7 @@ export function EventsSection({ events }: { events: Event[] }) {
                     display: "block",
                     width: "100%",
                     padding: "14px 0",
-                    background: "#1E40AF",
+                    background: "#FF2E9A",
                     color: "#fff",
                     border: "none",
                     borderRadius: 10,
@@ -246,9 +245,9 @@ export function EventsSection({ events }: { events: Event[] }) {
                   style={{
                     width: "100%",
                     padding: "14px 0",
-                    background: "#F1F5F9",
-                    color: "#94A3B8",
-                    border: "1px solid #E2E8F0",
+                    background: "#2F3344",
+                    color: "#5A5E6B",
+                    border: "1px solid rgba(255,255,255,0.06)",
                     borderRadius: 10,
                     fontFamily: "var(--font-rubik)",
                     fontWeight: 600,
@@ -264,14 +263,13 @@ export function EventsSection({ events }: { events: Event[] }) {
         </>
       )}
 
-      {/* All events drawer */}
       {allOpen && (
         <>
-          <div onClick={() => setAllOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div onClick={() => setAllOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 50 }} />
           <div style={{ ...drawerStyle, padding: "24px 20px 48px" }}>
             <button onClick={() => setAllOpen(false)} style={closeBtn}>✕</button>
 
-            <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#0F172A" }}>
+            <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#FFFFFF" }}>
               כל האירועים
             </p>
 
@@ -281,10 +279,10 @@ export function EventsSection({ events }: { events: Event[] }) {
                   key={ev.id}
                   onClick={() => { setAllOpen(false); setSelected(ev); }}
                   style={{
-                    border: "1px solid #E2E8F0",
+                    border: "1px solid rgba(255,255,255,0.06)",
                     borderRadius: 12,
                     boxShadow: "none",
-                    background: "#fff",
+                    background: "#2F3344",
                     overflow: "hidden",
                     cursor: "pointer",
                     display: "flex",
@@ -293,16 +291,16 @@ export function EventsSection({ events }: { events: Event[] }) {
                     padding: 12,
                   }}
                 >
-                  <div style={{ width: 52, height: 52, borderRadius: 8, background: "#EFF6FF", flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>
+                  <div style={{ width: 52, height: 52, borderRadius: 8, background: "rgba(255,46,154,0.12)", flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>
                     {ev.image_url ? (
                       <img src={ev.image_url} alt={ev.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : "📅"}
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, lineHeight: 1.3, color: "#0F172A" }}>
+                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, lineHeight: 1.3, color: "#FFFFFF" }}>
                       {ev.title}
                     </p>
-                    <p style={{ margin: "3px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#94A3B8" }}>
+                    <p style={{ margin: "3px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 12, color: "#9CA0AE" }}>
                       {formatDate(ev.event_date)}{ev.start_hour ? ` · ${ev.start_hour}` : ""}
                     </p>
                   </div>

@@ -13,12 +13,12 @@ type Update = {
 };
 
 const CARD_COLORS = [
-  { bg: "#EFF6FF", accent: "#1E40AF" },
-  { bg: "#F0FDF4", accent: "#15803D" },
-  { bg: "#FFFBEB", accent: "#B45309" },
-  { bg: "#FFF1F2", accent: "#BE123C" },
-  { bg: "#F5F3FF", accent: "#6D28D9" },
-  { bg: "#ECFDF5", accent: "#059669" },
+  { bg: "#252836", accent: "#FB923C" },
+  { bg: "#252836", accent: "#34D399" },
+  { bg: "#252836", accent: "#A78BFA" },
+  { bg: "#252836", accent: "#FF2E9A" },
+  { bg: "#252836", accent: "#4DA3FF" },
+  { bg: "#252836", accent: "#D8F500" },
 ];
 
 function timeAgo(dateStr: string, currentTime: string): string {
@@ -79,14 +79,14 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
 
   if (displayUpdates.length === 0) {
     return (
-      <section style={{ width: "calc(50% - 4px)" }}>
+      <section style={{ width: "calc(50% - 5.5px)", flex: "0 0 calc(50% - 5.5px)", minWidth: 0 }}>
         <Link
           href="/updates"
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
-            background: "#fff",
-            border: "1px solid #FEF3C7",
+            background: "#252836",
+            border: "1px solid rgba(255,255,255,0.06)",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -105,12 +105,12 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 width: 34,
                 height: 34,
                 borderRadius: 12,
-                background: "#FFFBEB",
+                background: "rgba(251,146,60,0.15)",
                 border: "none",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#B45309",
+                color: "#FB923C",
               }}
             >
               <Megaphone size={21} strokeWidth={2.1} />
@@ -120,7 +120,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 minWidth: 24,
                 height: 24,
                 borderRadius: "50%",
-                background: "#B45309",
+                background: "#FF2E9A",
                 color: "#fff",
                 fontFamily: "var(--font-rubik)",
                 fontWeight: 800,
@@ -136,10 +136,10 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
           </div>
 
           <div style={{ marginTop: "auto" }}>
-            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#B45309" }}>
+            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
               עדכונים
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#FFFFFF" }}>
               אין עדכונים כרגע
             </p>
           </div>
@@ -169,14 +169,14 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
           }
         `}
       </style>
-      <section style={{ width: "calc(50% - 4px)" }}>
+      <section style={{ width: "calc(50% - 5.5px)", flex: "0 0 calc(50% - 5.5px)", minWidth: 0 }}>
         <Link
           href="/updates"
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
-            background: "#fff",
-            border: "1px solid #FEF3C7",
+            background: "#252836",
+            border: "1px solid rgba(255,255,255,0.06)",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -195,12 +195,12 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 width: 34,
                 height: 34,
                 borderRadius: 12,
-                background: "#FFFBEB",
+                background: "rgba(251,146,60,0.15)",
                 border: "none",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#B45309",
+                color: "#FB923C",
               }}
             >
               <Megaphone size={21} strokeWidth={2.1} />
@@ -210,7 +210,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 minWidth: 24,
                 height: 24,
                 borderRadius: "50%",
-                background: "#B45309",
+                background: "#FF2E9A",
                 color: "#fff",
                 fontFamily: "var(--font-rubik)",
                 fontWeight: 800,
@@ -226,10 +226,10 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
           </div>
 
           <div style={{ marginTop: "auto" }}>
-            <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#B45309" }}>
+            <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
               {timeAgo(firstUpdate.published_at, currentTime)}
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
               {firstUpdate.title}
             </p>
           </div>
@@ -238,7 +238,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
 
       {drawerOpen && (
         <>
-          <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 50 }} />
           <div
             style={{
               position: "fixed",
@@ -246,9 +246,9 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
               left: 0,
               right: 0,
               zIndex: 51,
-              background: "#fff",
-              borderRadius: "16px 16px 0 0",
-              border: "1px solid #E2E8F0",
+              background: "#252836",
+              borderRadius: "26px 26px 0 0",
+              border: "1px solid rgba(255,255,255,0.06)",
               borderBottom: "none",
               direction: "rtl",
               maxHeight: "82dvh",
@@ -264,12 +264,12 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 left: 16,
                 width: 32,
                 height: 32,
-                background: "#F1F5F9",
+                background: "#2F3344",
                 border: "none",
                 borderRadius: "50%",
                 fontSize: 14,
                 cursor: "pointer",
-                color: "#64748B",
+                color: "#9CA0AE",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -306,7 +306,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                   bottom: 0,
                   height: 214,
                   borderRadius: 14,
-                  border: "1px solid #E2E8F0",
+                  border: "1px solid rgba(255,255,255,0.06)",
                   background: stackColor,
                   boxShadow: "none",
                   transform: `translateY(-${depth * 3}px)`,
@@ -333,7 +333,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 width: "100%",
                 height: 214,
                 borderRadius: 14,
-                border: "1px solid #E2E8F0",
+                border: "1px solid rgba(255,255,255,0.06)",
                 boxShadow: "none",
                 background: activeColor.bg,
                 display: "flex",
@@ -356,7 +356,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                   fontWeight: 600,
                   fontSize: 13,
                   color: activeColor.accent,
-                  opacity: 0.7,
+                  opacity: 0.85,
                 }}
               >
                 {timeAgo(activeUpdate.published_at, currentTime)}
@@ -368,7 +368,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                   fontWeight: 800,
                   fontSize: 25,
                   lineHeight: 1.22,
-                  color: "#0F172A",
+                  color: "#FFFFFF",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: "vertical",
@@ -397,7 +397,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 width: activeIndex === i ? 18 : 6,
                 height: 6,
                 borderRadius: 99,
-                background: activeIndex === i ? activeColor.accent : "rgba(15,23,42,0.18)",
+                background: activeIndex === i ? activeColor.accent : "rgba(255,255,255,0.2)",
                 transition: "width 0.24s ease, background 0.24s ease",
               }}
             />
@@ -408,7 +408,6 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
         </>
       )}
 
-      {/* Modal */}
       {selected && (
         <div
           onClick={() => setSelected(null)}
@@ -416,7 +415,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             position: "fixed",
             inset: 0,
             zIndex: 1000,
-            background: "rgba(0,0,0,0.35)",
+            background: "rgba(0,0,0,0.55)",
             display: "flex",
             alignItems: "flex-end",
           }}
@@ -426,46 +425,45 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             style={{
               width: "100%",
               maxHeight: "85dvh",
-              borderRadius: "16px 16px 0 0",
-              background: "#fff",
-              border: "1px solid #E2E8F0",
+              borderRadius: "26px 26px 0 0",
+              background: "#252836",
+              border: "1px solid rgba(255,255,255,0.06)",
               borderBottom: "none",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
+              direction: "rtl",
             }}
           >
-            {/* Header */}
-            <div style={{ padding: "18px 20px 14px", borderBottom: "1px solid #F1F5F9", display: "flex", flexDirection: "column", gap: 5 }}>
+            <div style={{ padding: "18px 20px 14px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: 5 }}>
               <button
                 onClick={() => setSelected(null)}
                 style={{
                   alignSelf: "flex-start",
-                  background: "#F1F5F9",
+                  background: "#2F3344",
                   border: "none",
                   borderRadius: "50%",
                   width: 30,
                   height: 30,
                   fontSize: 14,
                   cursor: "pointer",
-                  color: "#64748B",
+                  color: "#9CA0AE",
                   display: "flex", alignItems: "center", justifyContent: "center",
                 }}
               >
                 ✕
               </button>
-              <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 19, color: "#0F172A" }}>
+              <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 19, color: "#FFFFFF" }}>
                 {selected.title}
               </h2>
               <p
                 suppressHydrationWarning
-                style={{ margin: 0, fontSize: 12, color: "#94A3B8", fontFamily: "var(--font-rubik)" }}
+                style={{ margin: 0, fontSize: 12, color: "#9CA0AE", fontFamily: "var(--font-rubik)" }}
               >
                 {timeAgo(selected.published_at, currentTime)} · {selected.author}
               </p>
             </div>
 
-            {/* Body */}
             <div style={{ padding: "18px 20px", overflowY: "auto", flex: 1 }}>
               <p
                 style={{
@@ -474,7 +472,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                   fontWeight: 400,
                   fontSize: 15,
                   lineHeight: 1.75,
-                  color: "#334155",
+                  color: "#9CA0AE",
                   whiteSpace: "pre-wrap",
                 }}
               >

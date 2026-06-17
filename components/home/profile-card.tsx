@@ -90,7 +90,7 @@ export function ProfileCard() {
               fontFamily: "var(--font-rubik)",
               fontWeight: 700,
               fontSize: 13,
-              color: "#64748B",
+              color: "#9CA0AE",
             }}
           >
             וולקאם
@@ -104,7 +104,7 @@ export function ProfileCard() {
               fontSize: 26,
               lineHeight: 1.04,
               letterSpacing: 0,
-              color: "#0F172A",
+              color: "#FFFFFF",
               overflowWrap: "anywhere",
             }}
           >
@@ -120,13 +120,13 @@ export function ProfileCard() {
               width: 42,
               height: 42,
               borderRadius: "50%",
-              background: "#FFEDD5",
-              border: "none",
+              background: "#252836",
+              border: "1px solid rgba(255,255,255,0.08)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              color: "#EA580C",
+              color: "#9CA0AE",
               flexShrink: 0,
             }}
           >
@@ -138,8 +138,8 @@ export function ProfileCard() {
               minWidth: 78,
               height: 42,
               borderRadius: 24,
-              background: "#FCE7F3",
-              border: "none",
+              background: "rgba(255,46,154,0.15)",
+              border: "1px solid rgba(255,46,154,0.25)",
               padding: "0 11px",
               display: "flex",
               alignItems: "center",
@@ -147,7 +147,7 @@ export function ProfileCard() {
               gap: 7,
             }}
           >
-            <Coins size={18} strokeWidth={2.2} color="#DB2777" />
+            <Coins size={18} strokeWidth={2.2} color="#FF2E9A" />
             <p
               suppressHydrationWarning
               style={{
@@ -156,7 +156,7 @@ export function ProfileCard() {
                 fontWeight: 800,
                 fontSize: 20,
                 lineHeight: 1,
-                color: "#DB2777",
+                color: "#FF2E9A",
               }}
             >
               {profile.points.toLocaleString("he-IL")}
@@ -169,7 +169,7 @@ export function ProfileCard() {
       <>
         <div
           onClick={() => setOpen(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 100 }}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100 }}
         />
         <div
           style={{
@@ -178,9 +178,9 @@ export function ProfileCard() {
             left: 0,
             right: 0,
             zIndex: 101,
-            background: "#fff",
-            borderRadius: "16px 16px 0 0",
-            border: "1px solid #E2E8F0",
+            background: "#252836",
+            borderRadius: "26px 26px 0 0",
+            border: "1px solid rgba(255,255,255,0.06)",
             borderBottom: "none",
             direction: "rtl",
             padding: "24px 20px 48px",
@@ -194,12 +194,12 @@ export function ProfileCard() {
               left: 16,
               width: 32,
               height: 32,
-              background: "#F1F5F9",
+              background: "#2F3344",
               border: "none",
               borderRadius: "50%",
               fontSize: 14,
               cursor: "pointer",
-              color: "#64748B",
+              color: "#9CA0AE",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -214,8 +214,8 @@ export function ProfileCard() {
                 width: 52,
                 height: 52,
                 borderRadius: "50%",
-                background: "#FFEDD5",
-                color: "#EA580C",
+                background: "#2F3344",
+                color: "#9CA0AE",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -225,10 +225,10 @@ export function ProfileCard() {
               <User size={24} strokeWidth={1.8} />
             </div>
             <div>
-              <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, color: "#0F172A" }}>
+              <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, color: "#FFFFFF" }}>
                 {profile.name}
               </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 13, color: "#64748B" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 13, color: "#9CA0AE" }}>
                 {profile.email ?? ""}
               </p>
             </div>
@@ -248,13 +248,13 @@ export function ProfileCard() {
                   justifyContent: "space-between",
                   alignItems: "center",
                   padding: "10px 14px",
-                  background: "#F8FAFC",
+                  background: "#2F3344",
                   borderRadius: 8,
-                  border: "1px solid #F1F5F9",
+                  border: "1px solid rgba(255,255,255,0.06)",
                 }}
               >
-                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 13, color: "#64748B" }}>{label}</span>
-                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#0F172A" }}>{value}</span>
+                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 13, color: "#9CA0AE" }}>{label}</span>
+                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#FFFFFF" }}>{value}</span>
               </div>
             ))}
           </div>
@@ -264,9 +264,9 @@ export function ProfileCard() {
             style={{
               width: "100%",
               padding: "13px 0",
-              background: "#fff",
-              color: "#DC2626",
-              border: "1px solid #FECACA",
+              background: "rgba(255,69,58,0.1)",
+              color: "#FF453A",
+              border: "1px solid rgba(255,69,58,0.3)",
               borderRadius: 10,
               fontFamily: "var(--font-rubik)",
               fontWeight: 700,

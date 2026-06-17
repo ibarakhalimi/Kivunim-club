@@ -77,8 +77,8 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
     <div
       style={{
         flex: "0 0 100%",
-        background: "linear-gradient(135deg, #EFF6FF 0%, #F8FAFC 100%)",
-        border: "1px solid #BFDBFE",
+        background: "#252836",
+        border: "1px solid rgba(255,255,255,0.06)",
         borderRadius: 14,
         padding: "14px",
         scrollSnapAlign: "start",
@@ -92,7 +92,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
           fontWeight: 800,
           fontSize: 17,
           lineHeight: 1.3,
-          color: "#0F172A",
+          color: "#FFFFFF",
         }}
       >
         {poll.question}
@@ -113,8 +113,8 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
                 style={{
                   borderRadius: 10,
                   overflow: "hidden",
-                  background: isChosen ? "#EFF6FF" : "#F8FAFC",
-                  border: `1px solid ${isChosen ? "#BFDBFE" : "#E2E8F0"}`,
+                  background: isChosen ? "rgba(139,92,246,0.12)" : "#2F3344",
+                  border: `1px solid ${isChosen ? "rgba(139,92,246,0.3)" : "rgba(255,255,255,0.06)"}`,
                 }}
               >
                 <div style={{ position: "relative", padding: "10px 12px" }}>
@@ -123,15 +123,15 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
                       position: "absolute",
                       inset: 0,
                       width: `${pct}%`,
-                      background: isChosen ? "rgba(30,64,175,0.08)" : "rgba(0,0,0,0.03)",
+                      background: isChosen ? "rgba(139,92,246,0.12)" : "rgba(255,255,255,0.04)",
                       transition: "width 0.4s ease",
                     }}
                   />
                   <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: isChosen ? 800 : 600, fontSize: 13, color: isChosen ? "#1E40AF" : "#475569" }}>
+                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: isChosen ? 800 : 600, fontSize: 13, color: isChosen ? "#A78BFA" : "#9CA0AE" }}>
                       {isChosen ? "✓ " : ""}{label}
                     </span>
-                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: isChosen ? "#1E40AF" : "#94A3B8" }}>
+                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: isChosen ? "#A78BFA" : "#7C808E" }}>
                       {pct}%
                     </span>
                   </div>
@@ -148,13 +148,13 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
               style={{
                 width: "100%",
                 padding: "10px 12px",
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
+                background: "#2F3344",
+                border: "1px solid rgba(255,255,255,0.06)",
                 borderRadius: 10,
                 fontFamily: "var(--font-rubik)",
                 fontWeight: 700,
                 fontSize: 13,
-                color: "#0F172A",
+                color: "#FFFFFF",
                 cursor: isPending ? "not-allowed" : "pointer",
                 textAlign: "right",
               }}
@@ -165,7 +165,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
         })}
       </div>
 
-      <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#94A3B8", textAlign: "center" }}>
+      <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#FF2E9A", textAlign: "center" }}>
         {total} אנשים כבר ענו על הסקר
       </p>
     </div>
@@ -202,8 +202,8 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
-            background: "#fff",
-            border: "1px solid #EDE9FE",
+            background: "#252836",
+            border: "1px solid rgba(255,255,255,0.06)",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -222,12 +222,12 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
                 width: 34,
                 height: 34,
                 borderRadius: 12,
-                background: "#F5F3FF",
+                background: "rgba(139,92,246,0.15)",
                 border: "none",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#7C3AED",
+                color: "#A78BFA",
               }}
             >
               <MessageCircle size={19} strokeWidth={2.1} />
@@ -238,7 +238,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
                 height: 24,
                 borderRadius: "50%",
                 border: "none",
-                background: "#7C3AED",
+                background: "#A78BFA",
                 color: "#fff",
                 display: "inline-flex",
                 alignItems: "center",
@@ -254,13 +254,13 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
           </div>
 
           <div style={{ marginTop: "auto" }}>
-            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#7C3AED" }}>
+            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
               סקר
             </p>
-            <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#0F172A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
               {poll.question}
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, lineHeight: 1.25, color: "#64748B", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, lineHeight: 1.25, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
               {totalAnswers} אנשים ענו על הסקר
             </p>
           </div>
@@ -269,7 +269,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
 
       {drawerOpen && (
         <>
-          <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }} />
+          <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 50 }} />
           <div
             style={{
               position: "fixed",
@@ -277,9 +277,9 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
               left: 0,
               right: 0,
               zIndex: 51,
-              background: "#fff",
-              borderRadius: "16px 16px 0 0",
-              border: "1px solid #E2E8F0",
+              background: "#252836",
+              borderRadius: "26px 26px 0 0",
+              border: "1px solid rgba(255,255,255,0.06)",
               borderBottom: "none",
               direction: "rtl",
               maxHeight: "82dvh",
@@ -295,12 +295,12 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
                 left: 16,
                 width: 32,
                 height: 32,
-                background: "#F1F5F9",
+                background: "#2F3344",
                 border: "none",
                 borderRadius: "50%",
                 fontSize: 14,
                 cursor: "pointer",
-                color: "#64748B",
+                color: "#9CA0AE",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -311,15 +311,15 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
 
       <div
         style={{
-          background: "#fff",
-          border: "1px solid #E2E8F0",
+          background: "#252836",
+          border: "1px solid rgba(255,255,255,0.06)",
           borderRadius: 18,
           boxShadow: "none",
           padding: 14,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#0F172A" }}>
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#FFFFFF" }}>
             פעילות קהילה
           </p>
           <div
@@ -327,17 +327,17 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              border: "1px solid #E2E8F0",
+              border: "1px solid rgba(255,255,255,0.06)",
               borderRadius: 99,
-              background: "#F8FAFC",
+              background: "#2F3344",
               padding: "4px 8px",
               fontFamily: "var(--font-rubik)",
               fontWeight: 800,
               fontSize: 11,
-              color: "#64748B",
+              color: "#9CA0AE",
             }}
           >
-            <span style={{ color: "#1E40AF" }}>{activeIndex + 1}</span>
+            <span style={{ color: "#A78BFA" }}>{activeIndex + 1}</span>
             <span>מתוך</span>
             <span>{communityPolls.length}</span>
           </div>
