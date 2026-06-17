@@ -1,63 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type SliderPost = {
   id: string;
   title: string;
-  link_url: string;
-  button_text: string;
-  background_image_url: string;
+  post_type: string;
+  body_text: string | null;
+  link_url: string | null;
+  button_text: string | null;
+  background_image_url: string | null;
 };
-
-const CARDS = [
-  {
-    id: "study-space",
-    title: "מרחבי למידה פתוחים השבוע",
-    link_url: "#",
-    button_text: "לפרטים",
-    background_image_url: "",
-    bg: "#EEF2FF",
-    accent: "#4338CA",
-  },
-  {
-    id: "community",
-    title: "פעילות קהילה חדשה בדרך",
-    link_url: "#",
-    button_text: "לפרטים",
-    background_image_url: "",
-    bg: "#ECFDF5",
-    accent: "#047857",
-  },
-  {
-    id: "benefits",
-    title: "הטבות שוות לסטודנטים",
-    link_url: "#",
-    button_text: "לפרטים",
-    background_image_url: "",
-    bg: "#FCE7F3",
-    accent: "#DB2777",
-  },
-  {
-    id: "exams",
-    title: "כלים שיעזרו בתקופת מבחנים",
-    link_url: "#",
-    button_text: "לפרטים",
-    background_image_url: "",
-    bg: "#FFFBEB",
-    accent: "#B45309",
-  },
-];
 
 export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const cards = posts.length > 0
-    ? posts.map((post, index) => ({
-        ...post,
-        bg: ["#EEF2FF", "#ECFDF5", "#FCE7F3", "#FFFBEB"][index % 4],
-        accent: ["#4338CA", "#047857", "#DB2777", "#B45309"][index % 4],
-      }))
-    : CARDS;
+  const [selectedPost, setSelectedPost] = useState<SliderPost | null>(null);
+  const cards = posts;
 
   function handleScroll(event: React.UIEvent<HTMLDivElement>) {
     const element = event.currentTarget;
@@ -66,7 +24,15 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
     setActiveIndex(Math.min(index, cards.length - 1));
   }
 
+  useEffect(() => {
+    document.body.style.overflow = selectedPost ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [selectedPost]);
+
+  if (cards.length === 0) return null;
+
   return (
+    <>
     <section style={{ overflow: "hidden" }}>
       <div
         onScroll={handleScroll}
@@ -79,15 +45,16 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
           scrollbarWidth: "none",
         }}
       >
-        {cards.map((card) => (
-          <a
-            key={card.id}
-            href={card.link_url}
-            style={{
+        {cards.map((card) => {
+          const hasButton = Boolean(card.link_url && card.button_text);
+          const opensSheet = card.post_type === "text_link";
+          const baseStyle: React.CSSProperties = {
               flex: "0 0 100%",
               aspectRatio: "1.82 / 1",
               borderRadius: 22,
-              background: card.background_image_url ? `linear-gradient(180deg, rgba(15,23,42,0.08), rgba(15,23,42,0.54)), url(${card.background_image_url}) center / cover` : card.bg,
+              background: card.background_image_url
+                ? `linear-gradient(180deg, rgba(15,23,42,0.08), rgba(15,23,42,0.54)), url(${card.background_image_url}) center / cover`
+                : "linear-gradient(135deg, #1E293B, #4338CA)",
               border: "1px solid #E2E8F0",
               scrollSnapAlign: "start",
               position: "relative",
@@ -96,49 +63,9 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
               display: "flex",
               alignItems: "flex-end",
               textDecoration: "none",
-            }}
-          >
-            {!card.background_image_url && (
-              <>
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(135deg, rgba(255,255,255,0.72), transparent 52%), repeating-linear-gradient(135deg, rgba(15,23,42,0.06) 0 1px, transparent 1px 15px)",
-                  }}
-                />
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    top: 18,
-                    left: 18,
-                    width: 74,
-                    height: 48,
-                    borderRadius: 16,
-                    border: `2px solid ${card.accent}`,
-                    opacity: 0.18,
-                    transform: "rotate(-8deg)",
-                  }}
-                />
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    top: 34,
-                    left: 62,
-                    width: 88,
-                    height: 54,
-                    borderRadius: 18,
-                    background: card.accent,
-                    opacity: 0.1,
-                    transform: "rotate(7deg)",
-                  }}
-                />
-              </>
-            )}
+              cursor: opensSheet || card.link_url ? "pointer" : "default",
+          };
+          const content = (
             <div
               style={{
                 position: "relative",
@@ -159,7 +86,7 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
                   fontWeight: 900,
                   fontSize: 23,
                   lineHeight: 1.16,
-                  color: card.background_image_url ? "#fff" : "#0F172A",
+                  color: "#fff",
                   textAlign: "right",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
@@ -170,28 +97,57 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
               >
                 {card.title}
               </h3>
-              <span
-                style={{
-                  flexShrink: 0,
-                  maxWidth: "34%",
-                  padding: "7px 12px",
-                  borderRadius: 999,
-                  background: card.background_image_url ? "rgba(255,255,255,0.92)" : card.accent,
-                  color: card.background_image_url ? "#0F172A" : "#fff",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 800,
-                  fontSize: 12,
-                  lineHeight: 1,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {card.button_text}
-              </span>
+              {hasButton && (
+                <span
+                  style={{
+                    flexShrink: 0,
+                    maxWidth: "34%",
+                    padding: "7px 12px",
+                    borderRadius: 999,
+                    background: "rgba(255,255,255,0.92)",
+                    color: "#0F172A",
+                    fontFamily: "var(--font-rubik)",
+                    fontWeight: 800,
+                    fontSize: 12,
+                    lineHeight: 1,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {card.button_text}
+                </span>
+              )}
             </div>
-          </a>
-        ))}
+          );
+
+          if (opensSheet) {
+            return (
+              <button
+                key={card.id}
+                type="button"
+                onClick={() => setSelectedPost(card)}
+                style={{ ...baseStyle, width: "100%", border: baseStyle.border, textAlign: "right" }}
+              >
+                {content}
+              </button>
+            );
+          }
+
+          if (card.link_url) {
+            return (
+              <a key={card.id} href={card.link_url} style={baseStyle}>
+                {content}
+              </a>
+            );
+          }
+
+          return (
+            <article key={card.id} style={baseStyle}>
+              {content}
+            </article>
+          );
+        })}
       </div>
 
       <div
@@ -218,5 +174,80 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
         ))}
       </div>
     </section>
+    {selectedPost && (
+      <div
+        onClick={() => setSelectedPost(null)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 1000,
+          background: "rgba(0,0,0,0.34)",
+          display: "flex",
+          alignItems: "flex-end",
+        }}
+      >
+        <div
+          onClick={(event) => event.stopPropagation()}
+          style={{
+            width: "100%",
+            maxHeight: "82dvh",
+            borderRadius: "22px 22px 0 0",
+            background: "#fff",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            direction: "rtl",
+          }}
+        >
+          <div style={{ padding: "16px 18px 14px", borderBottom: "1px solid #F1F5F9", display: "flex", flexDirection: "column", gap: 10 }}>
+            <button
+              type="button"
+              onClick={() => setSelectedPost(null)}
+              style={{
+                alignSelf: "flex-start",
+                width: 32,
+                height: 32,
+                borderRadius: "50%",
+                border: "none",
+                background: "#F1F5F9",
+                color: "#64748B",
+                cursor: "pointer",
+              }}
+            >
+              ✕
+            </button>
+            <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1.22, color: "#0F172A" }}>
+              {selectedPost.title}
+            </h2>
+          </div>
+          <div style={{ padding: "18px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 16 }}>
+            {selectedPost.body_text && (
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.75, color: "#334155", whiteSpace: "pre-wrap" }}>
+                {selectedPost.body_text}
+              </p>
+            )}
+            {selectedPost.link_url && selectedPost.button_text && (
+              <a
+                href={selectedPost.link_url}
+                style={{
+                  alignSelf: "flex-start",
+                  padding: "10px 16px",
+                  borderRadius: 999,
+                  background: "#0F172A",
+                  color: "#fff",
+                  textDecoration: "none",
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 900,
+                  fontSize: 13,
+                }}
+              >
+                {selectedPost.button_text}
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

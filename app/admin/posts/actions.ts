@@ -19,18 +19,20 @@ async function uploadBackgroundImage(file: File): Promise<string | null> {
 
 export async function addPost(formData: FormData) {
   const title = (formData.get("title") as string)?.trim();
-  const link_url = (formData.get("link_url") as string)?.trim();
-  const button_text = (formData.get("button_text") as string)?.trim();
+  const post_type = (formData.get("post_type") as string) === "text_link" ? "text_link" : "link";
+  const link_url = (formData.get("link_url") as string)?.trim() || null;
+  const button_text = (formData.get("button_text") as string)?.trim() || null;
+  const body_text = (formData.get("body_text") as string)?.trim() || null;
   const sort_order_raw = (formData.get("sort_order") as string)?.trim();
   const is_active = formData.get("is_active") === "on";
   const image = formData.get("background_image") as File | null;
 
-  if (!title || !link_url || !button_text || !image || image.size === 0) {
-    return { error: "יש למלא כותרת, לינק, טקסט כפתור ותמונת רקע" };
+  if (!title) {
+    return { error: "כותרת היא שדה חובה" };
   }
 
-  const background_image_url = await uploadBackgroundImage(image);
-  if (!background_image_url) {
+  const background_image_url = image && image.size > 0 ? await uploadBackgroundImage(image) : null;
+  if (image && image.size > 0 && !background_image_url) {
     return { error: "שגיאה בהעלאת תמונת הרקע" };
   }
 
@@ -38,10 +40,47 @@ export async function addPost(formData: FormData) {
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("posts")
-    .insert({ title, link_url, button_text, background_image_url, sort_order, is_active });
+    .insert({ title, post_type, body_text, link_url, button_text, background_image_url, sort_order, is_active });
 
   if (error) {
     return { error: "שגיאה בשמירת הפוסט" };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/posts");
+  return { success: true };
+}
+
+export async function updatePost(id: string, formData: FormData) {
+  const title = (formData.get("title") as string)?.trim();
+  const post_type = (formData.get("post_type") as string) === "text_link" ? "text_link" : "link";
+  const link_url = (formData.get("link_url") as string)?.trim() || null;
+  const button_text = (formData.get("button_text") as string)?.trim() || null;
+  const body_text = (formData.get("body_text") as string)?.trim() || null;
+  const sort_order_raw = (formData.get("sort_order") as string)?.trim();
+  const is_active = formData.get("is_active") === "on";
+  const existing_background_image_url = (formData.get("existing_background_image_url") as string)?.trim() || null;
+  const image = formData.get("background_image") as File | null;
+
+  if (!title) {
+    return { error: "כותרת היא שדה חובה" };
+  }
+
+  const uploadedImageUrl = image && image.size > 0 ? await uploadBackgroundImage(image) : null;
+  if (image && image.size > 0 && !uploadedImageUrl) {
+    return { error: "שגיאה בהעלאת תמונת הרקע" };
+  }
+
+  const sort_order = sort_order_raw ? Number(sort_order_raw) : 0;
+  const background_image_url = uploadedImageUrl ?? existing_background_image_url;
+  const supabase = createAdminClient();
+  const { error } = await supabase
+    .from("posts")
+    .update({ title, post_type, body_text, link_url, button_text, background_image_url, sort_order, is_active })
+    .eq("id", id);
+
+  if (error) {
+    return { error: `שגיאה בעדכון הפוסט: ${error.message}` };
   }
 
   revalidatePath("/");

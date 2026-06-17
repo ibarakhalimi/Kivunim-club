@@ -15,6 +15,7 @@ export function AddPostForm() {
   );
   const formRef = useRef<HTMLFormElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [postType, setPostType] = useState<"link" | "text_link">("link");
 
   useEffect(() => {
     if (!state.success) return;
@@ -26,7 +27,19 @@ export function AddPostForm() {
       <h2 style={headingStyle}>הוספת פוסט לסליידר</h2>
 
       <form ref={formRef} action={formAction} style={formStyle}>
-        <Field label="תמונת רקע *">
+        <Field label="סוג פוסט">
+          <select
+            name="post_type"
+            value={postType}
+            onChange={(event) => setPostType(event.target.value === "text_link" ? "text_link" : "link")}
+            style={inputStyle}
+          >
+            <option value="link">פוסט עם לינק</option>
+            <option value="text_link">פוסט עם טקסט ולינק</option>
+          </select>
+        </Field>
+
+        <Field label="תמונת רקע">
           <ImagePicker preview={preview} onPreview={setPreview} />
         </Field>
 
@@ -34,14 +47,23 @@ export function AddPostForm() {
           <input name="title" required placeholder="כותרת שתופיע על הכרטיס..." style={inputStyle} />
         </Field>
 
-        <Field label="לינק מקשר *">
-          <input name="link_url" required type="url" placeholder="https://..." style={{ ...inputStyle, direction: "ltr", textAlign: "left" }} />
-        </Field>
+        {postType === "text_link" && (
+          <Field label="טקסט ארוך">
+            <textarea name="body_text" rows={5} placeholder="תוכן מלא שיופיע בבוטום שיט..." style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }} />
+          </Field>
+        )}
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <Field label="טקסט כפתור *">
-            <input name="button_text" required placeholder="לפרטים נוספים" style={inputStyle} />
+          <Field label="לינק מקשר">
+            <input name="link_url" type="url" placeholder="https://..." style={{ ...inputStyle, direction: "ltr", textAlign: "left" }} />
           </Field>
+          <Field label="טקסט כפתור">
+            <input name="button_text" placeholder="לפרטים נוספים" style={inputStyle} />
+          </Field>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div />
           <Field label="סדר הצגה">
             <input name="sort_order" type="number" defaultValue={0} style={{ ...inputStyle, direction: "ltr", textAlign: "left" }} />
           </Field>
@@ -73,7 +95,6 @@ function ImagePicker({ preview, onPreview }: { preview: string | null; onPreview
         name="background_image"
         type="file"
         accept="image/*"
-        required
         style={{ display: "none" }}
         onChange={(event) => {
           const file = event.target.files?.[0];

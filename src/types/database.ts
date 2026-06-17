@@ -231,32 +231,38 @@ export type Database = {
       }
       posts: {
         Row: {
-          background_image_url: string
-          button_text: string
+          background_image_url: string | null
+          body_text: string | null
+          button_text: string | null
           created_at: string
           id: string
           is_active: boolean
-          link_url: string
+          link_url: string | null
+          post_type: string
           sort_order: number
           title: string
         }
         Insert: {
-          background_image_url: string
-          button_text: string
+          background_image_url?: string | null
+          body_text?: string | null
+          button_text?: string | null
           created_at?: string
           id?: string
           is_active?: boolean
-          link_url: string
+          link_url?: string | null
+          post_type?: string
           sort_order?: number
           title: string
         }
         Update: {
-          background_image_url?: string
-          button_text?: string
+          background_image_url?: string | null
+          body_text?: string | null
+          button_text?: string | null
           created_at?: string
           id?: string
           is_active?: boolean
-          link_url?: string
+          link_url?: string | null
+          post_type?: string
           sort_order?: number
           title?: string
         }
