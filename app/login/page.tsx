@@ -30,6 +30,13 @@ const inputStyle: React.CSSProperties = {
 
 export default function LoginPage() {
   const router = useRouter();
+  const [nextPath] = useState(() => {
+    if (typeof window === "undefined") return "/";
+    const params = new URLSearchParams(window.location.search);
+    return params.get("next") || "/";
+  });
+  const welcomeHref = nextPath !== "/" ? `/welcome?next=${encodeURIComponent(nextPath)}` : "/welcome";
+  const registerHref = nextPath !== "/" ? `/register?next=${encodeURIComponent(nextPath)}` : "/register";
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [phone, setPhone] = useState("");
@@ -41,7 +48,7 @@ export default function LoginPage() {
     setMessage(null);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}` },
     });
     setLoading(false);
     if (error) setMessage(error.message);
@@ -68,7 +75,7 @@ export default function LoginPage() {
     });
     setLoading(false);
     if (error) { setMessage(error.message); return; }
-    router.push("/");
+    router.push(nextPath);
   };
 
   return (
@@ -97,7 +104,7 @@ export default function LoginPage() {
         }}
       >
         <Link
-          href="/welcome"
+          href={welcomeHref}
           style={{
             position: "absolute",
             top: 52,
@@ -284,7 +291,7 @@ export default function LoginPage() {
       {/* Bottom link */}
       <p style={{ margin: "20px 0 0", textAlign: "center", fontFamily: "var(--font-rubik)", fontSize: 14, color: "#64748B" }}>
         עדיין לא חבר?{" "}
-        <Link href="/register" style={{ color: "#1E40AF", fontWeight: 700, textDecoration: "none" }}>
+        <Link href={registerHref} style={{ color: "#1E40AF", fontWeight: 700, textDecoration: "none" }}>
           הרשמה למועדון
         </Link>
       </p>

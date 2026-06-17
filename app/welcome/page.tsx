@@ -1,8 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { AuthRedirect } from "./auth-redirect";
 
-export default function WelcomePage() {
+type WelcomePageProps = {
+  searchParams?: Promise<{ next?: string }>;
+};
+
+export default async function WelcomePage({ searchParams }: WelcomePageProps) {
+  const params = await searchParams;
+  const nextPath = params?.next;
+  const loginHref = nextPath ? `/login?next=${encodeURIComponent(nextPath)}` : "/login";
+  const registerHref = nextPath ? `/register?next=${encodeURIComponent(nextPath)}` : "/register";
+
   return (
     <div
       style={{
@@ -16,7 +26,9 @@ export default function WelcomePage() {
         overflow: "hidden",
       }}
     >
-      <AuthRedirect />
+      <Suspense fallback={null}>
+        <AuthRedirect />
+      </Suspense>
 
       {/* Hero image */}
       <div style={{ position: "relative", width: "100%", height: "50dvh", flexShrink: 0 }}>
@@ -75,7 +87,7 @@ export default function WelcomePage() {
 
         {/* CTA buttons */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-          <Link href="/register" style={{ textDecoration: "none" }}>
+          <Link href={registerHref} style={{ textDecoration: "none" }}>
             <div
               style={{
                 width: "100%",
@@ -95,7 +107,7 @@ export default function WelcomePage() {
             </div>
           </Link>
 
-          <Link href="/login" style={{ textDecoration: "none" }}>
+          <Link href={loginHref} style={{ textDecoration: "none" }}>
             <div
               style={{
                 width: "100%",
