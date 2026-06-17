@@ -68,29 +68,35 @@ export function OpenHoursSection() {
   }
 
   async function startScanner() {
+    stopCamera();
     setScanError("");
 
-    if (!window.BarcodeDetector) {
+    if (!navigator.mediaDevices?.getUserMedia) {
       setScanState("error");
-      setScanError("הדפדפן הזה עדיין לא תומך בסריקת QR ישירה. אפשר לבדוק במכשיר נייד עם Chrome או Safari מעודכן.");
+      setScanError("הדפדפן לא מאפשר פתיחת מצלמה מהעמוד הזה. במובייל צריך לפתוח דרך HTTPS או localhost.");
       return;
     }
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: "environment" } },
-        audio: false,
-      });
-      streamRef.current = stream;
       setScanState("camera");
-
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
       const video = videoRef.current;
       if (!video) throw new Error("Video element is not ready");
 
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" } },
+        audio: false,
+      });
+      streamRef.current = stream;
+
       video.srcObject = stream;
       await video.play();
+
+      if (!window.BarcodeDetector) {
+        setScanError("המצלמה פתוחה, אבל הדפדפן הזה לא תומך בזיהוי QR אוטומטי. נסה לפתוח במכשיר עם Chrome/Safari מעודכן.");
+        return;
+      }
 
       const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
       scanQrFrame(detector);
@@ -363,8 +369,30 @@ export function OpenHoursSection() {
                           background: "#86EFAC",
                           borderRadius: 999,
                           animation: "kv-qr-scan 1.35s ease-in-out infinite",
+                          display: scanError ? "none" : "block",
                         }}
                       />
+                      {scanError && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: 14,
+                            right: 14,
+                            bottom: 14,
+                            borderRadius: 14,
+                            background: "rgba(15,23,42,0.82)",
+                            color: "#DCFCE7",
+                            padding: "10px 12px",
+                            fontFamily: "var(--font-rubik)",
+                            fontWeight: 700,
+                            fontSize: 12,
+                            lineHeight: 1.45,
+                            textAlign: "center",
+                          }}
+                        >
+                          {scanError}
+                        </div>
+                      )}
                     </>
                   ) : (
                     <div
@@ -390,21 +418,21 @@ export function OpenHoursSection() {
 
                 <button
                   onClick={startScanner}
-                  disabled={scanState === "camera" || isPending}
+                  disabled={(scanState === "camera" && !scanError) || isPending}
                   style={{
                     width: "100%",
                     border: "none",
                     borderRadius: 14,
-                    background: scanState === "camera" ? "#BBF7D0" : "#16A34A",
+                    background: scanState === "camera" && !scanError ? "#BBF7D0" : "#16A34A",
                     color: "#fff",
                     padding: "13px 16px",
                     fontFamily: "var(--font-rubik)",
                     fontWeight: 900,
                     fontSize: 14,
-                    cursor: scanState === "camera" || isPending ? "not-allowed" : "pointer",
+                    cursor: (scanState === "camera" && !scanError) || isPending ? "not-allowed" : "pointer",
                   }}
                 >
-                  {scanState === "camera" ? "מחפש QR..." : "פתח מצלמה לסריקה"}
+                  {scanState === "camera" && !scanError ? "מחפש QR..." : scanError ? "נסה שוב" : "פתח מצלמה לסריקה"}
                 </button>
               </>
             ) : (
