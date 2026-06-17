@@ -1,0 +1,81 @@
+:root {
+  --walkam-brand-primary: #FF2E9A;
+  --walkam-brand-primary-hover: #FF49A9;
+  --walkam-brand-primary-active: #E01F84;
+  --walkam-brand-primary-disabled: #7A2E5C;
+  --walkam-brand-on-primary: #FFFFFF;
+  --walkam-brand-accent: #D8F500;
+  --walkam-brand-accent-hover: #E4FF3A;
+  --walkam-brand-accent-active: #BCD600;
+  --walkam-brand-on-accent: #181A23;
+
+  --walkam-category-pink: #F8CCE4;
+  --walkam-category-mint: #B7EAD4;
+  --walkam-category-peach: #FAD7BA;
+  --walkam-category-rose: #F9CCE5;
+  --walkam-category-lime: #D8F500;
+  --walkam-category-on: #181A23;
+
+  --walkam-bg-canvas: #0F1016;
+  --walkam-bg-app: #181A23;
+  --walkam-bg-surface: #252836;
+  --walkam-bg-surface-alt: #2F3344;
+  --walkam-bg-nav: #1B1D27;
+  --walkam-bg-overlay: rgba(10,11,16,0.6);
+  --walkam-bg-scrim: rgba(0,0,0,0.45);
+
+  --walkam-text-primary: #FFFFFF;
+  --walkam-text-secondary: #9CA0AE;
+  --walkam-text-tertiary: #7C808E;
+  --walkam-text-link: #FF2E9A;
+  --walkam-text-disabled: #5A5E6B;
+
+  --walkam-border-subtle: rgba(255,255,255,0.06);
+  --walkam-border-default: #262936;
+  --walkam-border-strong: #343847;
+  --walkam-border-focus: #FF2E9A;
+  --walkam-border-on-light: rgba(24,26,35,0.10);
+
+  --walkam-state-success: #34D399;
+  --walkam-state-success-bg: rgba(52,211,153,0.14);
+  --walkam-state-error: #FF453A;
+  --walkam-state-error-bg: rgba(255,69,58,0.14);
+  --walkam-state-warning: #FFB84D;
+  --walkam-state-warning-bg: rgba(255,184,77,0.14);
+  --walkam-state-info: #4DA3FF;
+  --walkam-state-info-bg: rgba(77,163,255,0.14);
+
+  --walkam-radius-xs: 12px;
+  --walkam-radius-sm: 16px;
+  --walkam-radius-md: 20px;
+  --walkam-radius-lg: 26px;
+  --walkam-radius-xl: 28px;
+  --walkam-radius-pill: 999px;
+  --walkam-radius-circle: 50%;
+
+  --walkam-shadow-none: none;
+  --walkam-shadow-sm: 0 2px 8px rgba(0,0,0,0.20);
+  --walkam-shadow-md: 0 8px 24px rgba(0,0,0,0.30);
+  --walkam-shadow-sheet: 0 -12px 40px rgba(0,0,0,0.45);
+
+  --walkam-space-1: 2px;
+  --walkam-space-2: 4px;
+  --walkam-space-3: 8px;
+  --walkam-space-4: 11px;
+  --walkam-space-5: 14px;
+  --walkam-space-6: 16px;
+  --walkam-space-7: 20px;
+  --walkam-space-8: 22px;
+  --walkam-space-9: 24px;
+  --walkam-space-10: 32px;
+  --walkam-gutter: 22px;
+  --walkam-section-gap: 16px;
+  --walkam-card-gap: 11px;
+
+  --walkam-font-base: "Rubik", system-ui, "Segoe UI", Arial, sans-serif;
+  --walkam-motion-fast: 120ms;
+  --walkam-motion-base: 200ms;
+  --walkam-motion-slow: 320ms;
+  --walkam-motion-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --walkam-hit-target-min: 44px;
+}
