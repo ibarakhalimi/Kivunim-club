@@ -48,6 +48,17 @@ function EditUpdateForm({ update, onDone }: { update: Update; onDone: () => void
         <input name="author" defaultValue={update.author} style={inputStyle} />
       </div>
 
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          <label style={labelStyle}>לינק לכפתור</label>
+          <input name="button_link_url" type="url" defaultValue={update.button_link_url ?? ""} style={{ ...inputStyle, direction: "ltr", textAlign: "left" }} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          <label style={labelStyle}>טקסט לכפתור</label>
+          <input name="button_text" defaultValue={update.button_text ?? ""} style={inputStyle} />
+        </div>
+      </div>
+
       <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
         <input name="is_active" type="checkbox" defaultChecked={update.is_active} style={{ width: 16, height: 16, accentColor: "#B45309" }} />
         <span style={labelStyle}>מוצג באפליקציה</span>
@@ -107,6 +118,11 @@ function UpdateRow({ update }: { update: Update }) {
           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#475569", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
             {update.description}
           </p>
+          {update.button_link_url && update.button_text && (
+            <p style={{ margin: "8px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#B45309" }}>
+              כפתור: {update.button_text}
+            </p>
+          )}
 
           <div style={{ display: "flex", gap: 14, marginTop: 10, color: "#475569", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13 }}>
             <label style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: toggling ? "wait" : "pointer" }}>

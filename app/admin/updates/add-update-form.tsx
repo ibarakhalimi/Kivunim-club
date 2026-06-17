@@ -34,6 +34,14 @@ export function AddUpdateForm() {
         <Field label="מאת">
           <input name="author" placeholder="צוות כיוונים" style={inputStyle} />
         </Field>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <Field label="לינק לכפתור">
+            <input name="button_link_url" type="url" placeholder="https://..." style={{ ...inputStyle, direction: "ltr", textAlign: "left" }} />
+          </Field>
+          <Field label="טקסט לכפתור">
+            <input name="button_text" placeholder="לקריאה נוספת" style={inputStyle} />
+          </Field>
+        </div>
         <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
           <input name="is_active" type="checkbox" defaultChecked style={{ width: 16, height: 16, accentColor: "#B45309" }} />
           <span style={labelStyle}>מוצג באפליקציה</span>

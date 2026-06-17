@@ -271,6 +271,8 @@ export type Database = {
       updates: {
         Row: {
           author: string
+          button_link_url: string | null
+          button_text: string | null
           created_at: string
           description: string
           id: string
@@ -280,6 +282,8 @@ export type Database = {
         }
         Insert: {
           author?: string
+          button_link_url?: string | null
+          button_text?: string | null
           created_at?: string
           description: string
           id?: string
@@ -289,6 +293,8 @@ export type Database = {
         }
         Update: {
           author?: string
+          button_link_url?: string | null
+          button_text?: string | null
           created_at?: string
           description?: string
           id?: string

@@ -12,6 +12,8 @@ type Update = {
   description: string | null;
   published_at: string;
   author: string | null;
+  button_link_url: string | null;
+  button_text: string | null;
 };
 
 function formatDate(date: string) {
@@ -155,6 +157,27 @@ export default async function UpdatesPage() {
                 <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, lineHeight: 1.65, color: "#475569" }}>
                   {update.description}
                 </p>
+              )}
+              {update.button_link_url && update.button_text && (
+                <a
+                  href={update.button_link_url}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: 14,
+                    padding: "9px 14px",
+                    borderRadius: 999,
+                    background: "#B45309",
+                    color: "#fff",
+                    textDecoration: "none",
+                    fontFamily: "var(--font-rubik)",
+                    fontWeight: 900,
+                    fontSize: 13,
+                  }}
+                >
+                  {update.button_text}
+                </a>
               )}
             </article>
           </div>
