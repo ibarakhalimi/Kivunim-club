@@ -179,7 +179,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
     {
       id: poll.id,
       question: poll.question,
-      options: [poll.option_1, poll.option_2, poll.option_3, poll.option_4],
+      options: [poll.option_1, poll.option_2, poll.option_3, poll.option_4].filter(Boolean) as string[],
       counts: voteCounts,
       userVote,
     },

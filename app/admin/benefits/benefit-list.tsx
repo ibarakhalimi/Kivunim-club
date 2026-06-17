@@ -11,6 +11,15 @@ const CATEGORIES = ["בריאות", "כושר", "מסעדות"];
 
 const init = { error: undefined as string | undefined, success: false };
 
+function isExpired(expiresAt: string | null) {
+  if (!expiresAt) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const expiry = new Date(expiresAt);
+  expiry.setHours(0, 0, 0, 0);
+  return expiry < today;
+}
+
 function EditForm({ benefit, onDone }: { benefit: Benefit; onDone: () => void }) {
   const action = async (_prev: typeof init, fd: FormData) =>
     (await updateBenefit(benefit.id, fd)) as typeof init;
@@ -79,6 +88,7 @@ function BenefitRow({ benefit }: { benefit: Benefit }) {
   const [editing, setEditing] = useState(false);
   const [toggling, setToggling] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const expired = isExpired(benefit.expires_at);
 
   async function handleToggle() {
     setToggling(true);
@@ -93,7 +103,7 @@ function BenefitRow({ benefit }: { benefit: Benefit }) {
   }
 
   return (
-    <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.05)", padding: "14px 16px" }}>
+    <div style={{ background: "#fff", border: expired ? "1px solid #CBD5E1" : "1px solid #E2E8F0", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.05)", padding: "14px 16px", opacity: expired ? 0.78 : 1 }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div style={{ display: "flex", gap: 12, flex: 1, minWidth: 0 }}>
           <div style={{ flexShrink: 0 }}>
@@ -109,12 +119,17 @@ function BenefitRow({ benefit }: { benefit: Benefit }) {
               <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, color: "#0F172A" }}>
                 {benefit.business}
               </p>
-              <span style={{ fontSize: 11, fontWeight: 600, background: "#F1F5F9", color: "#475569", border: "1px solid #E2E8F0", padding: "2px 7px", borderRadius: 99 }}>
-                {benefit.category}
+              <span style={{ fontSize: 11, fontWeight: 600, background: expired ? "#F1F5F9" : "#F1F5F9", color: expired ? "#64748B" : "#475569", border: "1px solid #E2E8F0", padding: "2px 7px", borderRadius: 99 }}>
+                {expired ? "הטבות שהסתיימו" : benefit.category}
               </span>
               {!benefit.is_active && (
                 <span style={{ fontSize: 11, fontWeight: 600, background: "#FEE2E2", color: "#DC2626", border: "1px solid #FECACA", padding: "2px 7px", borderRadius: 99 }}>
                   לא פעיל
+                </span>
+              )}
+              {expired && (
+                <span style={{ fontSize: 11, fontWeight: 700, background: "#F1F5F9", color: "#64748B", border: "1px solid #CBD5E1", padding: "2px 7px", borderRadius: 99 }}>
+                  פג תוקף
                 </span>
               )}
             </div>
@@ -146,9 +161,25 @@ export function BenefitList({ benefits }: { benefits: Benefit[] }) {
   if (benefits.length === 0) {
     return <p style={{ color: "#64748B", fontSize: 14, fontFamily: "var(--font-rubik)" }}>אין הטבות עדיין.</p>;
   }
+  const activeBenefits = benefits.filter((benefit) => !isExpired(benefit.expires_at));
+  const expiredBenefits = benefits.filter((benefit) => isExpired(benefit.expires_at));
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-      {benefits.map((b) => <BenefitRow key={b.id} benefit={b} />)}
+    <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {activeBenefits.map((b) => <BenefitRow key={b.id} benefit={b} />)}
+      </div>
+
+      {expiredBenefits.length > 0 && (
+        <div>
+          <h3 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#64748B" }}>
+            הטבות שהסתיימו
+          </h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {expiredBenefits.map((b) => <BenefitRow key={b.id} benefit={b} />)}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

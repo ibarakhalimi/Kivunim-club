@@ -199,32 +199,35 @@ export type Database = {
       polls: {
         Row: {
           created_at: string
+          expires_at: string | null
           id: string
           is_active: boolean
           option_1: string
           option_2: string
-          option_3: string
-          option_4: string
+          option_3: string | null
+          option_4: string | null
           question: string
         }
         Insert: {
           created_at?: string
+          expires_at?: string | null
           id?: string
           is_active?: boolean
           option_1: string
           option_2: string
-          option_3: string
-          option_4: string
+          option_3?: string | null
+          option_4?: string | null
           question: string
         }
         Update: {
           created_at?: string
+          expires_at?: string | null
           id?: string
           is_active?: boolean
           option_1?: string
           option_2?: string
-          option_3?: string
-          option_4?: string
+          option_3?: string | null
+          option_4?: string | null
           question?: string
         }
         Relationships: []

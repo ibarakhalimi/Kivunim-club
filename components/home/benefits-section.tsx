@@ -28,6 +28,15 @@ function categoryBg(category: string): string {
   return CATEGORY_BG[category] ?? "#F8FAFC";
 }
 
+function isExpired(expiresAt: string | null) {
+  if (!expiresAt) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const expiry = new Date(expiresAt);
+  expiry.setHours(0, 0, 0, 0);
+  return expiry < today;
+}
+
 const drawerStyle: React.CSSProperties = {
   position: "fixed",
   bottom: 0, left: 0, right: 0,
@@ -56,12 +65,13 @@ const closeBtn: React.CSSProperties = {
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [selected, setSelected] = useState<Benefit | null>(null);
   const [allOpen, setAllOpen] = useState(false);
+  const currentBenefits = useMemo(() => benefits.filter((benefit) => !isExpired(benefit.expires_at)), [benefits]);
 
   const latestBenefit = useMemo(() => {
-    return [...benefits].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
-  }, [benefits]);
+    return [...currentBenefits].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
+  }, [currentBenefits]);
 
-  if (benefits.length === 0) return null;
+  if (currentBenefits.length === 0) return null;
 
   return (
     <>
@@ -119,7 +129,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 padding: 0,
               }}
             >
-              {benefits.length}
+              {currentBenefits.length}
             </span>
           </div>
 
@@ -223,7 +233,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {benefits.map((b) => (
+              {currentBenefits.map((b) => (
                 <div
                   key={b.id}
                   onClick={() => { setAllOpen(false); setSelected(b); }}

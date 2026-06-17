@@ -11,9 +11,10 @@ type PollItem = {
   question: string;
   option_1: string;
   option_2: string;
-  option_3: string;
-  option_4: string;
+  option_3: string | null;
+  option_4: string | null;
   is_active: boolean;
+  expires_at: string | null;
   created_at: string;
 };
 
@@ -38,6 +39,14 @@ function countsForPoll(votes: VoteItem[], pollId: string) {
     counts[vote.option_index - 1] += 1;
   });
   return counts;
+}
+
+function formatDeadline(date: string) {
+  return new Date(date).toLocaleDateString("he-IL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 }
 
 export default async function ActivitiesPage() {
@@ -144,6 +153,11 @@ export default async function ActivitiesPage() {
                     {poll.is_active ? "פעיל" : "סגור"}
                   </span>
                 </div>
+                {poll.expires_at && (
+                  <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#7C3AED" }}>
+                    מענה עד {formatDeadline(poll.expires_at)}
+                  </p>
+                )}
 
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {options.map((option, index) => {

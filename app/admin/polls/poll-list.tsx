@@ -12,6 +12,9 @@ function PollRow({ poll, votes }: { poll: Poll; votes: Vote[] }) {
   const [deleting, setDeleting] = useState(false);
   const options = [poll.option_1, poll.option_2, poll.option_3, poll.option_4];
   const total = votes.length;
+  const deadline = poll.expires_at
+    ? new Date(poll.expires_at).toLocaleDateString("he-IL", { day: "numeric", month: "long", year: "numeric" })
+    : null;
 
   return (
     <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.05)", padding: "14px 16px" }}>
@@ -48,6 +51,11 @@ function PollRow({ poll, votes }: { poll: Poll; votes: Vote[] }) {
           <p style={{ margin: "6px 0 0", fontSize: 12, color: "#94A3B8", fontFamily: "var(--font-rubik)", fontWeight: 500 }}>
             סה״כ הצבעות: {total}
           </p>
+          {deadline && (
+            <p style={{ margin: "4px 0 0", fontSize: 12, color: "#64748B", fontFamily: "var(--font-rubik)", fontWeight: 700 }}>
+              מענה עד {deadline}
+            </p>
+          )}
         </div>
 
         <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
