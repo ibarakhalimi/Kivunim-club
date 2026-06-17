@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Coins, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabase/client";
+import { getMyCheckInCount } from "@/app/actions/check-in";
 
 type ProfileCardState = {
   name: string;
@@ -14,16 +15,6 @@ type ProfileCardState = {
   study_year: string | null;
   region: string | null;
 };
-
-function readPoints(metadata: Record<string, unknown>): number {
-  const value = metadata.points ?? metadata.score;
-  if (typeof value === "number" && Number.isFinite(value)) return value;
-  if (typeof value === "string") {
-    const parsed = Number(value);
-    if (Number.isFinite(parsed)) return parsed;
-  }
-  return 0;
-}
 
 export function ProfileCard() {
   const router = useRouter();
@@ -46,7 +37,7 @@ export function ProfileCard() {
       const metadata = user.user_metadata ?? {};
       setProfile({
         name: typeof metadata.name === "string" && metadata.name.trim() ? metadata.name : "משתמש",
-        points: readPoints(metadata),
+        points: 0,
         email: user.email ?? null,
         phone: typeof metadata.phone === "string" ? metadata.phone : user.phone ?? null,
         institution: typeof metadata.institution === "string" ? metadata.institution : null,
@@ -54,6 +45,15 @@ export function ProfileCard() {
         region: typeof metadata.region === "string" ? metadata.region : null,
       });
     });
+
+    async function refreshCheckInCount() {
+      const result = await getMyCheckInCount();
+      setProfile((current) => ({ ...current, points: result.count }));
+    }
+
+    refreshCheckInCount();
+    window.addEventListener("check-in-created", refreshCheckInCount);
+    return () => window.removeEventListener("check-in-created", refreshCheckInCount);
   }, []);
 
   useEffect(() => {
@@ -159,7 +159,7 @@ export function ProfileCard() {
                 color: "#DB2777",
               }}
             >
-              {(57).toLocaleString("he-IL")}
+              {profile.points.toLocaleString("he-IL")}
             </p>
           </div>
         </div>

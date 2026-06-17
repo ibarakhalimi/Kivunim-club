@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { Camera, CheckCircle2, QrCode } from "lucide-react";
 import { checkIn } from "@/app/actions/check-in";
 
 const HOURS = [
@@ -13,10 +14,29 @@ const HOURS = [
   { day: "שבת", hours: "סגור", active: false },
 ];
 
+type BarcodeResult = { rawValue: string };
+type BarcodeDetectorInstance = {
+  detect(source: CanvasImageSource): Promise<BarcodeResult[]>;
+};
+type BarcodeDetectorConstructor = new (options?: { formats?: string[] }) => BarcodeDetectorInstance;
+
+declare global {
+  interface Window {
+    BarcodeDetector?: BarcodeDetectorConstructor;
+  }
+}
+
 export function OpenHoursSection() {
   const [toast, setToast] = useState(false);
   const [hoursOpen, setHoursOpen] = useState(false);
+  const [checkInOpen, setCheckInOpen] = useState(false);
+  const [scanState, setScanState] = useState<"intro" | "camera" | "welcome" | "error">("intro");
+  const [scanError, setScanError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const animationRef = useRef<number | null>(null);
+  const completingRef = useRef(false);
 
   useEffect(() => {
     if (!toast) return;
@@ -24,10 +44,102 @@ export function OpenHoursSection() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  function handleCheckIn() {
+  useEffect(() => {
+    if (checkInOpen) return;
+    stopCamera();
+  }, [checkInOpen]);
+
+  useEffect(() => () => stopCamera(), []);
+
+  function stopCamera() {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamRef.current = null;
+  }
+
+  function openCheckInSheet() {
+    setScanState("intro");
+    setScanError("");
+    completingRef.current = false;
+    setCheckInOpen(true);
+  }
+
+  async function startScanner() {
+    setScanError("");
+
+    if (!window.BarcodeDetector) {
+      setScanState("error");
+      setScanError("הדפדפן הזה עדיין לא תומך בסריקת QR ישירה. אפשר לבדוק במכשיר נייד עם Chrome או Safari מעודכן.");
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" } },
+        audio: false,
+      });
+      streamRef.current = stream;
+      setScanState("camera");
+
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+      const video = videoRef.current;
+      if (!video) throw new Error("Video element is not ready");
+
+      video.srcObject = stream;
+      await video.play();
+
+      const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
+      scanQrFrame(detector);
+    } catch {
+      stopCamera();
+      setScanState("error");
+      setScanError("לא הצלחתי לפתוח מצלמה. כדאי לבדוק הרשאות מצלמה ולנסות שוב.");
+    }
+  }
+
+  function scanQrFrame(detector: BarcodeDetectorInstance) {
+    const video = videoRef.current;
+    if (!video || completingRef.current) return;
+
+    detector
+      .detect(video)
+      .then((codes) => {
+        const qrPayload = codes[0]?.rawValue;
+        if (qrPayload) {
+          completeCheckIn(qrPayload);
+          return;
+        }
+        animationRef.current = requestAnimationFrame(() => scanQrFrame(detector));
+      })
+      .catch(() => {
+        animationRef.current = requestAnimationFrame(() => scanQrFrame(detector));
+      });
+  }
+
+  function completeCheckIn(qrPayload: string | null = null) {
+    if (completingRef.current) return;
+    completingRef.current = true;
+    stopCamera();
+
     startTransition(async () => {
-      await checkIn();
-      setToast(true);
+      const result = await checkIn({ source: qrPayload ? "qr" : "manual", qrPayload });
+      if (result?.error) {
+        completingRef.current = false;
+        setScanState("error");
+        setScanError(result.error);
+        return;
+      }
+
+      window.dispatchEvent(new Event("check-in-created"));
+      setScanState("welcome");
+      window.setTimeout(() => {
+        setCheckInOpen(false);
+        setToast(true);
+      }, 1450);
     });
   }
 
@@ -93,7 +205,7 @@ export function OpenHoursSection() {
           </button>
 
         <button
-          onClick={handleCheckIn}
+          onClick={openCheckInSheet}
           disabled={isPending}
           style={{
             width: "auto",
@@ -133,8 +245,205 @@ export function OpenHoursSection() {
             pointerEvents: "none",
           }}
         >
-          כיף שבאת, תהנה
+          כיף שבאת!
         </div>
+      )}
+
+      {checkInOpen && (
+        <>
+          <div
+            onClick={() => setCheckInOpen(false)}
+            style={{ position: "fixed", inset: 0, background: "rgba(15,23,42,0.38)", zIndex: 60 }}
+          />
+          <div
+            style={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 61,
+              background: "#fff",
+              borderRadius: "22px 22px 0 0",
+              border: "1px solid #DCFCE7",
+              borderBottom: "none",
+              direction: "rtl",
+              padding: "22px 18px 42px",
+              overflow: "hidden",
+            }}
+          >
+            <button
+              onClick={() => setCheckInOpen(false)}
+              style={{
+                position: "absolute",
+                top: 14,
+                left: 16,
+                width: 32,
+                height: 32,
+                background: "#F1F5F9",
+                border: "none",
+                borderRadius: "50%",
+                fontSize: 14,
+                cursor: "pointer",
+                color: "#64748B",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              ✕
+            </button>
+
+            {scanState !== "welcome" ? (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                  <div
+                    style={{
+                      width: 42,
+                      height: 42,
+                      borderRadius: 15,
+                      background: "#DCFCE7",
+                      color: "#16A34A",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <QrCode size={22} strokeWidth={2.4} />
+                  </div>
+                  <div>
+                    <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, color: "#0F172A" }}>
+                      צ׳קאין מהיר
+                    </p>
+                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#16A34A" }}>
+                      סריקת QR בכניסה
+                    </p>
+                  </div>
+                </div>
+
+                <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.55, color: "#475569" }}>
+                  הציגו את המצלמה מול קוד ה-QR שבכניסה. אחרי זיהוי מוצלח ההגעה תישמר אוטומטית באזור האישי ובדוח הניהול.
+                </p>
+
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "1.28 / 1",
+                    borderRadius: 20,
+                    background: "#0F172A",
+                    overflow: "hidden",
+                    marginBottom: 14,
+                  }}
+                >
+                  {scanState === "camera" ? (
+                    <>
+                      <video
+                        ref={videoRef}
+                        playsInline
+                        muted
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 22,
+                          border: "2px solid rgba(134,239,172,0.95)",
+                          borderRadius: 18,
+                          boxShadow: "0 0 0 999px rgba(15,23,42,0.28)",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: 34,
+                          right: 34,
+                          top: "50%",
+                          height: 2,
+                          background: "#86EFAC",
+                          borderRadius: 999,
+                          animation: "kv-qr-scan 1.35s ease-in-out infinite",
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <div
+                      style={{
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 10,
+                        color: "#DCFCE7",
+                        padding: 20,
+                        textAlign: "center",
+                      }}
+                    >
+                      <Camera size={34} strokeWidth={2.2} />
+                      <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13 }}>
+                        {scanState === "error" ? scanError : "המצלמה תיפתח כאן"}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  onClick={startScanner}
+                  disabled={scanState === "camera" || isPending}
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    borderRadius: 14,
+                    background: scanState === "camera" ? "#BBF7D0" : "#16A34A",
+                    color: "#fff",
+                    padding: "13px 16px",
+                    fontFamily: "var(--font-rubik)",
+                    fontWeight: 900,
+                    fontSize: 14,
+                    cursor: scanState === "camera" || isPending ? "not-allowed" : "pointer",
+                  }}
+                >
+                  {scanState === "camera" ? "מחפש QR..." : "פתח מצלמה לסריקה"}
+                </button>
+              </>
+            ) : (
+              <div
+                style={{
+                  minHeight: 280,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  gap: 12,
+                }}
+              >
+                <div
+                  style={{
+                    width: 78,
+                    height: 78,
+                    borderRadius: "50%",
+                    background: "#DCFCE7",
+                    color: "#16A34A",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    animation: "kv-welcome-pop 520ms var(--ease-default)",
+                  }}
+                >
+                  <CheckCircle2 size={42} strokeWidth={2.4} />
+                </div>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 28, color: "#14532D" }}>
+                  ברוך הבא
+                </p>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#16A34A" }}>
+                  ההגעה נשמרה בהצלחה
+                </p>
+              </div>
+            )}
+          </div>
+        </>
       )}
 
       {hoursOpen && (

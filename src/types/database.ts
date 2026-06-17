@@ -19,16 +19,22 @@ export type Database = {
           id: string
           user_id: string
           checked_in_at: string
+          source: string
+          qr_payload: string | null
         }
         Insert: {
           id?: string
           user_id: string
           checked_in_at?: string
+          source?: string
+          qr_payload?: string | null
         }
         Update: {
           id?: string
           user_id?: string
           checked_in_at?: string
+          source?: string
+          qr_payload?: string | null
         }
         Relationships: []
       }
