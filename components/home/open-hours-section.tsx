@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Camera, CheckCircle2, QrCode } from "lucide-react";
+import jsQR from "jsqr";
 import { checkIn } from "@/app/actions/check-in";
 
 const HOURS = [
@@ -14,18 +15,6 @@ const HOURS = [
   { day: "שבת", hours: "סגור", active: false },
 ];
 
-type BarcodeResult = { rawValue: string };
-type BarcodeDetectorInstance = {
-  detect(source: CanvasImageSource): Promise<BarcodeResult[]>;
-};
-type BarcodeDetectorConstructor = new (options?: { formats?: string[] }) => BarcodeDetectorInstance;
-
-declare global {
-  interface Window {
-    BarcodeDetector?: BarcodeDetectorConstructor;
-  }
-}
-
 export function OpenHoursSection() {
   const [toast, setToast] = useState(false);
   const [hoursOpen, setHoursOpen] = useState(false);
@@ -34,6 +23,7 @@ export function OpenHoursSection() {
   const [scanError, setScanError] = useState("");
   const [isPending, startTransition] = useTransition();
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const animationRef = useRef<number | null>(null);
   const completingRef = useRef(false);
@@ -93,13 +83,7 @@ export function OpenHoursSection() {
       video.srcObject = stream;
       await video.play();
 
-      if (!window.BarcodeDetector) {
-        setScanError("המצלמה פתוחה, אבל הדפדפן הזה לא תומך בזיהוי QR אוטומטי. נסה לפתוח במכשיר עם Chrome/Safari מעודכן.");
-        return;
-      }
-
-      const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
-      scanQrFrame(detector);
+      scanQrFrame();
     } catch {
       stopCamera();
       setScanState("error");
@@ -107,23 +91,38 @@ export function OpenHoursSection() {
     }
   }
 
-  function scanQrFrame(detector: BarcodeDetectorInstance) {
+  function scanQrFrame() {
     const video = videoRef.current;
     if (!video || completingRef.current) return;
 
-    detector
-      .detect(video)
-      .then((codes) => {
-        const qrPayload = codes[0]?.rawValue;
-        if (qrPayload) {
-          completeCheckIn(qrPayload);
-          return;
-        }
-        animationRef.current = requestAnimationFrame(() => scanQrFrame(detector));
-      })
-      .catch(() => {
-        animationRef.current = requestAnimationFrame(() => scanQrFrame(detector));
-      });
+    if (!video.videoWidth || !video.videoHeight) {
+      animationRef.current = requestAnimationFrame(scanQrFrame);
+      return;
+    }
+
+    const canvas = canvasRef.current ?? document.createElement("canvas");
+    canvasRef.current = canvas;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) {
+      animationRef.current = requestAnimationFrame(scanQrFrame);
+      return;
+    }
+
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+      inversionAttempts: "dontInvert",
+    });
+
+    if (code?.data) {
+      completeCheckIn(code.data);
+      return;
+    }
+
+    animationRef.current = requestAnimationFrame(scanQrFrame);
   }
 
   function completeCheckIn(qrPayload: string | null = null) {
