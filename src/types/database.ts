@@ -32,6 +32,69 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_inquiries: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          subject: string
+          user_email: string | null
+          user_id: string | null
+          user_name: string | null
+          user_phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          subject: string
+          user_email?: string | null
+          user_id?: string | null
+          user_name?: string | null
+          user_phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          subject?: string
+          user_email?: string | null
+          user_id?: string | null
+          user_name?: string | null
+          user_phone?: string | null
+        }
+        Relationships: []
+      }
+      idea_submissions: {
+        Row: {
+          created_at: string
+          id: string
+          idea_text: string
+          user_email: string | null
+          user_id: string | null
+          user_name: string | null
+          user_phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          idea_text: string
+          user_email?: string | null
+          user_id?: string | null
+          user_name?: string | null
+          user_phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          idea_text?: string
+          user_email?: string | null
+          user_id?: string | null
+          user_name?: string | null
+          user_phone?: string | null
+        }
+        Relationships: []
+      }
       benefits: {
         Row: {
           bg_color: string

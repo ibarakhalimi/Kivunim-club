@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CalendarDays, ClipboardList, Gift, Lightbulb, Phone, Plus, UserCheck } from "lucide-react";
+import { useActionState, useEffect, useState } from "react";
+import { CalendarDays, ClipboardList, FileText, Gift, Lightbulb, MessageCircle, Phone, Plus, UserCheck } from "lucide-react";
+import { submitContactInquiry } from "@/app/actions/contact";
+import { submitIdea } from "@/app/actions/ideas";
 
 const ALL_ACTIONS = [
   { Icon: Phone, label: "יצירת קשר", bg: "#EEF2FF", color: "#4338CA" },
@@ -10,6 +12,21 @@ const ALL_ACTIONS = [
   { Icon: Gift, label: "ההטבות שלי", bg: "#EEF2FF", color: "#4338CA" },
   { Icon: CalendarDays, label: "אירועים קרובים", bg: "#EEF2FF", color: "#4338CA" },
   { Icon: UserCheck, label: "בדיקת נוכחות", bg: "#EEF2FF", color: "#4338CA" },
+];
+
+const CONTACT_PHONE = "050-0000000";
+const WHATSAPP_URL = "https://wa.me/972500000000";
+const CONTACT_SUBJECTS = ["שאלה כללית", "הרשמה ופרטים", "הטבות", "אירועים", "בעיה באפליקציה", "אחר"];
+const contactInitialState = { error: undefined as string | undefined, success: false };
+const ideaInitialState = { error: undefined as string | undefined, success: false };
+const INFO_PAGES = [
+  { title: "זכאות למלגות", description: "מידע על תנאי זכאות, מועדים וטפסים להגשה." },
+  { title: "שעות פעילות המרכז", description: "פירוט שעות פתיחה, זמינות שירותים וימים מיוחדים." },
+  { title: "מרחבי למידה", description: "חדרים שקטים, עמדות עבודה והנחיות שימוש." },
+  { title: "סיוע אקדמי", description: "ליווי, שיעורי תגבור ותמיכה בתקופת מבחנים." },
+  { title: "הנפקת אישורים", description: "מסמכים נפוצים, אישורי לימודים ופניות מנהלתיות." },
+  { title: "הטבות ושיתופי פעולה", description: "כללים לשימוש בהטבות ומימוש מול עסקים." },
+  { title: "נהלי השתתפות באירועים", description: "הרשמה, ביטולים, הגעה ועדכונים חשובים." },
 ];
 
 const drawerStyle = (open: boolean): React.CSSProperties => ({
@@ -47,8 +64,97 @@ function Handle() {
   );
 }
 
+function ContactForm() {
+  const [state, formAction, pending] = useActionState(
+    async (_prev: typeof contactInitialState, formData: FormData) =>
+      (await submitContactInquiry(formData)) as typeof contactInitialState,
+    contactInitialState
+  );
+
+  return (
+    <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <label style={fieldLabelStyle}>נושא הפנייה *</label>
+        <select name="subject" required defaultValue="" style={fieldStyle}>
+          <option value="" disabled>בחר נושא...</option>
+          {CONTACT_SUBJECTS.map((subject) => (
+            <option key={subject} value={subject}>{subject}</option>
+          ))}
+        </select>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <label style={fieldLabelStyle}>הודעה *</label>
+        <textarea name="message" required rows={4} placeholder="כתוב כאן את ההודעה..." style={{ ...fieldStyle, resize: "vertical", lineHeight: 1.6 }} />
+      </div>
+
+      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 700 }}>{state.error}</p>}
+      {state.success && <p style={{ margin: 0, fontSize: 13, color: "#16A34A", fontWeight: 700 }}>✓ הפנייה נשלחה בהצלחה</p>}
+
+      <button
+        type="submit"
+        disabled={pending}
+        style={{
+          border: "none",
+          borderRadius: 12,
+          background: pending ? "#94A3B8" : "#4338CA",
+          color: "#fff",
+          padding: "12px 14px",
+          fontFamily: "var(--font-rubik)",
+          fontWeight: 900,
+          fontSize: 14,
+          cursor: pending ? "not-allowed" : "pointer",
+        }}
+      >
+        {pending ? "שולח..." : "שליחת פנייה"}
+      </button>
+    </form>
+  );
+}
+
+function IdeaForm() {
+  const [state, formAction, pending] = useActionState(
+    async (_prev: typeof ideaInitialState, formData: FormData) =>
+      (await submitIdea(formData)) as typeof ideaInitialState,
+    ideaInitialState
+  );
+
+  return (
+    <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <label style={fieldLabelStyle}>הרעיון שלך *</label>
+        <textarea name="idea_text" required rows={5} placeholder="כתוב כאן את הרעיון..." style={{ ...fieldStyle, resize: "vertical", lineHeight: 1.6 }} />
+      </div>
+
+      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 700 }}>{state.error}</p>}
+      {state.success && <p style={{ margin: 0, fontSize: 13, color: "#16A34A", fontWeight: 700 }}>✓ הרעיון נשלח בהצלחה</p>}
+
+      <button
+        type="submit"
+        disabled={pending}
+        style={{
+          border: "none",
+          borderRadius: 12,
+          background: pending ? "#94A3B8" : "#A16207",
+          color: "#fff",
+          padding: "12px 14px",
+          fontFamily: "var(--font-rubik)",
+          fontWeight: 900,
+          fontSize: 14,
+          cursor: pending ? "not-allowed" : "pointer",
+        }}
+      >
+        {pending ? "שולח..." : "שליחת רעיון"}
+      </button>
+    </form>
+  );
+}
+
 export function ActionsGrid() {
   const [actionsOpen, setActionsOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [ideaOpen, setIdeaOpen] = useState(false);
   const visibleActions = ALL_ACTIONS.slice(0, 3);
 
   useEffect(() => {
@@ -66,6 +172,11 @@ export function ActionsGrid() {
         {visibleActions.map((action) => (
           <button
             key={`contained-${action.label}`}
+            onClick={() => {
+              if (action.label === "יצירת קשר") setContactOpen(true);
+              if (action.label === "מידע חשוב") setInfoOpen(true);
+              if (action.label === "יש לי רעיון") setIdeaOpen(true);
+            }}
             style={{
               flex: 1,
               minWidth: 0,
@@ -175,6 +286,20 @@ export function ActionsGrid() {
           {ALL_ACTIONS.map((action) => (
             <button
               key={action.label}
+              onClick={() => {
+                if (action.label === "יצירת קשר") {
+                  setActionsOpen(false);
+                  setContactOpen(true);
+                }
+                if (action.label === "מידע חשוב") {
+                  setActionsOpen(false);
+                  setInfoOpen(true);
+                }
+                if (action.label === "יש לי רעיון") {
+                  setActionsOpen(false);
+                  setIdeaOpen(true);
+                }
+              }}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -198,6 +323,148 @@ export function ActionsGrid() {
           ))}
         </div>
       </div>
+
+      <div style={backdropStyle(contactOpen)} onClick={() => setContactOpen(false)} />
+      <div style={drawerStyle(contactOpen)}>
+        <Handle />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
+          <div>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#0F172A" }}>
+              יצירת קשר
+            </p>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#64748B" }}>
+              אנחנו כאן לכל שאלה או בקשה
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setContactOpen(false)}
+            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#F1F5F9", color: "#64748B", cursor: "pointer" }}
+          >
+            ✕
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 14 }}>
+          <a
+            href={`tel:${CONTACT_PHONE}`}
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 10px", borderRadius: 14, background: "#EEF2FF", color: "#4338CA", textDecoration: "none", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13 }}
+          >
+            <Phone size={18} strokeWidth={2.2} />
+            <span>{CONTACT_PHONE}</span>
+          </a>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 10px", borderRadius: 14, background: "#ECFDF5", color: "#047857", textDecoration: "none", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13 }}
+          >
+            <MessageCircle size={18} strokeWidth={2.2} />
+            <span>וואטסאפ</span>
+          </a>
+        </div>
+
+        <ContactForm />
+      </div>
+
+      <div style={backdropStyle(infoOpen)} onClick={() => setInfoOpen(false)} />
+      <div style={drawerStyle(infoOpen)}>
+        <Handle />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
+          <div>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#0F172A" }}>
+              מידע חשוב
+            </p>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#64748B" }}>
+              עמודי מידע ושירותים שימושיים
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setInfoOpen(false)}
+            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#F1F5F9", color: "#64748B", cursor: "pointer" }}
+          >
+            ✕
+          </button>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {INFO_PAGES.map((page) => (
+            <button
+              key={page.title}
+              type="button"
+              style={{
+                width: "100%",
+                border: "1px solid #E2E8F0",
+                borderRadius: 14,
+                background: "#F8FAFC",
+                padding: "12px",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                textAlign: "right",
+                cursor: "pointer",
+              }}
+            >
+              <span style={{ width: 36, height: 36, borderRadius: 12, background: "#EEF2FF", color: "#4338CA", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <FileText size={18} strokeWidth={2.15} />
+              </span>
+              <span style={{ minWidth: 0 }}>
+                <span style={{ display: "block", marginBottom: 3, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, color: "#0F172A" }}>
+                  {page.title}
+                </span>
+                <span style={{ display: "block", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, lineHeight: 1.35, color: "#64748B" }}>
+                  {page.description}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={backdropStyle(ideaOpen)} onClick={() => setIdeaOpen(false)} />
+      <div style={drawerStyle(ideaOpen)}>
+        <Handle />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
+          <div>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#0F172A" }}>
+              יש לי רעיון
+            </p>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#64748B" }}>
+              כתוב לנו רעיון לשיפור או פעילות חדשה
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIdeaOpen(false)}
+            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#F1F5F9", color: "#64748B", cursor: "pointer" }}
+          >
+            ✕
+          </button>
+        </div>
+
+        <IdeaForm />
+      </div>
     </>
   );
 }
+
+const fieldLabelStyle: React.CSSProperties = {
+  fontFamily: "var(--font-rubik)",
+  fontWeight: 700,
+  fontSize: 12,
+  color: "#475569",
+};
+
+const fieldStyle: React.CSSProperties = {
+  width: "100%",
+  border: "1px solid #CBD5E1",
+  borderRadius: 10,
+  background: "#fff",
+  padding: "10px 12px",
+  fontFamily: "var(--font-rubik)",
+  fontSize: 14,
+  color: "#0F172A",
+  outline: "none",
+  direction: "rtl",
+};
