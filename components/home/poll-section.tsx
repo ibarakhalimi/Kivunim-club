@@ -177,6 +177,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [openPollId, setOpenPollId] = useState<string | null>(null);
   const communityPolls: CommunityPoll[] = [
     {
       id: poll.id,
@@ -322,20 +323,56 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
                 </div>
               </div>
               <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                overflowX: "auto",
-                scrollSnapType: "x mandatory",
-                WebkitOverflowScrolling: "touch",
-                scrollbarWidth: "none",
-              }}
-            >
-              {communityPolls.map((item) => (
-                <PollCard key={item.id} poll={item} />
-              ))}
-            </div>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {communityPolls.map((item, index) => {
+                    const isOpen = openPollId === item.id;
+                    const total = item.counts.reduce((sum, count) => sum + count, 0);
+                    return (
+                      <article
+                        key={item.id}
+                        onClick={() => setOpenPollId((current) => current === item.id ? null : item.id)}
+                        style={{
+                          padding: "13px 0",
+                          borderBottom: index === communityPolls.length - 1 ? "none" : "1px solid rgba(167, 139, 250, 0.16)",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {!isOpen && (
+                          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                            <div
+                              style={{
+                                width: 42,
+                                height: 42,
+                                borderRadius: 14,
+                                background: "rgba(167, 139, 250, 0.14)",
+                                color: "#A78BFA",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexShrink: 0,
+                              }}
+                            >
+                              <MessageCircle size={20} strokeWidth={2.1} />
+                            </div>
+                            <div style={{ minWidth: 0, flex: 1 }}>
+                              <h3 style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
+                                {item.question}
+                              </h3>
+                              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
+                                {total} ענו · {item.options.length} אפשרויות
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                        {isOpen && (
+                          <div onClick={(event) => event.stopPropagation()}>
+                            <PollCard poll={item} />
+                          </div>
+                        )}
+                      </article>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           )}

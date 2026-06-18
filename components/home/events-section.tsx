@@ -56,6 +56,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
   const [selected, setSelected] = useState<ClubEvent | null>(null);
   const [allOpen, setAllOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [openEventId, setOpenEventId] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
 
@@ -280,49 +281,162 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
               <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
               {displayEvents.map((eventItem, index) => {
                 const dateParts = getDateParts(eventItem.event_date);
+                const isOpen = openEventId === eventItem.id;
+                const eventMeta = [eventItem.location, eventItem.start_hour].filter(Boolean).join(" · ");
+                const previewMeta = [eventItem.location, eventItem.start_hour].filter(Boolean).join(" · ");
                 return (
                   <article
                     key={eventItem.id}
+                    onClick={() => setOpenEventId((current) => current === eventItem.id ? null : eventItem.id)}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 12,
                       padding: "13px 0",
                       borderBottom: index === displayEvents.length - 1 ? "none" : "1px solid rgba(255, 46, 154, 0.16)",
+                      cursor: "pointer",
                     }}
                   >
-                    <div
-                      style={{
-                        width: 52,
-                        height: 58,
-                        borderRadius: 15,
-                        background: "rgba(255, 46, 154, 0.13)",
-                        color: "#FF2E9A",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                        fontFamily: "var(--font-rubik)",
-                      }}
-                    >
-                      <span style={{ fontWeight: 900, fontSize: 20, lineHeight: 1 }}>
-                        {dateParts.day}
-                      </span>
-                      <span style={{ marginTop: 4, fontWeight: 800, fontSize: 10, lineHeight: 1 }}>
-                        {dateParts.month}
-                      </span>
-                    </div>
-                    <div style={{ minWidth: 0 }}>
-                      <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
-                        {eventItem.title}
-                      </h3>
-                      {eventItem.location && (
-                        <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
-                          {eventItem.location}
-                        </p>
+                    {!isOpen && (
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <div
+                          style={{
+                            width: 52,
+                            height: 58,
+                            borderRadius: 15,
+                            background: "#2F3344",
+                            color: "#FFFFFF",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                            fontFamily: "var(--font-rubik)",
+                          }}
+                        >
+                          <span style={{ fontWeight: 900, fontSize: 20, lineHeight: 1 }}>
+                            {dateParts.day}
+                          </span>
+                          <span style={{ marginTop: 4, fontWeight: 800, fontSize: 10, lineHeight: 1 }}>
+                            {dateParts.month}
+                          </span>
+                        </div>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
+                            {eventItem.title}
+                          </h3>
+                          {previewMeta && (
+                            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
+                              {previewMeta}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {isOpen && (
+                      <div>
+                        <div
+                          style={{
+                            width: "100%",
+                            height: 174,
+                            borderRadius: 18,
+                            background: "rgba(255, 46, 154, 0.12)",
+                            overflow: "hidden",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "#FF2E9A",
+                            position: "relative",
+                          }}
+                        >
+                          {eventItem.image_url ? (
+                            <img src={eventItem.image_url} alt={eventItem.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                          ) : (
+                            <CalendarDays size={44} strokeWidth={2} />
+                          )}
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: 12,
+                              right: 12,
+                              width: 52,
+                              height: 58,
+                              borderRadius: 15,
+                              background: "#2F3344",
+                              color: "#FFFFFF",
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontFamily: "var(--font-rubik)",
+                              boxShadow: "0 10px 24px rgba(0,0,0,0.22)",
+                            }}
+                          >
+                            <span style={{ fontWeight: 900, fontSize: 20, lineHeight: 1 }}>
+                              {dateParts.day}
+                            </span>
+                            <span style={{ marginTop: 4, fontWeight: 800, fontSize: 10, lineHeight: 1 }}>
+                              {dateParts.month}
+                            </span>
+                          </div>
+                        </div>
+                        <h3 style={{ margin: "14px 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, lineHeight: 1.22, color: "#FFFFFF" }}>
+                          {eventItem.title}
+                        </h3>
+                        {eventItem.description && (
+                          <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, lineHeight: 1.7, color: "#C7CAD6", whiteSpace: "pre-wrap" }}>
+                            {eventItem.description}
+                          </p>
+                        )}
+                        {eventMeta && (
+                          <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#9CA0AE" }}>
+                            {eventMeta}
+                          </p>
+                        )}
+                        {eventItem.registration_url ? (
+                          <a
+                            href={eventItem.registration_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(event) => event.stopPropagation()}
+                            style={{
+                              display: "block",
+                              width: "100%",
+                              padding: "12px 14px",
+                              borderRadius: 14,
+                              background: "#FF2E9A",
+                              color: "#FFFFFF",
+                              fontFamily: "var(--font-rubik)",
+                              fontWeight: 900,
+                              fontSize: 14,
+                              textAlign: "center",
+                              textDecoration: "none",
+                              boxSizing: "border-box",
+                            }}
+                          >
+                            הרשמה לאירוע
+                          </a>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled
+                            onClick={(event) => event.stopPropagation()}
+                            style={{
+                              width: "100%",
+                              padding: "12px 14px",
+                              borderRadius: 14,
+                              border: "none",
+                              background: "#2F3344",
+                              color: "#7C808E",
+                              fontFamily: "var(--font-rubik)",
+                              fontWeight: 900,
+                              fontSize: 14,
+                              cursor: "not-allowed",
+                            }}
+                          >
+                            הרשמה לאירוע
+                          </button>
+                        )}
+                      </div>
                       )}
-                    </div>
                   </article>
                 );
               })}

@@ -21,12 +21,23 @@ const CATEGORY_BG: Record<string, string> = {
   "חינוך": "rgba(216,245,0,0.15)",
 };
 
+const CATEGORY_COLOR: Record<string, string> = {
+  "אוכל": "#EF4444", "קפה": "#FB923C", "ספורט": "#34D399",
+  "בריאות": "#4DA3FF", "יופי": "#A78BFA", "בידור": "#8B5CF6",
+  "קניות": "#FFBA58", "טכנולוגיה": "#34D399", "תחבורה": "#4DA3FF",
+  "חינוך": "#D8F500",
+};
+
 function categoryEmoji(category: string): string {
   return CATEGORY_EMOJI[category] ?? "🎁";
 }
 
 function categoryBg(category: string): string {
   return CATEGORY_BG[category] ?? "rgba(255,255,255,0.06)";
+}
+
+function categoryColor(category: string): string {
+  return CATEGORY_COLOR[category] ?? "#9CA0AE";
 }
 
 function isExpired(expiresAt: string | null) {
@@ -213,6 +224,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
               <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
               {currentBenefits.map((benefit, index) => {
                 const isOpen = openBenefitId === benefit.id;
+                const category = benefit.category ?? "";
                 return (
                   <article
                     key={benefit.id}
@@ -228,7 +240,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                     <div style={{ width: 42, height: 42, borderRadius: 14, background: categoryBg(benefit.category ?? ""), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
                       {categoryEmoji(benefit.category ?? "")}
                     </div>
-                    <div style={{ minWidth: 0 }}>
+                    <div style={{ minWidth: 0, flex: 1 }}>
                       <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
                         {benefit.business}
                       </p>
@@ -241,6 +253,25 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                         </p>
                       )}
                     </div>
+                    {category && (
+                      <span
+                        style={{
+                          alignSelf: "flex-start",
+                          flexShrink: 0,
+                          borderRadius: 999,
+                          background: categoryBg(category),
+                          color: categoryColor(category),
+                          padding: "5px 9px",
+                          fontFamily: "var(--font-rubik)",
+                          fontWeight: 900,
+                          fontSize: 10,
+                          lineHeight: 1,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {category}
+                      </span>
+                    )}
                   </article>
                 );
               })}
