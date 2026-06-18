@@ -6,21 +6,6 @@ import type { Tables } from "@/src/types/database";
 
 type Event = Tables<"events">;
 
-const TEMP_EVENTS: Event[] = [
-  {
-    id: "temp-event-study-night",
-    title: "ליל למידה פתוח",
-    description: "מרחב למידה שקט עם קפה, נשנושים וחדרים לעבודה בקבוצות לקראת תקופת המבחנים.",
-    event_date: "2026-06-18",
-    start_hour: "18:00",
-    location: "מרכז כיוונים, קומה 2",
-    registration_url: null,
-    image_url: null,
-    is_featured: true,
-    created_at: "2026-06-15T00:00:00.000Z",
-  },
-];
-
 const GRID_EXPAND_EVENT = "home-grid-expand";
 
 function formatDate(dateStr: string) {
@@ -29,6 +14,14 @@ function formatDate(dateStr: string) {
     day: "numeric",
     month: "long",
   });
+}
+
+function getDateParts(dateStr: string) {
+  const date = new Date(dateStr);
+  return {
+    day: date.toLocaleDateString("he-IL", { day: "numeric" }),
+    month: date.toLocaleDateString("he-IL", { month: "short" }),
+  };
 }
 
 const drawerStyle: React.CSSProperties = {
@@ -66,7 +59,7 @@ export function EventsSection({ events }: { events: Event[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
 
-  const displayEvents = [...events, ...TEMP_EVENTS];
+  const displayEvents = events;
   const ev = displayEvents[activeIndex] ?? displayEvents[0];
 
   function showNextEvent() {
@@ -115,6 +108,44 @@ export function EventsSection({ events }: { events: Event[] }) {
     return () => window.removeEventListener(GRID_EXPAND_EVENT, handleExpand);
   }, []);
 
+  if (!ev) {
+    return (
+      <section ref={sectionRef} style={{ width: "100%", gridColumn: expanded ? "1 / -1" : undefined, minWidth: 0, boxSizing: "border-box", transition: "grid-column 0.24s ease", scrollMarginTop: 14 }}>
+        <button
+          type="button"
+          onClick={handleEventClick}
+          style={{
+            width: "100%",
+            aspectRatio: expanded ? "auto" : "1 / 1",
+            minHeight: expanded ? 120 : undefined,
+            border: "none",
+            borderRadius: 22,
+            background: expanded ? "transparent" : "#252836",
+            padding: expanded ? 0 : 12,
+            color: "#FFFFFF",
+            textAlign: "right",
+            font: "inherit",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: expanded ? 14 : 0, paddingInline: expanded ? 2 : 0 }}>
+            <CalendarDays size={22} color="#FF2E9A" strokeWidth={2.2} />
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: expanded ? 22 : 15, color: "#FFFFFF" }}>
+              אירועים
+            </p>
+          </div>
+          {expanded && (
+            <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 15, color: "#9CA0AE" }}>
+                אין אירועים להצגה כרגע
+              </p>
+            </div>
+          )}
+        </button>
+      </section>
+    );
+  }
+
   return (
     <>
       <style>
@@ -131,7 +162,7 @@ export function EventsSection({ events }: { events: Event[] }) {
           }
         `}
       </style>
-      <section ref={sectionRef} style={{ width: expanded ? "100%" : "calc(50% - 5.5px)", flex: expanded ? "0 0 100%" : "0 0 calc(50% - 5.5px)", minWidth: 0, boxSizing: "border-box", transition: "flex-basis 0.24s ease, width 0.24s ease", scrollMarginTop: 14 }}>
+      <section ref={sectionRef} style={{ width: "100%", gridColumn: expanded ? "1 / -1" : undefined, minWidth: 0, boxSizing: "border-box", transition: "grid-column 0.24s ease", scrollMarginTop: 14 }}>
         <div
           style={{
             width: "100%",
@@ -247,32 +278,54 @@ export function EventsSection({ events }: { events: Event[] }) {
                 </p>
               </div>
               <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-              {displayEvents.map((eventItem, index) => (
-                <article
-                  key={eventItem.id}
-                  style={{
-                    padding: "13px 0",
-                    borderBottom: index === displayEvents.length - 1 ? "none" : "1px solid rgba(255, 46, 154, 0.16)",
-                  }}
-                >
-                  <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
-                    {formatDate(eventItem.event_date)}
-                  </p>
-                  <h3 style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
-                    {eventItem.title}
-                  </h3>
-                  {eventItem.location && (
-                    <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
-                      {eventItem.location}
-                    </p>
-                  )}
-                  {eventItem.description && (
-                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6" }}>
-                      {eventItem.description}
-                    </p>
-                  )}
-                </article>
-              ))}
+              {displayEvents.map((eventItem, index) => {
+                const dateParts = getDateParts(eventItem.event_date);
+                return (
+                  <article
+                    key={eventItem.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      padding: "13px 0",
+                      borderBottom: index === displayEvents.length - 1 ? "none" : "1px solid rgba(255, 46, 154, 0.16)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 52,
+                        height: 58,
+                        borderRadius: 15,
+                        background: "rgba(255, 46, 154, 0.13)",
+                        color: "#FF2E9A",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                        fontFamily: "var(--font-rubik)",
+                      }}
+                    >
+                      <span style={{ fontWeight: 900, fontSize: 20, lineHeight: 1 }}>
+                        {dateParts.day}
+                      </span>
+                      <span style={{ marginTop: 4, fontWeight: 800, fontSize: 10, lineHeight: 1 }}>
+                        {dateParts.month}
+                      </span>
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
+                        {eventItem.title}
+                      </h3>
+                      {eventItem.location && (
+                        <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
+                          {eventItem.location}
+                        </p>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
               </div>
             </div>
           )}

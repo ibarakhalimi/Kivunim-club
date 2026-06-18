@@ -41,6 +41,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
   const [selected, setSelected] = useState<Update | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [openUpdateId, setOpenUpdateId] = useState<string | null>(null);
   const displayUpdates = updates;
 
   function expandThisCard() {
@@ -101,7 +102,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
 
   if (displayUpdates.length === 0) {
     return (
-      <section ref={sectionRef} style={{ width: expanded ? "100%" : "calc(50% - 5.5px)", flex: expanded ? "0 0 100%" : "0 0 calc(50% - 5.5px)", minWidth: 0, boxSizing: "border-box", transition: "flex-basis 0.24s ease, width 0.24s ease", scrollMarginTop: 14 }}>
+      <section ref={sectionRef} style={{ width: "100%", gridColumn: expanded ? "1 / -1" : undefined, minWidth: 0, boxSizing: "border-box", transition: "grid-column 0.24s ease", scrollMarginTop: 14 }}>
         <button
           type="button"
           onClick={expandThisCard}
@@ -201,7 +202,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
           }
         `}
       </style>
-      <section ref={sectionRef} style={{ width: expanded ? "100%" : "calc(50% - 5.5px)", flex: expanded ? "0 0 100%" : "0 0 calc(50% - 5.5px)", minWidth: 0, boxSizing: "border-box", transition: "flex-basis 0.24s ease, width 0.24s ease", scrollMarginTop: 14 }}>
+      <section ref={sectionRef} style={{ width: "100%", gridColumn: expanded ? "1 / -1" : undefined, minWidth: 0, boxSizing: "border-box", transition: "grid-column 0.24s ease", scrollMarginTop: 14 }}>
         <div
           style={{
             width: "100%",
@@ -308,25 +309,45 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 </p>
               </div>
               <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-              {displayUpdates.map((update, index) => (
+              {displayUpdates.map((update, index) => {
+                const isOpen = openUpdateId === update.id;
+                return (
                 <article
                   key={update.id}
+                  onClick={() => setOpenUpdateId((current) => current === update.id ? null : update.id)}
                   style={{
                     padding: "13px 0",
                     borderBottom: index === displayUpdates.length - 1 ? "none" : "1px solid rgba(251, 146, 60, 0.16)",
+                    cursor: "pointer",
                   }}
                 >
-                  <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
-                    {timeAgo(update.published_at, currentTime)}
-                  </p>
-                  <h3 style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
+                  <h3 style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, lineHeight: 1.22, color: "#FFFFFF" }}>
                     {update.title}
                   </h3>
-                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6", whiteSpace: "pre-wrap" }}>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontFamily: "var(--font-rubik)",
+                      fontWeight: 600,
+                      fontSize: 15,
+                      lineHeight: 1.58,
+                      color: "#C7CAD6",
+                      whiteSpace: "pre-wrap",
+                      display: isOpen ? "block" : "-webkit-box",
+                      WebkitLineClamp: isOpen ? undefined : 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: isOpen ? "visible" : "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
                     {update.description}
                   </p>
+                  <p suppressHydrationWarning style={{ margin: "10px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C", textAlign: "left" }}>
+                    {timeAgo(update.published_at, currentTime)}
+                  </p>
                 </article>
-              ))}
+                );
+              })}
               </div>
             </div>
           )}

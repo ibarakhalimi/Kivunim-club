@@ -97,7 +97,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
 
   return (
     <>
-      <section ref={sectionRef} style={{ width: expanded ? "100%" : "calc(50% - 5.5px)", flex: expanded ? "0 0 100%" : "0 0 calc(50% - 5.5px)", minWidth: 0, boxSizing: "border-box", transition: "flex-basis 0.24s ease, width 0.24s ease", scrollMarginTop: 14 }}>
+      <section ref={sectionRef} style={{ width: "100%", gridColumn: expanded ? "1 / -1" : undefined, minWidth: 0, boxSizing: "border-box", transition: "grid-column 0.24s ease", scrollMarginTop: 14 }}>
         <div
           style={{
             background: expanded ? "transparent" : "#252836",
