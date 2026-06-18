@@ -1,22 +1,7 @@
 import type { Metadata } from "next";
-import { Frank_Ruhl_Libre, Rubik } from "next/font/google";
 import "./globals.css";
 import SwRegister from "./sw-register";   // ← add this
 import { RouteTransition } from "./route-transition";
-
-const displayFont = Frank_Ruhl_Libre({
-  variable: "--font-display",
-  subsets: ["hebrew", "latin"],
-  weight: ["400", "500", "700", "900"],
-  display: "swap",
-});
-
-const bodyFont = Rubik({
-  variable: "--font-sans",
-  subsets: ["hebrew", "latin"],
-  weight: ["300", "400", "500", "700"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "כיוונים · מועדון הסטודנטים",
@@ -32,7 +17,7 @@ export default function RootLayout({
     <html
       lang="he"
       dir="rtl"
-      className={`${displayFont.variable} ${bodyFont.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col">
         <SwRegister />   {/* ← add this */}

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { CalendarDays } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
-type Event = Tables<"events">;
+type ClubEvent = Tables<"events">;
 
 const GRID_EXPAND_EVENT = "home-grid-expand";
 
@@ -49,11 +49,11 @@ const closeBtn: React.CSSProperties = {
   display: "flex", alignItems: "center", justifyContent: "center",
 };
 
-export function EventsSection({ events }: { events: Event[] }) {
+export function EventsSection({ events }: { events: ClubEvent[] }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const eventPointerStartX = useRef<number | null>(null);
   const didEventSwipe = useRef(false);
-  const [selected, setSelected] = useState<Event | null>(null);
+  const [selected, setSelected] = useState<ClubEvent | null>(null);
   const [allOpen, setAllOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -95,7 +95,7 @@ export function EventsSection({ events }: { events: Event[] }) {
   }
 
   useEffect(() => {
-    const handleExpand = (event: Event) => {
+    const handleExpand = (event: globalThis.Event) => {
       const target = (event as CustomEvent<string>).detail;
       setExpanded(true);
       if (target === "events") {

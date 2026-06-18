@@ -63,6 +63,13 @@
 }
 
 :root {
+  --font-sans:    "Rubik", system-ui, sans-serif;
+  --font-display: "Frank Ruhl Libre", serif;
+  --font-body:    "Rubik", system-ui, sans-serif;
+  --font-heading: "Frank Ruhl Libre", serif;
+  --font-rubik:   "Rubik", system-ui, sans-serif;
+  --font-heebo:   "Rubik", system-ui, sans-serif;
+
   /* Shadcn base tokens */
   --background:           #FFFFFF;
   --foreground:           #0F172A;
