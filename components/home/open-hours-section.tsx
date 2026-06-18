@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { Camera, CheckCircle2, QrCode } from "lucide-react";
+import { Camera, CheckCircle2, Info, QrCode } from "lucide-react";
 import jsQR from "jsqr";
 import { checkIn } from "@/app/actions/check-in";
 
@@ -47,6 +47,15 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
   const todayNote = today?.note?.trim() || null;
   const isOpenToday = Boolean(today?.is_open);
   const closeTime = formatTime(today?.close_time ?? null);
+
+  const nextOpenTime = (() => {
+    for (let i = 1; i <= 7; i++) {
+      const key = DAY_KEYS_BY_JS_DAY[(new Date().getDay() + i) % 7];
+      const row = rows.find((r) => r.day_key === key);
+      if (row?.is_open && row.open_time) return formatTime(row.open_time);
+    }
+    return null;
+  })();
 
   useEffect(() => {
     if (!toast) return;
@@ -195,19 +204,19 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                 width: 9,
                 height: 9,
                 borderRadius: "50%",
-                background: "#16A34A",
+                background: isOpenToday ? "#16A34A" : "#F97316",
                 flexShrink: 0,
               }}
             />
-            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 10, color: isOpenToday ? "#34D399" : "#9CA0AE" }}>
+            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 10, color: isOpenToday ? "#34D399" : "#F97316" }}>
               {isOpenToday ? "פתוח עכשיו" : "סגור עכשיו"}
             </span>
             {todayNote && (
               <span
                 style={{
                   borderRadius: 999,
-                  background: isOpenToday ? "rgba(52,211,153,0.15)" : "rgba(255,255,255,0.06)",
-                  color: isOpenToday ? "#34D399" : "#9CA0AE",
+                  background: isOpenToday ? "rgba(52,211,153,0.15)" : "rgba(249,115,22,0.15)",
+                  color: isOpenToday ? "#34D399" : "#F97316",
                   padding: "2px 7px",
                   fontFamily: "var(--font-rubik)",
                   fontWeight: 900,
@@ -223,8 +232,14 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               </span>
             )}
           </div>
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1, color: isOpenToday ? "#FFFFFF" : "#9CA0AE" }}>
-            {isOpenToday && closeTime ? `עד ${closeTime}` : isOpenToday ? "פתוח" : "סגור"}
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.1, color: isOpenToday ? "#FFFFFF" : "#F97316" }}>
+            {isOpenToday && closeTime
+              ? `עד ${closeTime}`
+              : isOpenToday
+              ? "פתוח"
+              : nextOpenTime
+              ? `נתראה מחר ב${nextOpenTime}`
+              : "סגור"}
           </p>
         </div>
 
@@ -233,36 +248,33 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
             onClick={() => setHoursOpen(true)}
             aria-label="שעות פתיחה"
             style={{
-              width: 25,
-              height: 25,
+              width: 36,
+              height: 36,
               borderRadius: "50%",
-              border: "none",
-              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              background: "rgba(255,255,255,0.06)",
               color: "#9CA0AE",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 900,
-              fontSize: 14,
-              lineHeight: 1,
               flexShrink: 0,
             }}
           >
-            ↗
+            <Info size={16} strokeWidth={2.2} />
           </button>
 
         <button
           onClick={openCheckInSheet}
           disabled={isPending}
           style={{
+            height: 36,
             width: "auto",
             border: "none",
             borderRadius: 999,
             background: isPending ? "rgba(216,245,0,0.4)" : "#D8F500",
             color: "#181A23",
-            padding: "9px 18px",
+            padding: "0 18px",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
             fontSize: 12,
