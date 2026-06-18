@@ -108,11 +108,11 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
-            background: "#252836",
+            background: expanded ? "transparent" : "#252836",
             border: "none",
             borderRadius: 22,
             boxShadow: "none",
-            padding: expanded ? 18 : 12,
+            padding: expanded ? 0 : 12,
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
@@ -206,11 +206,11 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
           style={{
             width: "100%",
             aspectRatio: expanded ? "auto" : "1 / 1",
-            background: "#252836",
+            background: expanded ? "transparent" : "#252836",
             border: "none",
             borderRadius: 22,
             boxShadow: "none",
-            padding: expanded ? 18 : 12,
+            padding: expanded ? 0 : 12,
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
@@ -286,7 +286,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             </button>
           ) : (
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, paddingInline: 2 }}>
                 <div
                   aria-hidden="true"
                   style={{
@@ -307,6 +307,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                   עדכונים
                 </p>
               </div>
+              <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
               {displayUpdates.map((update, index) => (
                 <article
                   key={update.id}
@@ -326,6 +327,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                   </p>
                 </article>
               ))}
+              </div>
             </div>
           )}
         </div>

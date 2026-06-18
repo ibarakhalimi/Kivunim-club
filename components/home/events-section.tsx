@@ -136,11 +136,11 @@ export function EventsSection({ events }: { events: Event[] }) {
           style={{
             width: "100%",
             aspectRatio: expanded ? "auto" : "1 / 1",
-            background: "#252836",
+            background: expanded ? "transparent" : "#252836",
             border: "none",
             borderRadius: 22,
             boxShadow: "none",
-            padding: expanded ? 18 : 0,
+            padding: 0,
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
@@ -225,7 +225,7 @@ export function EventsSection({ events }: { events: Event[] }) {
             </button>
           ) : (
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, paddingInline: 2 }}>
                 <div
                   aria-hidden="true"
                   style={{
@@ -246,6 +246,7 @@ export function EventsSection({ events }: { events: Event[] }) {
                   אירועים
                 </p>
               </div>
+              <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
               {displayEvents.map((eventItem, index) => (
                 <article
                   key={eventItem.id}
@@ -272,6 +273,7 @@ export function EventsSection({ events }: { events: Event[] }) {
                   )}
                 </article>
               ))}
+              </div>
             </div>
           )}
         </div>

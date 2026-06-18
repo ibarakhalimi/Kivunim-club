@@ -223,11 +223,11 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
           style={{
             width: "100%",
             aspectRatio: expanded ? "auto" : "1 / 1",
-            background: "#252836",
+            background: expanded ? "transparent" : "#252836",
             border: "none",
             borderRadius: 22,
             boxShadow: "none",
-            padding: expanded ? 18 : 12,
+            padding: expanded ? 0 : 12,
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
@@ -306,7 +306,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
             </button>
           ) : (
             <div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14, paddingInline: 2 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <div
                     aria-hidden="true"
@@ -347,6 +347,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
                   <span>{communityPolls.length}</span>
                 </div>
               </div>
+              <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
             <div
               onScroll={handleScroll}
               style={{
@@ -362,6 +363,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
                 <PollCard key={item.id} poll={item} />
               ))}
             </div>
+              </div>
             </div>
           )}
         </div>

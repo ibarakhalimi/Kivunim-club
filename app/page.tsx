@@ -30,7 +30,7 @@ export default function HomePage() {
         <div style={{ marginTop: 12 }}>
           <OpenHoursLoader />
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 11, marginTop: 24, width: "100%" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 18, marginTop: 24, width: "100%" }}>
           <UpdateSection />
           <EventsLoader />
           <BenefitsLoader />

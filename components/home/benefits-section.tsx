@@ -100,11 +100,11 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
       <section ref={sectionRef} style={{ width: expanded ? "100%" : "calc(50% - 5.5px)", flex: expanded ? "0 0 100%" : "0 0 calc(50% - 5.5px)", minWidth: 0, boxSizing: "border-box", transition: "flex-basis 0.24s ease, width 0.24s ease", scrollMarginTop: 14 }}>
         <div
           style={{
-            background: "#252836",
+            background: expanded ? "transparent" : "#252836",
             border: "none",
             borderRadius: 22,
             boxShadow: "none",
-            padding: expanded ? 18 : 12,
+            padding: expanded ? 0 : 12,
             aspectRatio: expanded ? "auto" : "1 / 1",
             width: "100%",
             display: "flex",
@@ -188,7 +188,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             </button>
           ) : (
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, paddingInline: 2 }}>
                 <div
                   aria-hidden="true"
                   style={{
@@ -209,6 +209,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                   הטבות
                 </p>
               </div>
+              <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
               {currentBenefits.map((benefit, index) => (
                 <article
                   key={benefit.id}
@@ -237,6 +238,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                   </div>
                 </article>
               ))}
+              </div>
             </div>
           )}
         </div>
