@@ -81,7 +81,9 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
           </h1>
         </div>
 
-        <WelcomeLoginForm nextPath={resolvedNextPath} />
+        <Suspense fallback={null}>
+          <WelcomeLoginForm nextPath={resolvedNextPath} />
+        </Suspense>
 
         {/* CTA button */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>

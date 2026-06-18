@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import SwRegister from "./sw-register";   // ← add this
 import { RouteTransition } from "./route-transition";
+import { AuthErrorCatcher } from "./auth-error-catcher";
 
 export const metadata: Metadata = {
   title: "כיוונים · מועדון הסטודנטים",
@@ -22,6 +24,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <SwRegister />   {/* ← add this */}
         <RouteTransition />
+        <Suspense fallback={null}>
+          <AuthErrorCatcher />
+        </Suspense>
         {children}
       </body>
     </html>

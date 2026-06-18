@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Mail } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import supabase from "@/lib/supabase/client";
 
 type WelcomeLoginFormProps = {
@@ -38,13 +38,27 @@ const primaryButtonStyle: React.CSSProperties = {
   cursor: "pointer",
 };
 
+const AUTH_ERROR_MESSAGES: Record<string, string> = {
+  otp_expired: "הקישור פג תוקף. שלח קוד חדש.",
+  access_denied: "הגישה נדחתה. נסה שוב.",
+  user_not_found: "המשתמש לא נמצא במערכת.",
+};
+
 export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const authError = searchParams.get("auth_error");
+    if (authError) {
+      setMessage(AUTH_ERROR_MESSAGES[authError] ?? "שגיאת התחברות. נסה שוב.");
+    }
+  }, [searchParams]);
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -66,11 +80,13 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
     setLoading(true);
     setMessage(null);
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
+
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
+        emailRedirectTo: `${siteUrl}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     });
 
