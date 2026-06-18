@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import "./globals.css";
 import SwRegister from "./sw-register";   // ← add this
@@ -8,6 +8,10 @@ import { AuthErrorCatcher } from "./auth-error-catcher";
 export const metadata: Metadata = {
   title: "כיוונים · מועדון הסטודנטים",
   description: "אפליקציית המועדון הסטודנטיאלי — עדכונים, אירועים, הטבות וסקרים.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#181A23",
 };
 
 export default function RootLayout({

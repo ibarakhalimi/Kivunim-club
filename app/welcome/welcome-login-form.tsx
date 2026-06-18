@@ -11,30 +11,30 @@ type WelcomeLoginFormProps = {
 
 const fieldStyle: React.CSSProperties = {
   width: "100%",
-  minHeight: 54,
+  minHeight: 46,
   border: "none",
-  borderRadius: 18,
+  borderRadius: 14,
   background: "#303446",
   color: "#F7F8FF",
   fontFamily: "var(--font-rubik)",
-  fontSize: 16,
+  fontSize: 15,
   fontWeight: 700,
   outline: "none",
-  padding: "0 16px",
+  padding: "0 14px",
   boxSizing: "border-box",
   direction: "rtl",
 };
 
 const primaryButtonStyle: React.CSSProperties = {
   width: "100%",
-  minHeight: 54,
+  minHeight: 46,
   border: "none",
-  borderRadius: 18,
+  borderRadius: 14,
   background: "#F7F8FF",
   color: "#181A23",
   fontFamily: "var(--font-rubik)",
   fontWeight: 900,
-  fontSize: 16,
+  fontSize: 15,
   cursor: "pointer",
 };
 
@@ -125,11 +125,11 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
       style={{
         width: "100%",
         background: "#252836",
-        borderRadius: 26,
-        padding: 16,
+        borderRadius: 22,
+        padding: 12,
         display: "flex",
         flexDirection: "column",
-        gap: 12,
+        gap: 10,
         boxSizing: "border-box",
       }}
     >
@@ -139,14 +139,14 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
         disabled={loading}
         style={{
           width: "100%",
-          minHeight: 54,
+          minHeight: 46,
           background: "#F7F8FF",
           color: "#181A23",
           border: "none",
-          borderRadius: 18,
+          borderRadius: 14,
           fontFamily: "var(--font-rubik)",
           fontWeight: 900,
-          fontSize: 16,
+          fontSize: 15,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
