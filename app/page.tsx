@@ -30,15 +30,11 @@ export default function HomePage() {
         <div style={{ marginTop: 12 }}>
           <OpenHoursLoader />
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 11, marginTop: 24 }}>
-          <div style={{ display: "flex", gap: 11 }}>
-            <UpdateSection />
-            <EventsLoader />
-          </div>
-          <div style={{ display: "flex", gap: 11 }}>
-            <BenefitsLoader />
-            <PollLoader />
-          </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 11, marginTop: 24, width: "100%" }}>
+          <UpdateSection />
+          <EventsLoader />
+          <BenefitsLoader />
+          <PollLoader />
         </div>
       </div>
     </main>

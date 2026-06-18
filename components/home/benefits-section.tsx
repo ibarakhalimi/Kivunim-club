@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Gift } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
 type Benefit = Tables<"benefits">;
+
+const GRID_EXPAND_EVENT = "home-grid-expand";
 
 const CATEGORY_EMOJI: Record<string, string> = {
   "אוכל": "🍕", "קפה": "☕", "ספורט": "⚽", "בריאות": "💊",
@@ -63,88 +64,182 @@ const closeBtn: React.CSSProperties = {
 };
 
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [selected, setSelected] = useState<Benefit | null>(null);
   const [allOpen, setAllOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const currentBenefits = useMemo(() => benefits.filter((benefit) => !isExpired(benefit.expires_at)), [benefits]);
 
   const latestBenefit = useMemo(() => {
     return [...currentBenefits].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
   }, [currentBenefits]);
 
+  function expandThisCard() {
+    setExpanded(true);
+    window.dispatchEvent(new CustomEvent(GRID_EXPAND_EVENT, { detail: "benefits" }));
+  }
+
+  useEffect(() => {
+    const handleExpand = (event: Event) => {
+      const target = (event as CustomEvent<string>).detail;
+      setExpanded(true);
+      if (target === "benefits") {
+        requestAnimationFrame(() => {
+          sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    };
+    window.addEventListener(GRID_EXPAND_EVENT, handleExpand);
+    return () => window.removeEventListener(GRID_EXPAND_EVENT, handleExpand);
+  }, []);
+
   if (currentBenefits.length === 0) return null;
 
   return (
     <>
-      <section style={{ width: "calc(50% - 5.5px)", flex: "0 0 calc(50% - 5.5px)", minWidth: 0 }}>
-        <Link
-          href="/benefits"
+      <section ref={sectionRef} style={{ width: expanded ? "100%" : "calc(50% - 5.5px)", flex: expanded ? "0 0 100%" : "0 0 calc(50% - 5.5px)", minWidth: 0, boxSizing: "border-box", transition: "flex-basis 0.24s ease, width 0.24s ease", scrollMarginTop: 14 }}>
+        <div
           style={{
             background: "#252836",
             border: "none",
             borderRadius: 22,
             boxShadow: "none",
-            padding: 12,
-            aspectRatio: "1 / 1",
+            padding: expanded ? 18 : 12,
+            aspectRatio: expanded ? "auto" : "1 / 1",
             width: "100%",
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
             textDecoration: "none",
+            font: "inherit",
+            textAlign: "right",
+            boxSizing: "border-box",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-            <div
-              aria-label="הטבות"
+          {!expanded ? (
+            <button
+              type="button"
+              onClick={expandThisCard}
               style={{
-                width: "auto",
-                height: "auto",
-                borderRadius: 0,
-                background: "rgba(17,32,58,0.72)",
+                width: "100%",
+                flex: 1,
                 border: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#34D399",
-              }}
-            >
-              <Gift size={19} strokeWidth={2.1} />
-            </div>
-            <span
-              aria-label="כל ההטבות"
-              style={{
-                minWidth: 24,
-                height: 24,
-                borderRadius: "50%",
-                border: "none",
-                background: "#111522",
-                color: "#34D399",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 800,
-                fontSize: 10,
-                lineHeight: 1,
+                background: "transparent",
                 padding: 0,
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "right",
+                cursor: "pointer",
+                font: "inherit",
               }}
             >
-              {currentBenefits.length}
-            </span>
-          </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                <div
+                  aria-label="הטבות"
+                  style={{
+                    width: "auto",
+                    height: "auto",
+                    borderRadius: 0,
+                    background: "rgba(17,32,58,0.72)",
+                    border: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#34D399",
+                  }}
+                >
+                  <Gift size={19} strokeWidth={2.1} />
+                </div>
+                <span
+                  aria-label="כל ההטבות"
+                  style={{
+                    minWidth: 24,
+                    height: 24,
+                    borderRadius: "50%",
+                    border: "none",
+                    background: "#111522",
+                    color: "#34D399",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    fontFamily: "var(--font-rubik)",
+                    fontWeight: 800,
+                    fontSize: 10,
+                    lineHeight: 1,
+                    padding: 0,
+                  }}
+                >
+                  {currentBenefits.length}
+                </span>
+              </div>
 
-          <div style={{ marginTop: "auto" }}>
-            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#34D399" }}>
-              הטבה חדשה
-            </p>
-            <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-              {latestBenefit.business}
-            </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, lineHeight: 1.25, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-              {latestBenefit.deal}
-            </p>
-          </div>
-        </Link>
+              <div style={{ marginTop: "auto" }}>
+                <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#34D399" }}>
+                  הטבה חדשה
+                </p>
+                <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                  {latestBenefit.business}
+                </p>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, lineHeight: 1.25, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                  {latestBenefit.deal}
+                </p>
+              </div>
+            </button>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                <div
+                  aria-hidden="true"
+                  style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: 14,
+                    background: "rgba(52, 211, 153, 0.14)",
+                    color: "#34D399",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Gift size={22} strokeWidth={2.2} />
+                </div>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1.1, color: "#FFFFFF" }}>
+                  הטבות
+                </p>
+              </div>
+              {currentBenefits.map((benefit, index) => (
+                <article
+                  key={benefit.id}
+                  style={{
+                    padding: "13px 0",
+                    display: "flex",
+                    gap: 12,
+                    borderBottom: index === currentBenefits.length - 1 ? "none" : "1px solid rgba(52, 211, 153, 0.16)",
+                  }}
+                >
+                  <div style={{ width: 42, height: 42, borderRadius: 14, background: categoryBg(benefit.category ?? ""), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
+                    {categoryEmoji(benefit.category ?? "")}
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
+                      {benefit.business}
+                    </p>
+                    <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, lineHeight: 1.35, color: "#34D399" }}>
+                      {benefit.deal}
+                    </p>
+                    {benefit.description && (
+                      <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6" }}>
+                        {benefit.description}
+                      </p>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
       {selected && (

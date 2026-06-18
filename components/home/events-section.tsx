@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { CalendarDays } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
@@ -21,6 +20,8 @@ const TEMP_EVENTS: Event[] = [
     created_at: "2026-06-15T00:00:00.000Z",
   },
 ];
+
+const GRID_EXPAND_EVENT = "home-grid-expand";
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("he-IL", {
@@ -56,10 +57,12 @@ const closeBtn: React.CSSProperties = {
 };
 
 export function EventsSection({ events }: { events: Event[] }) {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const eventPointerStartX = useRef<number | null>(null);
   const didEventSwipe = useRef(false);
   const [selected, setSelected] = useState<Event | null>(null);
   const [allOpen, setAllOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
 
@@ -93,7 +96,24 @@ export function EventsSection({ events }: { events: Event[] }) {
       didEventSwipe.current = false;
       return;
     }
+
+    setExpanded(true);
+    window.dispatchEvent(new CustomEvent(GRID_EXPAND_EVENT, { detail: "events" }));
   }
+
+  useEffect(() => {
+    const handleExpand = (event: Event) => {
+      const target = (event as CustomEvent<string>).detail;
+      setExpanded(true);
+      if (target === "events") {
+        requestAnimationFrame(() => {
+          sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    };
+    window.addEventListener(GRID_EXPAND_EVENT, handleExpand);
+    return () => window.removeEventListener(GRID_EXPAND_EVENT, handleExpand);
+  }, []);
 
   return (
     <>
@@ -111,78 +131,150 @@ export function EventsSection({ events }: { events: Event[] }) {
           }
         `}
       </style>
-      <section style={{ width: "calc(50% - 5.5px)", flex: "0 0 calc(50% - 5.5px)", minWidth: 0 }}>
-        <Link
-          key={ev.id}
-          href="/events"
-          onClick={handleEventClick}
-          onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
-          onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
+      <section ref={sectionRef} style={{ width: expanded ? "100%" : "calc(50% - 5.5px)", flex: expanded ? "0 0 100%" : "0 0 calc(50% - 5.5px)", minWidth: 0, boxSizing: "border-box", transition: "flex-basis 0.24s ease, width 0.24s ease", scrollMarginTop: 14 }}>
+        <div
           style={{
+            width: "100%",
+            aspectRatio: expanded ? "auto" : "1 / 1",
+            background: "#252836",
             border: "none",
             borderRadius: 22,
             boxShadow: "none",
+            padding: expanded ? 18 : 0,
+            display: "flex",
+            flexDirection: "column",
             overflow: "hidden",
-            aspectRatio: "1 / 1",
-            cursor: "pointer",
-            background: "#252836",
-            touchAction: "pan-y",
-            userSelect: "none",
-            animation: "eventCardIn 0.22s ease",
-            textDecoration: "none",
-            display: "block",
-            width: "100%",
+            textAlign: "right",
+            boxSizing: "border-box",
           }}
         >
-          <div style={{ padding: 12, display: "flex", flexDirection: "column", height: "100%", minWidth: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
-              <div
-                aria-label="אירוע קרוב"
-                style={{
-                  width: "auto",
-                  height: "auto",
-                  borderRadius: 0,
-                  background: "rgba(17,32,58,0.72)",
-                  border: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#FF2E9A",
-                }}
-              >
-                <CalendarDays size={19} strokeWidth={2.1} />
+          {!expanded ? (
+            <button
+              key={ev.id}
+              type="button"
+              onClick={handleEventClick}
+              onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
+              onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
+              style={{
+                border: "none",
+                borderRadius: 22,
+                boxShadow: "none",
+                overflow: "hidden",
+                aspectRatio: "1 / 1",
+                cursor: "pointer",
+                background: "transparent",
+                touchAction: "pan-y",
+                userSelect: "none",
+                animation: "eventCardIn 0.22s ease",
+                textDecoration: "none",
+                display: "block",
+                width: "100%",
+                padding: 0,
+                font: "inherit",
+                textAlign: "right",
+              }}
+            >
+              <div style={{ padding: 12, display: "flex", flexDirection: "column", height: "100%", minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
+                  <div
+                    aria-label="אירוע קרוב"
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      borderRadius: 0,
+                      background: "rgba(17,32,58,0.72)",
+                      border: "none",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#FF2E9A",
+                    }}
+                  >
+                    <CalendarDays size={19} strokeWidth={2.1} />
+                  </div>
+                  <span
+                    style={{
+                      minWidth: 24,
+                      height: 24,
+                      borderRadius: "50%",
+                      border: "none",
+                      background: "#111522",
+                      color: "#FF2E9A",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      fontFamily: "var(--font-rubik)",
+                      fontWeight: 800,
+                      fontSize: 10,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {displayEvents.length}
+                  </span>
+                </div>
+                <div style={{ marginTop: "auto" }}>
+                  <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
+                    {formatDate(ev.event_date)}
+                  </p>
+                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {ev.title}
+                  </p>
+                </div>
               </div>
-              <span
-                style={{
-                  minWidth: 24,
-                  height: 24,
-                  borderRadius: "50%",
-                  border: "none",
-                  background: "#111522",
-                  color: "#FF2E9A",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 800,
-                  fontSize: 10,
-                  lineHeight: 1,
-                }}
-              >
-                {displayEvents.length}
-              </span>
+            </button>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                <div
+                  aria-hidden="true"
+                  style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: 14,
+                    background: "rgba(255, 46, 154, 0.14)",
+                    color: "#FF2E9A",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <CalendarDays size={22} strokeWidth={2.2} />
+                </div>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1.1, color: "#FFFFFF" }}>
+                  אירועים
+                </p>
+              </div>
+              {displayEvents.map((eventItem, index) => (
+                <article
+                  key={eventItem.id}
+                  style={{
+                    padding: "13px 0",
+                    borderBottom: index === displayEvents.length - 1 ? "none" : "1px solid rgba(255, 46, 154, 0.16)",
+                  }}
+                >
+                  <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
+                    {formatDate(eventItem.event_date)}
+                  </p>
+                  <h3 style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
+                    {eventItem.title}
+                  </h3>
+                  {eventItem.location && (
+                    <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
+                      {eventItem.location}
+                    </p>
+                  )}
+                  {eventItem.description && (
+                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6" }}>
+                      {eventItem.description}
+                    </p>
+                  )}
+                </article>
+              ))}
             </div>
-            <div style={{ marginTop: "auto" }}>
-              <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
-                {formatDate(ev.event_date)}
-              </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
-                {ev.title}
-              </p>
-            </div>
-          </div>
-        </Link>
+          )}
+        </div>
       </section>
 
       {selected && (
