@@ -11,7 +11,7 @@ export function WelcomeStrip({ name, points, tier }: WelcomeStripProps) {
         style={{
           margin: 0,
           fontFamily: "var(--font-rubik)",
-          fontWeight: 800,
+          fontWeight: 900,
           fontSize: 40,
           lineHeight: 1.0,
           letterSpacing: "-0.025em",

@@ -64,20 +64,20 @@ export default async function ActivitiesPage() {
       dir="rtl"
       style={{
         minHeight: "100dvh",
-        background: "#F8FAFC",
+        background: "#181A23",
         padding: "18px 14px 104px",
       }}
     >
       <SwipeBackHome />
-      <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+      <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "-18px -14px 26px", background: "#111522", borderRadius: 0, padding: "26px 22px 24px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div
             style={{
               width: 40,
               height: 40,
-              borderRadius: 14,
-              background: "#F5F3FF",
-              color: "#7C3AED",
+              borderRadius: "50%",
+              background: "rgba(167,139,250,0.15)",
+              color: "#A78BFA",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -86,11 +86,8 @@ export default async function ActivitiesPage() {
             <MessageCircle size={21} strokeWidth={2.2} />
           </div>
           <div>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, color: "#0F172A" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, color: "#FFFFFF" }}>
               פעילות קהילה
-            </p>
-            <p style={{ margin: "2px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#64748B" }}>
-              כל הסקרים והתגובות
             </p>
           </div>
         </div>
@@ -100,13 +97,13 @@ export default async function ActivitiesPage() {
             width: 34,
             height: 34,
             borderRadius: "50%",
-            background: "#fff",
-            border: "1px solid #E2E8F0",
+            background: "#252836",
+            border: "none",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             textDecoration: "none",
-            color: "#0F172A",
+            color: "#FFFFFF",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
           }}
@@ -115,7 +112,7 @@ export default async function ActivitiesPage() {
         </Link>
       </header>
 
-      <section style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+      <section style={{ display: "flex", flexDirection: "column", gap: 26 }}>
         {polls.map((poll) => {
           const options = [poll.option_1, poll.option_2, poll.option_3, poll.option_4];
           const counts = countsForPoll(votes, poll.id);
@@ -123,27 +120,27 @@ export default async function ActivitiesPage() {
 
           return (
             <div key={poll.id}>
-              <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#7C3AED" }}>
+              <p style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#A78BFA" }}>
                 {formatDate(poll.created_at)}
               </p>
               <article
                 style={{
-                  background: "#fff",
-                  border: "1px solid #EDE9FE",
-                  borderRadius: 18,
+                  background: "#252836",
+                  border: "none",
+                  borderRadius: 22,
                   padding: 18,
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 12 }}>
-                  <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.22, color: "#0F172A" }}>
+                  <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 21, lineHeight: 1.22, color: "#FFFFFF" }}>
                     {poll.question}
                   </h2>
                   <span
                     style={{
                       flexShrink: 0,
                       borderRadius: 99,
-                      background: poll.is_active ? "#7C3AED" : "#E2E8F0",
-                      color: poll.is_active ? "#fff" : "#64748B",
+                      background: poll.is_active ? "#A78BFA" : "#111522",
+                      color: poll.is_active ? "#181A23" : "#7C808E",
                       padding: "5px 9px",
                       fontFamily: "var(--font-rubik)",
                       fontWeight: 800,
@@ -154,7 +151,7 @@ export default async function ActivitiesPage() {
                   </span>
                 </div>
                 {poll.expires_at && (
-                  <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#7C3AED" }}>
+                  <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#A78BFA" }}>
                     מענה עד {formatDeadline(poll.expires_at)}
                   </p>
                 )}
@@ -168,9 +165,9 @@ export default async function ActivitiesPage() {
                       <div
                         key={option}
                         style={{
-                          border: "1px solid #EDE9FE",
+                          border: "none",
                           borderRadius: 12,
-                          background: "#F8FAFC",
+                          background: "#111522",
                           overflow: "hidden",
                         }}
                       >
@@ -180,14 +177,14 @@ export default async function ActivitiesPage() {
                               position: "absolute",
                               inset: 0,
                               width: `${pct}%`,
-                              background: "rgba(124,58,237,0.1)",
+                              background: "rgba(167,139,250,0.16)",
                             }}
                           />
                           <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-                            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: "#0F172A" }}>
+                            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: "#FFFFFF" }}>
                               {option}
                             </span>
-                            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 12, color: "#7C3AED" }}>
+                            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 12, color: "#A78BFA" }}>
                               {pct}% · {count}
                             </span>
                           </div>
@@ -197,7 +194,7 @@ export default async function ActivitiesPage() {
                   })}
                 </div>
 
-                <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#64748B", textAlign: "center" }}>
+                <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#9CA0AE", textAlign: "center" }}>
                   {total} אנשים ענו על הסקר
                 </p>
               </article>

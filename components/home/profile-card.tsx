@@ -88,7 +88,7 @@ export function ProfileCard() {
             style={{
               margin: 0,
               fontFamily: "var(--font-rubik)",
-              fontWeight: 700,
+              fontWeight: 900,
               fontSize: 13,
               color: "#9CA0AE",
             }}
@@ -153,7 +153,7 @@ export function ProfileCard() {
               style={{
                 margin: 0,
                 fontFamily: "var(--font-rubik)",
-                fontWeight: 800,
+                fontWeight: 900,
                 fontSize: 20,
                 lineHeight: 1,
                 color: "#FF2E9A",

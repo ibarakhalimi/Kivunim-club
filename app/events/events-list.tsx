@@ -37,7 +37,7 @@ export function EventsList({ events }: { events: EventItem[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <section style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+    <section style={{ display: "flex", flexDirection: "column", gap: 26 }}>
       {events.map((event) => {
         const isOpen = openId === event.id;
 
@@ -49,13 +49,13 @@ export function EventsList({ events }: { events: EventItem[] }) {
                 width: 52,
                 height: 62,
                 borderRadius: 16,
-                background: "#FFF1F2",
-                border: "1px solid #FFE4E6",
+                background: "#252836",
+                border: "none",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#BE123C",
+                color: "#FF2E9A",
                 fontFamily: "var(--font-rubik)",
                 flexShrink: 0,
               }}
@@ -71,14 +71,14 @@ export function EventsList({ events }: { events: EventItem[] }) {
             <article
               style={{
                 flex: 1,
-                background: "#fff",
-                border: "1px solid #FFE4E6",
-                borderRadius: 18,
+                background: "#252836",
+                border: "none",
+                borderRadius: 22,
                 overflow: "hidden",
                 minWidth: 0,
               }}
             >
-              <div style={{ position: "relative", height: 148, background: "linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 52%, #F8FAFC 100%)", overflow: "hidden" }}>
+              <div style={{ position: "relative", height: 148, background: "linear-gradient(135deg, #2F3344 0%, #252836 52%, #181A23 100%)", overflow: "hidden" }}>
                 {event.image_url ? (
                   <img src={event.image_url} alt={event.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 ) : (
@@ -88,20 +88,20 @@ export function EventsList({ events }: { events: EventItem[] }) {
                       position: "absolute",
                       inset: 0,
                       background:
-                        "linear-gradient(135deg, rgba(255,255,255,0.62), transparent 52%), repeating-linear-gradient(135deg, rgba(190,18,60,0.08) 0 1px, transparent 1px 15px)",
+                        "linear-gradient(135deg, rgba(255,255,255,0.08), transparent 52%), repeating-linear-gradient(135deg, rgba(255,46,154,0.12) 0 1px, transparent 1px 15px)",
                     }}
                   />
                 )}
               </div>
 
               <div style={{ padding: 14 }}>
-                <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#BE123C" }}>
+                <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
                   {formatDate(event.event_date)}
                   {event.start_hour ? ` · ${event.start_hour}` : ""}
                 </p>
 
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10, marginBottom: 12 }}>
-                  <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, lineHeight: 1.2, color: "#0F172A" }}>
+                  <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 21, lineHeight: 1.2, color: "#FFFFFF" }}>
                     {event.title}
                   </h2>
                   {event.description && (
@@ -114,8 +114,8 @@ export function EventsList({ events }: { events: EventItem[] }) {
                         height: 30,
                         borderRadius: "50%",
                         border: "none",
-                        background: isOpen ? "#BE123C" : "#FFF1F2",
-                        color: isOpen ? "#fff" : "#BE123C",
+                        background: isOpen ? "#FF2E9A" : "#111522",
+                        color: isOpen ? "#fff" : "#FF2E9A",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -129,19 +129,19 @@ export function EventsList({ events }: { events: EventItem[] }) {
                 </div>
 
                 {isOpen && event.description && (
-                  <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, lineHeight: 1.65, color: "#475569" }}>
+                  <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15.5, lineHeight: 1.7, color: "#B4B8C6" }}>
                     {event.description}
                   </p>
                 )}
 
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {event.location && (
-                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, lineHeight: 1.35, color: "#94A3B8", textAlign: "right" }}>
+                    <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, lineHeight: 1.35, color: "#9CA0AE", textAlign: "right" }}>
                       {event.location}
                     </p>
                   )}
                   {event.is_featured && (
-                    <div style={{ display: "inline-flex", alignSelf: "flex-start", borderRadius: 99, background: "#BE123C", color: "#fff", padding: "5px 9px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11 }}>
+                    <div style={{ display: "inline-flex", alignSelf: "flex-start", borderRadius: 99, background: "#FF2E9A", color: "#fff", padding: "5px 9px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11 }}>
                       אירוע מומלץ
                     </div>
                   )}
@@ -156,7 +156,7 @@ export function EventsList({ events }: { events: EventItem[] }) {
                       display: "block",
                       marginTop: 14,
                       borderRadius: 12,
-                      background: "#BE123C",
+                      background: "#FF2E9A",
                       color: "#fff",
                       padding: "12px 14px",
                       textAlign: "center",
@@ -177,8 +177,8 @@ export function EventsList({ events }: { events: EventItem[] }) {
                       width: "100%",
                       marginTop: 14,
                       borderRadius: 12,
-                      background: "#E2E8F0",
-                      color: "#94A3B8",
+                      background: "#111522",
+                      color: "#7C808E",
                       padding: "12px 14px",
                       textAlign: "center",
                       border: "none",

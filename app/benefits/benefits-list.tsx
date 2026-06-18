@@ -28,19 +28,19 @@ const CATEGORY_EMOJI: Record<string, string> = {
 };
 
 const CATEGORY_BG: Record<string, string> = {
-  "אוכל": "#FFF1F2",
-  "קפה": "#FFFBEB",
-  "ספורט": "#F0FDF4",
-  "כושר": "#F0FDF4",
-  "בריאות": "#EFF6FF",
-  "יופי": "#FCE7F3",
-  "בידור": "#F5F3FF",
-  "קניות": "#FFF7ED",
-  "טכנולוגיה": "#ECFDF5",
-  "תחבורה": "#F0F9FF",
-  "חינוך": "#FEFCE8",
-  "מסעדות": "#FFF7ED",
-  "הטבות שהסתיימו": "#F1F5F9",
+  "אוכל": "rgba(225,29,72,0.15)",
+  "קפה": "rgba(251,146,60,0.15)",
+  "ספורט": "rgba(52,211,153,0.15)",
+  "כושר": "rgba(52,211,153,0.15)",
+  "בריאות": "rgba(77,163,255,0.15)",
+  "יופי": "rgba(219,39,119,0.15)",
+  "בידור": "rgba(167,139,250,0.15)",
+  "קניות": "rgba(234,88,12,0.15)",
+  "טכנולוגיה": "rgba(5,150,105,0.15)",
+  "תחבורה": "rgba(2,132,199,0.15)",
+  "חינוך": "rgba(161,98,7,0.15)",
+  "מסעדות": "rgba(234,88,12,0.15)",
+  "הטבות שהסתיימו": "#2F3344",
 };
 
 const CATEGORY_ACCENT: Record<string, string> = {
@@ -109,9 +109,9 @@ export function BenefitsList({ benefits }: { benefits: BenefitItem[] }) {
       <article
         key={benefit.id}
         style={{
-          background: "#fff",
-          border: `1px solid ${accent}26`,
-          borderRadius: 16,
+          background: "#252836",
+          border: "none",
+          borderRadius: 22,
           overflow: "hidden",
           opacity: expired ? 0.78 : 1,
         }}
@@ -149,7 +149,7 @@ export function BenefitsList({ benefits }: { benefits: BenefitItem[] }) {
           </div>
 
           <div style={{ minWidth: 0, flex: 1 }}>
-            <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.2, color: "#0F172A" }}>
+            <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.2, color: "#FFFFFF" }}>
               {benefit.business}
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, lineHeight: 1.25, color: accent, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -165,24 +165,24 @@ export function BenefitsList({ benefits }: { benefits: BenefitItem[] }) {
         </button>
 
         {isOpen && (
-          <div style={{ borderTop: `1px solid ${accent}26`, padding: "12px 14px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "12px 14px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
             {benefit.business_description && (
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, lineHeight: 1.55, color: "#475569" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.65, color: "#B4B8C6" }}>
                 {benefit.business_description}
               </p>
             )}
             {benefit.description && (
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, lineHeight: 1.55, color: "#334155" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.65, color: "#B4B8C6" }}>
                 {benefit.description}
               </p>
             )}
             {benefit.location && (
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#64748B" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
                 {benefit.location}
               </p>
             )}
             {benefit.expires_at && (
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: expired ? "#64748B" : "#94A3B8" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: expired ? "#7C808E" : "#9CA0AE" }}>
                 {expired ? "הסתיימה בתאריך" : "בתוקף עד"} {formatDate(benefit.expires_at)}
               </p>
             )}
@@ -193,16 +193,16 @@ export function BenefitsList({ benefits }: { benefits: BenefitItem[] }) {
   }
 
   return (
-    <section style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <section style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       <div style={{ display: "flex", gap: 8, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 2 }}>
         <button
           type="button"
           onClick={() => { setActiveCategory("all"); setOpenId(null); }}
           style={{
             flexShrink: 0,
-            border: activeCategory === "all" ? "1px solid #0F172A" : "1px solid #E2E8F0",
-            background: activeCategory === "all" ? "#0F172A" : "#fff",
-            color: activeCategory === "all" ? "#fff" : "#0F172A",
+            border: "none",
+            background: activeCategory === "all" ? "#34D399" : "#252836",
+            color: activeCategory === "all" ? "#0F2820" : "#9CA0AE",
             borderRadius: 999,
             padding: "8px 12px",
             fontFamily: "var(--font-rubik)",
@@ -215,7 +215,6 @@ export function BenefitsList({ benefits }: { benefits: BenefitItem[] }) {
         </button>
         {categories.map((category) => {
           const isActive = activeCategory === category;
-          const bg = categoryBg(category);
           const accent = categoryAccent(category);
 
           return (
@@ -225,8 +224,8 @@ export function BenefitsList({ benefits }: { benefits: BenefitItem[] }) {
               onClick={() => { setActiveCategory(category); setOpenId(null); }}
               style={{
                 flexShrink: 0,
-                border: `1px solid ${isActive ? accent : `${accent}33`}`,
-                background: isActive ? accent : bg,
+                border: "none",
+                background: isActive ? accent : "#252836",
                 color: isActive ? "#fff" : accent,
                 borderRadius: 999,
                 padding: "8px 12px",
@@ -246,7 +245,7 @@ export function BenefitsList({ benefits }: { benefits: BenefitItem[] }) {
 
       {expiredBenefits.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8 }}>
-          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, color: "#64748B" }}>
+          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, color: "#9CA0AE" }}>
             הטבות שהסתיימו
           </h2>
           {expiredBenefits.map((benefit) => renderBenefit(benefit, true))}

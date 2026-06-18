@@ -36,20 +36,20 @@ export default async function EventsPage() {
       dir="rtl"
       style={{
         minHeight: "100dvh",
-        background: "#F8FAFC",
+        background: "#181A23",
         padding: "18px 14px 104px",
       }}
     >
       <SwipeBackHome />
-      <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+      <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "-18px -14px 26px", background: "#111522", borderRadius: 0, padding: "26px 22px 24px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div
             style={{
               width: 40,
               height: 40,
-              borderRadius: 14,
-              background: "#FFF1F2",
-              color: "#BE123C",
+              borderRadius: "50%",
+              background: "rgba(255,46,154,0.15)",
+              color: "#FF2E9A",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -58,11 +58,8 @@ export default async function EventsPage() {
             <CalendarDays size={21} strokeWidth={2.2} />
           </div>
           <div>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, color: "#0F172A" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, color: "#FFFFFF" }}>
               אירועים
-            </p>
-            <p style={{ margin: "2px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#64748B" }}>
-              כל האירועים הקרובים
             </p>
           </div>
         </div>
@@ -72,13 +69,13 @@ export default async function EventsPage() {
             width: 34,
             height: 34,
             borderRadius: "50%",
-            background: "#fff",
-            border: "1px solid #E2E8F0",
+            background: "#252836",
+            border: "none",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             textDecoration: "none",
-            color: "#0F172A",
+            color: "#FFFFFF",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
           }}
