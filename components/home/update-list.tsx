@@ -86,7 +86,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             width: "100%",
             aspectRatio: "1 / 1",
             background: "#252836",
-            border: "1px solid rgba(255,255,255,0.06)",
+            border: "none",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -139,7 +139,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
               עדכונים
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#FFFFFF" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF" }}>
               אין עדכונים כרגע
             </p>
           </div>
@@ -176,7 +176,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             width: "100%",
             aspectRatio: "1 / 1",
             background: "#252836",
-            border: "1px solid rgba(255,255,255,0.06)",
+            border: "none",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -229,7 +229,7 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
               {timeAgo(firstUpdate.published_at, currentTime)}
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
               {firstUpdate.title}
             </p>
           </div>

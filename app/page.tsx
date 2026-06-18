@@ -8,7 +8,6 @@ import { PollLoader } from "@/components/home/poll-loader";
 import { ProfileCard } from "@/components/home/profile-card";
 import { OpenHoursLoader } from "@/components/home/open-hours-loader";
 import { CardSliderLoader } from "@/components/home/card-slider-loader";
-import { BottomNav } from "@/components/home/bottom-nav";
 
 export default function HomePage() {
   return (
@@ -17,25 +16,21 @@ export default function HomePage() {
       style={{
         minHeight: "100dvh",
         background: "#181A23",
-        paddingBottom: 100,
+        paddingBottom: 28,
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", gap: 14, padding: "6px 22px 0" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 0, padding: "6px 14px 0" }}>
         <ProfileCard />
-        <CardSliderLoader />
-        <div style={{ marginTop: 0 }}>
+        <div style={{ marginTop: 18 }}>
+          <CardSliderLoader />
+        </div>
+        <div style={{ marginTop: 22 }}>
           <ActionsGrid />
         </div>
-        <OpenHoursLoader />
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2px 0 0" }}>
-          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 19, lineHeight: 1.2, color: "#FFFFFF" }}>
-            מה חדש
-          </h2>
-          <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#FF2E9A" }}>
-            הכל
-          </span>
+        <div style={{ marginTop: 12 }}>
+          <OpenHoursLoader />
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 11, marginTop: -3 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 11, marginTop: 24 }}>
           <div style={{ display: "flex", gap: 11 }}>
             <UpdateSection />
             <EventsLoader />
@@ -46,7 +41,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      <BottomNav />
     </main>
   );
 }

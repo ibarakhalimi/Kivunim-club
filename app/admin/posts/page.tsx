@@ -6,6 +6,7 @@ type Post = {
   id: string;
   background_image_url: string | null;
   title: string;
+  short_text: string | null;
   post_type: string;
   body_text: string | null;
   link_url: string | null;

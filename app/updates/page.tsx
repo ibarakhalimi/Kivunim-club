@@ -24,14 +24,6 @@ function formatDate(date: string) {
   });
 }
 
-function dateParts(date: string) {
-  const updateDate = new Date(date);
-  return {
-    day: updateDate.toLocaleDateString("he-IL", { day: "numeric" }),
-    month: updateDate.toLocaleDateString("he-IL", { month: "short" }),
-  };
-}
-
 export default async function UpdatesPage() {
   const supabase = createAdminClient();
   const { data } = await supabase
@@ -47,7 +39,7 @@ export default async function UpdatesPage() {
       dir="rtl"
       style={{
         minHeight: "100dvh",
-        background: "#F8FAFC",
+        background: "#181A23",
         padding: "18px 14px 104px",
       }}
     >
@@ -58,9 +50,9 @@ export default async function UpdatesPage() {
             style={{
               width: 40,
               height: 40,
-              borderRadius: 14,
-              background: "#FFFBEB",
-              color: "#B45309",
+              borderRadius: "50%",
+              background: "rgba(251,146,60,0.15)",
+              color: "#FB923C",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -69,11 +61,8 @@ export default async function UpdatesPage() {
             <Megaphone size={21} strokeWidth={2.2} />
           </div>
           <div>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, color: "#0F172A" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, color: "#FFFFFF" }}>
               עדכונים
-            </p>
-            <p style={{ margin: "2px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#64748B" }}>
-              כל ההודעות במקום אחד
             </p>
           </div>
         </div>
@@ -83,13 +72,13 @@ export default async function UpdatesPage() {
             width: 34,
             height: 34,
             borderRadius: "50%",
-            background: "#fff",
-            border: "1px solid #E2E8F0",
+            background: "#252836",
+            border: "none",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             textDecoration: "none",
-            color: "#0F172A",
+            color: "#FFFFFF",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
           }}
@@ -99,62 +88,24 @@ export default async function UpdatesPage() {
       </header>
 
       <section style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-        {updates.map((update, index) => (
-          <div key={update.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, position: "relative" }}>
-            <div style={{ width: 46, flexShrink: 0, display: "flex", justifyContent: "center", position: "relative", alignSelf: "stretch" }}>
-              {index < updates.length - 1 && (
-                <span
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    top: 54,
-                    bottom: -18,
-                    left: "50%",
-                    borderLeft: "2px dashed #FDE68A",
-                    transform: "translateX(-50%)",
-                  }}
-                />
-              )}
-              <div
-                aria-label={formatDate(update.published_at)}
-                style={{
-                  width: 46,
-                  height: 46,
-                  borderRadius: 14,
-                  background: "#FFFBEB",
-                  border: "none",
-                  color: "#B45309",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontFamily: "var(--font-rubik)",
-                  position: "relative",
-                  zIndex: 1,
-                }}
-              >
-                <span style={{ fontWeight: 900, fontSize: 18, lineHeight: 1 }}>
-                  {dateParts(update.published_at).day}
-                </span>
-                <span style={{ fontWeight: 800, fontSize: 11, lineHeight: 1.1 }}>
-                  {dateParts(update.published_at).month}
-                </span>
-              </div>
-            </div>
+        {updates.map((update) => (
+          <div key={update.id} style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+            <p style={{ margin: "0 2px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.2, color: "#FB923C" }}>
+              {formatDate(update.published_at)}
+            </p>
             <article
               style={{
-                flex: 1,
-                background: "#fff",
+                background: "#252836",
                 border: "none",
-                borderRadius: 18,
+                borderRadius: 22,
                 padding: 18,
               }}
             >
-              <h2 style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.22, color: "#0F172A" }}>
+              <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.22, color: "#FFFFFF" }}>
                 {update.title}
               </h2>
               {update.description && (
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, lineHeight: 1.65, color: "#475569" }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, lineHeight: 1.65, color: "#9CA0AE" }}>
                   {update.description}
                 </p>
               )}
@@ -168,7 +119,7 @@ export default async function UpdatesPage() {
                     marginTop: 14,
                     padding: "9px 14px",
                     borderRadius: 999,
-                    background: "#B45309",
+                    background: "#FB923C",
                     color: "#fff",
                     textDecoration: "none",
                     fontFamily: "var(--font-rubik)",

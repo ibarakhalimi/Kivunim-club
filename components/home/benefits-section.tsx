@@ -80,7 +80,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
           href="/benefits"
           style={{
             background: "#252836",
-            border: "1px solid rgba(255,255,255,0.06)",
+            border: "none",
             borderRadius: 22,
             boxShadow: "none",
             padding: 12,
@@ -137,7 +137,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#34D399" }}>
               הטבה חדשה
             </p>
-            <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+            <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
               {latestBenefit.business}
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, lineHeight: 1.25, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>

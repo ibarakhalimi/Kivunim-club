@@ -119,7 +119,7 @@ export function EventsSection({ events }: { events: Event[] }) {
           onPointerDown={(event) => { eventPointerStartX.current = event.clientX; }}
           onPointerUp={(event) => { handleEventSwipe(event.clientX); }}
           style={{
-            border: "1px solid rgba(255,255,255,0.06)",
+            border: "none",
             borderRadius: 22,
             boxShadow: "none",
             overflow: "hidden",
@@ -177,7 +177,7 @@ export function EventsSection({ events }: { events: Event[] }) {
               <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
                 {formatDate(ev.event_date)}
               </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
                 {ev.title}
               </p>
             </div>

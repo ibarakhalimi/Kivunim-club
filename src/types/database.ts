@@ -344,6 +344,7 @@ export type Database = {
           is_active: boolean
           link_url: string | null
           post_type: string
+          short_text: string | null
           sort_order: number
           title: string
         }
@@ -356,6 +357,7 @@ export type Database = {
           is_active?: boolean
           link_url?: string | null
           post_type?: string
+          short_text?: string | null
           sort_order?: number
           title: string
         }
@@ -368,6 +370,7 @@ export type Database = {
           is_active?: boolean
           link_url?: string | null
           post_type?: string
+          short_text?: string | null
           sort_order?: number
           title?: string
         }

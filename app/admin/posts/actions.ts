@@ -20,6 +20,7 @@ async function uploadBackgroundImage(file: File): Promise<string | null> {
 export async function addPost(formData: FormData) {
   const title = (formData.get("title") as string)?.trim();
   const post_type = (formData.get("post_type") as string) === "text_link" ? "text_link" : "link";
+  const short_text = (formData.get("short_text") as string)?.trim() || null;
   const link_url = (formData.get("link_url") as string)?.trim() || null;
   const button_text = (formData.get("button_text") as string)?.trim() || null;
   const body_text = (formData.get("body_text") as string)?.trim() || null;
@@ -40,7 +41,7 @@ export async function addPost(formData: FormData) {
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("posts")
-    .insert({ title, post_type, body_text, link_url, button_text, background_image_url, sort_order, is_active });
+    .insert({ title, short_text, post_type, body_text, link_url, button_text, background_image_url, sort_order, is_active });
 
   if (error) {
     return { error: "שגיאה בשמירת הפוסט" };
@@ -54,6 +55,7 @@ export async function addPost(formData: FormData) {
 export async function updatePost(id: string, formData: FormData) {
   const title = (formData.get("title") as string)?.trim();
   const post_type = (formData.get("post_type") as string) === "text_link" ? "text_link" : "link";
+  const short_text = (formData.get("short_text") as string)?.trim() || null;
   const link_url = (formData.get("link_url") as string)?.trim() || null;
   const button_text = (formData.get("button_text") as string)?.trim() || null;
   const body_text = (formData.get("body_text") as string)?.trim() || null;
@@ -76,7 +78,7 @@ export async function updatePost(id: string, formData: FormData) {
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("posts")
-    .update({ title, post_type, body_text, link_url, button_text, background_image_url, sort_order, is_active })
+    .update({ title, short_text, post_type, body_text, link_url, button_text, background_image_url, sort_order, is_active })
     .eq("id", id);
 
   if (error) {

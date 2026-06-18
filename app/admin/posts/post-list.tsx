@@ -8,6 +8,7 @@ type Post = {
   id: string;
   background_image_url: string | null;
   title: string;
+  short_text: string | null;
   post_type: string;
   body_text: string | null;
   link_url: string | null;
@@ -132,6 +133,10 @@ function EditPostSheet({ post, onClose }: { post: Post; onClose: () => void }) {
             <input name="title" required defaultValue={post.title} style={inputStyle} />
           </Field>
 
+          <Field label="טקסט קצר">
+            <input name="short_text" defaultValue={post.short_text ?? ""} style={inputStyle} />
+          </Field>
+
           {postType === "text_link" && (
             <Field label="טקסט ארוך">
               <textarea name="body_text" rows={5} defaultValue={post.body_text ?? ""} style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }} />
@@ -215,6 +220,11 @@ export function PostList({ posts }: { posts: Post[] }) {
             />
             <div style={{ minWidth: 0, flex: 1 }}>
               <p style={{ margin: "0 0 4px", fontWeight: 800, fontSize: 15, color: "#0F172A" }}>{post.title}</p>
+              {post.short_text && (
+                <p style={{ margin: "0 0 6px", fontWeight: 600, fontSize: 12, color: "#64748B", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {post.short_text}
+                </p>
+              )}
               {post.link_url && (
                 <p style={{ margin: "0 0 6px", fontWeight: 600, fontSize: 12, color: "#64748B", direction: "ltr", textAlign: "right", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {post.link_url}

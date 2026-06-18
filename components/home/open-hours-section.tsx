@@ -177,7 +177,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
       <div
         style={{
           width: "100%",
-          border: "1px solid rgba(255,255,255,0.06)",
+          border: "none",
           borderRadius: 22,
           background: "#252836",
           padding: "12px 14px",
@@ -236,7 +236,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               width: 25,
               height: 25,
               borderRadius: "50%",
-              border: "1px solid rgba(255,255,255,0.12)",
+              border: "none",
               background: "rgba(255,255,255,0.08)",
               color: "#9CA0AE",
               display: "flex",

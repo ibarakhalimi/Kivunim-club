@@ -200,31 +200,31 @@ export function ActionsGrid() {
             style={{
               flex: 1,
               minWidth: 0,
-              border: "1px solid rgba(255,255,255,0.06)",
+              border: "none",
               background: "#252836",
               borderRadius: 20,
-              padding: "10px 8px",
+              minHeight: 92,
+              padding: "13px 8px",
               cursor: "pointer",
               display: "flex",
               flexDirection: "column",
-              alignItems: "stretch",
-              justifyContent: "space-between",
-              gap: 12,
-              textAlign: "right",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 9,
+              textAlign: "center",
             }}
           >
             <span
               style={{
-                width: 36,
-                height: 36,
-                borderRadius: 13,
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
                 background: "#2F3344",
-                color: "#9CA0AE",
+                color: "#ff2e9a",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 lineHeight: 1,
-                alignSelf: "flex-start",
               }}
             >
               <action.Icon size={20} strokeWidth={2.15} />
@@ -250,31 +250,31 @@ export function ActionsGrid() {
           style={{
             flex: 1,
             minWidth: 0,
-            border: "1px solid rgba(255,255,255,0.06)",
+            border: "none",
             background: "#252836",
             borderRadius: 20,
-            padding: "10px 8px",
+            minHeight: 92,
+            padding: "13px 8px",
             color: "#FFFFFF",
             display: "flex",
             flexDirection: "column",
-            alignItems: "stretch",
-            justifyContent: "space-between",
-            gap: 12,
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 9,
             cursor: "pointer",
             textAlign: "center",
           }}
         >
           <span
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 13,
-              background: "#2F3344",
-              color: "#9CA0AE",
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              background: "#ff2e9a",
+              color: "#FFFFFF",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              alignSelf: "flex-start",
             }}
           >
             <Plus size={20} strokeWidth={2.4} />
@@ -287,8 +287,7 @@ export function ActionsGrid() {
               lineHeight: 1.15,
               color: "#FFFFFF",
               whiteSpace: "nowrap",
-              alignSelf: "stretch",
-              textAlign: "right",
+              textAlign: "center",
             }}
           >
             כל הפעולות

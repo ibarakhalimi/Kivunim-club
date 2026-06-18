@@ -47,6 +47,10 @@ export function AddPostForm() {
           <input name="title" required placeholder="כותרת שתופיע על הכרטיס..." style={inputStyle} />
         </Field>
 
+        <Field label="טקסט קצר">
+          <input name="short_text" placeholder="שורת הסבר קצרה מתחת לכותרת..." style={inputStyle} />
+        </Field>
+
         {postType === "text_link" && (
           <Field label="טקסט ארוך">
             <textarea name="body_text" rows={5} placeholder="תוכן מלא שיופיע בבוטום שיט..." style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }} />

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export type SliderPost = {
   id: string;
   title: string;
+  short_text: string | null;
   post_type: string;
   body_text: string | null;
   link_url: string | null;
@@ -43,6 +44,7 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
           scrollSnapType: "x mandatory",
           WebkitOverflowScrolling: "touch",
           scrollbarWidth: "none",
+          direction: "ltr",
         }}
       >
         {cards.map((card) => {
@@ -50,76 +52,121 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
           const opensSheet = card.post_type === "text_link";
           const baseStyle: React.CSSProperties = {
               flex: "0 0 100%",
+              width: "100%",
+              minWidth: "100%",
               aspectRatio: "1.82 / 1",
               borderRadius: 26,
               background: card.background_image_url
                 ? `linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.55)), url(${card.background_image_url}) center / cover`
                 : "radial-gradient(ellipse at 20% 20%, #2D3178 0%, #181A23 100%)",
-              border: "1px solid rgba(255,255,255,0.07)",
+              border: "none",
               scrollSnapAlign: "start",
               position: "relative",
               overflow: "hidden",
               padding: 18,
+              boxSizing: "border-box",
               display: "flex",
               alignItems: "flex-end",
               textDecoration: "none",
               cursor: opensSheet || card.link_url ? "pointer" : "default",
+              direction: "rtl",
           };
           const content = (
-            <div
-              style={{
-                position: "relative",
-                zIndex: 1,
-                width: "100%",
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "space-between",
-                gap: 12,
-              }}
-            >
-              <h3
+            <>
+              <span
                 style={{
-                  margin: 0,
-                  flex: "0 1 66%",
-                  maxWidth: "66%",
+                  position: "absolute",
+                  top: 14,
+                  right: 14,
+                  zIndex: 1,
+                  padding: "6px 11px",
+                  borderRadius: 999,
+                  background: "rgba(255,255,255,0.16)",
+                  color: "rgba(255,255,255,0.9)",
                   fontFamily: "var(--font-rubik)",
-                  fontWeight: 900,
-                  fontSize: 23,
-                  lineHeight: 1.16,
-                  color: "#fff",
-                  textAlign: "right",
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  fontWeight: 800,
+                  fontSize: 11,
+                  lineHeight: 1,
+                  backdropFilter: "blur(10px)",
                 }}
               >
-                {card.title}
-              </h3>
-              {hasButton && (
-                <span
-                  style={{
-                    flexShrink: 0,
-                    maxWidth: "34%",
-                    padding: "7px 12px",
-                    borderRadius: 999,
-                    background: "rgba(255,255,255,0.18)",
-                    border: "1px solid rgba(255,255,255,0.3)",
-                    color: "#fff",
-                    fontFamily: "var(--font-rubik)",
-                    fontWeight: 800,
-                    fontSize: 12,
-                    lineHeight: 1,
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {card.button_text}
-                </span>
-              )}
-            </div>
+                חדש
+              </span>
+              <div
+                style={{
+                  position: "relative",
+                  zIndex: 1,
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "flex-end",
+                  justifyContent: "space-between",
+                  gap: 12,
+                }}
+              >
+                <div style={{ flex: "0 1 66%", maxWidth: "66%", minWidth: 0 }}>
+                  <h3
+                    style={{
+                      margin: 0,
+                      fontFamily: "var(--font-rubik)",
+                      fontWeight: 900,
+                      fontSize: 26,
+                      lineHeight: 1.08,
+                      color: "#fff",
+                      textAlign: "right",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {card.title}
+                  </h3>
+                  {card.short_text && (
+                    <p
+                      style={{
+                        margin: "7px 0 0",
+                        fontFamily: "var(--font-rubik)",
+                        fontWeight: 600,
+                        fontSize: 13,
+                        lineHeight: 1.35,
+                        color: "rgba(255,255,255,0.76)",
+                        textAlign: "right",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {card.short_text}
+                    </p>
+                  )}
+                </div>
+                {hasButton && (
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      maxWidth: "34%",
+                      padding: "7px 12px",
+                      borderRadius: 999,
+                      background: "#FF2E9A",
+                      border: "none",
+                      color: "#fff",
+                      fontFamily: "var(--font-rubik)",
+                      fontWeight: 800,
+                      fontSize: 12,
+                      lineHeight: 1,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {card.button_text}
+                  </span>
+                )}
+              </div>
+            </>
           );
 
           if (opensSheet) {
@@ -128,7 +175,7 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
                 key={card.id}
                 type="button"
                 onClick={() => setSelectedPost(card)}
-                style={{ ...baseStyle, width: "100%", border: baseStyle.border, textAlign: "right" }}
+                style={{ ...baseStyle, width: "100%", textAlign: "right" }}
               >
                 {content}
               </button>
@@ -158,7 +205,7 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
           justifyContent: "center",
           alignItems: "center",
           gap: 5,
-          marginTop: 8,
+          marginTop: 14,
         }}
       >
         {cards.map((_, index) => (
