@@ -111,7 +111,7 @@ export function EventsSection({ events }: { events: Event[] }) {
           }
         `}
       </style>
-      <section style={{ width: "calc(50% - 4px)" }}>
+      <section style={{ width: "calc(50% - 5.5px)", flex: "0 0 calc(50% - 5.5px)", minWidth: 0 }}>
         <Link
           key={ev.id}
           href="/events"
@@ -139,10 +139,10 @@ export function EventsSection({ events }: { events: Event[] }) {
               <div
                 aria-label="אירוע קרוב"
                 style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: 12,
-                  background: "rgba(255,46,154,0.15)",
+                  width: "auto",
+                  height: "auto",
+                  borderRadius: 0,
+                  background: "rgba(17,32,58,0.72)",
                   border: "none",
                   display: "flex",
                   alignItems: "center",
@@ -158,8 +158,8 @@ export function EventsSection({ events }: { events: Event[] }) {
                   height: 24,
                   borderRadius: "50%",
                   border: "none",
-                  background: "#FF2E9A",
-                  color: "#fff",
+                  background: "#111522",
+                  color: "#FF2E9A",
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",

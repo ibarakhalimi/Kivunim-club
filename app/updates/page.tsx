@@ -44,7 +44,17 @@ export default async function UpdatesPage() {
       }}
     >
       <SwipeBackHome />
-      <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+      <header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          margin: "-18px -14px 26px",
+          background: "#111522",
+          borderRadius: 0,
+          padding: "26px 22px 24px",
+        }}
+      >
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div
             style={{
@@ -87,7 +97,7 @@ export default async function UpdatesPage() {
         </Link>
       </header>
 
-      <section style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+      <section style={{ display: "flex", flexDirection: "column", gap: 26 }}>
         {updates.map((update) => (
           <div key={update.id} style={{ display: "flex", flexDirection: "column", gap: 7 }}>
             <p style={{ margin: "0 2px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.2, color: "#FB923C" }}>
@@ -101,11 +111,11 @@ export default async function UpdatesPage() {
                 padding: 18,
               }}
             >
-              <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.22, color: "#FFFFFF" }}>
+              <h2 style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 21, lineHeight: 1.22, color: "#FFFFFF" }}>
                 {update.title}
               </h2>
               {update.description && (
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 14, lineHeight: 1.65, color: "#9CA0AE" }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15.5, lineHeight: 1.7, color: "#B4B8C6" }}>
                   {update.description}
                 </p>
               )}

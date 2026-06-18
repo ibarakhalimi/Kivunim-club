@@ -55,7 +55,7 @@ export function CardSlider({ posts = [] }: { posts?: SliderPost[] }) {
               width: "100%",
               minWidth: "100%",
               aspectRatio: "1.82 / 1",
-              borderRadius: 26,
+              borderRadius: 22,
               background: card.background_image_url
                 ? `linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.55)), url(${card.background_image_url}) center / cover`
                 : "radial-gradient(ellipse at 20% 20%, #2D3178 0%, #181A23 100%)",

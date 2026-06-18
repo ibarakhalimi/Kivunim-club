@@ -102,10 +102,10 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             <div
               aria-label="הודעות ועדכונים"
               style={{
-                width: 34,
-                height: 34,
-                borderRadius: 12,
-                background: "rgba(251,146,60,0.15)",
+                width: "auto",
+                height: "auto",
+                borderRadius: 0,
+                background: "rgba(17,32,58,0.72)",
                 border: "none",
                 display: "flex",
                 alignItems: "center",
@@ -120,8 +120,8 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 minWidth: 24,
                 height: 24,
                 borderRadius: "50%",
-                background: "#FF2E9A",
-                color: "#fff",
+                background: "#111522",
+                color: "#FB923C",
                 fontFamily: "var(--font-rubik)",
                 fontWeight: 800,
                 fontSize: 10,
@@ -192,10 +192,10 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
             <div
               aria-label="הודעות ועדכונים"
               style={{
-                width: 34,
-                height: 34,
-                borderRadius: 12,
-                background: "rgba(251,146,60,0.15)",
+                width: "auto",
+                height: "auto",
+                borderRadius: 0,
+                background: "rgba(17,32,58,0.72)",
                 border: "none",
                 display: "flex",
                 alignItems: "center",
@@ -210,8 +210,8 @@ export function UpdateList({ updates, currentTime }: { updates: Update[]; curren
                 minWidth: 24,
                 height: 24,
                 borderRadius: "50%",
-                background: "#FF2E9A",
-                color: "#fff",
+                background: "#111522",
+                color: "#FB923C",
                 fontFamily: "var(--font-rubik)",
                 fontWeight: 800,
                 fontSize: 10,

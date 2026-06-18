@@ -75,7 +75,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
 
   return (
     <>
-      <section style={{ width: "calc(50% - 4px)" }}>
+      <section style={{ width: "calc(50% - 5.5px)", flex: "0 0 calc(50% - 5.5px)", minWidth: 0 }}>
         <Link
           href="/benefits"
           style={{
@@ -96,10 +96,10 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             <div
               aria-label="הטבות"
               style={{
-                width: 34,
-                height: 34,
-                borderRadius: 12,
-                background: "rgba(52,211,153,0.15)",
+                width: "auto",
+                height: "auto",
+                borderRadius: 0,
+                background: "rgba(17,32,58,0.72)",
                 border: "none",
                 display: "flex",
                 alignItems: "center",
@@ -116,8 +116,8 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 height: 24,
                 borderRadius: "50%",
                 border: "none",
-                background: "#34D399",
-                color: "#0F2820",
+                background: "#111522",
+                color: "#34D399",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
