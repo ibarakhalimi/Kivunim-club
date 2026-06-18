@@ -68,6 +68,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [selected, setSelected] = useState<Benefit | null>(null);
   const [allOpen, setAllOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [openBenefitId, setOpenBenefitId] = useState<string | null>(null);
   const currentBenefits = useMemo(() => benefits.filter((benefit) => !isExpired(benefit.expires_at)), [benefits]);
 
   const latestBenefit = useMemo(() => {
@@ -210,34 +211,39 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 </p>
               </div>
               <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-              {currentBenefits.map((benefit, index) => (
-                <article
-                  key={benefit.id}
-                  style={{
-                    padding: "13px 0",
-                    display: "flex",
-                    gap: 12,
-                    borderBottom: index === currentBenefits.length - 1 ? "none" : "1px solid rgba(52, 211, 153, 0.16)",
-                  }}
-                >
-                  <div style={{ width: 42, height: 42, borderRadius: 14, background: categoryBg(benefit.category ?? ""), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
-                    {categoryEmoji(benefit.category ?? "")}
-                  </div>
-                  <div style={{ minWidth: 0 }}>
-                    <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
-                      {benefit.business}
-                    </p>
-                    <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, lineHeight: 1.35, color: "#34D399" }}>
-                      {benefit.deal}
-                    </p>
-                    {benefit.description && (
-                      <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6" }}>
-                        {benefit.description}
+              {currentBenefits.map((benefit, index) => {
+                const isOpen = openBenefitId === benefit.id;
+                return (
+                  <article
+                    key={benefit.id}
+                    onClick={() => setOpenBenefitId((current) => current === benefit.id ? null : benefit.id)}
+                    style={{
+                      padding: "13px 0",
+                      display: "flex",
+                      gap: 12,
+                      borderBottom: index === currentBenefits.length - 1 ? "none" : "1px solid rgba(52, 211, 153, 0.16)",
+                      cursor: benefit.description ? "pointer" : "default",
+                    }}
+                  >
+                    <div style={{ width: 42, height: 42, borderRadius: 14, background: categoryBg(benefit.category ?? ""), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
+                      {categoryEmoji(benefit.category ?? "")}
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
+                        {benefit.business}
                       </p>
-                    )}
-                  </div>
-                </article>
-              ))}
+                      <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, lineHeight: 1.35, color: "#34D399" }}>
+                        {benefit.deal}
+                      </p>
+                      {isOpen && benefit.description && (
+                        <p style={{ margin: "8px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6" }}>
+                          {benefit.description}
+                        </p>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
               </div>
             </div>
           )}

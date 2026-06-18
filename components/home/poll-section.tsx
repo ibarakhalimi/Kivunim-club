@@ -175,7 +175,6 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
 
 export function PollSection({ poll, voteCounts, userVote }: Props) {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const communityPolls: CommunityPoll[] = [
@@ -189,13 +188,6 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
     ...DEMO_POLLS,
   ];
   const totalAnswers = voteCounts.reduce((sum, count) => sum + count, 0);
-
-  function handleScroll(event: React.UIEvent<HTMLDivElement>) {
-    const element = event.currentTarget;
-    const slideWidth = element.clientWidth + 10;
-    const index = Math.round(Math.abs(element.scrollLeft) / slideWidth);
-    setActiveIndex(Math.min(index, communityPolls.length - 1));
-  }
 
   function expandThisCard() {
     setExpanded(true);
@@ -306,7 +298,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
             </button>
           ) : (
             <div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14, paddingInline: 2 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, paddingInline: 2 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <div
                     aria-hidden="true"
@@ -325,31 +317,12 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
                     <MessageCircle size={22} strokeWidth={2.2} />
                   </div>
                   <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1.1, color: "#FFFFFF" }}>
-                    פעילות קהילה
+                    פעילות
                   </p>
-                </div>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    borderRadius: 99,
-                    background: "#2F3344",
-                    padding: "4px 8px",
-                    fontFamily: "var(--font-rubik)",
-                    fontWeight: 800,
-                    fontSize: 11,
-                    color: "#9CA0AE",
-                  }}
-                >
-                  <span style={{ color: "#A78BFA" }}>{activeIndex + 1}</span>
-                  <span>מתוך</span>
-                  <span>{communityPolls.length}</span>
                 </div>
               </div>
               <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
             <div
-              onScroll={handleScroll}
               style={{
                 display: "flex",
                 gap: 10,
@@ -422,31 +395,11 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
           <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#FFFFFF" }}>
-            פעילות קהילה
+            פעילות
           </p>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: 99,
-              background: "#2F3344",
-              padding: "4px 8px",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 800,
-              fontSize: 11,
-              color: "#9CA0AE",
-            }}
-          >
-            <span style={{ color: "#A78BFA" }}>{activeIndex + 1}</span>
-            <span>מתוך</span>
-            <span>{communityPolls.length}</span>
-          </div>
         </div>
 
         <div
-          onScroll={handleScroll}
           style={{
             display: "flex",
             gap: 10,
