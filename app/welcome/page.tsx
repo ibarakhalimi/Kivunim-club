@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { AuthRedirect } from "./auth-redirect";
+import { WelcomeLoginForm } from "./welcome-login-form";
 
 type WelcomePageProps = {
   searchParams?: Promise<{ next?: string }>;
@@ -10,15 +11,15 @@ type WelcomePageProps = {
 export default async function WelcomePage({ searchParams }: WelcomePageProps) {
   const params = await searchParams;
   const nextPath = params?.next;
-  const loginHref = nextPath ? `/login?next=${encodeURIComponent(nextPath)}` : "/login";
   const registerHref = nextPath ? `/register?next=${encodeURIComponent(nextPath)}` : "/register";
+  const resolvedNextPath = nextPath || "/";
 
   return (
     <div
       style={{
         height: "100dvh",
         width: "100%",
-        background: "#ffffff",
+        background: "#181A23",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -30,24 +31,6 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
         <AuthRedirect />
       </Suspense>
 
-      {/* Hero image */}
-      <div style={{ position: "relative", width: "100%", height: "50dvh", flexShrink: 0 }}>
-        <Image
-          src="/ChatGPT Image Jun 1, 2026, 01_12_22 PM.png"
-          alt=""
-          fill
-          style={{ objectFit: "cover" }}
-          priority
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(to bottom, transparent 50%, #ffffff 100%)",
-          }}
-        />
-      </div>
-
       {/* Bottom section */}
       <div
         style={{
@@ -56,7 +39,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 24px 48px",
+          padding: "96px 14px 48px",
           textAlign: "center",
           position: "relative",
           zIndex: 1,
@@ -64,66 +47,73 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
       >
         {/* Logo + title */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, paddingTop: 8 }}>
-          <Image
-            src="/logo-aguda.png"
-            alt="לוגו האגודה"
-            width={80}
-            height={80}
-            style={{ display: "block" }}
-          />
+          <div
+            style={{
+              width: 112,
+              height: 112,
+              borderRadius: 34,
+              background: "#F7F8FF",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              src="/logo-aguda.png"
+              alt="לוגו האגודה"
+              width={88}
+              height={88}
+              style={{ display: "block" }}
+            />
+          </div>
           <h1
             style={{
               margin: 0,
               fontFamily: "var(--font-rubik)",
-              fontWeight: 800,
-              fontSize: 22,
-              lineHeight: 1.3,
-              color: "#0F172A",
+              fontWeight: 900,
+              fontSize: 31,
+              lineHeight: 1.12,
+              color: "#F7F8FF",
+              maxWidth: 360,
             }}
           >
             מועדון ההטבות והפעילויות<br />הסטודנטיאלי של אשדוד
           </h1>
         </div>
 
-        {/* CTA buttons */}
+        <WelcomeLoginForm nextPath={resolvedNextPath} />
+
+        {/* CTA button */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+          <p
+            style={{
+              margin: 0,
+              color: "#9CA0AE",
+              fontFamily: "var(--font-rubik)",
+              fontSize: 14,
+              fontWeight: 800,
+              textAlign: "center",
+            }}
+          >
+            פעם ראשונה פה?
+          </p>
           <Link href={registerHref} style={{ textDecoration: "none" }}>
             <div
               style={{
                 width: "100%",
                 padding: "15px 0",
-                background: "#1E40AF",
+                background: "#FF2E9A",
                 color: "#fff",
                 border: "none",
-                borderRadius: 10,
+                borderRadius: 18,
                 fontFamily: "var(--font-rubik)",
-                fontWeight: 700,
+                fontWeight: 900,
                 fontSize: 17,
                 textAlign: "center",
                 cursor: "pointer",
               }}
             >
               הרשמה למועדון
-            </div>
-          </Link>
-
-          <Link href={loginHref} style={{ textDecoration: "none" }}>
-            <div
-              style={{
-                width: "100%",
-                padding: "15px 0",
-                background: "#fff",
-                color: "#0F172A",
-                border: "1px solid #E2E8F0",
-                borderRadius: 10,
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 600,
-                fontSize: 17,
-                textAlign: "center",
-                cursor: "pointer",
-              }}
-            >
-              כבר יש לי חשבון
             </div>
           </Link>
         </div>

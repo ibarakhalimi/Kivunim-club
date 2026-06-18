@@ -96,7 +96,7 @@ export default function RegisterPage() {
         flexDirection: "column",
         alignItems: "center",
         gap: 12,
-        padding: "48px 0 24px",
+        padding: "38px 0 26px",
         position: "relative",
       }}
     >
@@ -111,7 +111,7 @@ export default function RegisterPage() {
             fontFamily: "var(--font-rubik)",
             fontWeight: 600,
             fontSize: 14,
-            color: "#64748B",
+            color: "#9CA0AE",
           }}
         >
           → חזרה
@@ -130,24 +130,36 @@ export default function RegisterPage() {
             fontFamily: "var(--font-rubik)",
             fontWeight: 600,
             fontSize: 14,
-            color: "#64748B",
+            color: "#9CA0AE",
           }}
         >
           → חזרה
         </button>
       )}
-      <Image src="/logo-aguda.png" alt="לוגו האגודה" width={80} height={80} style={{ display: "block" }} />
+      <div
+        style={{
+          width: 92,
+          height: 92,
+          borderRadius: 28,
+          background: "#F7F8FF",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Image src="/logo-aguda.png" alt="לוגו האגודה" width={72} height={72} style={{ display: "block" }} />
+      </div>
       <div style={{ textAlign: "center" }}>
         <span
           style={{
             display: "inline-block",
-            background: "#DCFCE7",
+            background: "rgba(255, 46, 154, 0.14)",
             borderRadius: 20,
             padding: "3px 14px",
             fontFamily: "var(--font-rubik)",
-            fontWeight: 600,
+            fontWeight: 900,
             fontSize: 13,
-            color: "#16A34A",
+            color: "#FF2E9A",
             marginBottom: 8,
           }}
         >
@@ -157,10 +169,10 @@ export default function RegisterPage() {
           style={{
             margin: 0,
             fontFamily: "var(--font-rubik)",
-            fontWeight: 800,
-            fontSize: 28,
-            lineHeight: 1.2,
-            color: "#0F172A",
+            fontWeight: 900,
+            fontSize: 31,
+            lineHeight: 1.12,
+            color: "#F7F8FF",
           }}
         >
           הקלאב הסטודנטיאלי
@@ -174,20 +186,20 @@ export default function RegisterPage() {
       <div
         style={{
           minHeight: "100dvh",
-          background: "#F8FAFC",
+          background: "#181A23",
           direction: "rtl",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <div style={{ flex: 1, overflowY: "auto", padding: "0 24px" }}>
+        <div style={{ flex: 1, overflowY: "auto", padding: "0 14px" }}>
           <div style={{ maxWidth: 480, margin: "0 auto" }}>
             {headerBlock}
 
             {/* About box */}
             <div style={infoCardStyle}>
               <p style={sectionLabelStyle}>מי אנחנו</p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.7, color: "#475569" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.7, color: "#C7CAD6" }}>
                 אגודת הסטודנטים העירונית באשדוד הוקמה על ידי קבוצת ׳בקטע מקומי׳ במרכז כיוונים כדי לייצג את כלל הסטודנטים והסטודנטיות בעיר ללא הבדלי מוסד, תואר או שנתון.
               </p>
             </div>
@@ -199,7 +211,7 @@ export default function RegisterPage() {
                 {BENEFITS.map(({ emoji, text }) => (
                   <div key={text} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
                     <span style={{ fontSize: 18, lineHeight: 1.5, flexShrink: 0 }}>{emoji}</span>
-                    <span style={{ fontFamily: "var(--font-rubik)", fontSize: 15, lineHeight: 1.55, color: "#475569" }}>
+                    <span style={{ fontFamily: "var(--font-rubik)", fontSize: 15, lineHeight: 1.55, color: "#C7CAD6" }}>
                       {text}
                     </span>
                   </div>
@@ -215,8 +227,8 @@ export default function RegisterPage() {
         <div
           style={{
             flexShrink: 0,
-            padding: "16px 24px 44px",
-            background: "linear-gradient(to top, #F8FAFC 70%, transparent 100%)",
+            padding: "16px 14px 44px",
+            background: "linear-gradient(to top, #181A23 70%, rgba(24, 26, 35, 0) 100%)",
           }}
         >
           <div style={{ maxWidth: 480, margin: "0 auto" }}>
@@ -236,8 +248,8 @@ export default function RegisterPage() {
     <div
       style={{
         minHeight: "100dvh",
-        background: "#F8FAFC",
-        padding: "0 24px 56px",
+        background: "#181A23",
+        padding: "0 14px 56px",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -286,14 +298,14 @@ export default function RegisterPage() {
                 type="checkbox"
                 checked={form.privacy_consent}
                 onChange={(e) => set("privacy_consent", e.target.checked)}
-                style={{ width: 18, height: 18, marginTop: 3, flexShrink: 0, cursor: "pointer", accentColor: "#1E40AF" }}
+                style={{ width: 18, height: 18, marginTop: 3, flexShrink: 0, cursor: "pointer", accentColor: "#FF2E9A" }}
               />
-              <span style={{ fontSize: 14, lineHeight: 1.6, color: "#475569", fontFamily: "var(--font-rubik)" }}>
+              <span style={{ fontSize: 14, lineHeight: 1.6, color: "#C7CAD6", fontFamily: "var(--font-rubik)", fontWeight: 600 }}>
                 קראתי ואני מסכים/ה{" "}
                 <button
                   type="button"
                   onClick={() => setTermsOpen(true)}
-                  style={{ textDecoration: "underline", color: "#1E40AF", fontWeight: 600, background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "var(--font-rubik)", fontSize: 14 }}
+                  style={{ textDecoration: "underline", color: "#FF2E9A", fontWeight: 900, background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "var(--font-rubik)", fontSize: 14 }}
                 >
                   לתנאי השימוש ומדיניות הפרטיות
                 </button>{" "}
@@ -303,7 +315,7 @@ export default function RegisterPage() {
           </div>
 
           {error && (
-            <p style={{ margin: "4px 0 0", fontSize: 13, color: "#DC2626", fontWeight: 600, fontFamily: "var(--font-rubik)" }}>
+            <p style={{ margin: "4px 0 0", fontSize: 13, color: "#FFB4C8", fontWeight: 800, fontFamily: "var(--font-rubik)" }}>
               {error}
             </p>
           )}
@@ -316,9 +328,9 @@ export default function RegisterPage() {
             {loading ? "נרשם..." : "הירשם למועדון"}
           </button>
 
-          <p style={{ margin: "4px 0 0", textAlign: "center", fontSize: 14, color: "#64748B", fontFamily: "var(--font-rubik)" }}>
+          <p style={{ margin: "4px 0 0", textAlign: "center", fontSize: 14, color: "#9CA0AE", fontFamily: "var(--font-rubik)", fontWeight: 700 }}>
             כבר יש לך חשבון?{" "}
-            <Link href="/login" style={{ color: "#1E40AF", fontWeight: 700, textDecoration: "none" }}>
+            <Link href="/welcome" style={{ color: "#FF2E9A", fontWeight: 900, textDecoration: "none" }}>
               כניסה
             </Link>
           </p>
@@ -328,15 +340,15 @@ export default function RegisterPage() {
       {/* Terms modal */}
       {termsOpen && (
         <>
-          <div onClick={() => setTermsOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 100 }} />
+          <div onClick={() => setTermsOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.62)", zIndex: 100 }} />
           <div
             style={{
               position: "fixed",
               bottom: 0, left: 0, right: 0,
               zIndex: 101,
-              background: "#fff",
-              borderRadius: "16px 16px 0 0",
-              border: "1px solid #E2E8F0",
+              background: "#252836",
+              borderRadius: "26px 26px 0 0",
+              border: "none",
               borderBottom: "none",
               direction: "rtl",
               maxHeight: "85dvh",
@@ -349,23 +361,23 @@ export default function RegisterPage() {
               style={{
                 position: "absolute", top: 14, left: 16,
                 width: 32, height: 32,
-                background: "#F1F5F9",
+                background: "#303446",
                 border: "none",
                 borderRadius: "50%",
                 fontSize: 15,
                 cursor: "pointer",
-                color: "#64748B",
+                color: "#F7F8FF",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}
             >
               ✕
             </button>
 
-            <h2 style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 20, color: "#0F172A" }}>
+            <h2 style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#F7F8FF" }}>
               תנאי שימוש ומדיניות פרטיות
             </h2>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 20, fontFamily: "var(--font-rubik)", fontSize: 15, lineHeight: 1.75, color: "#475569" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 20, fontFamily: "var(--font-rubik)", fontSize: 15, lineHeight: 1.75, color: "#C7CAD6" }}>
               {[
                 { title: "1. מטרת השירות", body: "מועדון כיוונים הוא מועדון הטבות ופעילויות לסטודנטים בעיר אשדוד. ההרשמה מאפשרת גישה להטבות, אירועים ועדכונים הרלוונטיים לחיי הסטודנט." },
                 { title: "2. איסוף מידע", body: "במסגרת ההרשמה נאסף מידע אישי הכולל: שם, כתובת אימייל, מספר טלפון, מוסד לימוד, תואר, שנתון, אזור מגורים ותאריך לידה. המידע נשמר בצורה מאובטחת ומשמש לצורך ניהול החברות במועדון בלבד." },
@@ -375,7 +387,7 @@ export default function RegisterPage() {
                 { title: "6. יצירת קשר", body: "לכל שאלה בנוגע לתנאי השימוש ומדיניות הפרטיות ניתן לפנות אלינו דרך פרטי הקשר באתר." },
               ].map(({ title, body }) => (
                 <div key={title}>
-                  <p style={{ margin: "0 0 4px", fontWeight: 700, fontSize: 15, color: "#0F172A" }}>{title}</p>
+                  <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 15, color: "#F7F8FF" }}>{title}</p>
                   <p style={{ margin: 0 }}>{body}</p>
                 </div>
               ))}
@@ -417,12 +429,12 @@ function InstitutionInput({ value, onChange }: { value: string; onChange: (v: st
             top: "calc(100% + 4px)",
             right: 0,
             left: 0,
-            background: "#fff",
-            border: "1px solid #E2E8F0",
-            borderRadius: 8,
+            background: "#252836",
+            border: "none",
+            borderRadius: 18,
             overflow: "hidden",
             zIndex: 10,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+            boxShadow: "0 16px 34px rgba(0,0,0,0.24)",
           }}
         >
           {matches.map((inst) => (
@@ -433,9 +445,9 @@ function InstitutionInput({ value, onChange }: { value: string; onChange: (v: st
                 padding: "10px 14px",
                 fontSize: 14,
                 fontFamily: "var(--font-rubik)",
-                color: "#0F172A",
+                color: "#F7F8FF",
                 cursor: "pointer",
-                borderBottom: "1px solid #F1F5F9",
+                borderBottom: "1px solid rgba(247, 248, 255, 0.08)",
               }}
             >
               {inst}
@@ -450,7 +462,7 @@ function InstitutionInput({ value, onChange }: { value: string; onChange: (v: st
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <label style={{ fontSize: 14, fontWeight: 600, color: "#0F172A", fontFamily: "var(--font-rubik)" }}>
+      <label style={{ fontSize: 14, fontWeight: 800, color: "#F7F8FF", fontFamily: "var(--font-rubik)" }}>
         {label}
       </label>
       {children}
@@ -459,39 +471,38 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 const inputStyle: React.CSSProperties = {
-  padding: "11px 14px",
+  padding: "14px 16px",
   fontSize: 15,
   fontFamily: "var(--font-rubik)",
-  border: "1px solid #CBD5E1",
-  borderRadius: 8,
-  background: "#fff",
-  color: "#0F172A",
+  border: "none",
+  borderRadius: 18,
+  background: "#252836",
+  color: "#F7F8FF",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
   direction: "rtl",
-  fontWeight: 400,
+  fontWeight: 700,
 };
 
 const primaryBtnStyle: React.CSSProperties = {
   width: "100%",
-  padding: "14px 0",
-  background: "#1E40AF",
+  padding: "15px 0",
+  background: "#FF2E9A",
   color: "#fff",
   border: "none",
-  borderRadius: 10,
+  borderRadius: 18,
   fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
+  fontWeight: 900,
   fontSize: 16,
   cursor: "pointer",
 };
 
 const infoCardStyle: React.CSSProperties = {
   padding: "16px",
-  background: "#fff",
-  borderRadius: 12,
-  border: "1px solid #E2E8F0",
-  boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+  background: "#252836",
+  borderRadius: 24,
+  border: "none",
 };
 
 const sectionLabelStyle: React.CSSProperties = {
@@ -501,5 +512,5 @@ const sectionLabelStyle: React.CSSProperties = {
   fontSize: 12,
   letterSpacing: "0.06em",
   textTransform: "uppercase",
-  color: "#94A3B8",
+  color: "#FF2E9A",
 };

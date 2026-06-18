@@ -6,7 +6,7 @@ export default function RegisterSuccessPage() {
     <div
       style={{
         height: "100dvh",
-        background: "#F8FAFC",
+        background: "#181A23",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -24,17 +24,29 @@ export default function RegisterSuccessPage() {
           gap: 12,
         }}
       >
-        <Image src="/logo-aguda.png" alt="לוגו האגודה" width={80} height={80} style={{ display: "block" }} />
+        <div
+          style={{
+            width: 92,
+            height: 92,
+            borderRadius: 28,
+            background: "#F7F8FF",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image src="/logo-aguda.png" alt="לוגו האגודה" width={72} height={72} style={{ display: "block" }} />
+        </div>
         <span
           style={{
             display: "inline-block",
-            background: "#DCFCE7",
+            background: "rgba(255, 46, 154, 0.14)",
             borderRadius: 20,
             padding: "3px 14px",
             fontFamily: "var(--font-rubik)",
-            fontWeight: 600,
+            fontWeight: 900,
             fontSize: 13,
-            color: "#16A34A",
+            color: "#FF2E9A",
           }}
         >
           ברוך הבא למועדון
@@ -43,10 +55,10 @@ export default function RegisterSuccessPage() {
           style={{
             margin: 0,
             fontFamily: "var(--font-rubik)",
-            fontWeight: 800,
-            fontSize: 28,
-            lineHeight: 1.2,
-            color: "#0F172A",
+            fontWeight: 900,
+            fontSize: 31,
+            lineHeight: 1.12,
+            color: "#F7F8FF",
             textAlign: "center",
           }}
         >
@@ -72,7 +84,7 @@ export default function RegisterSuccessPage() {
             width: 72,
             height: 72,
             borderRadius: "50%",
-            background: "#DCFCE7",
+            background: "#252836",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -86,9 +98,9 @@ export default function RegisterSuccessPage() {
           style={{
             margin: 0,
             fontFamily: "var(--font-rubik)",
-            fontWeight: 800,
+            fontWeight: 900,
             fontSize: 26,
-            color: "#0F172A",
+            color: "#F7F8FF",
           }}
         >
           ההרשמה התקבלה!
@@ -97,9 +109,9 @@ export default function RegisterSuccessPage() {
           style={{
             margin: 0,
             fontFamily: "var(--font-rubik)",
-            fontWeight: 400,
+            fontWeight: 600,
             fontSize: 16,
-            color: "#475569",
+            color: "#C7CAD6",
             lineHeight: 1.6,
             maxWidth: 300,
           }}
@@ -121,12 +133,12 @@ export default function RegisterSuccessPage() {
               style={{
                 width: "100%",
                 padding: "15px 0",
-                background: "#1E40AF",
+                background: "#FF2E9A",
                 color: "#fff",
                 border: "none",
-                borderRadius: 10,
+                borderRadius: 18,
                 fontFamily: "var(--font-rubik)",
-                fontWeight: 700,
+                fontWeight: 900,
                 fontSize: 17,
                 textAlign: "center",
                 cursor: "pointer",
