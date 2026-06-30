@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import { Megaphone } from "lucide-react";
 
 type Update = {
@@ -10,17 +10,6 @@ type Update = {
   published_at: string;
   author: string;
 };
-
-const CARD_COLORS = [
-  { bg: "#252836", accent: "#FB923C" },
-  { bg: "#252836", accent: "#34D399" },
-  { bg: "#252836", accent: "#A78BFA" },
-  { bg: "#252836", accent: "#FF2E9A" },
-  { bg: "#252836", accent: "#4DA3FF" },
-  { bg: "#252836", accent: "#D8F500" },
-];
-
-const GRID_EXPAND_EVENT = "home-grid-expand";
 
 function timeAgo(dateStr: string, currentTime: string): string {
   const diff = new Date(currentTime).getTime() - new Date(dateStr).getTime();
@@ -32,574 +21,148 @@ function timeAgo(dateStr: string, currentTime: string): string {
   return `לפני ${days} ימים`;
 }
 
+function UpdateCard({ update, currentTime }: { update: Update; currentTime: string }) {
+  return (
+    <article
+      style={{
+        width: "100%",
+        minHeight: 116,
+        background: "#252836",
+        border: "none",
+        borderRadius: 22,
+        boxShadow: "none",
+        padding: 12,
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        overflow: "hidden",
+        textAlign: "right",
+        boxSizing: "border-box",
+      }}
+    >
+      <div
+        aria-label="הודעות ועדכונים"
+        style={{
+          width: 46,
+          height: 46,
+          borderRadius: 16,
+          background: "rgba(251, 146, 60, 0.14)",
+          border: "1px solid rgba(251, 146, 60, 0.22)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#FB923C",
+          flexShrink: 0,
+        }}
+      >
+        <Megaphone size={22} strokeWidth={2.1} />
+      </div>
+
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
+          {timeAgo(update.published_at, currentTime)}
+        </p>
+        <h3 style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+          {update.title}
+        </h3>
+        {update.description && (
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, lineHeight: 1.35, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {update.description}
+          </p>
+        )}
+      </div>
+    </article>
+  );
+}
+
 export function UpdateList({ updates, currentTime }: { updates: Update[]; currentTime: string }) {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const pointerStart = useRef<{ x: number; y: number } | null>(null);
-  const didSwipe = useRef(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [swipeDirection, setSwipeDirection] = useState<"next" | "prev">("next");
-  const [selected, setSelected] = useState<Update | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [openUpdateId, setOpenUpdateId] = useState<string | null>(null);
-  const displayUpdates = updates;
+  const [showAll, setShowAll] = useState(false);
+  const additionalCount = Math.max(updates.length - 1, 0);
+  const visibleUpdates = showAll ? updates : updates.slice(0, 1);
 
-  function expandThisCard() {
-    setExpanded(true);
-    window.dispatchEvent(new CustomEvent(GRID_EXPAND_EVENT, { detail: "updates" }));
-  }
-
-  function moveToNext() {
-    setSwipeDirection("next");
-    setActiveIndex((current) => (current + 1) % displayUpdates.length);
-  }
-
-  function moveToPrev() {
-    setSwipeDirection("prev");
-    setActiveIndex((current) => (current - 1 + displayUpdates.length) % displayUpdates.length);
-  }
-
-  function handleSwipeEnd(start: { x: number; y: number } | null, end: { x: number; y: number }) {
-    if (start === null) return;
-
-    const distanceX = end.x - start.x;
-    const distanceY = end.y - start.y;
-    const dominantDistance = Math.abs(distanceY) > Math.abs(distanceX) ? distanceY : distanceX;
-    if (Math.abs(dominantDistance) < 36) return;
-
-    didSwipe.current = true;
-    if (dominantDistance < 0) moveToNext();
-    else moveToPrev();
-  }
-
-  function handleCardClick() {
-    if (didSwipe.current) {
-      didSwipe.current = false;
-      return;
-    }
-
-    setSelected(activeUpdate);
-  }
-
-  useEffect(() => {
-    document.body.style.overflow = selected || drawerOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [selected, drawerOpen]);
-
-  useEffect(() => {
-    const handleExpand = (event: Event) => {
-      const target = (event as CustomEvent<string>).detail;
-      setExpanded(true);
-      if (target === "updates") {
-        requestAnimationFrame(() => {
-          sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      }
-    };
-    window.addEventListener(GRID_EXPAND_EVENT, handleExpand);
-    return () => window.removeEventListener(GRID_EXPAND_EVENT, handleExpand);
-  }, []);
-
-  if (displayUpdates.length === 0) {
+  if (updates.length === 0) {
     return (
-      <section ref={sectionRef} style={{ width: "100%", gridColumn: expanded ? "1 / -1" : undefined, minWidth: 0, boxSizing: "border-box", transition: "grid-column 0.24s ease", scrollMarginTop: 14 }}>
-        <button
-          type="button"
-          onClick={expandThisCard}
+      <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
+        <article
           style={{
             width: "100%",
-            aspectRatio: "1 / 1",
-            background: expanded ? "transparent" : "#252836",
+            minHeight: 116,
+            background: "#252836",
             border: "none",
             borderRadius: 22,
             boxShadow: "none",
-            padding: expanded ? 0 : 12,
+            padding: 12,
             display: "flex",
-            flexDirection: "column",
+            alignItems: "center",
+            gap: 12,
             overflow: "hidden",
             textAlign: "right",
-            cursor: "pointer",
-            textDecoration: "none",
-            font: "inherit",
             boxSizing: "border-box",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-            <div
-              aria-label="הודעות ועדכונים"
-              style={{
-                width: "auto",
-                height: "auto",
-                borderRadius: 0,
-                background: "rgba(17,32,58,0.72)",
-                border: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#FB923C",
-              }}
-            >
-              <Megaphone size={21} strokeWidth={2.1} />
-            </div>
-            <span
-              style={{
-                minWidth: 24,
-                height: 24,
-                borderRadius: "50%",
-                background: "#111522",
-                color: "#FB923C",
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 800,
-                fontSize: 10,
-                lineHeight: 1,
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              0
-            </span>
+          <div
+            aria-label="הודעות ועדכונים"
+            style={{
+              width: 46,
+              height: 46,
+              borderRadius: 16,
+              background: "rgba(251, 146, 60, 0.14)",
+              border: "1px solid rgba(251, 146, 60, 0.22)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#FB923C",
+              flexShrink: 0,
+            }}
+          >
+            <Megaphone size={22} strokeWidth={2.1} />
           </div>
 
-          <div style={{ marginTop: "auto" }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
             <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
               עדכונים
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF" }}>
+            <h3 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF" }}>
               אין עדכונים כרגע
-            </p>
+            </h3>
           </div>
-        </button>
-        {expanded && (
-          <div style={{ marginTop: 10, background: "#252836", borderRadius: 22, padding: 14 }}>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, color: "#FFFFFF" }}>
-              אין עדכונים להצגה כרגע
-            </p>
-          </div>
-        )}
+        </article>
       </section>
     );
   }
 
-  const activeUpdate = displayUpdates[activeIndex];
-  const firstUpdate = displayUpdates[0];
-  const activeColor = CARD_COLORS[activeIndex % CARD_COLORS.length];
-  const moreUpdates = Math.max(displayUpdates.length - 1, 0);
-
   return (
-    <>
-      <style>
-        {`
-          @keyframes postCardIn {
-            from {
-              opacity: 0.72;
-              transform: translateX(${swipeDirection === "next" ? "-18px" : "18px"}) scale(0.98);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0) scale(1);
-            }
-          }
-        `}
-      </style>
-      <section ref={sectionRef} style={{ width: "100%", gridColumn: expanded ? "1 / -1" : undefined, minWidth: 0, boxSizing: "border-box", transition: "grid-column 0.24s ease", scrollMarginTop: 14 }}>
-        <div
-          style={{
-            width: "100%",
-            aspectRatio: expanded ? "auto" : "1 / 1",
-            background: expanded ? "transparent" : "#252836",
-            border: "none",
-            borderRadius: 22,
-            boxShadow: "none",
-            padding: expanded ? 0 : 12,
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-            textAlign: "right",
-            textDecoration: "none",
-            font: "inherit",
-            minHeight: expanded ? 0 : undefined,
-            boxSizing: "border-box",
-          }}
-        >
-          {!expanded ? (
-            <button
-              type="button"
-              onClick={expandThisCard}
-              style={{
-                width: "100%",
-                flex: 1,
-                border: "none",
-                background: "transparent",
-                padding: 0,
-                display: "flex",
-                flexDirection: "column",
-                textAlign: "right",
-                cursor: "pointer",
-                font: "inherit",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                <div
-                  aria-label="הודעות ועדכונים"
-                  style={{
-                    width: "auto",
-                    height: "auto",
-                    borderRadius: 0,
-                    background: "rgba(17,32,58,0.72)",
-                    border: "none",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#FB923C",
-                  }}
-                >
-                  <Megaphone size={21} strokeWidth={2.1} />
-                </div>
-                <span
-                  style={{
-                    minWidth: 24,
-                    height: 24,
-                    borderRadius: "50%",
-                    background: "#111522",
-                    color: "#FB923C",
-                    fontFamily: "var(--font-rubik)",
-                    fontWeight: 800,
-                    fontSize: 10,
-                    lineHeight: 1,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {moreUpdates}
-                </span>
-              </div>
-
-              <div style={{ marginTop: "auto" }}>
-                <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
-                  {timeAgo(firstUpdate.published_at, currentTime)}
-                </p>
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {firstUpdate.title}
-                </p>
-              </div>
-            </button>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, paddingInline: 2 }}>
-                <div
-                  aria-hidden="true"
-                  style={{
-                    width: 34,
-                    height: 34,
-                    borderRadius: 14,
-                    background: "rgba(251, 146, 60, 0.14)",
-                    color: "#FB923C",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <Megaphone size={22} strokeWidth={2.2} />
-                </div>
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1.1, color: "#FFFFFF" }}>
-                  עדכונים
-                </p>
-              </div>
-              <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-              {displayUpdates.map((update, index) => {
-                const isOpen = openUpdateId === update.id;
-                return (
-                <article
-                  key={update.id}
-                  onClick={() => setOpenUpdateId((current) => current === update.id ? null : update.id)}
-                  style={{
-                    padding: "13px 0",
-                    borderBottom: index === displayUpdates.length - 1 ? "none" : "1px solid rgba(251, 146, 60, 0.16)",
-                    cursor: "pointer",
-                  }}
-                >
-                  <h3 style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, lineHeight: 1.22, color: "#FFFFFF" }}>
-                    {update.title}
-                  </h3>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontFamily: "var(--font-rubik)",
-                      fontWeight: 600,
-                      fontSize: 15,
-                      lineHeight: 1.58,
-                      color: "#C7CAD6",
-                      whiteSpace: "pre-wrap",
-                      display: isOpen ? "block" : "-webkit-box",
-                      WebkitLineClamp: isOpen ? undefined : 2,
-                      WebkitBoxOrient: "vertical",
-                      overflow: isOpen ? "visible" : "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {update.description}
-                  </p>
-                  <p suppressHydrationWarning style={{ margin: "10px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C", textAlign: "left" }}>
-                    {timeAgo(update.published_at, currentTime)}
-                  </p>
-                </article>
-                );
-              })}
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {drawerOpen && (
-        <>
-          <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 50 }} />
-          <div
+    <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
+        <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 16, lineHeight: 1, color: "#C7CAD6" }}>
+          עדכונים
+        </h2>
+        {!showAll && additionalCount > 0 && (
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
             style={{
-              position: "fixed",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 51,
-              background: "#252836",
-              borderRadius: "26px 26px 0 0",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderBottom: "none",
-              direction: "rtl",
-              maxHeight: "82dvh",
-              overflowY: "auto",
-              padding: "44px 14px 30px",
+              border: "1px solid rgba(251, 146, 60, 0.26)",
+              borderRadius: 999,
+              background: "rgba(251, 146, 60, 0.14)",
+              color: "#FB923C",
+              padding: "5px 10px",
+              fontFamily: "var(--font-rubik)",
+              fontWeight: 950,
+              fontSize: 12,
+              lineHeight: 1,
+              cursor: "pointer",
             }}
           >
-            <button
-              onClick={() => setDrawerOpen(false)}
-              style={{
-                position: "absolute",
-                top: 14,
-                left: 16,
-                width: 32,
-                height: 32,
-                background: "#2F3344",
-                border: "none",
-                borderRadius: "50%",
-                fontSize: 14,
-                cursor: "pointer",
-                color: "#9CA0AE",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              ✕
-            </button>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <div
-          onPointerDown={(event) => { pointerStart.current = { x: event.clientX, y: event.clientY }; }}
-          onPointerUp={(event) => {
-            handleSwipeEnd(pointerStart.current, { x: event.clientX, y: event.clientY });
-            pointerStart.current = null;
-          }}
-          style={{
-            position: "relative",
-            height: 220,
-            touchAction: "none",
-            userSelect: "none",
-          }}
-        >
-          {[2, 1].map((depth) => {
-            const stackIndex = (activeIndex + depth) % displayUpdates.length;
-            const stackColor = CARD_COLORS[stackIndex % CARD_COLORS.length].bg;
-            return (
-              <div
-                key={depth}
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  right: depth * 6,
-                  left: depth * 6,
-                  bottom: 0,
-                  height: 214,
-                  borderRadius: 14,
-                  border: "1px solid rgba(255,255,255,0.06)",
-                  background: stackColor,
-                  boxShadow: "none",
-                  transform: `translateY(-${depth * 3}px)`,
-                  transformOrigin: "center bottom",
-                  opacity: depth === 1 ? 0.82 : 0.58,
-                  zIndex: depth,
-                  transition: "transform 0.24s ease, background 0.24s ease",
-                }}
-              />
-            );
-          })}
-
-          <div
-            style={{
-              position: "absolute",
-              inset: "auto 0 0",
-              zIndex: 4,
-            }}
-          >
-            <button
-              key={activeUpdate.id}
-              onClick={handleCardClick}
-              style={{
-                width: "100%",
-                height: 214,
-                borderRadius: 14,
-                border: "1px solid rgba(255,255,255,0.06)",
-                boxShadow: "none",
-                background: activeColor.bg,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-                gap: 8,
-                padding: "22px",
-                cursor: "pointer",
-                textAlign: "right",
-                position: "relative",
-                overflow: "hidden",
-                animation: "postCardIn 0.24s ease",
-              }}
-            >
-              <span
-                suppressHydrationWarning
-                style={{
-                  margin: 0,
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 600,
-                  fontSize: 13,
-                  color: activeColor.accent,
-                  opacity: 0.85,
-                }}
-              >
-                {timeAgo(activeUpdate.published_at, currentTime)}
-              </span>
-              <span
-                style={{
-                  margin: 0,
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 800,
-                  fontSize: 25,
-                  lineHeight: 1.22,
-                  color: "#FFFFFF",
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                }}
-              >
-                {activeUpdate.title}
-              </span>
-            </button>
-          </div>
-        </div>
-        <div
-          aria-hidden="true"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 5,
-            marginTop: 2,
-          }}
-        >
-          {displayUpdates.map((_, i) => (
-            <span
-              key={i}
-              style={{
-                width: activeIndex === i ? 18 : 6,
-                height: 6,
-                borderRadius: 99,
-                background: activeIndex === i ? activeColor.accent : "rgba(255,255,255,0.2)",
-                transition: "width 0.24s ease, background 0.24s ease",
-              }}
-            />
-          ))}
-        </div>
+            +{additionalCount}
+          </button>
+        )}
       </div>
-          </div>
-        </>
-      )}
-
-      {selected && (
-        <div
-          onClick={() => setSelected(null)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 1000,
-            background: "rgba(0,0,0,0.55)",
-            display: "flex",
-            alignItems: "flex-end",
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: "100%",
-              maxHeight: "85dvh",
-              borderRadius: "26px 26px 0 0",
-              background: "#252836",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderBottom: "none",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              direction: "rtl",
-            }}
-          >
-            <div style={{ padding: "18px 20px 14px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: 5 }}>
-              <button
-                onClick={() => setSelected(null)}
-                style={{
-                  alignSelf: "flex-start",
-                  background: "#2F3344",
-                  border: "none",
-                  borderRadius: "50%",
-                  width: 30,
-                  height: 30,
-                  fontSize: 14,
-                  cursor: "pointer",
-                  color: "#9CA0AE",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                }}
-              >
-                ✕
-              </button>
-              <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 19, color: "#FFFFFF" }}>
-                {selected.title}
-              </h2>
-              <p
-                suppressHydrationWarning
-                style={{ margin: 0, fontSize: 12, color: "#9CA0AE", fontFamily: "var(--font-rubik)" }}
-              >
-                {timeAgo(selected.published_at, currentTime)} · {selected.author}
-              </p>
-            </div>
-
-            <div style={{ padding: "18px 20px", overflowY: "auto", flex: 1 }}>
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 400,
-                  fontSize: 15,
-                  lineHeight: 1.75,
-                  color: "#9CA0AE",
-                  whiteSpace: "pre-wrap",
-                }}
-              >
-                {selected.description}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {visibleUpdates.map((update) => (
+          <UpdateCard key={update.id} update={update} currentTime={currentTime} />
+        ))}
+      </div>
+    </section>
   );
 }

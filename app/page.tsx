@@ -27,14 +27,22 @@ export default function HomePage() {
         <div style={{ marginTop: 22 }}>
           <ActionsGrid />
         </div>
-        <div style={{ marginTop: 12 }}>
+        <section id="hours" style={{ marginTop: 8, scrollMarginTop: 72 }}>
           <OpenHoursLoader />
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 18, marginTop: 24, width: "100%" }}>
-          <UpdateSection />
-          <EventsLoader />
-          <BenefitsLoader />
-          <PollLoader />
+        </section>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 30, marginTop: 34, width: "100%" }}>
+          <section id="updates" style={{ gridColumn: "1 / -1", scrollMarginTop: 72 }}>
+            <UpdateSection />
+          </section>
+          <section id="events" style={{ gridColumn: "1 / -1", scrollMarginTop: 72 }}>
+            <EventsLoader />
+          </section>
+          <section id="benefits" style={{ gridColumn: "1 / -1", scrollMarginTop: 72 }}>
+            <BenefitsLoader />
+          </section>
+          <section id="activity" style={{ gridColumn: "1 / -1", scrollMarginTop: 72 }}>
+            <PollLoader />
+          </section>
         </div>
       </div>
     </main>

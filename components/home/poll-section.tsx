@@ -1,13 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
-import { MessageCircle } from "lucide-react";
+import { useState, useTransition } from "react";
 import { submitVote } from "@/app/actions/poll";
 import type { Tables } from "@/src/types/database";
 
 type Poll = Tables<"polls">;
-
-const GRID_EXPAND_EVENT = "home-grid-expand";
 
 type CommunityPoll = {
   id: string;
@@ -79,11 +76,12 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
       style={{
         flex: "0 0 100%",
         background: "#252836",
-        border: "1px solid rgba(255,255,255,0.06)",
-        borderRadius: 14,
-        padding: "14px",
+        border: "none",
+        borderRadius: 22,
+        padding: 18,
         scrollSnapAlign: "start",
         boxShadow: "none",
+        boxSizing: "border-box",
       }}
     >
       <p
@@ -174,10 +172,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
 }
 
 export function PollSection({ poll, voteCounts, userVote }: Props) {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [openPollId, setOpenPollId] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
   const communityPolls: CommunityPoll[] = [
     {
       id: poll.id,
@@ -188,273 +183,47 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
     },
     ...DEMO_POLLS,
   ];
-  const totalAnswers = voteCounts.reduce((sum, count) => sum + count, 0);
-
-  function expandThisCard() {
-    setExpanded(true);
-    window.dispatchEvent(new CustomEvent(GRID_EXPAND_EVENT, { detail: "polls" }));
-  }
-
-  useEffect(() => {
-    const handleExpand = (event: Event) => {
-      const target = (event as CustomEvent<string>).detail;
-      setExpanded(true);
-      if (target === "polls") {
-        requestAnimationFrame(() => {
-          sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      }
-    };
-    window.addEventListener(GRID_EXPAND_EVENT, handleExpand);
-    return () => window.removeEventListener(GRID_EXPAND_EVENT, handleExpand);
-  }, []);
+  const additionalCount = Math.max(communityPolls.length - 1, 0);
+  const visiblePolls = showAll ? communityPolls : communityPolls.slice(0, 1);
 
   return (
-    <>
-      <section ref={sectionRef} style={{ width: "100%", gridColumn: expanded ? "1 / -1" : undefined, minWidth: 0, boxSizing: "border-box", transition: "grid-column 0.24s ease", scrollMarginTop: 14 }}>
-        <div
-          style={{
-            width: "100%",
-            aspectRatio: expanded ? "auto" : "1 / 1",
-            background: expanded ? "transparent" : "#252836",
-            border: "none",
-            borderRadius: 22,
-            boxShadow: "none",
-            padding: expanded ? 0 : 12,
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-            textAlign: "right",
-            textDecoration: "none",
-            font: "inherit",
-            boxSizing: "border-box",
-          }}
-        >
-          {!expanded ? (
-            <button
-              type="button"
-              onClick={expandThisCard}
-              style={{
-                width: "100%",
-                flex: 1,
-                border: "none",
-                background: "transparent",
-                padding: 0,
-                display: "flex",
-                flexDirection: "column",
-                textAlign: "right",
-                cursor: "pointer",
-                font: "inherit",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                <div
-                  aria-label="סקר"
-                  style={{
-                    width: "auto",
-                    height: "auto",
-                    borderRadius: 0,
-                    background: "rgba(17,32,58,0.72)",
-                    border: "none",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#A78BFA",
-                  }}
-                >
-                  <MessageCircle size={19} strokeWidth={2.1} />
-                </div>
-                <span
-                  style={{
-                    minWidth: 24,
-                    height: 24,
-                    borderRadius: "50%",
-                    border: "none",
-                    background: "#111522",
-                    color: "#A78BFA",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontFamily: "var(--font-rubik)",
-                    fontWeight: 800,
-                    fontSize: 10,
-                    lineHeight: 1,
-                  }}
-                >
-                  {communityPolls.length}
-                </span>
-              </div>
-
-              <div style={{ marginTop: "auto" }}>
-                <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#A78BFA" }}>
-                  סקר
-                </p>
-                <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {poll.question}
-                </p>
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, lineHeight: 1.25, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                  {totalAnswers} אנשים ענו על הסקר
-                </p>
-              </div>
-            </button>
-          ) : (
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, paddingInline: 2 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div
-                    aria-hidden="true"
-                    style={{
-                      width: 34,
-                      height: 34,
-                      borderRadius: 14,
-                      background: "rgba(167, 139, 250, 0.14)",
-                      color: "#A78BFA",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <MessageCircle size={22} strokeWidth={2.2} />
-                  </div>
-                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 22, lineHeight: 1.1, color: "#FFFFFF" }}>
-                    פעילות
-                  </p>
-                </div>
-              </div>
-              <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {communityPolls.map((item, index) => {
-                    const isOpen = openPollId === item.id;
-                    const total = item.counts.reduce((sum, count) => sum + count, 0);
-                    return (
-                      <article
-                        key={item.id}
-                        onClick={() => setOpenPollId((current) => current === item.id ? null : item.id)}
-                        style={{
-                          padding: "13px 0",
-                          borderBottom: index === communityPolls.length - 1 ? "none" : "1px solid rgba(167, 139, 250, 0.16)",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {!isOpen && (
-                          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <div
-                              style={{
-                                width: 42,
-                                height: 42,
-                                borderRadius: 14,
-                                background: "rgba(167, 139, 250, 0.14)",
-                                color: "#A78BFA",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                flexShrink: 0,
-                              }}
-                            >
-                              <MessageCircle size={20} strokeWidth={2.1} />
-                            </div>
-                            <div style={{ minWidth: 0, flex: 1 }}>
-                              <h3 style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
-                                {item.question}
-                              </h3>
-                              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
-                                {total} ענו · {item.options.length} אפשרויות
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                        {isOpen && (
-                          <div onClick={(event) => event.stopPropagation()}>
-                            <PollCard poll={item} />
-                          </div>
-                        )}
-                      </article>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {drawerOpen && (
-        <>
-          <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 50 }} />
-          <div
+    <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
+        <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 16, lineHeight: 1, color: "#C7CAD6" }}>
+          פעילות
+        </h2>
+        {!showAll && additionalCount > 0 && (
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
             style={{
-              position: "fixed",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 51,
-              background: "#252836",
-              borderRadius: "26px 26px 0 0",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderBottom: "none",
-              direction: "rtl",
-              maxHeight: "82dvh",
-              overflowY: "auto",
-              padding: "20px 14px 34px",
+              border: "1px solid rgba(167, 139, 250, 0.3)",
+              borderRadius: 999,
+              background: "rgba(167, 139, 250, 0.14)",
+              color: "#A78BFA",
+              padding: "5px 10px",
+              fontFamily: "var(--font-rubik)",
+              fontWeight: 950,
+              fontSize: 12,
+              lineHeight: 1,
+              cursor: "pointer",
             }}
           >
-            <button
-              onClick={() => setDrawerOpen(false)}
-              style={{
-                position: "absolute",
-                top: 14,
-                left: 16,
-                width: 32,
-                height: 32,
-                background: "#2F3344",
-                border: "none",
-                borderRadius: "50%",
-                fontSize: 14,
-                cursor: "pointer",
-                color: "#9CA0AE",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              ✕
-            </button>
-
+            +{additionalCount}
+          </button>
+        )}
+      </div>
       <div
         style={{
-          background: "#252836",
-          border: "1px solid rgba(255,255,255,0.06)",
-          borderRadius: 18,
-          boxShadow: "none",
-          padding: 14,
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, color: "#FFFFFF" }}>
-            פעילות
-          </p>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            gap: 10,
-            overflowX: "auto",
-            scrollSnapType: "x mandatory",
-            WebkitOverflowScrolling: "touch",
-            scrollbarWidth: "none",
-            padding: "0 0 2px",
-          }}
-        >
-          {communityPolls.map((item) => (
-            <PollCard key={item.id} poll={item} />
-          ))}
-        </div>
+        {visiblePolls.map((item) => (
+          <PollCard key={item.id} poll={item} />
+        ))}
       </div>
-          </div>
-        </>
-      )}
-    </>
+    </section>
   );
 }
