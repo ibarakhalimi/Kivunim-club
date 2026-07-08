@@ -1,4 +1,4 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getCurrentWeekStart, getOpeningHoursWeek } from "@/app/admin/settings/actions";
 import { OpenHoursSection, type OpeningHourRow } from "./open-hours-section";
 
 const FALLBACK_HOURS: OpeningHourRow[] = [
@@ -12,11 +12,7 @@ const FALLBACK_HOURS: OpeningHourRow[] = [
 ];
 
 export async function OpenHoursLoader() {
-  const supabase = createAdminClient();
-  const { data } = await supabase
-    .from("opening_hours")
-    .select("day_key, day_label, sort_order, is_open, open_time, close_time, note")
-    .order("sort_order", { ascending: true });
+  const rows = await getOpeningHoursWeek(await getCurrentWeekStart());
 
-  return <OpenHoursSection rows={data?.length === 7 ? data : FALLBACK_HOURS} />;
+  return <OpenHoursSection rows={rows.length === 7 ? rows : FALLBACK_HOURS} />;
 }

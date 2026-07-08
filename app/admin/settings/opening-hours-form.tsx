@@ -1,17 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
-import { updateOpeningHours } from "./actions";
-
-type OpeningHour = {
-  day_key: string;
-  day_label: string;
-  sort_order: number;
-  is_open: boolean;
-  open_time: string | null;
-  close_time: string | null;
-  note: string | null;
-};
+import { useActionState, useState, useTransition } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getOpeningHoursWeek, updateOpeningHours, type OpeningHourWithDate } from "./actions";
 
 type State = {
   success?: boolean;
@@ -24,16 +15,107 @@ function trimSeconds(value: string | null) {
   return value ? value.slice(0, 5) : "";
 }
 
-export function OpeningHoursForm({ rows }: { rows: OpeningHour[] }) {
+function parseLocalDate(date: string) {
+  const [year, month, day] = date.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function toDateString(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function addDays(date: string, days: number) {
+  const result = parseLocalDate(date);
+  result.setDate(result.getDate() + days);
+  return toDateString(result);
+}
+
+function formatShortDate(date: string) {
+  const parsedDate = parseLocalDate(date);
+  return parsedDate.toLocaleDateString("he-IL", { day: "numeric", month: "short" });
+}
+
+function formatWeekRange(start: string) {
+  const end = addDays(start, 6);
+  return `${formatShortDate(start)} - ${formatShortDate(end)}`;
+}
+
+export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
+  const [weekOffset, setWeekOffset] = useState(0);
+  const [weekStart, setWeekStart] = useState(rows[0]?.date ?? "");
+  const [visibleRows, setVisibleRows] = useState(rows);
+  const [isLoadingWeek, startWeekTransition] = useTransition();
   const [state, formAction, isPending] = useActionState(async (_state: State, formData: FormData) => {
     return updateOpeningHours(formData);
   }, initialState);
 
+  function updateRow(dayKey: string, patch: Partial<OpeningHourWithDate>) {
+    setVisibleRows((currentRows) => currentRows.map((row) => (row.day_key === dayKey ? { ...row, ...patch } : row)));
+  }
+
+  function moveWeek(direction: -1 | 1) {
+    const nextWeekStart = addDays(weekStart, direction * 7);
+    setWeekOffset((current) => current + direction);
+    setWeekStart(nextWeekStart);
+    startWeekTransition(async () => {
+      const nextRows = await getOpeningHoursWeek(nextWeekStart);
+      setVisibleRows(nextRows);
+    });
+  }
+
   return (
     <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-      {rows.map((row) => (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 10,
+          background: "#F8FAFC",
+          border: "1px solid #E2E8F0",
+          borderRadius: 14,
+          padding: 10,
+          marginBottom: 2,
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => moveWeek(-1)}
+          disabled={isLoadingWeek}
+          aria-label="שבוע קודם"
+          style={weekButtonStyle}
+        >
+          <ChevronRight size={17} strokeWidth={2.4} />
+        </button>
+        <div style={{ minWidth: 0, textAlign: "center" }}>
+          <p style={{ margin: "0 0 2px", fontSize: 13, fontWeight: 950, color: "#0F172A" }}>
+            {weekOffset === 0 ? "השבוע הנוכחי" : weekOffset > 0 ? `עוד ${weekOffset} שבועות` : `לפני ${Math.abs(weekOffset)} שבועות`}
+          </p>
+          <p style={{ margin: 0, fontSize: 12, fontWeight: 750, color: "#64748B", direction: "ltr" }}>
+            {formatWeekRange(weekStart)}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => moveWeek(1)}
+          disabled={isLoadingWeek}
+          aria-label="שבוע הבא"
+          style={weekButtonStyle}
+        >
+          <ChevronLeft size={17} strokeWidth={2.4} />
+        </button>
+      </div>
+
+      {isLoadingWeek && (
+        <p style={{ margin: 0, color: "#64748B", fontSize: 12, fontWeight: 800 }}>טוען שבוע...</p>
+      )}
+
+      {visibleRows.map((row) => (
         <div
-          key={row.day_key}
+          key={row.date}
           style={{
             background: "#fff",
             border: "1px solid #E2E8F0",
@@ -48,14 +130,16 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHour[] }) {
             <div>
               <p style={{ margin: 0, fontSize: 16, fontWeight: 900, color: "#0F172A" }}>{row.day_label}</p>
               <p style={{ margin: "3px 0 0", fontSize: 12, fontWeight: 700, color: "#64748B" }}>
-                הערה תוצג כצ׳יפ ליד היום
+                {formatShortDate(row.date)} · הערה תוצג כצ׳יפ ליד היום
               </p>
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13, fontWeight: 800, color: "#15803D" }}>
+              <input name={`${row.day_key}_date`} type="hidden" value={row.date} />
               <input
                 name={`${row.day_key}_is_open`}
                 type="checkbox"
-                defaultChecked={row.is_open}
+                checked={row.is_open}
+                onChange={(event) => updateRow(row.day_key, { is_open: event.target.checked })}
                 style={{ width: 18, height: 18, accentColor: "#16A34A" }}
               />
               פתוח
@@ -68,7 +152,8 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHour[] }) {
               <input
                 name={`${row.day_key}_open_time`}
                 type="time"
-                defaultValue={trimSeconds(row.open_time)}
+                value={trimSeconds(row.open_time)}
+                onChange={(event) => updateRow(row.day_key, { open_time: event.target.value || null })}
                 style={inputStyle}
               />
             </label>
@@ -77,7 +162,8 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHour[] }) {
               <input
                 name={`${row.day_key}_close_time`}
                 type="time"
-                defaultValue={trimSeconds(row.close_time)}
+                value={trimSeconds(row.close_time)}
+                onChange={(event) => updateRow(row.day_key, { close_time: event.target.value || null })}
                 style={inputStyle}
               />
             </label>
@@ -88,7 +174,8 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHour[] }) {
             <input
               name={`${row.day_key}_note`}
               type="text"
-              defaultValue={row.note ?? ""}
+              value={row.note ?? ""}
+              onChange={(event) => updateRow(row.day_key, { note: event.target.value })}
               placeholder="לדוגמה: ראש השנה"
               style={inputStyle}
             />
@@ -137,4 +224,18 @@ const inputStyle: React.CSSProperties = {
   fontWeight: 700,
   color: "#0F172A",
   outline: "none",
+};
+
+const weekButtonStyle: React.CSSProperties = {
+  width: 38,
+  height: 38,
+  borderRadius: 12,
+  border: "1px solid #CBD5E1",
+  background: "#FFFFFF",
+  color: "#0F172A",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  flexShrink: 0,
 };

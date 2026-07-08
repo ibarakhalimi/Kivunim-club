@@ -10,9 +10,7 @@ type Event = Tables<"events">;
 const init = { error: undefined as string | undefined, success: false };
 
 function EditForm({ event, onDone }: { event: Event; onDone: () => void }) {
-  const action = async (_prev: typeof init, fd: FormData) =>
-    (await updateEvent(event.id, fd)) as typeof init;
-  const [state, formAction, pending] = useActionState(action, init);
+  const [state, formAction, pending] = useActionState(updateEvent.bind(null, event.id), init);
   const [preview, setPreview] = useState<string | null>(null);
   const [isPaid, setIsPaid] = useState(event.is_paid);
 

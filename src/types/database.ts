@@ -71,6 +71,30 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_settings: {
+        Row: {
+          email: string | null
+          id: string
+          mobile_phone: string | null
+          updated_at: string
+          whatsapp: string | null
+        }
+        Insert: {
+          email?: string | null
+          id?: string
+          mobile_phone?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          email?: string | null
+          id?: string
+          mobile_phone?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       idea_submissions: {
         Row: {
           created_at: string
@@ -98,6 +122,36 @@ export type Database = {
           user_id?: string | null
           user_name?: string | null
           user_phone?: string | null
+        }
+        Relationships: []
+      }
+      important_info_pages: {
+        Row: {
+          content_html: string
+          id: string
+          is_active: boolean
+          sort_order: number
+          subtitle: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content_html: string
+          id: string
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content_html?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -275,6 +329,42 @@ export type Database = {
         }
         Relationships: []
       }
+      opening_hours_overrides: {
+        Row: {
+          close_time: string | null
+          date: string
+          day_key: string
+          day_label: string
+          is_open: boolean
+          note: string | null
+          open_time: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          close_time?: string | null
+          date: string
+          day_key: string
+          day_label: string
+          is_open?: boolean
+          note?: string | null
+          open_time?: string | null
+          sort_order: number
+          updated_at?: string
+        }
+        Update: {
+          close_time?: string | null
+          date?: string
+          day_key?: string
+          day_label?: string
+          is_open?: boolean
+          note?: string | null
+          open_time?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       poll_votes: {
         Row: {
           created_at: string
@@ -340,48 +430,6 @@ export type Database = {
           option_3?: string | null
           option_4?: string | null
           question?: string
-        }
-        Relationships: []
-      }
-      posts: {
-        Row: {
-          background_image_url: string | null
-          body_text: string | null
-          button_text: string | null
-          created_at: string
-          id: string
-          is_active: boolean
-          link_url: string | null
-          post_type: string
-          short_text: string | null
-          sort_order: number
-          title: string
-        }
-        Insert: {
-          background_image_url?: string | null
-          body_text?: string | null
-          button_text?: string | null
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          link_url?: string | null
-          post_type?: string
-          short_text?: string | null
-          sort_order?: number
-          title: string
-        }
-        Update: {
-          background_image_url?: string | null
-          body_text?: string | null
-          button_text?: string | null
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          link_url?: string | null
-          post_type?: string
-          short_text?: string | null
-          sort_order?: number
-          title?: string
         }
         Relationships: []
       }

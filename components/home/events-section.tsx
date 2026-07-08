@@ -1,20 +1,27 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { CalendarDays } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
 type ClubEvent = Tables<"events">;
 
-function getDateParts(dateStr: string) {
-  const date = new Date(dateStr);
-  return {
-    day: date.toLocaleDateString("he-IL", { day: "numeric" }),
-    month: date.toLocaleDateString("he-IL", { month: "short" }),
-  };
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("he-IL", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
 }
 
 export function EventsSection({ events }: { events: ClubEvent[] }) {
+  const [selectedEvent, setSelectedEvent] = useState<ClubEvent | null>(null);
   const eventItem = events[0];
+
+  useEffect(() => {
+    document.body.style.overflow = selectedEvent ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [selectedEvent]);
 
   if (!eventItem) {
     return (
@@ -64,36 +71,45 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
     );
   }
 
+  const selectedTimeRange = selectedEvent
+    ? selectedEvent.end_hour ? `${selectedEvent.start_hour}-${selectedEvent.end_hour}` : selectedEvent.start_hour
+    : "";
+  const selectedCostLabel = selectedEvent?.is_paid && selectedEvent.price_amount !== null ? `₪${selectedEvent.price_amount}` : "ללא עלות";
+
   return (
+    <>
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {events.map((item) => {
-          const dateParts = getDateParts(item.event_date);
           const timeRange = item.end_hour ? `${item.start_hour}-${item.end_hour}` : item.start_hour;
           const eventMeta = [item.location, timeRange].filter(Boolean).join(" · ");
           const costLabel = item.is_paid && item.price_amount !== null ? `₪${item.price_amount}` : "ללא עלות";
+          const costColor = item.is_paid ? "#FF2E9A" : "#D7DAE3";
           return (
-      <article
+      <button
         key={item.id}
+        type="button"
+        onClick={() => setSelectedEvent(item)}
         style={{
           width: "100%",
-          minHeight: 360,
           background: "#252836",
           border: "none",
           borderRadius: 22,
           boxShadow: "none",
-          padding: 10,
+          padding: 12,
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
+          gap: 12,
           overflow: "hidden",
           textAlign: "right",
           boxSizing: "border-box",
+          cursor: "pointer",
         }}
       >
         <div
           style={{
-            width: "100%",
-            height: 190,
+            width: 118,
+            height: 118,
             flexShrink: 0,
             borderRadius: 18,
             background: "rgba(255, 46, 154, 0.12)",
@@ -110,117 +126,168 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
           ) : (
             <CalendarDays size={38} strokeWidth={2} />
           )}
-          <div
-            style={{
-              position: "absolute",
-              top: 9,
-              right: 9,
-              width: 46,
-              height: 52,
-              borderRadius: 14,
-              background: "#2F3344",
-              color: "#FFFFFF",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--font-rubik)",
-              boxShadow: "0 10px 24px rgba(0,0,0,0.22)",
-            }}
-          >
-            <span style={{ fontWeight: 900, fontSize: 18, lineHeight: 1 }}>
-              {dateParts.day}
-            </span>
-            <span style={{ marginTop: 4, fontWeight: 800, fontSize: 9, lineHeight: 1 }}>
-              {dateParts.month}
-            </span>
-          </div>
         </div>
 
-        <div style={{ minHeight: 0, flex: 1, display: "flex", flexDirection: "column", paddingTop: 12 }}>
+        <div style={{ minWidth: 0, flex: 1, display: "flex", flexDirection: "column" }}>
+          <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 850, fontSize: 11, lineHeight: 1.25, color: "#FF2E9A" }}>
+            {formatDate(item.event_date)}
+          </p>
           <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.2, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
             {item.title}
           </h3>
           {eventMeta && (
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.3, color: "#9CA0AE", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.3, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
               {eventMeta}
             </p>
           )}
-          <p style={{ margin: "7px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 12, lineHeight: 1.2, color: "#FF2E9A" }}>
+          <p style={{ margin: "7px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 12, lineHeight: 1.2, color: costColor }}>
             {costLabel}
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: "auto", paddingTop: 18 }}>
-            {item.registration_url ? (
+        </div>
+      </button>
+          );
+        })}
+      </div>
+    </section>
+    {selectedEvent && (
+      <div
+        onClick={() => setSelectedEvent(null)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 1000,
+          background: "rgba(0,0,0,0.58)",
+          display: "flex",
+          alignItems: "flex-end",
+        }}
+      >
+        <div
+          onClick={(event) => event.stopPropagation()}
+          style={{
+            width: "100%",
+            maxHeight: "86dvh",
+            borderRadius: "26px 26px 0 0",
+            background: "#252836",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderBottom: "none",
+            overflow: "hidden",
+            direction: "rtl",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div style={{ maxHeight: "86dvh", overflowY: "auto", padding: "14px 16px 18px" }}>
+            <button
+              type="button"
+              onClick={() => setSelectedEvent(null)}
+              aria-label="סגור"
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: "50%",
+                border: "none",
+                background: "#111522",
+                color: "#FFFFFF",
+                fontSize: 18,
+                lineHeight: 1,
+                cursor: "pointer",
+                marginBottom: 12,
+              }}
+            >
+              ×
+            </button>
+
+            <div
+              style={{
+                width: "100%",
+                aspectRatio: "1.8 / 1",
+                borderRadius: 18,
+                background: "rgba(255, 46, 154, 0.12)",
+                overflow: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#FF2E9A",
+                marginBottom: 14,
+              }}
+            >
+              {selectedEvent.image_url ? (
+                <img src={selectedEvent.image_url} alt={selectedEvent.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              ) : (
+                <CalendarDays size={42} strokeWidth={2} />
+              )}
+            </div>
+
+            <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 850, fontSize: 12, lineHeight: 1.35, color: "#FF2E9A" }}>
+              {formatDate(selectedEvent.event_date)}
+              {selectedTimeRange ? ` · ${selectedTimeRange}` : ""}
+            </p>
+            <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 24, lineHeight: 1.15, color: "#FFFFFF" }}>
+              {selectedEvent.title}
+            </h2>
+            {selectedEvent.location && (
+              <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, lineHeight: 1.45, color: "#9CA0AE" }}>
+                {selectedEvent.location}
+              </p>
+            )}
+            <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, lineHeight: 1.3, color: selectedEvent.is_paid ? "#FF2E9A" : "#D7DAE3" }}>
+              {selectedCostLabel}
+            </p>
+
+            {selectedEvent.description && (
+              <div
+                dangerouslySetInnerHTML={{ __html: selectedEvent.description }}
+                style={{ margin: "0 0 18px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.75, color: "#C7CAD6" }}
+              />
+            )}
+
+            {selectedEvent.registration_url ? (
               <a
-                href={item.registration_url}
+                href={selectedEvent.registration_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  minHeight: 42,
-                  borderRadius: 14,
+                  minHeight: 50,
+                  borderRadius: 16,
                   background: "#FF2E9A",
                   color: "#FFFFFF",
                   fontFamily: "var(--font-rubik)",
-                  fontWeight: 900,
-                  fontSize: 14,
+                  fontWeight: 950,
+                  fontSize: 15,
                   lineHeight: 1,
                   textAlign: "center",
                   textDecoration: "none",
-                  boxSizing: "border-box",
                 }}
               >
-                הרשמה
+                הרשמה לאירוע
               </a>
             ) : (
               <button
                 type="button"
                 disabled
                 style={{
-                  minHeight: 42,
-                  borderRadius: 14,
+                  width: "100%",
+                  minHeight: 50,
+                  borderRadius: 16,
                   border: "none",
-                  background: "#2F3344",
+                  background: "#111522",
                   color: "#7C808E",
                   fontFamily: "var(--font-rubik)",
-                  fontWeight: 900,
-                  fontSize: 14,
+                  fontWeight: 950,
+                  fontSize: 15,
                   cursor: "not-allowed",
                 }}
               >
-                הרשמה
+                אין קישור הרשמה
               </button>
             )}
-            <a
-              href="/events"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                minHeight: 42,
-                borderRadius: 14,
-                border: "1px solid rgba(255, 46, 154, 0.32)",
-                background: "transparent",
-                color: "#FF2E9A",
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 14,
-                lineHeight: 1,
-                textAlign: "center",
-                textDecoration: "none",
-                boxSizing: "border-box",
-              }}
-            >
-              פרטים
-            </a>
           </div>
         </div>
-      </article>
-          );
-        })}
       </div>
-    </section>
+    )}
+    </>
   );
 }

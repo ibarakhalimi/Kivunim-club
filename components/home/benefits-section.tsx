@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { Plus } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
 type Benefit = Tables<"benefits">;
@@ -48,14 +49,52 @@ function isExpired(expiresAt: string | null) {
 
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [openBenefitId, setOpenBenefitId] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
   const currentBenefits = useMemo(() => benefits.filter((benefit) => !isExpired(benefit.expires_at)), [benefits]);
+  const initialVisibleCount = 5;
+  const additionalCount = Math.max(currentBenefits.length - initialVisibleCount, 0);
+  const visibleBenefits = showAll ? currentBenefits : currentBenefits.slice(0, initialVisibleCount);
 
   if (currentBenefits.length === 0) return null;
 
   return (
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
       <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-        {currentBenefits.map((benefit, index) => {
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
+          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 1000, fontSize: 16, lineHeight: 1.1, color: "#FFFFFF" }}>
+            ההטבות שלך
+          </h2>
+          {!showAll && additionalCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              aria-label={`הצג עוד ${additionalCount} הטבות`}
+              style={{
+                minHeight: 32,
+                border: "none",
+                borderRadius: 999,
+                background: "#34D399",
+                color: "#111522",
+                padding: "0 11px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 5,
+                fontFamily: "var(--font-rubik)",
+                fontWeight: 950,
+                fontSize: 12,
+                lineHeight: 1,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              <Plus size={14} strokeWidth={3} />
+              {additionalCount}
+            </button>
+          )}
+        </div>
+        {visibleBenefits.map((benefit, index) => {
           const isOpen = openBenefitId === benefit.id;
           const category = benefit.category ?? "";
           return (
@@ -69,7 +108,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 padding: "13px 0",
                 display: "flex",
                 gap: 12,
-                borderBottom: index === currentBenefits.length - 1 ? "none" : "1px solid rgba(52, 211, 153, 0.16)",
+                borderBottom: index === visibleBenefits.length - 1 ? "none" : "1px solid rgba(52, 211, 153, 0.16)",
                 cursor: benefit.description ? "pointer" : "default",
               }}
             >

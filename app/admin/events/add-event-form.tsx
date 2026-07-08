@@ -4,30 +4,17 @@ import { useActionState, useRef, useState } from "react";
 import { addEvent } from "./actions";
 
 const init = { error: undefined as string | undefined, success: false };
+const MAX_IMAGE_SIZE = 9 * 1024 * 1024;
 
 export function AddEventForm() {
-  const formRef = useRef<HTMLFormElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [editorKey, setEditorKey] = useState(0);
   const [isPaid, setIsPaid] = useState(false);
-  const [state, formAction, pending] = useActionState(
-    async (_prev: typeof init, fd: FormData) => {
-      const result = (await addEvent(fd)) as typeof init;
-      if (result.success) {
-        formRef.current?.reset();
-        setPreview(null);
-        setEditorKey((current) => current + 1);
-        setIsPaid(false);
-      }
-      return result;
-    },
-    init
-  );
+  const [state, formAction, pending] = useActionState(addEvent, init);
 
   return (
     <div style={cardStyle}>
       <h2 style={headingStyle}>הוספת אירוע חדש</h2>
-      <form ref={formRef} action={formAction} style={formStyle}>
+      <form action={formAction} style={formStyle}>
         <Field label="תמונה">
           <ImagePicker name="image" preview={preview} onPreview={setPreview} />
         </Field>
@@ -35,7 +22,7 @@ export function AddEventForm() {
           <input name="title" required placeholder="שם האירוע..." style={inputStyle} />
         </Field>
         <Field label="תוכן *">
-          <RichTextEditor key={editorKey} name="description" placeholder="תיאור האירוע..." />
+          <RichTextEditor name="description" placeholder="תיאור האירוע..." />
         </Field>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 12 }}>
           <Field label="תאריך *">
@@ -222,6 +209,12 @@ export function ImagePicker({
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) { onPreview(null); return; }
+    if (file.size > MAX_IMAGE_SIZE) {
+      e.target.value = "";
+      onPreview(null);
+      window.alert("התמונה גדולה מדי. אפשר להעלות תמונה עד 9MB.");
+      return;
+    }
     onPreview(URL.createObjectURL(file));
   }
 

@@ -59,7 +59,7 @@ function errorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
-export async function addEvent(formData: FormData): Promise<EventActionState> {
+export async function addEvent(_prevState: EventActionState, formData: FormData): Promise<EventActionState> {
   try {
     const title = (formData.get("title") as string)?.trim();
     const description = sanitizeRichText((formData.get("description") as string) ?? "");
@@ -105,7 +105,7 @@ export async function addEvent(formData: FormData): Promise<EventActionState> {
   }
 }
 
-export async function updateEvent(id: string, formData: FormData): Promise<EventActionState> {
+export async function updateEvent(id: string, _prevState: EventActionState, formData: FormData): Promise<EventActionState> {
   try {
     const title = (formData.get("title") as string)?.trim();
     const description = sanitizeRichText((formData.get("description") as string) ?? "");

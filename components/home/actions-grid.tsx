@@ -1,9 +1,10 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { CalendarDays, ClipboardList, FileText, Gift, Lightbulb, MessageCircle, Phone, Plus, UserCheck } from "lucide-react";
+import { CalendarDays, ClipboardList, FileText, Gift, Lightbulb, Mail, MessageCircle, Phone, Plus, UserCheck } from "lucide-react";
 import { submitContactInquiry } from "@/app/actions/contact";
 import { submitIdea } from "@/app/actions/ideas";
+import type { ContactSettings, ImportantInfoPage } from "@/app/admin/settings/actions";
 
 const ALL_ACTIONS = [
   { Icon: Phone, label: "יצירת קשר", bg: "#2F3344", color: "#9CA0AE" },
@@ -14,21 +15,9 @@ const ALL_ACTIONS = [
   { Icon: UserCheck, label: "בדיקת נוכחות", bg: "#2F3344", color: "#9CA0AE" },
 ];
 
-const CONTACT_PHONE = "050-0000000";
-const WHATSAPP_URL = "https://wa.me/972500000000";
 const CONTACT_SUBJECTS = ["שאלה כללית", "הרשמה ופרטים", "הטבות", "אירועים", "בעיה באפליקציה", "אחר"];
 const contactInitialState = { error: undefined as string | undefined, success: false };
 const ideaInitialState = { error: undefined as string | undefined, success: false };
-const INFO_PAGES = [
-  { title: "זכאות למלגות", description: "מידע על תנאי זכאות, מועדים וטפסים להגשה." },
-  { title: "שעות פעילות המרכז", description: "פירוט שעות פתיחה, זמינות שירותים וימים מיוחדים." },
-  { title: "מרחבי למידה", description: "חדרים שקטים, עמדות עבודה והנחיות שימוש." },
-  { title: "סיוע אקדמי", description: "ליווי, שיעורי תגבור ותמיכה בתקופת מבחנים." },
-  { title: "הנפקת אישורים", description: "מסמכים נפוצים, אישורי לימודים ופניות מנהלתיות." },
-  { title: "הטבות ושיתופי פעולה", description: "כללים לשימוש בהטבות ומימוש מול עסקים." },
-  { title: "נהלי השתתפות באירועים", description: "הרשמה, ביטולים, הגעה ועדכונים חשובים." },
-];
-
 const drawerStyle = (open: boolean): React.CSSProperties => ({
   position: "fixed",
   bottom: 0,
@@ -170,12 +159,71 @@ function IdeaForm() {
   );
 }
 
-export function ActionsGrid() {
+function digitsOnly(value: string) {
+  return value.replace(/\D/g, "");
+}
+
+function whatsappHref(value: string) {
+  if (value.startsWith("http://") || value.startsWith("https://")) return value;
+  const digits = digitsOnly(value);
+  const internationalDigits = digits.startsWith("0") ? `972${digits.slice(1)}` : digits;
+  return `https://wa.me/${internationalDigits}`;
+}
+
+export function ActionsGrid({
+  contactSettings,
+  importantInfoPages,
+}: {
+  contactSettings: ContactSettings;
+  importantInfoPages: ImportantInfoPage[];
+}) {
   const [actionsOpen, setActionsOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [ideaOpen, setIdeaOpen] = useState(false);
+  const [selectedInfoPage, setSelectedInfoPage] = useState<ImportantInfoPage | null>(null);
   const visibleActions = ALL_ACTIONS.slice(0, 3);
+  const contactMethods = [
+    contactSettings.mobile_phone
+      ? {
+          key: "phone",
+          href: `tel:${digitsOnly(contactSettings.mobile_phone)}`,
+          label: contactSettings.mobile_phone,
+          Icon: Phone,
+          bg: "rgba(77,163,255,0.15)",
+          color: "#4DA3FF",
+        }
+      : null,
+    contactSettings.whatsapp
+      ? {
+          key: "whatsapp",
+          href: whatsappHref(contactSettings.whatsapp),
+          label: "וואטסאפ",
+          Icon: MessageCircle,
+          bg: "rgba(52,211,153,0.15)",
+          color: "#34D399",
+          external: true,
+        }
+      : null,
+    contactSettings.email
+      ? {
+          key: "email",
+          href: `mailto:${contactSettings.email}`,
+          label: contactSettings.email,
+          Icon: Mail,
+          bg: "rgba(255,46,154,0.15)",
+          color: "#FF2E9A",
+        }
+      : null,
+  ].filter(Boolean) as Array<{
+    key: string;
+    href: string;
+    label: string;
+    Icon: typeof Phone;
+    bg: string;
+    color: string;
+    external?: boolean;
+  }>;
 
   useEffect(() => {
     function openActionsDrawer() {
@@ -188,13 +236,16 @@ export function ActionsGrid() {
 
   return (
     <>
-      <section style={{ width: "100%", display: "flex", alignItems: "stretch", gap: 8, overflow: "hidden", padding: "2px 0" }}>
+      <section style={{ width: "100%", display: "flex", alignItems: "stretch", gap: 8, overflow: "visible", padding: "8px 0 2px" }}>
         {visibleActions.map((action) => (
           <button
             key={`contained-${action.label}`}
             onClick={() => {
               if (action.label === "יצירת קשר") setContactOpen(true);
-              if (action.label === "מידע חשוב") setInfoOpen(true);
+              if (action.label === "מידע חשוב") {
+                setSelectedInfoPage(null);
+                setInfoOpen(true);
+              }
               if (action.label === "יש לי רעיון") setIdeaOpen(true);
             }}
             style={{
@@ -245,9 +296,10 @@ export function ActionsGrid() {
         ))}
 
         <button
-          onClick={() => setActionsOpen(true)}
+          type="button"
           aria-label="כל הפעולות"
           style={{
+            position: "relative",
             flex: 1,
             minWidth: 0,
             border: "none",
@@ -261,10 +313,29 @@ export function ActionsGrid() {
             alignItems: "center",
             justifyContent: "center",
             gap: 9,
-            cursor: "pointer",
+            cursor: "default",
             textAlign: "center",
           }}
         >
+          <span
+            style={{
+              position: "absolute",
+              top: -6,
+              left: 8,
+              borderRadius: 999,
+              background: "#D8F500",
+              color: "#181A23",
+              padding: "3px 8px",
+              fontFamily: "var(--font-rubik)",
+              fontWeight: 900,
+              fontSize: 10,
+              lineHeight: 1,
+              boxShadow: "0 6px 14px rgba(0,0,0,0.22)",
+              pointerEvents: "none",
+            }}
+          >
+            בקרוב
+          </span>
           <span
             style={{
               width: 40,
@@ -312,6 +383,7 @@ export function ActionsGrid() {
                 }
                 if (action.label === "מידע חשוב") {
                   setActionsOpen(false);
+                  setSelectedInfoPage(null);
                   setInfoOpen(true);
                 }
                 if (action.label === "יש לי רעיון") {
@@ -364,81 +436,135 @@ export function ActionsGrid() {
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 14 }}>
-          <a
-            href={`tel:${CONTACT_PHONE}`}
-            style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 10px", borderRadius: 14, background: "rgba(77,163,255,0.15)", color: "#4DA3FF", textDecoration: "none", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13 }}
-          >
-            <Phone size={18} strokeWidth={2.2} />
-            <span>{CONTACT_PHONE}</span>
-          </a>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 10px", borderRadius: 14, background: "rgba(52,211,153,0.15)", color: "#34D399", textDecoration: "none", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13 }}
-          >
-            <MessageCircle size={18} strokeWidth={2.2} />
-            <span>וואטסאפ</span>
-          </a>
-        </div>
+        {contactMethods.length > 0 && (
+          <div style={{ display: "grid", gridTemplateColumns: contactMethods.length === 1 ? "1fr" : "1fr 1fr", gap: 8, marginBottom: 14 }}>
+            {contactMethods.map((method) => (
+              <a
+                key={method.key}
+                href={method.href}
+                target={method.external ? "_blank" : undefined}
+                rel={method.external ? "noopener noreferrer" : undefined}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  minWidth: 0,
+                  padding: "12px 10px",
+                  borderRadius: 14,
+                  background: method.bg,
+                  color: method.color,
+                  textDecoration: "none",
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 800,
+                  fontSize: 13,
+                }}
+              >
+                <method.Icon size={18} strokeWidth={2.2} />
+                <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {method.label}
+                </span>
+              </a>
+            ))}
+          </div>
+        )}
 
         <ContactForm />
       </div>
 
-      <div style={backdropStyle(infoOpen)} onClick={() => setInfoOpen(false)} />
+      <div
+        style={backdropStyle(infoOpen)}
+        onClick={() => {
+          setSelectedInfoPage(null);
+          setInfoOpen(false);
+        }}
+      />
       <div style={drawerStyle(infoOpen)}>
         <Handle />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
           <div>
             <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#FFFFFF" }}>
-              מידע חשוב
+              {selectedInfoPage ? selectedInfoPage.title : "מידע חשוב"}
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
-              עמודי מידע ושירותים שימושיים
+              {selectedInfoPage ? "פירוט המידע" : "עמודי מידע ושירותים שימושיים"}
             </p>
           </div>
           <button
             type="button"
-            onClick={() => setInfoOpen(false)}
+            onClick={() => {
+              if (selectedInfoPage) {
+                setSelectedInfoPage(null);
+                return;
+              }
+              setInfoOpen(false);
+            }}
             style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#2F3344", color: "#9CA0AE", cursor: "pointer" }}
           >
-            ✕
+            {selectedInfoPage ? "←" : "✕"}
           </button>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {INFO_PAGES.map((page) => (
-            <button
-              key={page.title}
-              type="button"
+        {selectedInfoPage ? (
+          <div
+            style={{
+              border: "1px solid rgba(255,255,255,0.06)",
+              borderRadius: 16,
+              background: "#2F3344",
+              padding: "14px",
+              maxHeight: "52dvh",
+              overflowY: "auto",
+            }}
+          >
+            <div
+              dangerouslySetInnerHTML={{ __html: selectedInfoPage.content_html }}
               style={{
-                width: "100%",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: 14,
-                background: "#2F3344",
-                padding: "12px",
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                textAlign: "right",
-                cursor: "pointer",
+                fontFamily: "var(--font-rubik)",
+                fontSize: 14,
+                fontWeight: 600,
+                lineHeight: 1.7,
+                color: "#FFFFFF",
               }}
-            >
-              <span style={{ width: 36, height: 36, borderRadius: 12, background: "rgba(255,46,154,0.15)", color: "#FF2E9A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <FileText size={18} strokeWidth={2.15} />
-              </span>
-              <span style={{ minWidth: 0 }}>
-                <span style={{ display: "block", marginBottom: 3, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, color: "#FFFFFF" }}>
-                  {page.title}
-                </span>
-                <span style={{ display: "block", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, lineHeight: 1.35, color: "#9CA0AE" }}>
-                  {page.description}
-                </span>
-              </span>
-            </button>
-          ))}
-        </div>
+            />
+          </div>
+        ) : importantInfoPages.length === 0 ? (
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#9CA0AE" }}>
+            אין מידע להצגה כרגע.
+          </p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {importantInfoPages.map((page) => (
+                <button
+                  key={page.id}
+                  type="button"
+                  onClick={() => setSelectedInfoPage(page)}
+                  style={{
+                    width: "100%",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    borderRadius: 14,
+                    background: "#2F3344",
+                    padding: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    textAlign: "right",
+                    cursor: "pointer",
+                  }}
+                >
+                  <span style={{ width: 36, height: 36, borderRadius: 12, background: "rgba(255,46,154,0.15)", color: "#FF2E9A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <FileText size={18} strokeWidth={2.15} />
+                  </span>
+                  <span style={{ minWidth: 0 }}>
+                    <span style={{ display: "block", marginBottom: 3, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, color: "#FFFFFF" }}>
+                      {page.title}
+                    </span>
+                    <span style={{ display: "block", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, lineHeight: 1.35, color: "#9CA0AE", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {page.subtitle}
+                    </span>
+                  </span>
+                </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div style={backdropStyle(ideaOpen)} onClick={() => setIdeaOpen(false)} />
