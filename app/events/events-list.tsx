@@ -9,11 +9,14 @@ export type EventItem = {
   title: string;
   description: string | null;
   event_date: string;
+  end_hour: string | null;
   start_hour: string | null;
   location: string | null;
   registration_url: string | null;
   image_url: string | null;
   is_featured: boolean | null;
+  is_paid: boolean | null;
+  price_amount: number | null;
   created_at: string | null;
 };
 
@@ -40,6 +43,8 @@ export function EventsList({ events }: { events: EventItem[] }) {
     <section style={{ display: "flex", flexDirection: "column", gap: 26 }}>
       {events.map((event) => {
         const isOpen = openId === event.id;
+        const timeRange = event.start_hour ? `${event.start_hour}${event.end_hour ? `-${event.end_hour}` : ""}` : "";
+        const costLabel = event.is_paid && event.price_amount !== null ? `₪${event.price_amount}` : "ללא עלות";
 
         return (
           <div key={event.id} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
@@ -97,7 +102,7 @@ export function EventsList({ events }: { events: EventItem[] }) {
               <div style={{ padding: 14 }}>
                 <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
                   {formatDate(event.event_date)}
-                  {event.start_hour ? ` · ${event.start_hour}` : ""}
+                  {timeRange ? ` · ${timeRange}` : ""}
                 </p>
 
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10, marginBottom: 12 }}>
@@ -129,9 +134,10 @@ export function EventsList({ events }: { events: EventItem[] }) {
                 </div>
 
                 {isOpen && event.description && (
-                  <p style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15.5, lineHeight: 1.7, color: "#B4B8C6" }}>
-                    {event.description}
-                  </p>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: event.description }}
+                    style={{ margin: "0 0 12px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15.5, lineHeight: 1.7, color: "#B4B8C6" }}
+                  />
                 )}
 
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -145,6 +151,9 @@ export function EventsList({ events }: { events: EventItem[] }) {
                       אירוע מומלץ
                     </div>
                   )}
+                  <div style={{ display: "inline-flex", alignSelf: "flex-start", borderRadius: 99, background: "#111522", color: "#FF2E9A", padding: "5px 9px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11 }}>
+                    {costLabel}
+                  </div>
                 </div>
 
                 {event.registration_url ? (

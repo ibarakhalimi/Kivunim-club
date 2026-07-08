@@ -153,11 +153,14 @@ export type Database = {
         Row: {
           created_at: string
           description: string
+          end_hour: string | null
           event_date: string
           id: string
           image_url: string | null
           is_featured: boolean
+          is_paid: boolean
           location: string
+          price_amount: number | null
           registration_url: string | null
           start_hour: string
           title: string
@@ -165,11 +168,14 @@ export type Database = {
         Insert: {
           created_at?: string
           description: string
+          end_hour?: string | null
           event_date: string
           id?: string
           image_url?: string | null
           is_featured?: boolean
+          is_paid?: boolean
           location: string
+          price_amount?: number | null
           registration_url?: string | null
           start_hour: string
           title: string
@@ -177,11 +183,14 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string
+          end_hour?: string | null
           event_date?: string
           id?: string
           image_url?: string | null
           is_featured?: boolean
+          is_paid?: boolean
           location?: string
+          price_amount?: number | null
           registration_url?: string | null
           start_hour?: string
           title?: string

@@ -48,43 +48,14 @@ function isExpired(expiresAt: string | null) {
 
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [openBenefitId, setOpenBenefitId] = useState<string | null>(null);
-  const [showAll, setShowAll] = useState(false);
   const currentBenefits = useMemo(() => benefits.filter((benefit) => !isExpired(benefit.expires_at)), [benefits]);
-  const initialVisibleCount = 5;
-  const additionalCount = Math.max(currentBenefits.length - initialVisibleCount, 0);
-  const visibleBenefits = showAll ? currentBenefits : currentBenefits.slice(0, initialVisibleCount);
 
   if (currentBenefits.length === 0) return null;
 
   return (
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-        <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 16, lineHeight: 1, color: "#C7CAD6" }}>
-          הטבות
-        </h2>
-        {!showAll && additionalCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setShowAll(true)}
-            style={{
-              border: "1px solid rgba(52, 211, 153, 0.28)",
-              borderRadius: 999,
-              background: "rgba(52, 211, 153, 0.14)",
-              color: "#34D399",
-              padding: "5px 10px",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 950,
-              fontSize: 12,
-              lineHeight: 1,
-              cursor: "pointer",
-            }}
-          >
-            +{additionalCount}
-          </button>
-        )}
-      </div>
       <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-        {visibleBenefits.map((benefit, index) => {
+        {currentBenefits.map((benefit, index) => {
           const isOpen = openBenefitId === benefit.id;
           const category = benefit.category ?? "";
           return (
@@ -98,7 +69,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 padding: "13px 0",
                 display: "flex",
                 gap: 12,
-                borderBottom: index === visibleBenefits.length - 1 ? "none" : "1px solid rgba(52, 211, 153, 0.16)",
+                borderBottom: index === currentBenefits.length - 1 ? "none" : "1px solid rgba(52, 211, 153, 0.16)",
                 cursor: benefit.description ? "pointer" : "default",
               }}
             >

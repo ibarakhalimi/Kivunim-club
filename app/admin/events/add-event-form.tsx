@@ -6,34 +6,46 @@ import { addEvent } from "./actions";
 const init = { error: undefined as string | undefined, success: false };
 
 export function AddEventForm() {
-  const [state, formAction, pending] = useActionState(
-    async (_prev: typeof init, fd: FormData) => (await addEvent(fd)) as typeof init,
-    init
-  );
   const formRef = useRef<HTMLFormElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
-
-  if (state.success) {
-    formRef.current?.reset();
-    if (preview) setPreview(null);
-  }
+  const [editorKey, setEditorKey] = useState(0);
+  const [isPaid, setIsPaid] = useState(false);
+  const [state, formAction, pending] = useActionState(
+    async (_prev: typeof init, fd: FormData) => {
+      const result = (await addEvent(fd)) as typeof init;
+      if (result.success) {
+        formRef.current?.reset();
+        setPreview(null);
+        setEditorKey((current) => current + 1);
+        setIsPaid(false);
+      }
+      return result;
+    },
+    init
+  );
 
   return (
     <div style={cardStyle}>
       <h2 style={headingStyle}>הוספת אירוע חדש</h2>
-      <form ref={formRef} action={formAction} style={formStyle} encType="multipart/form-data">
+      <form ref={formRef} action={formAction} style={formStyle}>
+        <Field label="תמונה">
+          <ImagePicker name="image" preview={preview} onPreview={setPreview} />
+        </Field>
         <Field label="כותרת *">
           <input name="title" required placeholder="שם האירוע..." style={inputStyle} />
         </Field>
         <Field label="תוכן *">
-          <textarea name="description" required rows={3} placeholder="תיאור האירוע..." style={{ ...inputStyle, resize: "vertical" }} />
+          <RichTextEditor key={editorKey} name="description" placeholder="תיאור האירוע..." />
         </Field>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 12 }}>
           <Field label="תאריך *">
             <input name="event_date" type="date" required style={inputStyle} />
           </Field>
           <Field label="שעת התחלה *">
             <input name="start_hour" type="time" required style={inputStyle} />
+          </Field>
+          <Field label="שעת סיום">
+            <input name="end_hour" type="time" style={inputStyle} />
           </Field>
         </div>
         <Field label="מיקום *">
@@ -42,9 +54,7 @@ export function AddEventForm() {
         <Field label="קישור להרשמה">
           <input name="registration_url" type="url" placeholder="https://..." style={inputStyle} />
         </Field>
-        <Field label="תמונה">
-          <ImagePicker name="image" preview={preview} onPreview={setPreview} />
-        </Field>
+        <CostFields isPaid={isPaid} onPaidChange={setIsPaid} />
         <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
           <input name="is_featured" type="checkbox" style={{ width: 16, height: 16, cursor: "pointer", accentColor: "#1E40AF" }} />
           <span style={labelStyle}>מוצג בראש הדף</span>
@@ -58,6 +68,140 @@ export function AddEventForm() {
         </button>
       </form>
     </div>
+  );
+}
+
+export function CostFields({
+  isPaid,
+  onPaidChange,
+  defaultPrice = "",
+}: {
+  isPaid: boolean;
+  onPaidChange: (value: boolean) => void;
+  defaultPrice?: string | number | null;
+}) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <span style={labelStyle}>עלות האירוע</span>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+        <label style={choiceStyle(!isPaid)}>
+          <input
+            type="radio"
+            name="is_paid"
+            value="false"
+            checked={!isPaid}
+            onChange={() => onPaidChange(false)}
+            style={{ accentColor: "#1E40AF" }}
+          />
+          ללא עלות
+        </label>
+        <label style={choiceStyle(isPaid)}>
+          <input
+            type="radio"
+            name="is_paid"
+            value="true"
+            checked={isPaid}
+            onChange={() => onPaidChange(true)}
+            style={{ accentColor: "#1E40AF" }}
+          />
+          בתשלום
+        </label>
+      </div>
+      {isPaid && (
+        <input
+          name="price_amount"
+          type="number"
+          min="0"
+          step="0.01"
+          required
+          defaultValue={defaultPrice ?? ""}
+          placeholder="סכום בש״ח"
+          style={{ ...inputStyle, direction: "ltr", textAlign: "left" }}
+        />
+      )}
+    </div>
+  );
+}
+
+export function RichTextEditor({
+  name,
+  initialHtml = "",
+  placeholder,
+}: {
+  name: string;
+  initialHtml?: string | null;
+  placeholder?: string;
+}) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function syncValue() {
+    if (!editorRef.current || !inputRef.current) return;
+    inputRef.current.value = editorRef.current.innerHTML;
+  }
+
+  function applyCommand(command: string, value?: string) {
+    editorRef.current?.focus();
+    document.execCommand(command, false, value);
+    syncValue();
+  }
+
+  return (
+    <div style={{ border: "1px solid #CBD5E1", borderRadius: 8, overflow: "hidden", background: "#fff" }}>
+      <input ref={inputRef} type="hidden" name={name} defaultValue={initialHtml ?? ""} />
+      <div style={{ display: "flex", alignItems: "center", gap: 4, padding: 8, borderBottom: "1px solid #E2E8F0", background: "#F8FAFC", flexWrap: "wrap" }}>
+        <ToolbarButton label="B" title="מודגש" onClick={() => applyCommand("bold")} />
+        <ToolbarButton label="I" title="נטוי" onClick={() => applyCommand("italic")} />
+        <ToolbarButton label="U" title="קו תחתון" onClick={() => applyCommand("underline")} />
+        <ToolbarButton label="•" title="רשימה" onClick={() => applyCommand("insertUnorderedList")} />
+        <ToolbarButton label="1." title="רשימה ממוספרת" onClick={() => applyCommand("insertOrderedList")} />
+        <ToolbarButton label="H" title="כותרת" onClick={() => applyCommand("formatBlock", "h3")} />
+        <ToolbarButton label="P" title="פסקה" onClick={() => applyCommand("formatBlock", "p")} />
+      </div>
+      <div
+        ref={editorRef}
+        contentEditable
+        suppressContentEditableWarning
+        data-placeholder={placeholder}
+        onInput={syncValue}
+        onBlur={syncValue}
+        dangerouslySetInnerHTML={{ __html: initialHtml ?? "" }}
+        style={{
+          minHeight: 140,
+          padding: "11px 12px",
+          fontFamily: "var(--font-rubik)",
+          fontSize: 14,
+          lineHeight: 1.65,
+          color: "#0F172A",
+          outline: "none",
+          direction: "rtl",
+        }}
+      />
+    </div>
+  );
+}
+
+function ToolbarButton({ label, title, onClick }: { label: string; title: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      title={title}
+      onClick={onClick}
+      style={{
+        width: 30,
+        height: 30,
+        border: "1px solid #CBD5E1",
+        borderRadius: 6,
+        background: "#fff",
+        color: "#0F172A",
+        fontFamily: "var(--font-rubik)",
+        fontWeight: 800,
+        fontSize: 13,
+        cursor: "pointer",
+      }}
+    >
+      {label}
+    </button>
   );
 }
 
@@ -172,4 +316,20 @@ const submitStyle = (pending: boolean): React.CSSProperties => ({
   fontWeight: 700,
   fontSize: 15,
   cursor: pending ? "not-allowed" : "pointer",
+});
+
+const choiceStyle = (active: boolean): React.CSSProperties => ({
+  minHeight: 42,
+  border: `1px solid ${active ? "#1E40AF" : "#CBD5E1"}`,
+  borderRadius: 8,
+  background: active ? "#EFF6FF" : "#fff",
+  color: active ? "#1E40AF" : "#475569",
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+  padding: "0 12px",
+  fontFamily: "var(--font-rubik)",
+  fontSize: 13,
+  fontWeight: 700,
+  cursor: "pointer",
 });

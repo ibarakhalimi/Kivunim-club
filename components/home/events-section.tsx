@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { CalendarDays } from "lucide-react";
 import type { Tables } from "@/src/types/database";
 
@@ -15,10 +14,7 @@ function getDateParts(dateStr: string) {
 }
 
 export function EventsSection({ events }: { events: ClubEvent[] }) {
-  const [showAll, setShowAll] = useState(false);
   const eventItem = events[0];
-  const additionalCount = Math.max(events.length - 1, 0);
-  const visibleEvents = showAll ? events : events.slice(0, 1);
 
   if (!eventItem) {
     return (
@@ -70,35 +66,12 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
 
   return (
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-        <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 16, lineHeight: 1, color: "#C7CAD6" }}>
-          אירועים
-        </h2>
-        {!showAll && additionalCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setShowAll(true)}
-            style={{
-              border: "1px solid rgba(255, 46, 154, 0.3)",
-              borderRadius: 999,
-              background: "rgba(255, 46, 154, 0.14)",
-              color: "#FF2E9A",
-              padding: "5px 10px",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 950,
-              fontSize: 12,
-              lineHeight: 1,
-              cursor: "pointer",
-            }}
-          >
-            +{additionalCount}
-          </button>
-        )}
-      </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {visibleEvents.map((item) => {
+        {events.map((item) => {
           const dateParts = getDateParts(item.event_date);
-          const eventMeta = [item.location, item.start_hour].filter(Boolean).join(" · ");
+          const timeRange = item.end_hour ? `${item.start_hour}-${item.end_hour}` : item.start_hour;
+          const eventMeta = [item.location, timeRange].filter(Boolean).join(" · ");
+          const costLabel = item.is_paid && item.price_amount !== null ? `₪${item.price_amount}` : "ללא עלות";
           return (
       <article
         key={item.id}
@@ -173,6 +146,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
               {eventMeta}
             </p>
           )}
+          <p style={{ margin: "7px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 12, lineHeight: 1.2, color: "#FF2E9A" }}>
+            {costLabel}
+          </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: "auto", paddingTop: 18 }}>
             {item.registration_url ? (
               <a

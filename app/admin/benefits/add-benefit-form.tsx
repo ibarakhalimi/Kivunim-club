@@ -8,18 +8,24 @@ const init = { error: undefined as string | undefined, success: false };
 const CATEGORIES = ["בריאות", "כושר", "מסעדות"];
 
 export function AddBenefitForm() {
-  const [state, formAction, pending] = useActionState(
-    async (_prev: typeof init, fd: FormData) => (await addBenefit(fd)) as typeof init,
-    init
-  );
   const formRef = useRef<HTMLFormElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  if (state.success) { formRef.current?.reset(); if (preview) setPreview(null); }
+  const [state, formAction, pending] = useActionState(
+    async (_prev: typeof init, fd: FormData) => {
+      const result = (await addBenefit(fd)) as typeof init;
+      if (result.success) {
+        formRef.current?.reset();
+        setPreview(null);
+      }
+      return result;
+    },
+    init
+  );
 
   return (
     <div style={cardStyle}>
       <h2 style={headingStyle}>הוספת הטבה חדשה</h2>
-      <form ref={formRef} action={formAction} style={formStyle} encType="multipart/form-data">
+      <form ref={formRef} action={formAction} style={formStyle}>
         <Field label="שם העסק *">
           <input name="business" required placeholder="שם העסק..." style={inputStyle} />
         </Field>

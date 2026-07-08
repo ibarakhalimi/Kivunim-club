@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useActionState } from "react";
+import { useEffect, useState, useActionState } from "react";
 import type { Tables } from "@/src/types/database";
 import { updateBenefit, toggleActive, deleteBenefit } from "./actions";
 import { ImagePicker, labelStyle, inputStyle } from "./add-benefit-form";
@@ -25,10 +25,13 @@ function EditForm({ benefit, onDone }: { benefit: Benefit; onDone: () => void })
     (await updateBenefit(benefit.id, fd)) as typeof init;
   const [state, formAction, pending] = useActionState(action, init);
   const [preview, setPreview] = useState<string | null>(null);
-  if (state.success) onDone();
+
+  useEffect(() => {
+    if (state.success) onDone();
+  }, [state.success, onDone]);
 
   return (
-    <form action={formAction} encType="multipart/form-data"
+    <form action={formAction}
       style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid #E2E8F0" }}>
       <input type="hidden" name="existing_image_url" value={benefit.image_url ?? ""} />
 

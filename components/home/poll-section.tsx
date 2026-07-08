@@ -172,7 +172,6 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
 }
 
 export function PollSection({ poll, voteCounts, userVote }: Props) {
-  const [showAll, setShowAll] = useState(false);
   const communityPolls: CommunityPoll[] = [
     {
       id: poll.id,
@@ -183,36 +182,9 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
     },
     ...DEMO_POLLS,
   ];
-  const additionalCount = Math.max(communityPolls.length - 1, 0);
-  const visiblePolls = showAll ? communityPolls : communityPolls.slice(0, 1);
 
   return (
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-        <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 16, lineHeight: 1, color: "#C7CAD6" }}>
-          פעילות
-        </h2>
-        {!showAll && additionalCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setShowAll(true)}
-            style={{
-              border: "1px solid rgba(167, 139, 250, 0.3)",
-              borderRadius: 999,
-              background: "rgba(167, 139, 250, 0.14)",
-              color: "#A78BFA",
-              padding: "5px 10px",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 950,
-              fontSize: 12,
-              lineHeight: 1,
-              cursor: "pointer",
-            }}
-          >
-            +{additionalCount}
-          </button>
-        )}
-      </div>
       <div
         style={{
           display: "flex",
@@ -220,7 +192,7 @@ export function PollSection({ poll, voteCounts, userVote }: Props) {
           gap: 12,
         }}
       >
-        {visiblePolls.map((item) => (
+        {communityPolls.map((item) => (
           <PollCard key={item.id} poll={item} />
         ))}
       </div>

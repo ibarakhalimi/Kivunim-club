@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useActionState } from "react";
+import { useEffect, useState, useActionState } from "react";
 import type { Tables } from "@/src/types/database";
 import { updateEvent, toggleFeatured, deleteEvent } from "./actions";
-import { ImagePicker, labelStyle, inputStyle } from "./add-event-form";
+import { CostFields, ImagePicker, RichTextEditor, labelStyle, inputStyle } from "./add-event-form";
 
 type Event = Tables<"events">;
 
@@ -14,25 +14,32 @@ function EditForm({ event, onDone }: { event: Event; onDone: () => void }) {
     (await updateEvent(event.id, fd)) as typeof init;
   const [state, formAction, pending] = useActionState(action, init);
   const [preview, setPreview] = useState<string | null>(null);
-  if (state.success) onDone();
+  const [isPaid, setIsPaid] = useState(event.is_paid);
+
+  useEffect(() => {
+    if (state.success) onDone();
+  }, [state.success, onDone]);
 
   return (
     <form
       action={formAction}
-      encType="multipart/form-data"
       style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid #E2E8F0" }}
     >
       <input type="hidden" name="existing_image_url" value={event.image_url ?? ""} />
 
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <label style={labelStyle}>תמונה</label>
+        <ImagePicker name="image" preview={preview} onPreview={setPreview} currentUrl={event.image_url} />
+      </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={labelStyle}>כותרת *</label>
         <input name="title" required defaultValue={event.title} style={inputStyle} />
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={labelStyle}>תוכן *</label>
-        <textarea name="description" required rows={3} defaultValue={event.description} style={{ ...inputStyle, resize: "vertical" }} />
+        <RichTextEditor name="description" initialHtml={event.description} placeholder="תיאור האירוע..." />
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 12 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
           <label style={labelStyle}>תאריך *</label>
           <input name="event_date" type="date" required defaultValue={event.event_date} style={inputStyle} />
@@ -40,6 +47,10 @@ function EditForm({ event, onDone }: { event: Event; onDone: () => void }) {
         <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
           <label style={labelStyle}>שעה *</label>
           <input name="start_hour" type="time" required defaultValue={event.start_hour} style={inputStyle} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          <label style={labelStyle}>שעת סיום</label>
+          <input name="end_hour" type="time" defaultValue={event.end_hour ?? ""} style={inputStyle} />
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
@@ -50,10 +61,7 @@ function EditForm({ event, onDone }: { event: Event; onDone: () => void }) {
         <label style={labelStyle}>קישור להרשמה</label>
         <input name="registration_url" type="url" defaultValue={event.registration_url ?? ""} placeholder="https://..." style={inputStyle} />
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-        <label style={labelStyle}>תמונה</label>
-        <ImagePicker name="image" preview={preview} onPreview={setPreview} currentUrl={event.image_url} />
-      </div>
+      <CostFields isPaid={isPaid} onPaidChange={setIsPaid} defaultPrice={event.price_amount} />
       <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
         <input name="is_featured" type="checkbox" defaultChecked={event.is_featured} style={{ width: 16, height: 16, accentColor: "#1E40AF" }} />
         <span style={labelStyle}>מוצג בראש הדף</span>
@@ -88,6 +96,10 @@ function EventRow({ event }: { event: Event }) {
     await deleteEvent(event.id);
   }
 
+  const costLabel = event.is_paid && event.price_amount !== null
+    ? `בתשלום · ₪${event.price_amount}`
+    : "ללא עלות";
+
   return (
     <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.05)", padding: "14px 16px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
@@ -111,7 +123,7 @@ function EventRow({ event }: { event: Event }) {
               )}
             </div>
             <p style={{ margin: 0, fontSize: 13, color: "#64748B", fontFamily: "var(--font-rubik)", fontWeight: 500 }}>
-              {event.event_date} · {event.start_hour} · {event.location}
+              {event.event_date} · {event.start_hour}{event.end_hour ? `-${event.end_hour}` : ""} · {event.location} · {costLabel}
             </p>
           </div>
         </div>
