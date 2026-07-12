@@ -1,9 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Lock, Mail } from "lucide-react";
+import { Lock, Mail, Smartphone } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import supabase from "@/lib/supabase/client";
+import { requestPhoneOtp, verifyPhoneOtp } from "@/app/actions/phone-otp";
 
 type WelcomeLoginFormProps = {
   nextPath: string;
@@ -47,11 +48,11 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
 export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [email, setEmail] = useState("");
   const [passwordEmail, setPasswordEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [phoneOtp, setPhoneOtp] = useState("");
+  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const authError = searchParams.get("auth_error");
@@ -70,31 +71,6 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
 
     setLoading(false);
     if (error) setMessage(error.message);
-  };
-
-  const handleSendEmailCode = async (event: FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    setMessage(null);
-
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
-
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: false,
-        emailRedirectTo: `${siteUrl}/auth/callback?next=${encodeURIComponent(nextPath)}`,
-      },
-    });
-
-    setLoading(false);
-    if (error) {
-      setMessage(error.message);
-      return;
-    }
-
-    setOtpSent(true);
-    setMessage("שלחנו קוד אימות למייל");
   };
 
   const handlePasswordLogin = async (event: FormEvent) => {
@@ -116,24 +92,47 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
     router.replace(nextPath);
   };
 
-  const handleVerifyEmailCode = async (event: FormEvent) => {
+  const handleSendPhoneCode = async (event: FormEvent) => {
     event.preventDefault();
     setLoading(true);
     setMessage(null);
 
+    const result = await requestPhoneOtp(phone);
+
+    setLoading(false);
+    if ("error" in result) {
+      setMessage(result.error);
+      return;
+    }
+
+    setPhoneOtpSent(true);
+    setMessage("אם המספר רשום במערכת, שלחנו אליו קוד אימות");
+  };
+
+  const handleVerifyPhoneCode = async (event: FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+    setMessage(null);
+
+    const result = await verifyPhoneOtp(phone, phoneOtp, nextPath);
+    if ("error" in result) {
+      setLoading(false);
+      setMessage(result.error);
+      return;
+    }
+
     const { error } = await supabase.auth.verifyOtp({
-      email,
-      token: otp,
-      type: "email",
+      token_hash: result.tokenHash!,
+      type: "magiclink",
     });
 
     setLoading(false);
     if (error) {
-      setMessage(error.message);
+      setMessage("לא הצלחנו להשלים התחברות");
       return;
     }
 
-    router.replace(nextPath);
+    router.replace(result.nextPath ?? nextPath);
   };
 
   return (
@@ -256,15 +255,15 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
             fontWeight: 800,
           }}
         >
-          או קוד במייל
+          או קוד לנייד
         </span>
         <div style={{ flex: 1, height: 1, background: "rgba(247, 248, 255, 0.12)" }} />
       </div>
 
-      {!otpSent ? (
-        <form onSubmit={handleSendEmailCode} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {!phoneOtpSent ? (
+        <form onSubmit={handleSendPhoneCode} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <div style={{ position: "relative" }}>
-            <Mail
+            <Smartphone
               size={19}
               strokeWidth={2.3}
               style={{
@@ -276,11 +275,13 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
               }}
             />
             <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="כתובת מייל"
+              type="tel"
+              inputMode="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              placeholder="מספר נייד"
               required
+              autoComplete="tel"
               style={{ ...fieldStyle, paddingRight: 46, direction: "ltr", textAlign: "right" }}
             />
           </div>
@@ -289,19 +290,20 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
             disabled={loading}
             style={{ ...primaryButtonStyle, opacity: loading ? 0.75 : 1, cursor: loading ? "not-allowed" : "pointer" }}
           >
-            {loading ? "שולח..." : "שליחת קוד אימות"}
+            {loading ? "שולח..." : "שליחת קוד לנייד"}
           </button>
         </form>
       ) : (
-        <form onSubmit={handleVerifyEmailCode} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <form onSubmit={handleVerifyPhoneCode} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <input
             type="text"
             inputMode="numeric"
-            value={otp}
-            onChange={(event) => setOtp(event.target.value)}
-            placeholder="קוד אימות"
+            value={phoneOtp}
+            onChange={(event) => setPhoneOtp(event.target.value)}
+            placeholder="קוד שקיבלת ב-SMS"
             required
             maxLength={6}
+            autoComplete="one-time-code"
             style={{ ...fieldStyle, textAlign: "center", direction: "ltr", fontSize: 20 }}
           />
           <button
@@ -309,13 +311,13 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
             disabled={loading}
             style={{ ...primaryButtonStyle, opacity: loading ? 0.75 : 1, cursor: loading ? "not-allowed" : "pointer" }}
           >
-            {loading ? "מאמת..." : "כניסה"}
+            {loading ? "מאמת..." : "כניסה עם קוד"}
           </button>
           <button
             type="button"
             onClick={() => {
-              setOtpSent(false);
-              setOtp("");
+              setPhoneOtpSent(false);
+              setPhoneOtp("");
               setMessage(null);
             }}
             style={{
@@ -328,7 +330,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
               cursor: "pointer",
             }}
           >
-            שינוי כתובת מייל
+            שינוי מספר נייד
           </button>
         </form>
       )}
