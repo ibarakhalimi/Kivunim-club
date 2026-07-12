@@ -178,6 +178,7 @@ export type Database = {
           bg_color: string
           business: string
           business_description: string | null
+          contact_phone: string | null
           category: string
           created_at: string
           deal: string
@@ -193,6 +194,7 @@ export type Database = {
           bg_color?: string
           business: string
           business_description?: string | null
+          contact_phone?: string | null
           category: string
           created_at?: string
           deal: string
@@ -208,6 +210,7 @@ export type Database = {
           bg_color?: string
           business?: string
           business_description?: string | null
+          contact_phone?: string | null
           category?: string
           created_at?: string
           deal?: string

@@ -123,9 +123,10 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                   {benefit.deal}
                 </p>
                 {isOpen && benefit.description && (
-                  <p style={{ margin: "8px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6" }}>
-                    {benefit.description}
-                  </p>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: benefit.description }}
+                    style={{ margin: "8px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6" }}
+                  />
                 )}
               </div>
               {category && (

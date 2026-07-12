@@ -98,6 +98,7 @@ export async function addEvent(_prevState: EventActionState, formData: FormData)
     if (error) return { error: `שגיאה בשמירת האירוע: ${error.message}`, success: false };
 
     revalidatePath("/");
+    revalidatePath("/admin/content");
     revalidatePath("/admin/events");
     return { success: true };
   } catch (error) {
@@ -146,6 +147,7 @@ export async function updateEvent(id: string, _prevState: EventActionState, form
     if (error) return { error: `שגיאה בעדכון האירוע: ${error.message}`, success: false };
 
     revalidatePath("/");
+    revalidatePath("/admin/content");
     revalidatePath("/admin/events");
     return { success: true };
   } catch (error) {
@@ -163,6 +165,7 @@ export async function toggleFeatured(id: string, current: boolean) {
   if (error) return { error: "שגיאה בעדכון" };
 
   revalidatePath("/");
+  revalidatePath("/admin/content");
   revalidatePath("/admin/events");
   return { success: true };
 }
@@ -174,6 +177,7 @@ export async function deleteEvent(id: string) {
   if (error) return { error: "שגיאה במחיקת האירוע" };
 
   revalidatePath("/");
+  revalidatePath("/admin/content");
   revalidatePath("/admin/events");
   return { success: true };
 }

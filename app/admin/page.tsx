@@ -1,8 +1,8 @@
 export default function AdminPage() {
   const sections = [
-    { label: "עדכונים", emoji: "📢", href: "/admin/updates", bg: "#FFFBEB", color: "#B45309" },
-    { label: "אירועים", emoji: "📅", href: "/admin/events", bg: "#EFF6FF", color: "#1E40AF" },
-    { label: "הטבות",   emoji: "🎁", href: "/admin/benefits", bg: "#F0FDF4", color: "#15803D" },
+    { label: "עדכונים", emoji: "📢", href: "/admin/content?tab=updates", bg: "#FFFBEB", color: "#B45309" },
+    { label: "אירועים", emoji: "📅", href: "/admin/content?tab=events", bg: "#EFF6FF", color: "#1E40AF" },
+    { label: "הטבות",   emoji: "🎁", href: "/admin/content?tab=benefits", bg: "#F0FDF4", color: "#15803D" },
     { label: "סקרים",   emoji: "📊", href: "/admin/polls", bg: "#F5F3FF", color: "#6D28D9" },
     { label: "פניות",   emoji: "✉️", href: "/admin/inquiries", bg: "#EEF2FF", color: "#4338CA" },
     { label: "רעיונות", emoji: "💡", href: "/admin/ideas", bg: "#FEFCE8", color: "#A16207" },

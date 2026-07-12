@@ -1,13 +1,16 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { syncExpiredBenefits } from "@/lib/benefits/expiry";
 import { AddBenefitForm } from "./add-benefit-form";
 import { BenefitList } from "./benefit-list";
 
 export default async function AdminBenefitsPage() {
+  await syncExpiredBenefits();
   const supabase = createAdminClient();
   const { data: benefits } = await supabase
     .from("benefits")
     .select("*")
     .order("sort_order", { ascending: true });
+  const benefitCategories = Array.from(new Set((benefits ?? []).map((benefit) => benefit.category).filter(Boolean)));
 
   return (
     <div style={{ minHeight: "100dvh", background: "#F8FAFC", padding: "24px 16px 40px", fontFamily: "var(--font-rubik)", direction: "rtl" }}>
@@ -20,7 +23,7 @@ export default async function AdminBenefitsPage() {
         </h1>
       </div>
 
-      <AddBenefitForm />
+      <AddBenefitForm categories={benefitCategories} />
 
       {benefits && benefits.length > 0 && (
         <div style={{ marginTop: 28 }}>

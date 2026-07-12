@@ -1,21 +1,29 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
+import { RichTextEditor } from "../events/add-event-form";
 import { addBenefit } from "./actions";
 
 const init = { error: undefined as string | undefined, success: false };
 
 const CATEGORIES = ["בריאות", "כושר", "מסעדות"];
 
-export function AddBenefitForm() {
+function uniqueCategories(categories: string[] = []) {
+  return Array.from(new Set([...CATEGORIES, ...categories].map((category) => category.trim()).filter(Boolean)));
+}
+
+export function AddBenefitForm({ categories = [] }: { categories?: string[] }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [customCategory, setCustomCategory] = useState(false);
+  const categoryOptions = uniqueCategories(categories);
   const [state, formAction, pending] = useActionState(
     async (_prev: typeof init, fd: FormData) => {
       const result = (await addBenefit(fd)) as typeof init;
       if (result.success) {
         formRef.current?.reset();
         setPreview(null);
+        setCustomCategory(false);
       }
       return result;
     },
@@ -26,35 +34,71 @@ export function AddBenefitForm() {
     <div style={cardStyle}>
       <h2 style={headingStyle}>הוספת הטבה חדשה</h2>
       <form ref={formRef} action={formAction} style={formStyle}>
-        <Field label="שם העסק *">
-          <input name="business" required placeholder="שם העסק..." style={inputStyle} />
-        </Field>
-        <Field label="תיאור העסק">
-          <textarea name="business_description" rows={2} placeholder="מי העסק, מה הוא מציע..." style={{ ...inputStyle, resize: "vertical" }} />
-        </Field>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <Field label="קטגוריה *">
-            <select name="category" required style={inputStyle}>
-              <option value="">בחר קטגוריה...</option>
-              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
+        <FormSection title="פרטי עסק">
+          <Field label="שם העסק *">
+            <input name="business" required placeholder="שם העסק..." style={inputStyle} />
           </Field>
+          <Field label="תיאור העסק">
+            <textarea name="business_description" rows={2} placeholder="מי העסק, מה הוא מציע..." style={{ ...inputStyle, resize: "vertical" }} />
+          </Field>
+          <Field label="מס׳ ליצירת קשר">
+            <input name="contact_phone" type="tel" placeholder="050-0000000" style={{ ...inputStyle, direction: "ltr", textAlign: "left" }} />
+          </Field>
+          <Field label="לוגו העסק">
+            <ImagePicker name="image" preview={preview} onPreview={setPreview} />
+          </Field>
+          <Field label="קטגוריה *">
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {customCategory ? (
+                <input name="category" required placeholder="שם קטגוריה חדשה..." style={inputStyle} autoFocus />
+              ) : (
+                <select name="category" required style={inputStyle}>
+                  <option value="">בחר קטגוריה...</option>
+                  {categoryOptions.map((category) => <option key={category} value={category}>{category}</option>)}
+                </select>
+              )}
+              <button
+                type="button"
+                onClick={() => setCustomCategory((value) => !value)}
+                style={{
+                  alignSelf: "flex-start",
+                  minHeight: 30,
+                  border: "1px solid #CBD5E1",
+                  borderRadius: 999,
+                  background: "#FFFFFF",
+                  color: "#1E40AF",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "0 10px",
+                  fontFamily: "var(--font-rubik)",
+                  fontSize: 12,
+                  fontWeight: 800,
+                  cursor: "pointer",
+                }}
+              >
+                <span style={{ fontSize: 16, lineHeight: 1 }}>+</span>
+                <span>{customCategory ? "בחירה מרשימה" : "קטגוריה חדשה"}</span>
+              </button>
+            </div>
+          </Field>
+          <Field label="כתובת העסק">
+            <input name="location" placeholder="רחוב, עיר..." style={inputStyle} />
+          </Field>
+        </FormSection>
+
+        <FormSection title="פרטי ההטבה">
           <Field label="הטבה *">
             <input name="deal" required placeholder='20% הנחה / 2+1...' style={inputStyle} />
           </Field>
-        </div>
-        <Field label="תיאור ההטבה *">
-          <textarea name="description" required rows={3} placeholder="פרטי ההטבה..." style={{ ...inputStyle, resize: "vertical" }} />
-        </Field>
-        <Field label="כתובת">
-          <input name="location" placeholder="רחוב, עיר..." style={inputStyle} />
-        </Field>
-        <Field label="תוקף ההטבה">
-          <input name="expires_at" type="date" style={inputStyle} />
-        </Field>
-        <Field label="לוגו / תמונה">
-          <ImagePicker name="image" preview={preview} onPreview={setPreview} />
-        </Field>
+          <Field label="תיאור ההטבה *">
+            <RichTextEditor name="description" placeholder="פרטי ההטבה..." />
+          </Field>
+          <Field label="תוקף ההטבה">
+            <input name="expires_at" type="date" style={inputStyle} />
+          </Field>
+        </FormSection>
+
         <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
           <input name="is_active" type="checkbox" defaultChecked style={{ width: 16, height: 16, accentColor: "#1E40AF" }} />
           <span style={labelStyle}>פעיל (מוצג לחברים)</span>
@@ -68,6 +112,17 @@ export function AddBenefitForm() {
         </button>
       </form>
     </div>
+  );
+}
+
+function FormSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section style={sectionStyle}>
+      <h3 style={sectionHeadingStyle}>{title}</h3>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {children}
+      </div>
+    </section>
   );
 }
 
@@ -133,6 +188,19 @@ export const headingStyle: React.CSSProperties = {
   color: "#0F172A",
 };
 export const formStyle: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 14 };
+const sectionStyle: React.CSSProperties = {
+  border: "1px solid #E2E8F0",
+  borderRadius: 10,
+  padding: 14,
+  background: "#F8FAFC",
+};
+const sectionHeadingStyle: React.CSSProperties = {
+  margin: "0 0 12px",
+  fontFamily: "var(--font-rubik)",
+  fontSize: 15,
+  fontWeight: 900,
+  color: "#0F172A",
+};
 export const labelStyle: React.CSSProperties = {
   fontSize: 13,
   fontWeight: 600,

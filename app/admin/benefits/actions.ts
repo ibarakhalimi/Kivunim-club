@@ -1,6 +1,7 @@
 "use server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isPastBenefitExpiry, syncExpiredBenefits } from "@/lib/benefits/expiry";
 import { revalidatePath } from "next/cache";
 
 async function uploadImage(file: File): Promise<string | null> {
@@ -23,6 +24,7 @@ async function resolveImageUrl(formData: FormData, existingUrl?: string | null):
 
 function revalidate() {
   revalidatePath("/");
+  revalidatePath("/admin/content");
   revalidatePath("/admin/benefits");
 }
 
@@ -32,9 +34,10 @@ export async function addBenefit(formData: FormData) {
   const deal = (formData.get("deal") as string)?.trim();
   const description = (formData.get("description") as string)?.trim();
   const business_description = (formData.get("business_description") as string)?.trim() || null;
+  const contact_phone = (formData.get("contact_phone") as string)?.trim() || null;
   const location = (formData.get("location") as string)?.trim() || null;
   const expires_at = (formData.get("expires_at") as string)?.trim() || null;
-  const is_active = formData.get("is_active") === "on";
+  const is_active = formData.get("is_active") === "on" && !isPastBenefitExpiry(expires_at);
 
   if (!business || !category || !deal || !description) {
     return { error: "יש למלא את כל השדות החובה" };
@@ -44,7 +47,7 @@ export async function addBenefit(formData: FormData) {
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("benefits")
-    .insert({ business, category, deal, description, business_description, location, expires_at, is_active, image_url });
+    .insert({ business, category, deal, description, business_description, contact_phone, location, expires_at, is_active, image_url });
 
   if (error) return { error: "שגיאה בשמירת ההטבה" };
   revalidate();
@@ -57,9 +60,10 @@ export async function updateBenefit(id: string, formData: FormData) {
   const deal = (formData.get("deal") as string)?.trim();
   const description = (formData.get("description") as string)?.trim();
   const business_description = (formData.get("business_description") as string)?.trim() || null;
+  const contact_phone = (formData.get("contact_phone") as string)?.trim() || null;
   const location = (formData.get("location") as string)?.trim() || null;
   const expires_at = (formData.get("expires_at") as string)?.trim() || null;
-  const is_active = formData.get("is_active") === "on";
+  const is_active = formData.get("is_active") === "on" && !isPastBenefitExpiry(expires_at);
   const existing_image_url = (formData.get("existing_image_url") as string) || null;
 
   if (!business || !category || !deal || !description) {
@@ -70,7 +74,7 @@ export async function updateBenefit(id: string, formData: FormData) {
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("benefits")
-    .update({ business, category, deal, description, business_description, location, expires_at, is_active, image_url })
+    .update({ business, category, deal, description, business_description, contact_phone, location, expires_at, is_active, image_url })
     .eq("id", id);
 
   if (error) return { error: "שגיאה בעדכון ההטבה" };
@@ -80,9 +84,18 @@ export async function updateBenefit(id: string, formData: FormData) {
 
 export async function toggleActive(id: string, current: boolean) {
   const supabase = createAdminClient();
+  await syncExpiredBenefits();
+
+  const { data: benefit } = await supabase
+    .from("benefits")
+    .select("expires_at")
+    .eq("id", id)
+    .single();
+
+  const nextActive = !current && !isPastBenefitExpiry(benefit?.expires_at ?? null);
   const { error } = await supabase
     .from("benefits")
-    .update({ is_active: !current })
+    .update({ is_active: nextActive })
     .eq("id", id);
   if (error) return { error: "שגיאה בעדכון" };
   revalidate();

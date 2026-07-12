@@ -25,7 +25,7 @@ export async function addUpdate(formData: FormData) {
   }
 
   revalidatePath("/");
-  revalidatePath("/admin/updates");
+  revalidatePath("/admin/content");
   return { success: true };
 }
 
@@ -52,7 +52,7 @@ export async function updateUpdate(id: string, formData: FormData) {
   }
 
   revalidatePath("/");
-  revalidatePath("/admin/updates");
+  revalidatePath("/admin/content");
   return { success: true };
 }
 
@@ -68,7 +68,7 @@ export async function setUpdateActive(id: string, isActive: boolean) {
   }
 
   revalidatePath("/");
-  revalidatePath("/admin/updates");
+  revalidatePath("/admin/content");
   return { success: true };
 }
 
@@ -81,6 +81,6 @@ export async function deleteUpdate(id: string) {
   }
 
   revalidatePath("/");
-  revalidatePath("/admin/updates");
+  revalidatePath("/admin/content");
   return { success: true };
 }
