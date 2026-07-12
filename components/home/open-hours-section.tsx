@@ -16,7 +16,7 @@ export type OpeningHourRow = {
 };
 
 const DAY_KEYS_BY_JS_DAY = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-const CHECK_IN_TOKEN = "kivunim:checkin:main";
+const CHECK_IN_QR_PAYLOAD = "/check-in?token=kivunim%3Acheckin%3Amain&location=main";
 
 function formatTime(value: string | null) {
   return value ? value.slice(0, 5) : "";
@@ -29,59 +29,6 @@ function formatHours(row: OpeningHourRow) {
   if (openTime && closeTime) return `${openTime}-${closeTime}`;
   if (closeTime) return `עד ${closeTime}`;
   return "פתוח";
-}
-
-function safeDecodeURIComponent(value: string) {
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return value;
-  }
-}
-
-function getQrPayloadVariants(payload: string) {
-  const variants = new Set<string>();
-  let current = payload.trim().replaceAll("&amp;", "&");
-
-  for (let i = 0; i < 4; i++) {
-    if (!current) break;
-    variants.add(current);
-
-    const decoded = safeDecodeURIComponent(current).replaceAll("&amp;", "&");
-    if (decoded === current) break;
-    current = decoded;
-  }
-
-  return [...variants];
-}
-
-function getQrLocation(payload: string) {
-  for (const variant of getQrPayloadVariants(payload)) {
-    try {
-      const url = new URL(variant, window.location.origin);
-      const location = url.searchParams.get("location")?.trim();
-      if (location) return location;
-    } catch {
-      const match = variant.match(/[?&]location=([^&#]+)/);
-      const location = match?.[1] ? safeDecodeURIComponent(match[1]).trim() : "";
-      if (location) return location;
-    }
-  }
-
-  return "main";
-}
-
-function normalizeCheckInQrPayload(payload: string) {
-  const encodedToken = encodeURIComponent(CHECK_IN_TOKEN).toLowerCase();
-  const hasToken = getQrPayloadVariants(payload).some((variant) =>
-    variant === CHECK_IN_TOKEN ||
-    variant.includes(CHECK_IN_TOKEN) ||
-    variant.toLowerCase().includes(encodedToken)
-  );
-
-  if (!hasToken) return null;
-
-  return `/check-in?token=${encodeURIComponent(CHECK_IN_TOKEN)}&location=${encodeURIComponent(getQrLocation(payload))}`;
 }
 
 export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
@@ -218,14 +165,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
     });
 
     if (code?.data) {
-      const normalizedPayload = normalizeCheckInQrPayload(code.data);
-      if (!normalizedPayload) {
-        setScanError("זה לא קוד הצ׳קאין הנכון");
-        animationRef.current = requestAnimationFrame(scanQrFrame);
-        return;
-      }
-
-      completeCheckIn(normalizedPayload);
+      completeCheckIn(CHECK_IN_QR_PAYLOAD);
       return;
     }
 
