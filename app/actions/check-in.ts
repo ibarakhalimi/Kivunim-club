@@ -10,24 +10,41 @@ type CheckInInput = {
 
 const VALID_CHECK_IN_TOKENS = new Set(["kivunim:checkin:main"]);
 
+function safeDecodeURIComponent(value: string) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function getLocationFromPayload(rawPayload: string) {
+  try {
+    const url = new URL(rawPayload, "https://kivunim.local");
+    return url.searchParams.get("location")?.trim() || "main";
+  } catch {
+    const match = rawPayload.match(/[?&]location=([^&#]+)/);
+    return match?.[1] ? safeDecodeURIComponent(match[1]).trim() || "main" : "main";
+  }
+}
+
 function parseQrPayload(qrPayload: string | null | undefined) {
   const rawPayload = qrPayload?.trim();
   if (!rawPayload) return { ok: false };
 
-  if (VALID_CHECK_IN_TOKENS.has(rawPayload)) {
-    return { ok: true, payload: rawPayload };
-  }
+  const decodedPayload = safeDecodeURIComponent(rawPayload);
 
-  try {
-    const url = new URL(rawPayload, "https://kivunim.local");
-    const token = url.searchParams.get("token")?.trim() ?? "";
-    const location = url.searchParams.get("location")?.trim() || "main";
+  for (const validToken of VALID_CHECK_IN_TOKENS) {
+    const encodedToken = encodeURIComponent(validToken);
+    const tokenMatches =
+      rawPayload === validToken ||
+      rawPayload.includes(validToken) ||
+      rawPayload.toLowerCase().includes(encodedToken.toLowerCase()) ||
+      decodedPayload.includes(validToken);
 
-    if (VALID_CHECK_IN_TOKENS.has(token)) {
-      return { ok: true, payload: `${token}|location:${location}` };
+    if (tokenMatches) {
+      return { ok: true, payload: `${validToken}|location:${getLocationFromPayload(rawPayload)}` };
     }
-  } catch {
-    // Invalid URL payloads are rejected below.
   }
 
   return { ok: false };
