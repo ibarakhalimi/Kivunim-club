@@ -42,6 +42,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
   const streamRef = useRef<MediaStream | null>(null);
   const animationRef = useRef<number | null>(null);
   const completingRef = useRef(false);
+  const startScannerRef = useRef<(() => Promise<void>) | null>(null);
   const todayKey = DAY_KEYS_BY_JS_DAY[new Date().getDay()];
   const today = rows.find((row) => row.day_key === todayKey) ?? rows[0];
   const todayNote = today?.note?.trim() || null;
@@ -67,6 +68,18 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
     if (checkInOpen) return;
     stopCamera();
   }, [checkInOpen]);
+
+  useEffect(() => {
+    startScannerRef.current = startScanner;
+  });
+
+  useEffect(() => {
+    if (!checkInOpen || scanState !== "intro") return;
+    const timer = window.setTimeout(() => {
+      void startScannerRef.current?.();
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [checkInOpen, scanState]);
 
   useEffect(() => () => stopCamera(), []);
 

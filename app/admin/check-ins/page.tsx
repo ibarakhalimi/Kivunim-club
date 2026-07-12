@@ -2,6 +2,19 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 
+type CheckInRow = {
+  id: string;
+  user_id: string;
+  checked_in_at: string;
+  source: string;
+};
+
+type MemberRow = {
+  user_id: string;
+  name: string | null;
+  email: string | null;
+};
+
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("he-IL", {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
@@ -29,10 +42,26 @@ export default async function CheckInsPage() {
 
   const { data: rows } = await supabase
     .from("check_ins")
-    .select("id, user_id, checked_in_at, members(name, email)")
+    .select("id, user_id, checked_in_at, source")
     .order("checked_in_at", { ascending: false });
 
-  const checkIns = rows ?? [];
+  const rawCheckIns = (rows ?? []) as CheckInRow[];
+  const userIds = [...new Set(rawCheckIns.map((row) => row.user_id))];
+  const { data: members } = userIds.length
+    ? await supabase
+        .from("members")
+        .select("user_id, name, email")
+        .in("user_id", userIds)
+    : { data: [] };
+
+  const membersByUserId = new Map(
+    ((members ?? []) as MemberRow[]).map((member) => [member.user_id, member])
+  );
+
+  const checkIns = rawCheckIns.map((row) => ({
+    ...row,
+    member: membersByUserId.get(row.user_id) ?? null,
+  }));
   const total = checkIns.length;
   const uniqueUsers = new Set(checkIns.map((r) => r.user_id)).size;
 
@@ -99,21 +128,21 @@ export default async function CheckInsPage() {
           <p style={{ padding: "20px 16px", color: "#94A3B8", fontSize: 14 }}>אין כניסות עדיין</p>
         ) : (
           <div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", padding: "10px 16px", background: "#F8FAFC", borderBottom: "1px solid #E2E8F0" }}>
-              {["שם", "תאריך", "שעה"].map((h) => (
+            <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr 0.7fr 0.7fr", padding: "10px 16px", background: "#F8FAFC", borderBottom: "1px solid #E2E8F0" }}>
+              {["שם", "תאריך", "שעה", "מקור"].map((h) => (
                 <span key={h} style={{ fontSize: 12, fontWeight: 600, color: "#94A3B8", letterSpacing: "0.04em" }}>{h}</span>
               ))}
             </div>
 
             {checkIns.map((row, i) => {
-              const member = Array.isArray(row.members) ? row.members[0] : row.members;
-              const name = member?.name ?? "—";
+              const name = row.member?.name ?? row.member?.email ?? "—";
+              const source = row.source === "qr" || row.source === "qr_link" ? "QR" : "ידני";
               return (
                 <div
                   key={row.id}
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr 1fr",
+                    gridTemplateColumns: "1.2fr 1fr 0.7fr 0.7fr",
                     padding: "12px 16px",
                     borderBottom: i < checkIns.length - 1 ? "1px solid #F1F5F9" : "none",
                     alignItems: "center",
@@ -122,6 +151,7 @@ export default async function CheckInsPage() {
                   <span style={{ fontSize: 14, fontWeight: 600, color: "#0F172A" }}>{name}</span>
                   <span style={{ fontSize: 13, color: "#475569" }}>{formatDate(row.checked_in_at)}</span>
                   <span style={{ fontSize: 13, color: "#94A3B8" }}>{formatTime(row.checked_in_at)}</span>
+                  <span style={{ fontSize: 13, color: "#64748B", fontWeight: 600 }}>{source}</span>
                 </div>
               );
             })}
