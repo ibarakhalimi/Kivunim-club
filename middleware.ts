@@ -43,10 +43,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
-    "/activities/:path*",
-    "/benefits/:path*",
     "/check-in/:path*",
-    "/events/:path*",
-    "/updates/:path*",
   ],
 };
