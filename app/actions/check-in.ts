@@ -23,7 +23,7 @@ function parseQrPayload(qrPayload: string | null | undefined) {
     const token = url.searchParams.get("token")?.trim() ?? "";
     const location = url.searchParams.get("location")?.trim() || "main";
 
-    if (url.pathname === "/check-in" && VALID_CHECK_IN_TOKENS.has(token)) {
+    if (VALID_CHECK_IN_TOKENS.has(token)) {
       return { ok: true, payload: `${token}|location:${location}` };
     }
   } catch {
