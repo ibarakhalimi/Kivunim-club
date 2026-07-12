@@ -27,54 +27,66 @@ function RichTextEditor({
   initialHtml: string;
   inputName: string;
 }) {
-  const editorRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLTextAreaElement>(null);
   const [html, setHtml] = useState(initialHtml);
 
-  function runCommand(command: string) {
-    editorRef.current?.focus();
-    document.execCommand(command);
-    setHtml(editorRef.current?.innerHTML ?? "");
+  function wrapSelection(before: string, after: string) {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const selected = html.slice(start, end);
+    const nextHtml = `${html.slice(0, start)}${before}${selected || "טקסט"}${after}${html.slice(end)}`;
+    setHtml(nextHtml);
+
+    requestAnimationFrame(() => {
+      editor.focus();
+      editor.setSelectionRange(start + before.length, start + before.length + (selected || "טקסט").length);
+    });
+  }
+
+  function wrapLines(listTag: "ul" | "ol") {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const selected = html.slice(start, end) || "פריט";
+    const items = selected
+      .split(/\n+/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => `<li>${line}</li>`)
+      .join("");
+    const nextHtml = `${html.slice(0, start)}<${listTag}>${items}</${listTag}>${html.slice(end)}`;
+    setHtml(nextHtml);
+
+    requestAnimationFrame(() => editor.focus());
   }
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      <input type="hidden" name={inputName} value={html} />
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-        {[
-          { command: "bold", Icon: Bold, label: "מודגש" },
-          { command: "italic", Icon: Italic, label: "נטוי" },
-          { command: "insertUnorderedList", Icon: List, label: "רשימה" },
-          { command: "insertOrderedList", Icon: ListOrdered, label: "רשימה ממוספרת" },
-        ].map((item) => (
-          <button
-            key={item.command}
-            type="button"
-            aria-label={item.label}
-            title={item.label}
-            onClick={() => runCommand(item.command)}
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 10,
-              border: "1px solid #CBD5E1",
-              background: "#FFFFFF",
-              color: "#0F172A",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <item.Icon size={16} strokeWidth={2.3} />
-          </button>
-        ))}
+        <button type="button" aria-label="מודגש" title="מודגש" onClick={() => wrapSelection("<strong>", "</strong>")} style={toolbarButtonStyle}>
+          <Bold size={16} strokeWidth={2.3} />
+        </button>
+        <button type="button" aria-label="נטוי" title="נטוי" onClick={() => wrapSelection("<em>", "</em>")} style={toolbarButtonStyle}>
+          <Italic size={16} strokeWidth={2.3} />
+        </button>
+        <button type="button" aria-label="רשימה" title="רשימה" onClick={() => wrapLines("ul")} style={toolbarButtonStyle}>
+          <List size={16} strokeWidth={2.3} />
+        </button>
+        <button type="button" aria-label="רשימה ממוספרת" title="רשימה ממוספרת" onClick={() => wrapLines("ol")} style={toolbarButtonStyle}>
+          <ListOrdered size={16} strokeWidth={2.3} />
+        </button>
       </div>
-      <div
+      <textarea
         ref={editorRef}
-        contentEditable
-        suppressContentEditableWarning
-        onInput={() => setHtml(editorRef.current?.innerHTML ?? "")}
-        dangerouslySetInnerHTML={{ __html: initialHtml }}
+        name={inputName}
+        value={html}
+        onChange={(event) => setHtml(event.target.value)}
+        placeholder="<p>כתוב כאן את פירוט התוכן...</p>"
         style={{
           minHeight: 120,
           border: "1px solid #CBD5E1",
@@ -86,6 +98,9 @@ function RichTextEditor({
           lineHeight: 1.65,
           color: "#0F172A",
           outline: "none",
+          resize: "vertical",
+          direction: "rtl",
+          fontFamily: "var(--font-rubik)",
         }}
       />
     </div>
@@ -190,10 +205,10 @@ function InfoPageForm({ page, mode = "edit" }: { page: ImportantInfoPage; mode?:
         להציג באפליקציה
       </label>
 
-      <label style={fieldWrapStyle}>
+      <div style={fieldWrapStyle}>
         <span style={labelStyle}>פירוט תוכן</span>
         <RichTextEditor initialHtml={page.content_html} inputName="content_html" />
-      </label>
+      </div>
 
       {state.error && (
         <p style={{ margin: 0, color: "#DC2626", fontSize: 13, fontWeight: 800 }}>{state.error}</p>
@@ -397,6 +412,19 @@ const fieldWrapStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
   gap: 6,
+};
+
+const toolbarButtonStyle: React.CSSProperties = {
+  width: 34,
+  height: 34,
+  borderRadius: 10,
+  border: "1px solid #CBD5E1",
+  background: "#FFFFFF",
+  color: "#0F172A",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
 };
 
 const labelStyle: React.CSSProperties = {

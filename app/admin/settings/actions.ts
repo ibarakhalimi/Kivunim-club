@@ -30,6 +30,10 @@ export type ContactSettings = {
   email: string | null;
 };
 
+export type AppSettings = {
+  test_mode: boolean;
+};
+
 export type ContactInquiry = {
   id: string;
   user_name: string | null;
@@ -186,6 +190,19 @@ export async function getContactSettings(): Promise<ContactSettings> {
   };
 }
 
+export async function getAppSettings(): Promise<AppSettings> {
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("app_settings")
+    .select("test_mode")
+    .eq("id", "main")
+    .maybeSingle();
+
+  return {
+    test_mode: data?.test_mode ?? true,
+  };
+}
+
 export async function getContactInquiries(): Promise<ContactInquiry[]> {
   const supabase = createAdminClient();
   const { data } = await supabase
@@ -221,6 +238,26 @@ export async function getIdeaSubmissions(): Promise<IdeaSubmission[]> {
     .order("created_at", { ascending: false });
 
   return data ?? [];
+}
+
+export async function updateAppSettings(formData: FormData) {
+  const supabase = createAdminClient();
+
+  const { error } = await supabase
+    .from("app_settings")
+    .upsert({
+      id: "main",
+      test_mode: formData.get("test_mode") === "on",
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "id" });
+
+  if (error) {
+    return { error: "שגיאה בשמירת הגדרות האפליקציה" };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/settings");
+  return { success: true };
 }
 
 export async function updateContactSettings(formData: FormData) {

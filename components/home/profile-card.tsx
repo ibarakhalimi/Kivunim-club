@@ -30,19 +30,27 @@ export function ProfileCard() {
   });
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       const user = data.user;
       if (!user) return;
 
       const metadata = user.user_metadata ?? {};
+      const { data: member } = await supabase
+        .from("members")
+        .select("name, email, phone, institution, study_year, region")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      const metadataName = typeof metadata.name === "string" ? metadata.name.trim() : "";
+
       setProfile({
-        name: typeof metadata.name === "string" && metadata.name.trim() ? metadata.name : "משתמש",
+        name: member?.name?.trim() || metadataName || "משתמש",
         points: 0,
-        email: user.email ?? null,
-        phone: typeof metadata.phone === "string" ? metadata.phone : user.phone ?? null,
-        institution: typeof metadata.institution === "string" ? metadata.institution : null,
-        study_year: typeof metadata.study_year === "string" ? metadata.study_year : null,
-        region: typeof metadata.region === "string" ? metadata.region : null,
+        email: member?.email ?? user.email ?? null,
+        phone: member?.phone ?? (typeof metadata.phone === "string" ? metadata.phone : user.phone ?? null),
+        institution: member?.institution ?? (typeof metadata.institution === "string" ? metadata.institution : null),
+        study_year: member?.study_year ?? (typeof metadata.study_year === "string" ? metadata.study_year : null),
+        region: member?.region ?? (typeof metadata.region === "string" ? metadata.region : null),
       });
     });
 

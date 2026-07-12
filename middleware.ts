@@ -19,6 +19,16 @@ export async function middleware(request: NextRequest) {
     }
   );
 
+  const { data: settings } = await supabase
+    .from("app_settings")
+    .select("test_mode")
+    .eq("id", "main")
+    .maybeSingle();
+
+  if (settings?.test_mode ?? true) {
+    return response;
+  }
+
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -31,5 +41,12 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/check-in/:path*"],
+  matcher: [
+    "/",
+    "/activities/:path*",
+    "/benefits/:path*",
+    "/check-in/:path*",
+    "/events/:path*",
+    "/updates/:path*",
+  ],
 };

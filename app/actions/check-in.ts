@@ -4,14 +4,46 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 type CheckInInput = {
-  source?: "qr" | "manual";
+  source?: "qr" | "qr_link" | "manual";
   qrPayload?: string | null;
 };
+
+const VALID_CHECK_IN_TOKENS = new Set(["kivunim:checkin:main"]);
+
+function parseQrPayload(qrPayload: string | null | undefined) {
+  const rawPayload = qrPayload?.trim();
+  if (!rawPayload) return { ok: false };
+
+  if (VALID_CHECK_IN_TOKENS.has(rawPayload)) {
+    return { ok: true, payload: rawPayload };
+  }
+
+  try {
+    const url = new URL(rawPayload, "https://kivunim.local");
+    const token = url.searchParams.get("token")?.trim() ?? "";
+    const location = url.searchParams.get("location")?.trim() || "main";
+
+    if (url.pathname === "/check-in" && VALID_CHECK_IN_TOKENS.has(token)) {
+      return { ok: true, payload: `${token}|location:${location}` };
+    }
+  } catch {
+    // Invalid URL payloads are rejected below.
+  }
+
+  return { ok: false };
+}
 
 export async function checkIn(input: CheckInInput = {}) {
   const userClient = await createClient();
   const { data: { user } } = await userClient.auth.getUser();
   if (!user) return { error: "יש להתחבר כדי לאשר הגעה" };
+
+  const isQrCheckIn = input.source === "qr" || input.source === "qr_link";
+  const qrResult = isQrCheckIn ? parseQrPayload(input.qrPayload) : null;
+
+  if (isQrCheckIn && !qrResult?.ok) {
+    return { error: "קוד ה-QR לא תקין" };
+  }
 
   const supabase = createAdminClient();
   const { error } = await supabase
@@ -19,7 +51,7 @@ export async function checkIn(input: CheckInInput = {}) {
     .insert({
       user_id: user.id,
       source: input.source ?? "manual",
-      qr_payload: input.qrPayload ?? null,
+      qr_payload: qrResult?.payload ?? input.qrPayload ?? null,
     });
 
   if (error) return { error: "שגיאה בשמירת ההגעה" };

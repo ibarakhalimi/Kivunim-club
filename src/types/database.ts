@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_settings: {
+        Row: {
+          id: string
+          test_mode: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          test_mode?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          test_mode?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       check_ins: {
         Row: {
           id: string

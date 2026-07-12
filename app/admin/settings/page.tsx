@@ -1,10 +1,12 @@
-import { getContactInquiries, getContactSettings, getCurrentWeekStart, getIdeaSubmissions, getImportantInfoPages, getOpeningHoursWeek } from "./actions";
+import { AppSettingsForm } from "./app-settings-form";
+import { getAppSettings, getContactInquiries, getContactSettings, getCurrentWeekStart, getIdeaSubmissions, getImportantInfoPages, getOpeningHoursWeek } from "./actions";
 import { SettingsTabs } from "./settings-tabs";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage() {
-  const [rows, contactSettings, contactInquiries, importantInfoPages, ideaSubmissions] = await Promise.all([
+  const [appSettings, rows, contactSettings, contactInquiries, importantInfoPages, ideaSubmissions] = await Promise.all([
+    getAppSettings(),
     getOpeningHoursWeek(await getCurrentWeekStart()),
     getContactSettings(),
     getContactInquiries(),
@@ -28,6 +30,8 @@ export default async function AdminSettingsPage() {
         </a>
         <h1 style={{ margin: 0, fontSize: 24, fontWeight: 900, color: "#0F172A" }}>הגדרות</h1>
       </div>
+
+      <AppSettingsForm settings={appSettings} />
 
       <SettingsTabs
         openingHoursRows={rows}

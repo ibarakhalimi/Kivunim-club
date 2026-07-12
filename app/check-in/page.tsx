@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CheckCircle2, TriangleAlert } from "lucide-react";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { checkIn } from "@/app/actions/check-in";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +19,7 @@ export default async function CheckInPage({ searchParams }: CheckInPageProps) {
   const params = await searchParams;
   const token = params.token ?? "";
   const location = params.location ?? "main";
+  const checkInPath = `/check-in?token=${encodeURIComponent(token)}&location=${encodeURIComponent(location)}`;
 
   if (!VALID_TOKENS.has(token)) {
     return (
@@ -34,22 +35,20 @@ export default async function CheckInPage({ searchParams }: CheckInPageProps) {
   const { data: { user } } = await userClient.auth.getUser();
 
   if (!user) {
-    redirect("/welcome");
+    redirect(`/welcome?next=${encodeURIComponent(checkInPath)}`);
   }
 
-  const supabase = createAdminClient();
-  const { error } = await supabase.from("check_ins").insert({
-    user_id: user.id,
+  const result = await checkIn({
     source: "qr_link",
-    qr_payload: `${token}|location:${location}`,
+    qrPayload: checkInPath,
   });
 
-  if (error) {
+  if (result?.error) {
     return (
       <CheckInResult
         ok={false}
         title="לא הצלחנו לשמור הגעה"
-        description="כדאי לנסות שוב בעוד רגע."
+        description={result.error}
       />
     );
   }

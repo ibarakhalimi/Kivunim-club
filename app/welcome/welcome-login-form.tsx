@@ -1,7 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
-import { Mail } from "lucide-react";
+import { FormEvent, useState } from "react";
+import { Lock, Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import supabase from "@/lib/supabase/client";
 
@@ -48,17 +48,14 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
+  const [passwordEmail, setPasswordEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const authError = searchParams.get("auth_error");
-    if (authError) {
-      setMessage(AUTH_ERROR_MESSAGES[authError] ?? "שגיאת התחברות. נסה שוב.");
-    }
-  }, [searchParams]);
+  const authError = searchParams.get("auth_error");
+  const displayMessage = message ?? (authError ? AUTH_ERROR_MESSAGES[authError] ?? "שגיאת התחברות. נסה שוב." : null);
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -98,6 +95,25 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
 
     setOtpSent(true);
     setMessage("שלחנו קוד אימות למייל");
+  };
+
+  const handlePasswordLogin = async (event: FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+    setMessage(null);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: passwordEmail,
+      password,
+    });
+
+    setLoading(false);
+    if (error) {
+      setMessage(error.message);
+      return;
+    }
+
+    router.replace(nextPath);
   };
 
   const handleVerifyEmailCode = async (event: FormEvent) => {
@@ -174,6 +190,77 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
         <div style={{ flex: 1, height: 1, background: "rgba(247, 248, 255, 0.12)" }} />
       </div>
 
+      <form onSubmit={handlePasswordLogin} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ position: "relative" }}>
+          <Mail
+            size={19}
+            strokeWidth={2.3}
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: 16,
+              transform: "translateY(-50%)",
+              color: "#9CA0AE",
+            }}
+          />
+          <input
+            type="email"
+            value={passwordEmail}
+            onChange={(event) => setPasswordEmail(event.target.value)}
+            placeholder="מייל"
+            required
+            autoComplete="email"
+            style={{ ...fieldStyle, paddingRight: 46, direction: "ltr", textAlign: "right" }}
+          />
+        </div>
+
+        <div style={{ position: "relative" }}>
+          <Lock
+            size={19}
+            strokeWidth={2.3}
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: 16,
+              transform: "translateY(-50%)",
+              color: "#9CA0AE",
+            }}
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="סיסמה"
+            required
+            autoComplete="current-password"
+            style={{ ...fieldStyle, paddingRight: 46, direction: "ltr", textAlign: "right" }}
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          style={{ ...primaryButtonStyle, opacity: loading ? 0.75 : 1, cursor: loading ? "not-allowed" : "pointer" }}
+        >
+          {loading ? "מתחבר..." : "כניסה עם סיסמה"}
+        </button>
+      </form>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "2px 0" }}>
+        <div style={{ flex: 1, height: 1, background: "rgba(247, 248, 255, 0.12)" }} />
+        <span
+          style={{
+            color: "#9CA0AE",
+            fontFamily: "var(--font-rubik)",
+            fontSize: 13,
+            fontWeight: 800,
+          }}
+        >
+          או קוד במייל
+        </span>
+        <div style={{ flex: 1, height: 1, background: "rgba(247, 248, 255, 0.12)" }} />
+      </div>
+
       {!otpSent ? (
         <form onSubmit={handleSendEmailCode} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <div style={{ position: "relative" }}>
@@ -246,18 +333,18 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
         </form>
       )}
 
-      {message && (
+      {displayMessage && (
         <p
           style={{
             margin: 0,
-            color: message.includes("שלחנו") ? "#B9F5D0" : "#FFB4C8",
+            color: displayMessage.includes("שלחנו") ? "#B9F5D0" : "#FFB4C8",
             fontFamily: "var(--font-rubik)",
             fontSize: 13,
             fontWeight: 800,
             textAlign: "center",
           }}
         >
-          {message}
+          {displayMessage}
         </p>
       )}
     </div>
