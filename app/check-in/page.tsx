@@ -53,13 +53,7 @@ export default async function CheckInPage({ searchParams }: CheckInPageProps) {
     );
   }
 
-  return (
-    <CheckInResult
-      ok
-      title="כיף שבאת!"
-      description="הצ׳קאין נשמר בהצלחה."
-    />
-  );
+  redirect("/?checkin=success");
 }
 
 function CheckInResult({ ok, title, description }: { ok: boolean; title: string; description: string }) {

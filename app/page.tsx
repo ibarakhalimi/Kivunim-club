@@ -9,9 +9,17 @@ import { ActionsGrid } from "@/components/home/actions-grid";
 import { PollLoader } from "@/components/home/poll-loader";
 import { ProfileCard } from "@/components/home/profile-card";
 import { OpenHoursLoader } from "@/components/home/open-hours-loader";
+import { CheckInSuccessToast } from "@/components/home/check-in-success-toast";
 import { getContactSettings, getImportantInfoPages } from "./admin/settings/actions";
 
-export default async function HomePage() {
+type HomePageProps = {
+  searchParams?: Promise<{
+    checkin?: string;
+  }>;
+};
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const params = await searchParams;
   const [contactSettings, importantInfoPages] = await Promise.all([
     getContactSettings(),
     getImportantInfoPages({ activeOnly: true }),
@@ -26,6 +34,7 @@ export default async function HomePage() {
         paddingBottom: 28,
       }}
     >
+      <CheckInSuccessToast show={params?.checkin === "success"} />
       <section
         aria-label="לוגו האפליקציה"
         style={{

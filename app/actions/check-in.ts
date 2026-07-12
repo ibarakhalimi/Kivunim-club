@@ -18,29 +18,51 @@ function safeDecodeURIComponent(value: string) {
   }
 }
 
-function getLocationFromPayload(rawPayload: string) {
-  try {
-    const url = new URL(rawPayload, "https://kivunim.local");
-    return url.searchParams.get("location")?.trim() || "main";
-  } catch {
-    const match = rawPayload.match(/[?&]location=([^&#]+)/);
-    return match?.[1] ? safeDecodeURIComponent(match[1]).trim() || "main" : "main";
+function getPayloadVariants(rawPayload: string) {
+  const variants = new Set<string>();
+  let current = rawPayload.trim().replaceAll("&amp;", "&");
+
+  for (let i = 0; i < 4; i++) {
+    if (!current) break;
+    variants.add(current);
+
+    const decoded = safeDecodeURIComponent(current).replaceAll("&amp;", "&");
+    if (decoded === current) break;
+    current = decoded;
   }
+
+  return [...variants];
+}
+
+function getLocationFromPayload(rawPayload: string) {
+  for (const payload of getPayloadVariants(rawPayload)) {
+    try {
+      const url = new URL(payload, "https://kivunim.local");
+      const location = url.searchParams.get("location")?.trim();
+      if (location) return location;
+    } catch {
+      const match = payload.match(/[?&]location=([^&#]+)/);
+      const location = match?.[1] ? safeDecodeURIComponent(match[1]).trim() : "";
+      if (location) return location;
+    }
+  }
+
+  return "main";
 }
 
 function parseQrPayload(qrPayload: string | null | undefined) {
   const rawPayload = qrPayload?.trim();
   if (!rawPayload) return { ok: false };
 
-  const decodedPayload = safeDecodeURIComponent(rawPayload);
+  const payloadVariants = getPayloadVariants(rawPayload);
 
   for (const validToken of VALID_CHECK_IN_TOKENS) {
     const encodedToken = encodeURIComponent(validToken);
-    const tokenMatches =
-      rawPayload === validToken ||
-      rawPayload.includes(validToken) ||
-      rawPayload.toLowerCase().includes(encodedToken.toLowerCase()) ||
-      decodedPayload.includes(validToken);
+    const tokenMatches = payloadVariants.some((payload) =>
+      payload === validToken ||
+      payload.includes(validToken) ||
+      payload.toLowerCase().includes(encodedToken.toLowerCase())
+    );
 
     if (tokenMatches) {
       return { ok: true, payload: `${validToken}|location:${getLocationFromPayload(rawPayload)}` };
