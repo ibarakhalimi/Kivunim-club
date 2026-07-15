@@ -7,12 +7,12 @@ import { submitIdea } from "@/app/actions/ideas";
 import type { ContactSettings, ImportantInfoPage } from "@/app/admin/settings/actions";
 
 const ALL_ACTIONS = [
-  { Icon: Phone, label: "יצירת קשר", bg: "#2F3344", color: "#9CA0AE" },
-  { Icon: ClipboardList, label: "מידע חשוב", bg: "#2F3344", color: "#9CA0AE" },
-  { Icon: Lightbulb, label: "יש לי רעיון", bg: "#2F3344", color: "#9CA0AE" },
-  { Icon: Gift, label: "ההטבות שלי", bg: "#2F3344", color: "#9CA0AE" },
-  { Icon: CalendarDays, label: "אירועים קרובים", bg: "#2F3344", color: "#9CA0AE" },
-  { Icon: UserCheck, label: "בדיקת נוכחות", bg: "#2F3344", color: "#9CA0AE" },
+  { Icon: Phone, label: "יצירת קשר", bg: "#DFDBD3", color: "#9CA0AE" },
+  { Icon: ClipboardList, label: "מידע חשוב", bg: "#DFDBD3", color: "#9CA0AE" },
+  { Icon: Lightbulb, label: "יש לי רעיון", bg: "#DFDBD3", color: "#9CA0AE" },
+  { Icon: Gift, label: "ההטבות שלי", bg: "#DFDBD3", color: "#9CA0AE" },
+  { Icon: CalendarDays, label: "אירועים קרובים", bg: "#DFDBD3", color: "#9CA0AE" },
+  { Icon: UserCheck, label: "בדיקת נוכחות", bg: "#DFDBD3", color: "#9CA0AE" },
 ];
 
 const CONTACT_SUBJECTS = ["שאלה כללית", "הרשמה ופרטים", "הטבות", "אירועים", "בעיה באפליקציה", "אחר"];
@@ -64,7 +64,7 @@ const fieldStyle: React.CSSProperties = {
   width: "100%",
   border: "1px solid rgba(255,255,255,0.08)",
   borderRadius: 10,
-  background: "#2F3344",
+  background: "#DFDBD3",
   padding: "10px 12px",
   fontFamily: "var(--font-rubik)",
   fontSize: 14,
@@ -84,7 +84,7 @@ function ContactForm() {
     <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={fieldLabelStyle}>נושא הפנייה *</label>
-        <select name="subject" required defaultValue="" style={fieldStyle}>
+        <select name="subject" required defaultValue="" style={{ ...fieldStyle, background: "#DFDBD3" }}>
           <option value="" disabled>בחר נושא...</option>
           {CONTACT_SUBJECTS.map((subject) => (
             <option key={subject} value={subject}>{subject}</option>
@@ -94,7 +94,7 @@ function ContactForm() {
 
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={fieldLabelStyle}>הודעה *</label>
-        <textarea name="message" required rows={4} placeholder="כתוב כאן את ההודעה..." style={{ ...fieldStyle, resize: "vertical", lineHeight: 1.6 }} />
+        <textarea name="message" required rows={4} placeholder="כתוב כאן את ההודעה..." style={{ ...fieldStyle, background: "#DFDBD3", resize: "vertical", lineHeight: 1.6 }} />
       </div>
 
       {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 700 }}>{state.error}</p>}
@@ -395,7 +395,7 @@ export function ActionsGrid({
                 display: "flex",
                 alignItems: "center",
                 gap: 14,
-                background: "#2F3344",
+                background: "#DFDBD3",
                 border: "1px solid rgba(255,255,255,0.06)",
                 borderRadius: 12,
                 padding: "12px 16px",
@@ -430,7 +430,7 @@ export function ActionsGrid({
           <button
             type="button"
             onClick={() => setContactOpen(false)}
-            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#2F3344", color: "#9CA0AE", cursor: "pointer" }}
+            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#DFDBD3", color: "#290800", cursor: "pointer" }}
           >
             ✕
           </button>
@@ -498,7 +498,7 @@ export function ActionsGrid({
               }
               setInfoOpen(false);
             }}
-            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#2F3344", color: "#9CA0AE", cursor: "pointer" }}
+            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#DFDBD3", color: "#290800", cursor: "pointer" }}
           >
             {selectedInfoPage ? "←" : "✕"}
           </button>
@@ -509,7 +509,7 @@ export function ActionsGrid({
             style={{
               border: "1px solid rgba(255,255,255,0.06)",
               borderRadius: 16,
-              background: "#2F3344",
+              background: "#DFDBD3",
               padding: "14px",
               maxHeight: "52dvh",
               overflowY: "auto",
@@ -541,7 +541,7 @@ export function ActionsGrid({
                     width: "100%",
                     border: "1px solid rgba(255,255,255,0.06)",
                     borderRadius: 14,
-                    background: "#2F3344",
+                    background: "#DFDBD3",
                     padding: "12px",
                     display: "flex",
                     alignItems: "center",
@@ -582,7 +582,7 @@ export function ActionsGrid({
           <button
             type="button"
             onClick={() => setIdeaOpen(false)}
-            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#2F3344", color: "#9CA0AE", cursor: "pointer" }}
+            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#DFDBD3", color: "#290800", cursor: "pointer" }}
           >
             ✕
           </button>

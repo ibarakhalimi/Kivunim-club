@@ -182,71 +182,88 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             flexDirection: "column",
           }}
         >
-          <div style={{ maxHeight: "86dvh", overflowY: "auto", padding: "14px 16px 18px" }}>
-            <button
-              type="button"
-              onClick={() => setSelectedEvent(null)}
-              aria-label="סגור"
-              style={{
-                width: 34,
-                height: 34,
-                borderRadius: "50%",
-                border: "none",
-                background: "#111522",
-                color: "#290800",
-                fontSize: 18,
-                lineHeight: 1,
-                cursor: "pointer",
-                marginBottom: 12,
-              }}
-            >
-              ×
-            </button>
-
+          <div style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "0 0 18px" }}>
             <div
               style={{
                 width: "100%",
                 aspectRatio: "1.8 / 1",
-                borderRadius: 18,
+                borderRadius: "26px 26px 0 0",
                 background: "rgba(89, 52, 237, 0.12)",
                 overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 color: "#5934ED",
-                marginBottom: 14,
+                marginBottom: 22,
+                position: "relative",
               }}
             >
+              <button
+                type="button"
+                onClick={() => setSelectedEvent(null)}
+                aria-label="סגור"
+                style={{
+                  position: "absolute",
+                  top: 12,
+                  left: 12,
+                  zIndex: 2,
+                  width: 36,
+                  height: 36,
+                  borderRadius: "50%",
+                  border: "1px solid rgba(255,255,255,0.45)",
+                  background: "rgba(41,8,0,0.38)",
+                  color: "#FFFFFF",
+                  fontSize: 20,
+                  lineHeight: 1,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                ×
+              </button>
               {selectedEvent.image_url ? (
-                <img src={selectedEvent.image_url} alt={selectedEvent.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                <img src={selectedEvent.image_url} alt={selectedEvent.title} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
               ) : (
                 <CalendarDays size={42} strokeWidth={2} />
               )}
             </div>
 
-            <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 850, fontSize: 12, lineHeight: 1.35, color: "#5934ED" }}>
-              {formatDate(selectedEvent.event_date)}
-              {selectedTimeRange ? ` · ${selectedTimeRange}` : ""}
-            </p>
-            <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 24, lineHeight: 1.15, color: "#290800" }}>
-              {selectedEvent.title}
-            </h2>
-            {selectedEvent.location && (
-              <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 14, lineHeight: 1.45, color: "#9CA0AE" }}>
-                {selectedEvent.location}
+            <div style={{ padding: "0 16px" }}>
+              <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 13, lineHeight: 1.35, color: "#5934ED" }}>
+                {formatDate(selectedEvent.event_date)}
+                {selectedTimeRange ? ` · ${selectedTimeRange}` : ""}
               </p>
-            )}
-            <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, lineHeight: 1.3, color: selectedEvent.is_paid ? "#5934ED" : "#D7DAE3" }}>
-              {selectedCostLabel}
-            </p>
+              <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 1000, fontSize: 26, lineHeight: 1.12, color: "#290800" }}>
+                {selectedEvent.title}
+              </h2>
+              {selectedEvent.location && (
+                <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, lineHeight: 1.45, color: "#64748B" }}>
+                  {selectedEvent.location}
+                </p>
+              )}
+              <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 1000, fontSize: 15, lineHeight: 1.3, color: selectedEvent.is_paid ? "#5934ED" : "#290800" }}>
+                {selectedCostLabel}
+              </p>
 
-            {selectedEvent.description && (
-              <div
-                dangerouslySetInnerHTML={{ __html: selectedEvent.description }}
-                style={{ margin: "0 0 18px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.75, color: "#C7CAD6" }}
-              />
-            )}
-
+              {selectedEvent.description && (
+                <div
+                  dangerouslySetInnerHTML={{ __html: selectedEvent.description }}
+                  style={{ margin: "0 0 18px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.75, color: "#C7CAD6" }}
+                />
+              )}
+            </div>
+          </div>
+          <div
+            style={{
+              flexShrink: 0,
+              padding: "12px 16px 22px",
+              background: "#EFF2EC",
+              borderTop: "1px solid rgba(41,8,0,0.08)",
+            }}
+          >
             {selectedEvent.registration_url ? (
               <a
                 href={selectedEvent.registration_url}
@@ -259,7 +276,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                   minHeight: 50,
                   borderRadius: 16,
                   background: "#5934ED",
-                  color: "#290800",
+                  color: "#FFFFFF",
                   fontFamily: "var(--font-rubik)",
                   fontWeight: 950,
                   fontSize: 15,
