@@ -175,9 +175,10 @@
   html {
     font-family: "Rubik", system-ui, sans-serif;
     direction: rtl;
+    background-color: #DFDBD3;
   }
   body {
-    background-color: var(--background);
+    background-color: #DFDBD3;
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
