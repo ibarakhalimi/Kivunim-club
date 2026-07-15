@@ -96,7 +96,7 @@ export function CheckInButton() {
           </button>
 
           <div style={{ marginBottom: 20 }}>
-            <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 20, color: "#0F172A" }}>
+            <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 20, color: "#290800" }}>
               אישור הגעה בכיוונים
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.6, color: "#64748B" }}>

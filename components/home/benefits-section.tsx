@@ -16,14 +16,14 @@ const CATEGORY_BG: Record<string, string> = {
   "אוכל": "rgba(239,68,68,0.15)", "קפה": "rgba(251,146,60,0.15)", "ספורט": "rgba(52,211,153,0.15)",
   "בריאות": "rgba(77,163,255,0.15)", "יופי": "rgba(167,139,250,0.15)", "בידור": "rgba(139,92,246,0.15)",
   "קניות": "rgba(255,186,88,0.15)", "טכנולוגיה": "rgba(52,211,153,0.15)", "תחבורה": "rgba(77,163,255,0.15)",
-  "חינוך": "rgba(216,245,0,0.15)",
+  "חינוך": "rgba(89,52,237,0.15)",
 };
 
 const CATEGORY_COLOR: Record<string, string> = {
   "אוכל": "#EF4444", "קפה": "#FB923C", "ספורט": "#34D399",
   "בריאות": "#4DA3FF", "יופי": "#A78BFA", "בידור": "#8B5CF6",
   "קניות": "#FFBA58", "טכנולוגיה": "#34D399", "תחבורה": "#4DA3FF",
-  "חינוך": "#D8F500",
+  "חינוך": "#5934ED",
 };
 
 function categoryEmoji(category: string): string {
@@ -59,9 +59,9 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
 
   return (
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
-      <div style={{ background: "#252836", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
+      <div style={{ background: "#EFF2EC", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
-          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 1000, fontSize: 16, lineHeight: 1.1, color: "#FFFFFF" }}>
+          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 1000, fontSize: 16, lineHeight: 1.1, color: "#290800" }}>
             ההטבות שלך
           </h2>
           {!showAll && additionalCount > 0 && (
@@ -124,7 +124,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 )}
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
-                <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>
+                <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#290800" }}>
                   {benefit.business}
                 </p>
                 <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, lineHeight: 1.35, color: "#34D399" }}>

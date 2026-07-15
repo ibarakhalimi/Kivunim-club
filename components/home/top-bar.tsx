@@ -90,7 +90,7 @@ export function TopBar() {
         {/* Logo + title */}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <Image src="/logo-aguda.png" alt="לוגו" width={36} height={36} style={{ display: "block" }} />
-          <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 17, color: "#0F172A" }}>
+          <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 17, color: "#290800" }}>
             קלאב סטודנטיאלי
           </span>
         </div>
@@ -187,7 +187,7 @@ export function TopBar() {
                 <User size={24} strokeWidth={1.8} color="#1E40AF" />
               </div>
               <div>
-                <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#0F172A" }}>
+                <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#290800" }}>
                   {profile.name ?? "משתמש"}
                 </p>
                 <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 13, color: "#64748B" }}>
@@ -217,7 +217,7 @@ export function TopBar() {
                   }}
                 >
                   <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 13, color: "#64748B" }}>{label}</span>
-                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#0F172A" }}>{value}</span>
+                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#290800" }}>{value}</span>
                 </div>
               ))}
             </div>

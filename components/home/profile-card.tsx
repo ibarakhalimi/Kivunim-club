@@ -112,7 +112,7 @@ export function ProfileCard() {
               fontSize: 26,
               lineHeight: 1.04,
               letterSpacing: 0,
-              color: "#FFFFFF",
+              color: "#290800",
               overflowWrap: "anywhere",
             }}
           >
@@ -128,7 +128,7 @@ export function ProfileCard() {
               width: 42,
               height: 42,
               borderRadius: "50%",
-              background: "#252836",
+              background: "#EFF2EC",
               border: "1px solid rgba(255,255,255,0.08)",
               display: "flex",
               alignItems: "center",
@@ -146,8 +146,8 @@ export function ProfileCard() {
               minWidth: 78,
               height: 42,
               borderRadius: 24,
-              background: "rgba(255,46,154,0.15)",
-              border: "1px solid rgba(255,46,154,0.25)",
+              background: "rgba(89,52,237,0.15)",
+              border: "1px solid rgba(89,52,237,0.25)",
               padding: "0 11px",
               display: "flex",
               alignItems: "center",
@@ -155,7 +155,7 @@ export function ProfileCard() {
               gap: 7,
             }}
           >
-            <Coins size={18} strokeWidth={2.2} color="#FF2E9A" />
+            <Coins size={18} strokeWidth={2.2} color="#5934ED" />
             <p
               suppressHydrationWarning
               style={{
@@ -164,7 +164,7 @@ export function ProfileCard() {
                 fontWeight: 900,
                 fontSize: 20,
                 lineHeight: 1,
-                color: "#FF2E9A",
+                color: "#5934ED",
               }}
             >
               {profile.points.toLocaleString("he-IL")}
@@ -186,7 +186,7 @@ export function ProfileCard() {
             left: 0,
             right: 0,
             zIndex: 101,
-            background: "#252836",
+            background: "#EFF2EC",
             borderRadius: "26px 26px 0 0",
             border: "1px solid rgba(255,255,255,0.06)",
             borderBottom: "none",
@@ -233,7 +233,7 @@ export function ProfileCard() {
               <User size={24} strokeWidth={1.8} />
             </div>
             <div>
-              <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, color: "#FFFFFF" }}>
+              <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, color: "#290800" }}>
                 {profile.name}
               </p>
               <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 13, color: "#9CA0AE" }}>
@@ -262,7 +262,7 @@ export function ProfileCard() {
                 }}
               >
                 <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 13, color: "#9CA0AE" }}>{label}</span>
-                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#FFFFFF" }}>{value}</span>
+                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#290800" }}>{value}</span>
               </div>
             ))}
           </div>

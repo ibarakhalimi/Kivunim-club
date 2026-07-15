@@ -32,9 +32,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             minHeight: 116,
             border: "none",
             borderRadius: 22,
-            background: "#252836",
+            background: "#EFF2EC",
             padding: 12,
-            color: "#FFFFFF",
+            color: "#290800",
             textAlign: "right",
             boxSizing: "border-box",
             display: "flex",
@@ -48,9 +48,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
               width: 46,
               height: 46,
               borderRadius: 16,
-              background: "rgba(255, 46, 154, 0.14)",
-              border: "1px solid rgba(255, 46, 154, 0.22)",
-              color: "#FF2E9A",
+              background: "rgba(89, 52, 237, 0.14)",
+              border: "1px solid rgba(89, 52, 237, 0.22)",
+              color: "#5934ED",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -59,10 +59,10 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             <CalendarDays size={22} strokeWidth={2.2} />
           </div>
           <div>
-            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FF2E9A" }}>
+            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#5934ED" }}>
               אירועים
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#290800" }}>
               אין אירועים להצגה כרגע
             </p>
           </div>
@@ -84,7 +84,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
           const timeRange = item.end_hour ? `${item.start_hour}-${item.end_hour}` : item.start_hour;
           const eventMeta = [item.location, timeRange].filter(Boolean).join(" · ");
           const costLabel = item.is_paid && item.price_amount !== null ? `₪${item.price_amount}` : "ללא עלות";
-          const costColor = item.is_paid ? "#FF2E9A" : "#D7DAE3";
+          const costColor = item.is_paid ? "#5934ED" : "#D7DAE3";
           return (
       <button
         key={item.id}
@@ -92,7 +92,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
         onClick={() => setSelectedEvent(item)}
         style={{
           width: "100%",
-          background: "#252836",
+          background: "#EFF2EC",
           border: "none",
           borderRadius: 22,
           boxShadow: "none",
@@ -112,12 +112,12 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             height: 118,
             flexShrink: 0,
             borderRadius: 18,
-            background: "rgba(255, 46, 154, 0.12)",
+            background: "rgba(89, 52, 237, 0.12)",
             overflow: "hidden",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "#FF2E9A",
+            color: "#5934ED",
             position: "relative",
           }}
         >
@@ -129,10 +129,10 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
         </div>
 
         <div style={{ minWidth: 0, flex: 1, display: "flex", flexDirection: "column" }}>
-          <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 850, fontSize: 11, lineHeight: 1.25, color: "#FF2E9A" }}>
+          <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 850, fontSize: 11, lineHeight: 1.25, color: "#5934ED" }}>
             {formatDate(item.event_date)}
           </p>
-          <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.2, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.2, color: "#290800", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
             {item.title}
           </h3>
           {eventMeta && (
@@ -167,7 +167,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             width: "100%",
             maxHeight: "86dvh",
             borderRadius: "26px 26px 0 0",
-            background: "#252836",
+            background: "#EFF2EC",
             border: "1px solid rgba(255,255,255,0.06)",
             borderBottom: "none",
             overflow: "hidden",
@@ -187,7 +187,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                 borderRadius: "50%",
                 border: "none",
                 background: "#111522",
-                color: "#FFFFFF",
+                color: "#290800",
                 fontSize: 18,
                 lineHeight: 1,
                 cursor: "pointer",
@@ -202,12 +202,12 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                 width: "100%",
                 aspectRatio: "1.8 / 1",
                 borderRadius: 18,
-                background: "rgba(255, 46, 154, 0.12)",
+                background: "rgba(89, 52, 237, 0.12)",
                 overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#FF2E9A",
+                color: "#5934ED",
                 marginBottom: 14,
               }}
             >
@@ -218,11 +218,11 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
               )}
             </div>
 
-            <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 850, fontSize: 12, lineHeight: 1.35, color: "#FF2E9A" }}>
+            <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 850, fontSize: 12, lineHeight: 1.35, color: "#5934ED" }}>
               {formatDate(selectedEvent.event_date)}
               {selectedTimeRange ? ` · ${selectedTimeRange}` : ""}
             </p>
-            <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 24, lineHeight: 1.15, color: "#FFFFFF" }}>
+            <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 24, lineHeight: 1.15, color: "#290800" }}>
               {selectedEvent.title}
             </h2>
             {selectedEvent.location && (
@@ -230,7 +230,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                 {selectedEvent.location}
               </p>
             )}
-            <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, lineHeight: 1.3, color: selectedEvent.is_paid ? "#FF2E9A" : "#D7DAE3" }}>
+            <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, lineHeight: 1.3, color: selectedEvent.is_paid ? "#5934ED" : "#D7DAE3" }}>
               {selectedCostLabel}
             </p>
 
@@ -252,8 +252,8 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                   justifyContent: "center",
                   minHeight: 50,
                   borderRadius: 16,
-                  background: "#FF2E9A",
-                  color: "#FFFFFF",
+                  background: "#5934ED",
+                  color: "#290800",
                   fontFamily: "var(--font-rubik)",
                   fontWeight: 950,
                   fontSize: 15,

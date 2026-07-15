@@ -75,7 +75,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
     <div
       style={{
         flex: "0 0 100%",
-        background: "#252836",
+        background: "#EFF2EC",
         border: "none",
         borderRadius: 22,
         padding: 18,
@@ -91,7 +91,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
           fontWeight: 800,
           fontSize: 17,
           lineHeight: 1.3,
-          color: "#FFFFFF",
+          color: "#290800",
         }}
       >
         {poll.question}
@@ -153,7 +153,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
                 fontFamily: "var(--font-rubik)",
                 fontWeight: 700,
                 fontSize: 13,
-                color: "#FFFFFF",
+                color: "#290800",
                 cursor: isPending ? "not-allowed" : "pointer",
                 textAlign: "right",
               }}
@@ -164,7 +164,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
         })}
       </div>
 
-      <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#FF2E9A", textAlign: "center" }}>
+      <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#5934ED", textAlign: "center" }}>
         {total} אנשים כבר ענו על הסקר
       </p>
     </div>

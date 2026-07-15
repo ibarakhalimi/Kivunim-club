@@ -6,7 +6,7 @@ export default function RegisterSuccessPage() {
     <div
       style={{
         height: "100dvh",
-        background: "#181A23",
+        background: "#DFDBD3",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -40,13 +40,13 @@ export default function RegisterSuccessPage() {
         <span
           style={{
             display: "inline-block",
-            background: "rgba(255, 46, 154, 0.14)",
+            background: "rgba(89, 52, 237, 0.14)",
             borderRadius: 20,
             padding: "3px 14px",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
             fontSize: 13,
-            color: "#FF2E9A",
+            color: "#5934ED",
           }}
         >
           ברוך הבא למועדון
@@ -58,7 +58,7 @@ export default function RegisterSuccessPage() {
             fontWeight: 900,
             fontSize: 31,
             lineHeight: 1.12,
-            color: "#F7F8FF",
+            color: "#290800",
             textAlign: "center",
           }}
         >
@@ -84,7 +84,7 @@ export default function RegisterSuccessPage() {
             width: 72,
             height: 72,
             borderRadius: "50%",
-            background: "#252836",
+            background: "#EFF2EC",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -100,7 +100,7 @@ export default function RegisterSuccessPage() {
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
             fontSize: 26,
-            color: "#F7F8FF",
+            color: "#290800",
           }}
         >
           ההרשמה התקבלה!
@@ -133,7 +133,7 @@ export default function RegisterSuccessPage() {
               style={{
                 width: "100%",
                 padding: "15px 0",
-                background: "#FF2E9A",
+                background: "#5934ED",
                 color: "#fff",
                 border: "none",
                 borderRadius: 18,

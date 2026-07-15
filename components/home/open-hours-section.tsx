@@ -202,7 +202,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
           width: "100%",
           border: "none",
           borderRadius: 22,
-          background: "#252836",
+          background: "#EFF2EC",
           padding: "12px 14px",
           display: "flex",
           alignItems: "center",
@@ -246,7 +246,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               </span>
             )}
           </div>
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.1, color: isOpenToday ? "#FFFFFF" : "#F97316" }}>
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.1, color: isOpenToday ? "#290800" : "#F97316" }}>
             {isOpenToday && closeTime
               ? `עד ${closeTime}`
               : isOpenToday
@@ -286,8 +286,8 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
             width: "auto",
             border: "none",
             borderRadius: 999,
-            background: isPending ? "rgba(216,245,0,0.4)" : "#D8F500",
-            color: "#181A23",
+            background: isPending ? "rgba(89,52,237,0.4)" : "#5934ED",
+            color: "#290800",
             padding: "0 18px",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
@@ -309,7 +309,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 99,
-            background: "#252836",
+            background: "#EFF2EC",
             color: "#fff",
             padding: "11px 22px",
             borderRadius: 99,
@@ -338,7 +338,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               left: 0,
               right: 0,
               zIndex: 61,
-              background: "#252836",
+              background: "#EFF2EC",
               borderRadius: "26px 26px 0 0",
               border: "1px solid rgba(255,255,255,0.06)",
               borderBottom: "none",
@@ -388,7 +388,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                     <QrCode size={22} strokeWidth={2.4} />
                   </div>
                   <div>
-                    <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, color: "#FFFFFF" }}>
+                    <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, color: "#290800" }}>
                       צ׳קאין מהיר
                     </p>
                     <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#34D399" }}>
@@ -424,7 +424,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                         style={{
                           position: "absolute",
                           inset: 22,
-                          border: "2px solid rgba(216,245,0,0.7)",
+                          border: "2px solid rgba(89,52,237,0.7)",
                           borderRadius: 18,
                           boxShadow: "0 0 0 999px rgba(15,23,42,0.28)",
                         }}
@@ -436,7 +436,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                           right: 34,
                           top: "50%",
                           height: 2,
-                          background: "#D8F500",
+                          background: "#5934ED",
                           borderRadius: 999,
                           animation: "kv-qr-scan 1.35s ease-in-out infinite",
                           display: scanError ? "none" : "block",
@@ -451,7 +451,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                             bottom: 14,
                             borderRadius: 14,
                             background: "rgba(15,23,42,0.82)",
-                            color: "#D8F500",
+                            color: "#5934ED",
                             padding: "10px 12px",
                             fontFamily: "var(--font-rubik)",
                             fontWeight: 700,
@@ -493,8 +493,8 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                     width: "100%",
                     border: "none",
                     borderRadius: 14,
-                    background: scanState === "camera" && !scanError ? "rgba(216,245,0,0.4)" : "#D8F500",
-                    color: "#181A23",
+                    background: scanState === "camera" && !scanError ? "rgba(89,52,237,0.4)" : "#5934ED",
+                    color: "#290800",
                     padding: "13px 16px",
                     fontFamily: "var(--font-rubik)",
                     fontWeight: 900,
@@ -555,7 +555,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               position: "fixed",
               bottom: 0, left: 0, right: 0,
               zIndex: 51,
-              background: "#252836",
+              background: "#EFF2EC",
               borderRadius: "26px 26px 0 0",
               border: "1px solid rgba(255,255,255,0.06)",
               borderBottom: "none",
@@ -580,7 +580,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               ✕
             </button>
 
-            <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, color: "#FFFFFF" }}>
+            <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, color: "#290800" }}>
               שעות פתיחה
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -598,7 +598,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>
-                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#FFFFFF" }}>
+                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#290800" }}>
                       {row.day_label}
                     </span>
                     {row.note && (

@@ -19,7 +19,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
       style={{
         height: "100dvh",
         width: "100%",
-        background: "#181A23",
+        background: "#DFDBD3",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -88,7 +88,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
               fontWeight: 900,
               fontSize: 24,
               lineHeight: 1.12,
-              color: "#F7F8FF",
+              color: "#290800",
               maxWidth: 360,
             }}
           >
@@ -119,7 +119,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
               style={{
                 width: "100%",
                 padding: "15px 0",
-                background: "#FF2E9A",
+                background: "#5934ED",
                 color: "#fff",
                 border: "none",
                 borderRadius: 18,

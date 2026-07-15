@@ -24,7 +24,7 @@ const drawerStyle = (open: boolean): React.CSSProperties => ({
   left: 0,
   right: 0,
   zIndex: open ? 51 : -1,
-  background: "#252836",
+  background: "#EFF2EC",
   borderRadius: "26px 26px 0 0",
   border: "1px solid rgba(255,255,255,0.06)",
   borderBottom: "none",
@@ -68,7 +68,7 @@ const fieldStyle: React.CSSProperties = {
   padding: "10px 12px",
   fontFamily: "var(--font-rubik)",
   fontSize: 14,
-  color: "#FFFFFF",
+  color: "#290800",
   outline: "none",
   direction: "rtl",
 };
@@ -106,7 +106,7 @@ function ContactForm() {
         style={{
           border: "none",
           borderRadius: 12,
-          background: pending ? "rgba(255,46,154,0.4)" : "#FF2E9A",
+          background: pending ? "rgba(89,52,237,0.4)" : "#5934ED",
           color: "#fff",
           padding: "12px 14px",
           fontFamily: "var(--font-rubik)",
@@ -144,7 +144,7 @@ function IdeaForm() {
         style={{
           border: "none",
           borderRadius: 12,
-          background: pending ? "rgba(255,46,154,0.4)" : "#FF2E9A",
+          background: pending ? "rgba(89,52,237,0.4)" : "#5934ED",
           color: "#fff",
           padding: "12px 14px",
           fontFamily: "var(--font-rubik)",
@@ -211,8 +211,8 @@ export function ActionsGrid({
           href: `mailto:${contactSettings.email}`,
           label: contactSettings.email,
           Icon: Mail,
-          bg: "rgba(255,46,154,0.15)",
-          color: "#FF2E9A",
+          bg: "rgba(89,52,237,0.15)",
+          color: "#5934ED",
         }
       : null,
   ].filter(Boolean) as Array<{
@@ -252,7 +252,7 @@ export function ActionsGrid({
               flex: 1,
               minWidth: 0,
               border: "none",
-              background: "#252836",
+              background: "#EFF2EC",
               borderRadius: 20,
               minHeight: 92,
               padding: "13px 8px",
@@ -270,8 +270,8 @@ export function ActionsGrid({
                 width: 40,
                 height: 40,
                 borderRadius: "50%",
-                background: "#2F3344",
-                color: "#ff2e9a",
+                background: "#CBD6E6",
+                color: "#5934ED",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -286,7 +286,7 @@ export function ActionsGrid({
                 fontWeight: 800,
                 fontSize: 11,
                 lineHeight: 1.15,
-                color: "#FFFFFF",
+                color: "#290800",
                 whiteSpace: "nowrap",
               }}
             >
@@ -303,11 +303,11 @@ export function ActionsGrid({
             flex: 1,
             minWidth: 0,
             border: "none",
-            background: "#252836",
+            background: "#EFF2EC",
             borderRadius: 20,
             minHeight: 92,
             padding: "13px 8px",
-            color: "#FFFFFF",
+            color: "#290800",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -323,8 +323,8 @@ export function ActionsGrid({
               top: -6,
               left: 8,
               borderRadius: 999,
-              background: "#D8F500",
-              color: "#181A23",
+              background: "#5934ED",
+              color: "#290800",
               padding: "3px 8px",
               fontFamily: "var(--font-rubik)",
               fontWeight: 900,
@@ -341,7 +341,7 @@ export function ActionsGrid({
               width: 40,
               height: 40,
               borderRadius: "50%",
-              background: "#ff2e9a",
+              background: "#5934ED",
               color: "#FFFFFF",
               display: "flex",
               alignItems: "center",
@@ -356,7 +356,7 @@ export function ActionsGrid({
               fontWeight: 800,
               fontSize: 11,
               lineHeight: 1.15,
-              color: "#FFFFFF",
+              color: "#290800",
               whiteSpace: "nowrap",
               textAlign: "center",
             }}
@@ -369,7 +369,7 @@ export function ActionsGrid({
       <div style={backdropStyle(actionsOpen)} onClick={() => setActionsOpen(false)} />
       <div style={drawerStyle(actionsOpen)}>
         <Handle />
-        <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#FFFFFF" }}>
+        <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#290800" }}>
           כל הפעולות
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -404,10 +404,10 @@ export function ActionsGrid({
                 textAlign: "right",
               }}
             >
-              <span style={{ width: 34, height: 34, borderRadius: 10, background: "rgba(255,46,154,0.15)", color: "#FF2E9A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <span style={{ width: 34, height: 34, borderRadius: 10, background: "rgba(89,52,237,0.15)", color: "#5934ED", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <action.Icon size={18} strokeWidth={2.1} />
               </span>
-              <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 15, color: "#FFFFFF" }}>
+              <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 15, color: "#290800" }}>
                 {action.label}
               </span>
             </button>
@@ -420,7 +420,7 @@ export function ActionsGrid({
         <Handle />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
           <div>
-            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#FFFFFF" }}>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#290800" }}>
               יצירת קשר
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
@@ -482,7 +482,7 @@ export function ActionsGrid({
         <Handle />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
           <div>
-            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#FFFFFF" }}>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#290800" }}>
               {selectedInfoPage ? selectedInfoPage.title : "מידע חשוב"}
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
@@ -522,7 +522,7 @@ export function ActionsGrid({
                 fontSize: 14,
                 fontWeight: 600,
                 lineHeight: 1.7,
-                color: "#FFFFFF",
+                color: "#290800",
               }}
             />
           </div>
@@ -550,11 +550,11 @@ export function ActionsGrid({
                     cursor: "pointer",
                   }}
                 >
-                  <span style={{ width: 36, height: 36, borderRadius: 12, background: "rgba(255,46,154,0.15)", color: "#FF2E9A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ width: 36, height: 36, borderRadius: 12, background: "rgba(89,52,237,0.15)", color: "#5934ED", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <FileText size={18} strokeWidth={2.15} />
                   </span>
                   <span style={{ minWidth: 0 }}>
-                    <span style={{ display: "block", marginBottom: 3, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, color: "#FFFFFF" }}>
+                    <span style={{ display: "block", marginBottom: 3, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, color: "#290800" }}>
                       {page.title}
                     </span>
                     <span style={{ display: "block", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, lineHeight: 1.35, color: "#9CA0AE", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -572,7 +572,7 @@ export function ActionsGrid({
         <Handle />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
           <div>
-            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#FFFFFF" }}>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#290800" }}>
               יש לי רעיון
             </p>
             <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>

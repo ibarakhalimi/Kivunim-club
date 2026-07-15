@@ -26,7 +26,7 @@ function UpdateCard({ update, currentTime }: { update: Update; currentTime: stri
       style={{
         width: "100%",
         minHeight: 116,
-        background: "#252836",
+        background: "#EFF2EC",
         border: "none",
         borderRadius: 22,
         boxShadow: "none",
@@ -62,7 +62,7 @@ function UpdateCard({ update, currentTime }: { update: Update; currentTime: stri
           <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
             {timeAgo(update.published_at, currentTime)}
           </p>
-          <h3 style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#FFFFFF", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <h3 style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#290800", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
             {update.title}
           </h3>
           {update.description && (

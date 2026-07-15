@@ -16,7 +16,7 @@ export function Hero() {
           fontWeight: 800,
           fontSize: 32,
           lineHeight: 1.15,
-          color: "#0F172A",
+          color: "#290800",
         }}
       >
         מועדון סטודנטים

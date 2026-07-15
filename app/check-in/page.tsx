@@ -96,7 +96,7 @@ function CheckInResult({ ok, title, description }: { ok: boolean; title: string;
         >
           {ok ? <CheckCircle2 size={42} strokeWidth={2.4} /> : <TriangleAlert size={40} strokeWidth={2.35} />}
         </div>
-        <h1 style={{ margin: "0 0 6px", fontSize: 27, lineHeight: 1.1, fontWeight: 900, color: "#0F172A" }}>
+        <h1 style={{ margin: "0 0 6px", fontSize: 27, lineHeight: 1.1, fontWeight: 900, color: "#290800" }}>
           {title}
         </h1>
         <p style={{ margin: "0 0 22px", fontSize: 14, lineHeight: 1.55, fontWeight: 600, color: "#64748B" }}>

@@ -153,13 +153,13 @@ export default function RegisterPage() {
         <span
           style={{
             display: "inline-block",
-            background: "rgba(255, 46, 154, 0.14)",
+            background: "rgba(89, 52, 237, 0.14)",
             borderRadius: 20,
             padding: "3px 14px",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
             fontSize: 13,
-            color: "#FF2E9A",
+            color: "#5934ED",
             marginBottom: 8,
           }}
         >
@@ -172,7 +172,7 @@ export default function RegisterPage() {
             fontWeight: 900,
             fontSize: 31,
             lineHeight: 1.12,
-            color: "#F7F8FF",
+            color: "#290800",
           }}
         >
           הקלאב הסטודנטיאלי
@@ -186,7 +186,7 @@ export default function RegisterPage() {
       <div
         style={{
           minHeight: "100dvh",
-          background: "#181A23",
+          background: "#DFDBD3",
           direction: "rtl",
           display: "flex",
           flexDirection: "column",
@@ -228,7 +228,7 @@ export default function RegisterPage() {
           style={{
             flexShrink: 0,
             padding: "16px 14px 44px",
-            background: "linear-gradient(to top, #181A23 70%, rgba(24, 26, 35, 0) 100%)",
+            background: "linear-gradient(to top, #DFDBD3 70%, rgba(223, 219, 211, 0) 100%)",
           }}
         >
           <div style={{ maxWidth: 480, margin: "0 auto" }}>
@@ -248,7 +248,7 @@ export default function RegisterPage() {
     <div
       style={{
         minHeight: "100dvh",
-        background: "#181A23",
+        background: "#DFDBD3",
         padding: "0 14px 56px",
         direction: "rtl",
         display: "flex",
@@ -298,14 +298,14 @@ export default function RegisterPage() {
                 type="checkbox"
                 checked={form.privacy_consent}
                 onChange={(e) => set("privacy_consent", e.target.checked)}
-                style={{ width: 18, height: 18, marginTop: 3, flexShrink: 0, cursor: "pointer", accentColor: "#FF2E9A" }}
+                style={{ width: 18, height: 18, marginTop: 3, flexShrink: 0, cursor: "pointer", accentColor: "#5934ED" }}
               />
               <span style={{ fontSize: 14, lineHeight: 1.6, color: "#C7CAD6", fontFamily: "var(--font-rubik)", fontWeight: 600 }}>
                 קראתי ואני מסכים/ה{" "}
                 <button
                   type="button"
                   onClick={() => setTermsOpen(true)}
-                  style={{ textDecoration: "underline", color: "#FF2E9A", fontWeight: 900, background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "var(--font-rubik)", fontSize: 14 }}
+                  style={{ textDecoration: "underline", color: "#5934ED", fontWeight: 900, background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "var(--font-rubik)", fontSize: 14 }}
                 >
                   לתנאי השימוש ומדיניות הפרטיות
                 </button>{" "}
@@ -330,7 +330,7 @@ export default function RegisterPage() {
 
           <p style={{ margin: "4px 0 0", textAlign: "center", fontSize: 14, color: "#9CA0AE", fontFamily: "var(--font-rubik)", fontWeight: 700 }}>
             כבר יש לך חשבון?{" "}
-            <Link href="/welcome" style={{ color: "#FF2E9A", fontWeight: 900, textDecoration: "none" }}>
+            <Link href="/welcome" style={{ color: "#5934ED", fontWeight: 900, textDecoration: "none" }}>
               כניסה
             </Link>
           </p>
@@ -346,7 +346,7 @@ export default function RegisterPage() {
               position: "fixed",
               bottom: 0, left: 0, right: 0,
               zIndex: 101,
-              background: "#252836",
+              background: "#EFF2EC",
               borderRadius: "26px 26px 0 0",
               border: "none",
               borderBottom: "none",
@@ -366,14 +366,14 @@ export default function RegisterPage() {
                 borderRadius: "50%",
                 fontSize: 15,
                 cursor: "pointer",
-                color: "#F7F8FF",
+                color: "#290800",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}
             >
               ✕
             </button>
 
-            <h2 style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#F7F8FF" }}>
+            <h2 style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 20, color: "#290800" }}>
               תנאי שימוש ומדיניות פרטיות
             </h2>
 
@@ -387,7 +387,7 @@ export default function RegisterPage() {
                 { title: "6. יצירת קשר", body: "לכל שאלה בנוגע לתנאי השימוש ומדיניות הפרטיות ניתן לפנות אלינו דרך פרטי הקשר באתר." },
               ].map(({ title, body }) => (
                 <div key={title}>
-                  <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 15, color: "#F7F8FF" }}>{title}</p>
+                  <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 15, color: "#290800" }}>{title}</p>
                   <p style={{ margin: 0 }}>{body}</p>
                 </div>
               ))}
@@ -429,7 +429,7 @@ function InstitutionInput({ value, onChange }: { value: string; onChange: (v: st
             top: "calc(100% + 4px)",
             right: 0,
             left: 0,
-            background: "#252836",
+            background: "#EFF2EC",
             border: "none",
             borderRadius: 18,
             overflow: "hidden",
@@ -445,7 +445,7 @@ function InstitutionInput({ value, onChange }: { value: string; onChange: (v: st
                 padding: "10px 14px",
                 fontSize: 14,
                 fontFamily: "var(--font-rubik)",
-                color: "#F7F8FF",
+                color: "#290800",
                 cursor: "pointer",
                 borderBottom: "1px solid rgba(247, 248, 255, 0.08)",
               }}
@@ -462,7 +462,7 @@ function InstitutionInput({ value, onChange }: { value: string; onChange: (v: st
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <label style={{ fontSize: 14, fontWeight: 800, color: "#F7F8FF", fontFamily: "var(--font-rubik)" }}>
+      <label style={{ fontSize: 14, fontWeight: 800, color: "#290800", fontFamily: "var(--font-rubik)" }}>
         {label}
       </label>
       {children}
@@ -476,8 +476,8 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "var(--font-rubik)",
   border: "none",
   borderRadius: 18,
-  background: "#252836",
-  color: "#F7F8FF",
+  background: "#EFF2EC",
+  color: "#290800",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
@@ -488,7 +488,7 @@ const inputStyle: React.CSSProperties = {
 const primaryBtnStyle: React.CSSProperties = {
   width: "100%",
   padding: "15px 0",
-  background: "#FF2E9A",
+  background: "#5934ED",
   color: "#fff",
   border: "none",
   borderRadius: 18,
@@ -500,7 +500,7 @@ const primaryBtnStyle: React.CSSProperties = {
 
 const infoCardStyle: React.CSSProperties = {
   padding: "16px",
-  background: "#252836",
+  background: "#EFF2EC",
   borderRadius: 24,
   border: "none",
 };
@@ -512,5 +512,5 @@ const sectionLabelStyle: React.CSSProperties = {
   fontSize: 12,
   letterSpacing: "0.06em",
   textTransform: "uppercase",
-  color: "#FF2E9A",
+  color: "#5934ED",
 };
