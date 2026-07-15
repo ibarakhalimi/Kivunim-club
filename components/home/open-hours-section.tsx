@@ -203,7 +203,8 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
           border: "none",
           borderRadius: 22,
           background: "#EFF2EC",
-          padding: "12px 14px",
+          padding: "16px 24px 16px 16px",
+          boxSizing: "border-box",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -211,8 +212,8 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
           overflow: "hidden",
         }}
       >
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 4 }}>
+        <div style={{ minWidth: 0, flex: 1, paddingRight: 4 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
             <span
               style={{
                 width: 9,
@@ -222,7 +223,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                 flexShrink: 0,
               }}
             />
-            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 10, color: isOpenToday ? "#34D399" : "#F97316" }}>
+            <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 11, color: isOpenToday ? "#34D399" : "#F97316" }}>
               {isOpenToday ? "פתוח עכשיו" : "סגור עכשיו"}
             </span>
             {todayNote && (
@@ -246,7 +247,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               </span>
             )}
           </div>
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 17, lineHeight: 1.1, color: isOpenToday ? "#290800" : "#F97316" }}>
+          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.15, color: isOpenToday ? "#290800" : "#F97316" }}>
             {isOpenToday && closeTime
               ? `עד ${closeTime}`
               : isOpenToday
@@ -262,8 +263,8 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
             onClick={() => setHoursOpen(true)}
             aria-label="שעות פתיחה"
             style={{
-              width: 36,
-              height: 36,
+              width: 40,
+              height: 40,
               borderRadius: "50%",
               border: "1px solid rgba(255,255,255,0.08)",
               background: "rgba(255,255,255,0.06)",
@@ -282,16 +283,16 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
           onClick={openCheckInSheet}
           disabled={isPending}
           style={{
-            height: 36,
+            height: 40,
             width: "auto",
             border: "none",
             borderRadius: 999,
             background: isPending ? "rgba(203,214,230,0.55)" : "#CBD6E6",
             color: "#290800",
-            padding: "0 18px",
+            padding: "0 22px",
             fontFamily: "var(--font-rubik)",
             fontWeight: 900,
-            fontSize: 12,
+            fontSize: 13,
             cursor: isPending ? "not-allowed" : "pointer",
             whiteSpace: "nowrap",
           }}

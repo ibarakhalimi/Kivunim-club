@@ -34,6 +34,11 @@ function EditUpdateForm({ update, onDone }: { update: Update; onDone: () => void
   return (
     <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid #E2E8F0" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <label style={labelStyle}>טאב עליון *</label>
+        <input name="tab_label" required maxLength={32} defaultValue={update.tab_label} style={inputStyle} />
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={labelStyle}>כותרת *</label>
         <input name="title" required defaultValue={update.title} style={inputStyle} />
       </div>
@@ -41,11 +46,6 @@ function EditUpdateForm({ update, onDone }: { update: Update; onDone: () => void
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={labelStyle}>תוכן *</label>
         <textarea name="description" required rows={4} defaultValue={update.description} style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }} />
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-        <label style={labelStyle}>מאת</label>
-        <input name="author" defaultValue={update.author} style={inputStyle} />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -109,8 +109,11 @@ function UpdateRow({ update }: { update: Update }) {
     <article style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 12, padding: "14px 16px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div style={{ minWidth: 0, flex: 1 }}>
+          <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#5934ED" }}>
+            {update.tab_label}
+          </p>
           <p style={{ margin: "0 0 4px", fontSize: 12, color: "#94A3B8", fontWeight: 600 }}>
-            {formatDate(update.published_at)} · {update.author}
+            {formatDate(update.published_at)}
           </p>
           <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 16, color: "#0F172A" }}>
             {update.title}

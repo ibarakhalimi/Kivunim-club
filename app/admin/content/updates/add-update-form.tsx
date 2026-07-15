@@ -25,14 +25,14 @@ export function AddUpdateForm() {
       <h2 style={headingStyle}>הוספת עדכון חדש</h2>
 
       <form ref={formRef} action={formAction} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <Field label="טאב עליון *">
+          <input name="tab_label" required maxLength={32} placeholder="לדוגמה: הטבה חדשה" style={inputStyle} />
+        </Field>
         <Field label="כותרת *">
           <input name="title" required placeholder="כותרת העדכון..." style={inputStyle} />
         </Field>
         <Field label="תוכן *">
           <textarea name="description" required rows={4} placeholder="תוכן העדכון..." style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }} />
-        </Field>
-        <Field label="מאת">
-          <input name="author" placeholder="צוות כיוונים" style={inputStyle} />
         </Field>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <Field label="לינק לכפתור">

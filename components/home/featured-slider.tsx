@@ -2,40 +2,28 @@
 
 import { useState } from "react";
 
-const slides = [
-  {
-    eyebrow: "הטבה חדשה",
-    title: "קפה ומאפה במחיר סטודנטיאלי",
-    text: "פותחים את היום עם הטבה לחברי הקלאב בבתי קפה נבחרים בעיר.",
-    accent: "#5934ED",
-  },
-  {
-    eyebrow: "אירוע קרוב",
-    title: "ערב נטוורקינג לסטודנטים",
-    text: "מפגש קליל עם סטודנטים, בוגרים ומעסיקים מקומיים במקום אחד.",
-    accent: "#0F766E",
-  },
-  {
-    eyebrow: "עדכון חשוב",
-    title: "הקלאב מתרחב עם שירותים חדשים",
-    text: "בקרוב יעלו לאפליקציה עוד כלים, הטבות ומידע שימושי לחברי המועדון.",
-    accent: "#B45309",
-  },
-];
+type FeaturedUpdate = {
+  id: string;
+  tab_label: string;
+  title: string;
+  description: string;
+};
 
-export function FeaturedSlider() {
+export function FeaturedSlider({ updates }: { updates: FeaturedUpdate[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [dragOffsetX, setDragOffsetX] = useState(0);
-  const activeSlide = slides[activeIndex];
+  const activeSlide = updates[activeIndex];
   const slideGap = 12;
+
+  if (updates.length === 0 || !activeSlide) return null;
 
   function showPreviousSlide() {
     setActiveIndex((current) => Math.max(0, current - 1));
   }
 
   function showNextSlide() {
-    setActiveIndex((current) => Math.min(slides.length - 1, current + 1));
+    setActiveIndex((current) => Math.min(updates.length - 1, current + 1));
   }
 
   function handleTouchEnd(clientX: number) {
@@ -89,7 +77,7 @@ export function FeaturedSlider() {
 
             const deltaX = (event.touches[0]?.clientX ?? touchStartX) - touchStartX;
             const isDraggingPastStart = activeIndex === 0 && deltaX > 0;
-            const isDraggingPastEnd = activeIndex === slides.length - 1 && deltaX < 0;
+            const isDraggingPastEnd = activeIndex === updates.length - 1 && deltaX < 0;
             const resistedDelta = isDraggingPastStart || isDraggingPastEnd ? deltaX * 0.22 : deltaX;
 
             setDragOffsetX(Math.max(-110, Math.min(110, resistedDelta)));
@@ -108,12 +96,12 @@ export function FeaturedSlider() {
             willChange: "transform",
           }}
         >
-          {slides.map((slide) => (
+          {updates.map((update) => (
             <article
-              key={slide.title}
+              key={update.id}
               style={{
                 flex: "0 0 100%",
-                height: 212,
+                height: 232,
                 borderRadius: 18,
                 background: "#EFF2EC",
                 border: "1px solid rgba(255,255,255,0.45)",
@@ -125,9 +113,10 @@ export function FeaturedSlider() {
             >
               <div
                 style={{
-                  width: "100%",
+                  width: "90%",
                   minWidth: 0,
                   height: "100%",
+                  margin: "0 auto",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
@@ -138,16 +127,21 @@ export function FeaturedSlider() {
                     width: "fit-content",
                     margin: 0,
                     borderRadius: 999,
-                    background: `${slide.accent}18`,
+                    background: "rgba(89, 52, 237, 0.1)",
                     padding: "4px 9px",
                     fontFamily: "var(--font-rubik)",
                     fontWeight: 900,
                     fontSize: 11,
                     lineHeight: 1.1,
-                    color: slide.accent,
+                    color: "#5934ED",
+                    maxWidth: "100%",
+                    boxSizing: "border-box",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
                 >
-                  {slide.eyebrow}
+                  {update.tab_label}
                 </p>
                 <div style={{ minWidth: 0 }}>
                   <h2
@@ -155,7 +149,7 @@ export function FeaturedSlider() {
                       margin: 0,
                       fontFamily: "var(--font-rubik)",
                       fontWeight: 900,
-                      fontSize: 22,
+                      fontSize: 24,
                       lineHeight: 1.12,
                       letterSpacing: 0,
                       color: "#290800",
@@ -165,7 +159,7 @@ export function FeaturedSlider() {
                       overflow: "hidden",
                     }}
                   >
-                    {slide.title}
+                    {update.title}
                   </h2>
                   <p
                     style={{
@@ -181,7 +175,7 @@ export function FeaturedSlider() {
                       overflow: "hidden",
                     }}
                   >
-                    {slide.text}
+                    {update.description}
                   </p>
                 </div>
               </div>
@@ -199,12 +193,12 @@ export function FeaturedSlider() {
           marginTop: 10,
         }}
       >
-        {slides.map((slide, index) => {
+        {updates.map((update, index) => {
           const isActive = index === activeIndex;
 
           return (
             <button
-              key={slide.title}
+              key={update.id}
               type="button"
               onClick={() => setActiveIndex(index)}
               aria-label={`סלייד ${index + 1}`}
@@ -215,7 +209,7 @@ export function FeaturedSlider() {
                 borderRadius: 999,
                 border: "none",
                 padding: 0,
-                background: isActive ? activeSlide.accent : "rgba(41,8,0,0.2)",
+                background: isActive ? "#5934ED" : "rgba(41,8,0,0.2)",
                 cursor: "pointer",
                 transition: "width 0.18s ease, background 0.18s ease",
               }}

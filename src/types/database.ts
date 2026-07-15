@@ -464,6 +464,7 @@ export type Database = {
           id: string
           is_active: boolean
           published_at: string
+          tab_label: string
           title: string
         }
         Insert: {
@@ -475,6 +476,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           published_at?: string
+          tab_label?: string
           title: string
         }
         Update: {
@@ -486,6 +488,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           published_at?: string
+          tab_label?: string
           title?: string
         }
         Relationships: []
