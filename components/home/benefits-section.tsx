@@ -112,8 +112,16 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 cursor: benefit.description ? "pointer" : "default",
               }}
             >
-              <div style={{ width: 42, height: 42, borderRadius: 14, background: categoryBg(category), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
-                {categoryEmoji(category)}
+              <div style={{ width: 54, height: 54, borderRadius: "50%", background: categoryBg(category), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 23, flexShrink: 0, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
+                {benefit.image_url ? (
+                  <img
+                    src={benefit.image_url}
+                    alt={benefit.business}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
+                ) : (
+                  categoryEmoji(category)
+                )}
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
                 <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#FFFFFF" }}>

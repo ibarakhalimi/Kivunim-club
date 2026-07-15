@@ -53,15 +53,6 @@ export type ImportantInfoPage = {
   sort_order: number;
 };
 
-export type IdeaSubmission = {
-  id: string;
-  user_name: string | null;
-  user_email: string | null;
-  user_phone: string | null;
-  idea_text: string;
-  created_at: string;
-};
-
 const FALLBACK_ROWS: Omit<OpeningHourWithDate, "date">[] = [
   { day_key: "sunday", day_label: "ראשון", sort_order: 1, is_open: true, open_time: "08:00", close_time: "20:00", note: null },
   { day_key: "monday", day_label: "שני", sort_order: 2, is_open: true, open_time: "08:00", close_time: "20:00", note: null },
@@ -230,16 +221,6 @@ export async function getImportantInfoPages({ activeOnly = false } = {}): Promis
   return activeOnly ? rows.filter((page) => page.is_active) : rows;
 }
 
-export async function getIdeaSubmissions(): Promise<IdeaSubmission[]> {
-  const supabase = createAdminClient();
-  const { data } = await supabase
-    .from("idea_submissions")
-    .select("id, user_name, user_email, user_phone, idea_text, created_at")
-    .order("created_at", { ascending: false });
-
-  return data ?? [];
-}
-
 export async function updateAppSettings(formData: FormData) {
   const supabase = createAdminClient();
 
@@ -256,6 +237,7 @@ export async function updateAppSettings(formData: FormData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/admin/content");
   revalidatePath("/admin/settings");
   return { success: true };
 }
@@ -278,6 +260,7 @@ export async function updateContactSettings(formData: FormData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/admin/content");
   revalidatePath("/admin/settings");
   return { success: true };
 }
@@ -311,6 +294,7 @@ export async function updateImportantInfoPage(formData: FormData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/admin/content");
   revalidatePath("/admin/settings");
   return { success: true };
 }
@@ -343,6 +327,7 @@ export async function createImportantInfoPage(formData: FormData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/admin/content");
   revalidatePath("/admin/settings");
   return { success: true };
 }
@@ -365,6 +350,7 @@ export async function deleteImportantInfoPage(formData: FormData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/admin/content");
   revalidatePath("/admin/settings");
   return { success: true };
 }

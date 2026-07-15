@@ -2,15 +2,22 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { BarChart3, FileText, Gift, Inbox, LogIn, Megaphone, Settings, Ticket } from "lucide-react";
+import { BarChart3, ClipboardList, FileText, Gift, Inbox, Lightbulb, LogIn, Mail, Megaphone, Settings, Ticket } from "lucide-react";
 
 const contentSubItems = [
   { label: "עדכונים", href: "/admin/content?tab=updates", tab: "updates", Icon: Megaphone },
   { label: "אירועים", href: "/admin/content?tab=events", tab: "events", Icon: Ticket },
   { label: "הטבות", href: "/admin/content?tab=benefits", tab: "benefits", Icon: Gift },
+  { label: "עמודי מידע", href: "/admin/content?tab=info", tab: "info", Icon: ClipboardList },
+];
+
+const inquirySubItems = [
+  { label: "פניות", href: "/admin/inquiries?tab=inquiries", tab: "inquiries", Icon: Mail },
+  { label: "רעיונות", href: "/admin/inquiries?tab=ideas", tab: "ideas", Icon: Lightbulb },
 ];
 
 const CONTENT_PATHS = ["/admin/content"];
+const INQUIRY_PATHS = ["/admin/inquiries", "/admin/ideas"];
 
 const items = [
   { label: "דשבורד ראשי", href: "/admin", Icon: BarChart3, match: (path: string) => path === "/admin" },
@@ -22,7 +29,13 @@ const items = [
     subItems: contentSubItems,
   },
   { label: "הגעות", href: "/admin/check-ins", Icon: LogIn, match: (path: string) => path.startsWith("/admin/check-ins") },
-  { label: "פניות", href: "/admin/inquiries", Icon: Inbox, match: (path: string) => path.startsWith("/admin/inquiries") || path.startsWith("/admin/ideas") },
+  {
+    label: "פניות",
+    href: "/admin/inquiries",
+    Icon: Inbox,
+    match: (path: string) => INQUIRY_PATHS.some((item) => path === item || path.startsWith(`${item}/`)),
+    subItems: inquirySubItems,
+  },
   { label: "הגדרות", href: "/admin/settings", Icon: Settings, match: (path: string) => path.startsWith("/admin/settings") },
 ];
 
@@ -30,6 +43,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeContentTab = searchParams.get("tab") ?? "updates";
+  const activeInquiryTab = pathname.startsWith("/admin/ideas") ? "ideas" : searchParams.get("tab") ?? "inquiries";
 
   return (
     <aside
@@ -86,7 +100,9 @@ export function AdminSidebar() {
               {subItems && (
                 <div style={{ display: "flex", flexDirection: "column", gap: 4, paddingRight: 14 }}>
                   {subItems.map((subItem) => {
-                    const subActive = pathname === "/admin/content" && activeContentTab === subItem.tab;
+                    const subActive =
+                      (pathname === "/admin/content" && activeContentTab === subItem.tab) ||
+                      ((pathname === "/admin/inquiries" || pathname.startsWith("/admin/ideas")) && activeInquiryTab === subItem.tab);
                     return (
                       <Link
                         key={subItem.href}

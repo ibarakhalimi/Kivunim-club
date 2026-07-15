@@ -1,13 +1,21 @@
-export default function AdminPage() {
-  const sections = [
-    { label: "עדכונים", emoji: "📢", href: "/admin/content?tab=updates", bg: "#FFFBEB", color: "#B45309" },
-    { label: "אירועים", emoji: "📅", href: "/admin/content?tab=events", bg: "#EFF6FF", color: "#1E40AF" },
-    { label: "הטבות",   emoji: "🎁", href: "/admin/content?tab=benefits", bg: "#F0FDF4", color: "#15803D" },
-    { label: "סקרים",   emoji: "📊", href: "/admin/polls", bg: "#F5F3FF", color: "#6D28D9" },
-    { label: "פניות",   emoji: "✉️", href: "/admin/inquiries", bg: "#EEF2FF", color: "#4338CA" },
-    { label: "רעיונות", emoji: "💡", href: "/admin/ideas", bg: "#FEFCE8", color: "#A16207" },
-    { label: "הגעות",   emoji: "🚪", href: "/admin/check-ins", bg: "#FFF1F2", color: "#BE123C" },
-    { label: "הגדרות",  emoji: "⚙️", href: "/admin/settings", bg: "#F0FDF4", color: "#15803D" },
+import { createAdminClient } from "@/lib/supabase/admin";
+
+export default async function AdminPage() {
+  const supabase = createAdminClient();
+  const { count: membersCount } = await supabase
+    .from("members")
+    .select("*", { count: "exact", head: true });
+
+  const metrics = [
+    {
+      label: "מס׳ חברים במועדון",
+      value: membersCount ?? 0,
+      bg: "#EEF2FF",
+      color: "#4338CA",
+    },
+    { label: "מדד עתידי", value: "-", bg: "#FFFFFF", color: "#64748B" },
+    { label: "מדד עתידי", value: "-", bg: "#FFFFFF", color: "#64748B" },
+    { label: "מדד עתידי", value: "-", bg: "#FFFFFF", color: "#64748B" },
   ];
 
   return (
@@ -22,60 +30,81 @@ export default function AdminPage() {
     >
       <h1
         style={{
-          margin: "0 0 4px",
+          margin: "0 0 6px",
           fontFamily: "var(--font-rubik)",
-          fontWeight: 800,
+          fontWeight: 900,
           fontSize: 28,
           color: "#0F172A",
         }}
       >
-        פאנל ניהול
+        ברוך הבא למערכת ניהול
       </h1>
       <p
         style={{
           margin: "0 0 28px",
           fontSize: 14,
           color: "#64748B",
-          fontWeight: 500,
+          fontWeight: 600,
         }}
       >
-        כיוונים · ניהול תוכן
+        כיוונים · דשבורד ראשי
       </p>
 
-      <div
+      <style>{`
+        .kv-admin-metrics-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 12px;
+        }
+
+        @media (max-width: 980px) {
+          .kv-admin-metrics-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 560px) {
+          .kv-admin-metrics-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+
+      <section
+        aria-label="מדדי מערכת"
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 12,
+          background: "#FFFFFF",
+          border: "1px solid #E2E8F0",
+          borderRadius: 16,
+          padding: 16,
+          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
         }}
       >
-        {sections.map((s) => (
-          <a
-            key={s.href}
-            href={s.href}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-              padding: "24px 12px",
-              background: s.bg,
-              border: "1px solid #E2E8F0",
-              borderRadius: 14,
-              boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-              textDecoration: "none",
-              color: s.color,
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 700,
-              fontSize: 16,
-            }}
-          >
-            <span style={{ fontSize: 32 }}>{s.emoji}</span>
-            {s.label}
-          </a>
-        ))}
-      </div>
+        <div className="kv-admin-metrics-grid">
+          {metrics.map((metric, index) => (
+            <article
+              key={`${metric.label}-${index}`}
+              style={{
+                minHeight: 132,
+                border: "1px solid #E2E8F0",
+                borderRadius: 14,
+                background: metric.bg,
+                padding: 16,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: "#64748B" }}>
+                {metric.label}
+              </p>
+              <p style={{ margin: 0, fontSize: 34, lineHeight: 1, fontWeight: 950, color: metric.color }}>
+                {metric.value}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

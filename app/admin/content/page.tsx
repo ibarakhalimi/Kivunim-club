@@ -2,10 +2,12 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { syncExpiredBenefits } from "@/lib/benefits/expiry";
 import { BenefitList } from "../benefits/benefit-list";
 import { EventList } from "../events/event-list";
+import { getImportantInfoPages } from "../settings/actions";
+import { ImportantInfoPanel } from "../settings/important-info-panel";
 import { ContentCreatePanel } from "./content-create-panel";
 import { UpdateList } from "./updates/update-list";
 
-type ContentTab = "updates" | "events" | "benefits";
+type ContentTab = "updates" | "events" | "benefits" | "info";
 
 type AdminContentPageProps = {
   searchParams?: Promise<{
@@ -17,10 +19,11 @@ const tabs: Array<{ key: ContentTab; label: string; href: string }> = [
   { key: "updates", label: "עדכונים", href: "/admin/content?tab=updates" },
   { key: "events", label: "אירועים", href: "/admin/content?tab=events" },
   { key: "benefits", label: "הטבות", href: "/admin/content?tab=benefits" },
+  { key: "info", label: "עמודי מידע", href: "/admin/content?tab=info" },
 ];
 
 function resolveTab(value: string | undefined): ContentTab {
-  if (value === "events" || value === "benefits") return value;
+  if (value === "events" || value === "benefits" || value === "info") return value;
   return "updates";
 }
 
@@ -33,10 +36,11 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
     await syncExpiredBenefits();
   }
 
-  const [{ data: updates }, { data: events }, { data: benefits }] = await Promise.all([
+  const [{ data: updates }, { data: events }, { data: benefits }, importantInfoPages] = await Promise.all([
     supabase.from("updates").select("*").order("published_at", { ascending: false }),
     supabase.from("events").select("*").order("event_date", { ascending: true }),
     supabase.from("benefits").select("*").order("sort_order", { ascending: true }),
+    getImportantInfoPages(),
   ]);
   const benefitCategories = Array.from(new Set((benefits ?? []).map((benefit) => benefit.category).filter(Boolean)));
 
@@ -134,6 +138,17 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
               <BenefitList benefits={benefits} />
             </div>
           )}
+        </section>
+      )}
+
+      {activeTab === "info" && (
+        <section>
+          <div style={{ marginTop: 4 }}>
+            <h2 style={{ margin: "0 0 14px", fontWeight: 900, fontSize: 16, color: "#0F172A" }}>
+              עמודי מידע
+            </h2>
+            <ImportantInfoPanel pages={importantInfoPages} />
+          </div>
         </section>
       )}
     </div>

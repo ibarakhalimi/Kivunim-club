@@ -1,17 +1,15 @@
 import { AppSettingsForm } from "./app-settings-form";
-import { getAppSettings, getContactInquiries, getContactSettings, getCurrentWeekStart, getIdeaSubmissions, getImportantInfoPages, getOpeningHoursWeek } from "./actions";
+import { getAppSettings, getContactInquiries, getContactSettings, getCurrentWeekStart, getOpeningHoursWeek } from "./actions";
 import { SettingsTabs } from "./settings-tabs";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage() {
-  const [appSettings, rows, contactSettings, contactInquiries, importantInfoPages, ideaSubmissions] = await Promise.all([
+  const [appSettings, rows, contactSettings, contactInquiries] = await Promise.all([
     getAppSettings(),
     getOpeningHoursWeek(await getCurrentWeekStart()),
     getContactSettings(),
     getContactInquiries(),
-    getImportantInfoPages(),
-    getIdeaSubmissions(),
   ]);
 
   return (
@@ -37,8 +35,6 @@ export default async function AdminSettingsPage() {
         openingHoursRows={rows}
         contactSettings={contactSettings}
         contactInquiries={contactInquiries}
-        importantInfoPages={importantInfoPages}
-        ideaSubmissions={ideaSubmissions}
       />
     </div>
   );

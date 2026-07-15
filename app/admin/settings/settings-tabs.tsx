@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Clock, ClipboardList, Lightbulb, MessageCircle } from "lucide-react";
+import { Clock, MessageCircle } from "lucide-react";
 import { ContactSettingsPanel } from "./contact-settings-panel";
-import { IdeasPanel } from "./ideas-panel";
-import { ImportantInfoPanel } from "./important-info-panel";
 import { OpeningHoursForm } from "./opening-hours-form";
-import type { ContactInquiry, ContactSettings, IdeaSubmission, ImportantInfoPage, OpeningHourWithDate } from "./actions";
+import type { ContactInquiry, ContactSettings, OpeningHourWithDate } from "./actions";
 
 const TABS = [
   {
@@ -23,34 +21,16 @@ const TABS = [
     title: "יצירת קשר",
     description: "טלפון, וואטסאפ ונושאי פנייה שיופיעו בפעולות המהירות.",
   },
-  {
-    key: "info",
-    label: "מידע חשוב",
-    Icon: ClipboardList,
-    title: "מידע חשוב",
-    description: "כותרות ותכנים שיופיעו במגירת המידע החשוב.",
-  },
-  {
-    key: "ideas",
-    label: "רעיונות",
-    Icon: Lightbulb,
-    title: "רעיונות",
-    description: "הגדרות הטופס והטקסטים של שליחת רעיון חדש.",
-  },
 ] as const;
 
 export function SettingsTabs({
   openingHoursRows,
   contactSettings,
   contactInquiries,
-  importantInfoPages,
-  ideaSubmissions,
 }: {
   openingHoursRows: OpeningHourWithDate[];
   contactSettings: ContactSettings;
   contactInquiries: ContactInquiry[];
-  importantInfoPages: ImportantInfoPage[];
-  ideaSubmissions: IdeaSubmission[];
 }) {
   const [activeKey, setActiveKey] = useState<(typeof TABS)[number]["key"]>("hours");
   const activeTab = TABS.find((tab) => tab.key === activeKey) ?? TABS[0];
@@ -144,16 +124,6 @@ export function SettingsTabs({
         {activeKey === "contact" && (
           <div style={{ marginTop: 16 }}>
             <ContactSettingsPanel settings={contactSettings} inquiries={contactInquiries} />
-          </div>
-        )}
-        {activeKey === "info" && (
-          <div style={{ marginTop: 16 }}>
-            <ImportantInfoPanel pages={importantInfoPages} />
-          </div>
-        )}
-        {activeKey === "ideas" && (
-          <div style={{ marginTop: 16 }}>
-            <IdeasPanel ideas={ideaSubmissions} />
           </div>
         )}
       </div>
