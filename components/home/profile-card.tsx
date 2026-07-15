@@ -91,32 +91,37 @@ export function ProfileCard() {
           minHeight: 64,
         }}
       >
-        <div style={{ minWidth: 0, minHeight: 42, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div style={{ minWidth: 0, flex: 1, minHeight: 42, display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <p
             style={{
               margin: 0,
               fontFamily: "var(--font-rubik)",
               fontWeight: 900,
-              fontSize: 13,
-              color: "#9CA0AE",
-            }}
-          >
-            וולקאם
-          </p>
-          <p
-            suppressHydrationWarning
-            style={{
-              margin: 0,
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 900,
-              fontSize: 26,
-              lineHeight: 1.04,
+              fontSize: 18,
+              lineHeight: 1.1,
               letterSpacing: 0,
               color: "#290800",
-              overflowWrap: "anywhere",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
           >
-            {profile.name}
+            הקלאב הסטודנטיאלי
+          </p>
+          <p
+            style={{
+              margin: "3px 0 0",
+              fontFamily: "var(--font-rubik)",
+              fontWeight: 700,
+              fontSize: 12,
+              lineHeight: 1.15,
+              color: "rgba(41,8,0,0.7)",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            אגודת הסטודנטים העירונית אשדוד
           </p>
         </div>
 

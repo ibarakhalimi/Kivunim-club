@@ -286,7 +286,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
             width: "auto",
             border: "none",
             borderRadius: 999,
-            background: isPending ? "rgba(89,52,237,0.4)" : "#5934ED",
+            background: isPending ? "rgba(203,214,230,0.55)" : "#CBD6E6",
             color: "#290800",
             padding: "0 18px",
             fontFamily: "var(--font-rubik)",

@@ -25,7 +25,36 @@ const slides = [
 
 export function FeaturedSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [dragOffsetX, setDragOffsetX] = useState(0);
   const activeSlide = slides[activeIndex];
+  const slideGap = 12;
+
+  function showPreviousSlide() {
+    setActiveIndex((current) => Math.max(0, current - 1));
+  }
+
+  function showNextSlide() {
+    setActiveIndex((current) => Math.min(slides.length - 1, current + 1));
+  }
+
+  function handleTouchEnd(clientX: number) {
+    if (touchStartX === null) return;
+
+    const deltaX = clientX - touchStartX;
+    const swipeThreshold = 42;
+
+    if (Math.abs(deltaX) >= swipeThreshold) {
+      if (deltaX > 0) {
+        showPreviousSlide();
+      } else {
+        showNextSlide();
+      }
+    }
+
+    setTouchStartX(null);
+    setDragOffsetX(0);
+  }
 
   return (
     <section
@@ -34,72 +63,130 @@ export function FeaturedSlider() {
         width: "100%",
         overflow: "visible",
         padding: "0 0 14px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <div
         style={{
-          height: 172,
-          borderRadius: 18,
-          background: "#EFF2EC",
-          border: "1px solid rgba(255,255,255,0.45)",
-          padding: "18px 18px 16px",
+          width: "calc(100% + 36px)",
+          margin: "-18px -18px -26px",
+          overflow: "hidden",
+          padding: "18px 18px 26px",
           boxSizing: "border-box",
-          position: "relative",
-          boxShadow: "0 12px 30px rgba(41,8,0,0.08)",
+          touchAction: "pan-y",
+          direction: "ltr",
         }}
       >
-        <div style={{ width: "90%", minWidth: 0 }}>
-          <p
-            style={{
-              width: "fit-content",
-              margin: "0 0 9px",
-              borderRadius: 999,
-              background: `${activeSlide.accent}18`,
-              padding: "4px 9px",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 900,
-              fontSize: 11,
-              lineHeight: 1.1,
-              color: activeSlide.accent,
-            }}
-          >
-            {activeSlide.eyebrow}
-          </p>
-          <div style={{ minWidth: 0 }}>
-            <h2
+        <div
+          onTouchStart={(event) => {
+            setTouchStartX(event.touches[0]?.clientX ?? null);
+            setDragOffsetX(0);
+          }}
+          onTouchMove={(event) => {
+            if (touchStartX === null) return;
+
+            const deltaX = (event.touches[0]?.clientX ?? touchStartX) - touchStartX;
+            const isDraggingPastStart = activeIndex === 0 && deltaX > 0;
+            const isDraggingPastEnd = activeIndex === slides.length - 1 && deltaX < 0;
+            const resistedDelta = isDraggingPastStart || isDraggingPastEnd ? deltaX * 0.22 : deltaX;
+
+            setDragOffsetX(Math.max(-110, Math.min(110, resistedDelta)));
+          }}
+          onTouchCancel={() => {
+            setTouchStartX(null);
+            setDragOffsetX(0);
+          }}
+          onTouchEnd={(event) => handleTouchEnd(event.changedTouches[0]?.clientX ?? touchStartX ?? 0)}
+          style={{
+            width: "100%",
+            display: "flex",
+            gap: slideGap,
+            transform: `translate3d(calc(${dragOffsetX}px - ${activeIndex * 100}% - ${activeIndex * slideGap}px), 0, 0)`,
+            transition: touchStartX === null ? "transform 0.38s cubic-bezier(0.22, 1, 0.36, 1)" : "none",
+            willChange: "transform",
+          }}
+        >
+          {slides.map((slide) => (
+            <article
+              key={slide.title}
               style={{
-                margin: 0,
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 22,
-                lineHeight: 1.12,
-                letterSpacing: 0,
-                color: "#290800",
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
+                flex: "0 0 100%",
+                height: 212,
+                borderRadius: 18,
+                background: "#EFF2EC",
+                border: "1px solid rgba(255,255,255,0.45)",
+                padding: "14px 18px 18px",
+                boxSizing: "border-box",
+                boxShadow: "0 12px 30px rgba(41,8,0,0.08)",
+                direction: "rtl",
               }}
             >
-              {activeSlide.title}
-            </h2>
-            <p
-              style={{
-                margin: "8px 0 0",
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 600,
-                fontSize: 14,
-                lineHeight: 1.45,
-                color: "#5F544F",
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-              }}
-            >
-              {activeSlide.text}
-            </p>
-          </div>
+              <div
+                style={{
+                  width: "100%",
+                  minWidth: 0,
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <p
+                  style={{
+                    width: "fit-content",
+                    margin: 0,
+                    borderRadius: 999,
+                    background: `${slide.accent}18`,
+                    padding: "4px 9px",
+                    fontFamily: "var(--font-rubik)",
+                    fontWeight: 900,
+                    fontSize: 11,
+                    lineHeight: 1.1,
+                    color: slide.accent,
+                  }}
+                >
+                  {slide.eyebrow}
+                </p>
+                <div style={{ minWidth: 0 }}>
+                  <h2
+                    style={{
+                      margin: 0,
+                      fontFamily: "var(--font-rubik)",
+                      fontWeight: 900,
+                      fontSize: 22,
+                      lineHeight: 1.12,
+                      letterSpacing: 0,
+                      color: "#290800",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {slide.title}
+                  </h2>
+                  <p
+                    style={{
+                      margin: "8px 0 0",
+                      fontFamily: "var(--font-rubik)",
+                      fontWeight: 600,
+                      fontSize: 14,
+                      lineHeight: 1.45,
+                      color: "#5F544F",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {slide.text}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
       <div

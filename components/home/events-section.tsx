@@ -79,6 +79,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
   return (
     <>
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
+      <h2 style={{ margin: "0 2px 12px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 16, lineHeight: 1.1, color: "#290800" }}>
+        אירוע קרוב
+      </h2>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {events.map((item) => {
           const timeRange = item.end_hour ? `${item.start_hour}-${item.end_hour}` : item.start_hour;
@@ -100,6 +103,8 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
           display: "flex",
           flexDirection: "row",
           gap: 12,
+          direction: "ltr",
+          alignItems: "stretch",
           overflow: "hidden",
           textAlign: "right",
           boxSizing: "border-box",
@@ -108,8 +113,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
       >
         <div
           style={{
-            width: 118,
-            height: 118,
+            width: 142,
+            minHeight: 118,
+            alignSelf: "stretch",
             flexShrink: 0,
             borderRadius: 18,
             background: "rgba(89, 52, 237, 0.12)",
@@ -128,11 +134,11 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
           )}
         </div>
 
-        <div style={{ minWidth: 0, flex: 1, display: "flex", flexDirection: "column" }}>
-          <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 850, fontSize: 11, lineHeight: 1.25, color: "#5934ED" }}>
+        <div style={{ minWidth: 0, flex: 1, display: "flex", flexDirection: "column", direction: "rtl", paddingBlock: 2, boxSizing: "border-box" }}>
+          <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.3, color: "#9CA0AE" }}>
             {formatDate(item.event_date)}
           </p>
-          <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.2, color: "#290800", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.2, color: "#290800", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
             {item.title}
           </h3>
           {eventMeta && (

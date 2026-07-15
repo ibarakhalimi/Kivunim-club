@@ -38,7 +38,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         <div style={{ marginTop: 0 }}>
           <ProfileCard />
         </div>
-        <div style={{ marginTop: 16 }}>
+        <div style={{ marginTop: 22 }}>
           <FeaturedSlider />
         </div>
         <div style={{ marginTop: 16 }}>

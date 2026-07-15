@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Plus } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import type { Tables } from "@/src/types/database";
 
 type Benefit = Tables<"benefits">;
@@ -49,67 +48,44 @@ function isExpired(expiresAt: string | null) {
 
 export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const [openBenefitId, setOpenBenefitId] = useState<string | null>(null);
-  const [showAll, setShowAll] = useState(false);
   const currentBenefits = useMemo(() => benefits.filter((benefit) => !isExpired(benefit.expires_at)), [benefits]);
-  const initialVisibleCount = 5;
-  const additionalCount = Math.max(currentBenefits.length - initialVisibleCount, 0);
-  const visibleBenefits = showAll ? currentBenefits : currentBenefits.slice(0, initialVisibleCount);
+  const selectedBenefit = useMemo(
+    () => currentBenefits.find((benefit) => benefit.id === openBenefitId) ?? null,
+    [currentBenefits, openBenefitId]
+  );
+
+  useEffect(() => {
+    document.body.style.overflow = selectedBenefit ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [selectedBenefit]);
 
   if (currentBenefits.length === 0) return null;
 
   return (
+    <>
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
-      <div style={{ background: "#EFF2EC", borderRadius: 22, padding: 18, boxSizing: "border-box" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
-          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 1000, fontSize: 16, lineHeight: 1.1, color: "#290800" }}>
+      <div style={{ width: "100%", boxSizing: "border-box" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12, paddingInline: 2 }}>
+          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 16, lineHeight: 1.1, color: "#290800" }}>
             ההטבות שלך
           </h2>
-          {!showAll && additionalCount > 0 && (
-            <button
-              type="button"
-              onClick={() => setShowAll(true)}
-              aria-label={`הצג עוד ${additionalCount} הטבות`}
-              style={{
-                minHeight: 32,
-                border: "none",
-                borderRadius: 999,
-                background: "#34D399",
-                color: "#111522",
-                padding: "0 11px",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 5,
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 950,
-                fontSize: 12,
-                lineHeight: 1,
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-                flexShrink: 0,
-              }}
-            >
-              <Plus size={14} strokeWidth={3} />
-              {additionalCount}
-            </button>
-          )}
         </div>
-        {visibleBenefits.map((benefit, index) => {
-          const isOpen = openBenefitId === benefit.id;
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {currentBenefits.map((benefit) => {
           const category = benefit.category ?? "";
           return (
             <article
               key={benefit.id}
-              onClick={() => {
-                if (!benefit.description) return;
-                setOpenBenefitId((current) => current === benefit.id ? null : benefit.id);
-              }}
+              onClick={() => setOpenBenefitId(benefit.id)}
               style={{
-                padding: "13px 0",
+                padding: 14,
                 display: "flex",
                 gap: 12,
-                borderBottom: index === visibleBenefits.length - 1 ? "none" : "1px solid rgba(52, 211, 153, 0.16)",
-                cursor: benefit.description ? "pointer" : "default",
+                alignItems: "center",
+                background: "#EFF2EC",
+                borderRadius: 22,
+                cursor: "pointer",
+                boxSizing: "border-box",
               }}
             >
               <div style={{ width: 54, height: 54, borderRadius: "50%", background: categoryBg(category), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 23, flexShrink: 0, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
@@ -127,39 +103,184 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#290800" }}>
                   {benefit.business}
                 </p>
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, lineHeight: 1.35, color: "#34D399" }}>
-                  {benefit.deal}
-                </p>
-                {isOpen && benefit.description && (
-                  <div
-                    dangerouslySetInnerHTML={{ __html: benefit.description }}
-                    style={{ margin: "8px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 13, lineHeight: 1.6, color: "#C7CAD6" }}
-                  />
+                {category && (
+                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.35, color: categoryColor(category) }}>
+                    {category}
+                  </p>
                 )}
               </div>
-              {category && (
-                <span
-                  style={{
-                    alignSelf: "flex-start",
-                    flexShrink: 0,
-                    borderRadius: 999,
-                    background: categoryBg(category),
-                    color: categoryColor(category),
-                    padding: "5px 9px",
-                    fontFamily: "var(--font-rubik)",
-                    fontWeight: 900,
-                    fontSize: 10,
-                    lineHeight: 1,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {category}
-                </span>
-              )}
+              <span
+                style={{
+                  alignSelf: "center",
+                  flexShrink: 0,
+                  maxWidth: "38%",
+                  borderRadius: 999,
+                  background: "rgba(89, 52, 237, 0.14)",
+                  color: "#5934ED",
+                  padding: "7px 10px",
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 950,
+                  fontSize: 12,
+                  lineHeight: 1.2,
+                  textAlign: "center",
+                }}
+              >
+                {benefit.deal}
+              </span>
             </article>
           );
         })}
+        </div>
       </div>
     </section>
+    {selectedBenefit && (
+      <div
+        onClick={() => setOpenBenefitId(null)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 1000,
+          background: "rgba(0,0,0,0.5)",
+          display: "flex",
+          alignItems: "flex-end",
+        }}
+      >
+        <div
+          onClick={(event) => event.stopPropagation()}
+          style={{
+            width: "100%",
+            maxHeight: "86dvh",
+            borderRadius: "26px 26px 0 0",
+            background: "#EFF2EC",
+            border: "1px solid rgba(41,8,0,0.08)",
+            borderBottom: "none",
+            overflow: "hidden",
+            direction: "rtl",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div style={{ maxHeight: "86dvh", overflowY: "auto", padding: "14px 16px 28px" }}>
+            <button
+              type="button"
+              onClick={() => setOpenBenefitId(null)}
+              aria-label="סגור"
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: "50%",
+                border: "none",
+                background: "#CBD6E6",
+                color: "#290800",
+                fontSize: 18,
+                lineHeight: 1,
+                cursor: "pointer",
+                marginBottom: 12,
+              }}
+            >
+              ×
+            </button>
+
+            <div
+              style={{
+                width: "100%",
+                aspectRatio: selectedBenefit.image_url ? "1.9 / 1" : "2.8 / 1",
+                borderRadius: 20,
+                background: categoryBg(selectedBenefit.category ?? ""),
+                overflow: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: categoryColor(selectedBenefit.category ?? ""),
+                fontSize: 44,
+                marginBottom: 16,
+              }}
+            >
+              {selectedBenefit.image_url ? (
+                <img
+                  src={selectedBenefit.image_url}
+                  alt={selectedBenefit.business}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
+              ) : (
+                categoryEmoji(selectedBenefit.category ?? "")
+              )}
+            </div>
+
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
+              <div style={{ minWidth: 0 }}>
+                {selectedBenefit.category && (
+                  <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 12, color: categoryColor(selectedBenefit.category) }}>
+                    {selectedBenefit.category}
+                  </p>
+                )}
+                <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 24, lineHeight: 1.15, color: "#290800" }}>
+                  {selectedBenefit.business}
+                </h2>
+              </div>
+              <span
+                style={{
+                  flexShrink: 0,
+                  maxWidth: "42%",
+                  borderRadius: 999,
+                  background: "rgba(89,52,237,0.14)",
+                  color: "#5934ED",
+                  padding: "7px 10px",
+                  fontFamily: "var(--font-rubik)",
+                  fontWeight: 950,
+                  fontSize: 12,
+                  lineHeight: 1.2,
+                  textAlign: "center",
+                }}
+              >
+                {selectedBenefit.deal}
+              </span>
+            </div>
+
+            {selectedBenefit.business_description && (
+              <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, lineHeight: 1.55, color: "#64748B" }}>
+                {selectedBenefit.business_description}
+              </p>
+            )}
+
+            {selectedBenefit.description && (
+              <div
+                dangerouslySetInnerHTML={{ __html: selectedBenefit.description }}
+                style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 15, lineHeight: 1.75, color: "#290800" }}
+              />
+            )}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {selectedBenefit.location && (
+                <div style={{ borderRadius: 14, background: "#DFDBD3", padding: "11px 12px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: "#290800" }}>
+                  {selectedBenefit.location}
+                </div>
+              )}
+              {selectedBenefit.contact_phone && (
+                <a
+                  href={`tel:${selectedBenefit.contact_phone.replace(/\D/g, "")}`}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: 48,
+                    borderRadius: 16,
+                    background: "#5934ED",
+                    color: "#FFFFFF",
+                    fontFamily: "var(--font-rubik)",
+                    fontWeight: 950,
+                    fontSize: 15,
+                    textDecoration: "none",
+                  }}
+                >
+                  התקשרות למימוש ההטבה
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
