@@ -111,12 +111,12 @@ export default function RegisterSuccessPage() {
             fontFamily: "var(--font-rubik)",
             fontWeight: 600,
             fontSize: 16,
-            color: "#C7CAD6",
+            color: "#683633",
             lineHeight: 1.6,
             maxWidth: 300,
           }}
         >
-          ברוך הבא למועדון הסטודנטים. בדוק את תיבת האימייל שלך לאישור הרשמה.
+          ההרשמה הושלמה. עכשיו אפשר להיכנס למועדון באמצעות קוד לנייד.
         </p>
       </div>
 
@@ -128,7 +128,7 @@ export default function RegisterSuccessPage() {
         }}
       >
         <div style={{ maxWidth: 480, margin: "0 auto" }}>
-          <Link href="/" style={{ textDecoration: "none" }}>
+          <Link href="/welcome" style={{ textDecoration: "none" }}>
             <div
               style={{
                 width: "100%",

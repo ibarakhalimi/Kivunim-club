@@ -15,8 +15,9 @@ const fieldStyle: React.CSSProperties = {
   minHeight: 46,
   border: "none",
   borderRadius: 14,
-  background: "#303446",
+  background: "#D4CFC4",
   color: "#290800",
+  WebkitTextFillColor: "#290800",
   fontFamily: "var(--font-rubik)",
   fontSize: 15,
   fontWeight: 700,
@@ -31,8 +32,8 @@ const primaryButtonStyle: React.CSSProperties = {
   minHeight: 46,
   border: "none",
   borderRadius: 14,
-  background: "#F7F8FF",
-  color: "#290800",
+  background: "#683633",
+  color: "#FFFFFF",
   fontFamily: "var(--font-rubik)",
   fontWeight: 900,
   fontSize: 15,
@@ -50,7 +51,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
   const searchParams = useSearchParams();
   const [passwordEmail, setPasswordEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(() => searchParams.get("phone") ?? "");
   const [phoneOtp, setPhoneOtp] = useState("");
   const [phoneOtpSent, setPhoneOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -148,6 +149,13 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
         boxSizing: "border-box",
       }}
     >
+      <style>{`
+        .kv-welcome-field::placeholder {
+          color: #290800;
+          -webkit-text-fill-color: #290800;
+          opacity: 1;
+        }
+      `}</style>
       <button
         type="button"
         onClick={handleGoogleLogin}
@@ -178,9 +186,9 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
         <div style={{ flex: 1, height: 1, background: "rgba(247, 248, 255, 0.12)" }} />
         <span
           style={{
-            color: "#9CA0AE",
+            color: "#290800",
             fontFamily: "var(--font-rubik)",
-            fontSize: 13,
+            fontSize: 15,
             fontWeight: 800,
           }}
         >
@@ -199,7 +207,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
               top: "50%",
               right: 16,
               transform: "translateY(-50%)",
-              color: "#9CA0AE",
+              color: "#290800",
             }}
           />
           <input
@@ -207,6 +215,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
             value={passwordEmail}
             onChange={(event) => setPasswordEmail(event.target.value)}
             placeholder="מייל"
+            className="kv-welcome-field"
             required
             autoComplete="email"
             style={{ ...fieldStyle, paddingRight: 46, direction: "ltr", textAlign: "right" }}
@@ -222,7 +231,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
               top: "50%",
               right: 16,
               transform: "translateY(-50%)",
-              color: "#9CA0AE",
+              color: "#290800",
             }}
           />
           <input
@@ -230,6 +239,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="סיסמה"
+            className="kv-welcome-field"
             required
             autoComplete="current-password"
             style={{ ...fieldStyle, paddingRight: 46, direction: "ltr", textAlign: "right" }}
@@ -249,13 +259,13 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
         <div style={{ flex: 1, height: 1, background: "rgba(247, 248, 255, 0.12)" }} />
         <span
           style={{
-            color: "#9CA0AE",
+            color: "#290800",
             fontFamily: "var(--font-rubik)",
-            fontSize: 13,
+            fontSize: 15,
             fontWeight: 800,
           }}
         >
-          או קוד לנייד
+          כניסה עם קוד לנייד
         </span>
         <div style={{ flex: 1, height: 1, background: "rgba(247, 248, 255, 0.12)" }} />
       </div>
@@ -271,7 +281,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
                 top: "50%",
                 right: 16,
                 transform: "translateY(-50%)",
-                color: "#9CA0AE",
+                color: "#290800",
               }}
             />
             <input
@@ -280,6 +290,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
               placeholder="מספר נייד"
+              className="kv-welcome-field"
               required
               autoComplete="tel"
               style={{ ...fieldStyle, paddingRight: 46, direction: "ltr", textAlign: "right" }}
@@ -301,6 +312,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
             value={phoneOtp}
             onChange={(event) => setPhoneOtp(event.target.value)}
             placeholder="קוד שקיבלת ב-SMS"
+            className="kv-welcome-field"
             required
             maxLength={6}
             autoComplete="one-time-code"
@@ -323,7 +335,7 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
             style={{
               border: "none",
               background: "transparent",
-              color: "#9CA0AE",
+              color: "#290800",
               fontFamily: "var(--font-rubik)",
               fontSize: 13,
               fontWeight: 800,

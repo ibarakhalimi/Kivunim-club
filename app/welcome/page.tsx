@@ -45,38 +45,38 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "96px 14px 48px",
+          padding: "20px 14px 48px",
           textAlign: "center",
           position: "relative",
           zIndex: 1,
         }}
       >
         {/* Logo + title */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, paddingTop: 8 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
           {/* Logo with floating icons */}
-          <div style={{ position: "relative", width: 112, height: 112 }}>
-            <span style={{ position: "absolute", top: -14, right: -10, fontSize: 26, lineHeight: 1, animation: "float 3.2s ease-in-out infinite", animationDelay: "0s", display: "block" }}>🎉</span>
-            <span style={{ position: "absolute", top: 6, left: -20, fontSize: 22, lineHeight: 1, animation: "float 2.8s ease-in-out infinite", animationDelay: "0.6s", display: "block" }}>🎟️</span>
-            <span style={{ position: "absolute", bottom: -10, right: -14, fontSize: 24, lineHeight: 1, animation: "float 3.5s ease-in-out infinite", animationDelay: "1.1s", display: "block" }}>⭐</span>
-            <span style={{ position: "absolute", bottom: 4, left: -18, fontSize: 22, lineHeight: 1, animation: "float 3.0s ease-in-out infinite", animationDelay: "0.3s", display: "block" }}>🎁</span>
-            <span style={{ position: "absolute", top: -18, left: 14, fontSize: 22, lineHeight: 1, animation: "float 2.6s ease-in-out infinite", animationDelay: "1.5s", display: "block" }}>🏆</span>
-            <span style={{ position: "absolute", bottom: -16, left: "28%", fontSize: 20, lineHeight: 1, animation: "float 3.3s ease-in-out infinite", animationDelay: "0.9s", display: "block" }}>👥</span>
+          <div style={{ position: "relative", width: "calc(100vw - 28px)", maxWidth: 520, height: 156, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ position: "absolute", top: 0, right: 0, fontSize: 36, lineHeight: 1, animation: "float 3.2s ease-in-out infinite", animationDelay: "0s", display: "block" }}>🎉</span>
+            <span style={{ position: "absolute", top: 24, left: 0, fontSize: 34, lineHeight: 1, animation: "float 2.8s ease-in-out infinite", animationDelay: "0.6s", display: "block" }}>🎟️</span>
+            <span style={{ position: "absolute", bottom: 10, right: "3%", fontSize: 35, lineHeight: 1, animation: "float 3.5s ease-in-out infinite", animationDelay: "1.1s", display: "block" }}>⭐</span>
+            <span style={{ position: "absolute", bottom: 16, left: "4%", fontSize: 34, lineHeight: 1, animation: "float 3.0s ease-in-out infinite", animationDelay: "0.3s", display: "block" }}>🎁</span>
+            <span style={{ position: "absolute", top: 0, left: "23%", fontSize: 33, lineHeight: 1, animation: "float 2.6s ease-in-out infinite", animationDelay: "1.5s", display: "block" }}>🏆</span>
+            <span style={{ position: "absolute", bottom: 0, right: "25%", fontSize: 32, lineHeight: 1, animation: "float 3.3s ease-in-out infinite", animationDelay: "0.9s", display: "block" }}>👥</span>
             <div
               style={{
-                width: 112,
-                height: 112,
-                borderRadius: 34,
-                background: "#F7F8FF",
+                width: 146,
+                height: 146,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                position: "relative",
+                zIndex: 1,
               }}
             >
               <Image
                 src="/logo-aguda.png"
                 alt="לוגו האגודה"
-                width={88}
-                height={88}
+                width={126}
+                height={126}
                 style={{ display: "block" }}
               />
             </div>
@@ -105,7 +105,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
           <p
             style={{
               margin: 0,
-              color: "#9CA0AE",
+              color: "#290800",
               fontFamily: "var(--font-rubik)",
               fontSize: 14,
               fontWeight: 800,
@@ -120,7 +120,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
                 width: "100%",
                 padding: "15px 0",
                 background: "#5934ED",
-                color: "#fff",
+                color: "#FFFFFF",
                 border: "none",
                 borderRadius: 18,
                 fontFamily: "var(--font-rubik)",

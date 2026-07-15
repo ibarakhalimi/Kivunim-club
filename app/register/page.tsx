@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import supabase from "@/lib/supabase/client";
+import { registerMember } from "@/app/actions/register";
 
 const STUDY_YEARS = ["שנה א׳", "שנה ב׳", "שנה ג׳", "שנה ד׳", "אחר"];
 const REGIONS = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ז׳", "ח׳", "ט׳", "י׳", "יא׳", "יב׳", "יג׳", "יד׳", "טו׳", "טז׳", "סיטי", "מע״ר"];
@@ -35,6 +36,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [termsOpen, setTermsOpen] = useState(false);
+  const [duplicatePhoneOpen, setDuplicatePhoneOpen] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
@@ -48,39 +50,40 @@ export default function RegisterPage() {
     privacy_consent: false,
   });
 
+  const isFormComplete = [
+    form.email,
+    form.name,
+    form.institution,
+    form.degree,
+    form.study_year,
+    form.region,
+    form.birth_date,
+  ].every((value) => value.trim().length > 0) && /^05\d{8}$/.test(form.phone) && form.privacy_consent;
+
   function set(field: string, value: string | boolean) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
   async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault();
-    if (!form.privacy_consent) {
-      setError("יש לאשר את תנאי הפרטיות כדי להמשיך");
+    if (!isFormComplete) {
+      setError("יש למלא את כל הפרטים ולאשר את תנאי הפרטיות כדי להמשיך");
       return;
     }
 
     setLoading(true);
     setError(null);
 
-    const { error: signUpError } = await supabase.auth.signInWithOtp({
-      email: form.email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`,
-        data: {
-          name: form.name || null,
-          phone: form.phone || null,
-          institution: form.institution || null,
-          degree: form.degree || null,
-          study_year: form.study_year || null,
-          region: form.region || null,
-          birth_date: form.birth_date || null,
-          privacy_consent: form.privacy_consent,
-        },
-      },
-    });
+    const result = await registerMember(form);
 
-    if (signUpError) {
-      setError(signUpError.message);
+    if ("duplicatePhone" in result) {
+      setLoading(false);
+      setDuplicatePhoneOpen(true);
+      return;
+    }
+
+    if ("error" in result) {
+      setError(result.error);
       setLoading(false);
       return;
     }
@@ -192,32 +195,33 @@ export default function RegisterPage() {
           flexDirection: "column",
         }}
       >
-        <div style={{ flex: 1, overflowY: "auto", padding: "0 14px" }}>
+        <div style={{ flex: 1, overflowY: "auto", padding: "0 28px" }}>
           <div style={{ maxWidth: 480, margin: "0 auto" }}>
             {headerBlock}
 
-            {/* About box */}
-            <div style={infoCardStyle}>
-              <p style={sectionLabelStyle}>מי אנחנו</p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.7, color: "#C7CAD6" }}>
+            {/* About */}
+            <section>
+              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.6, color: "#683633" }}>
                 אגודת הסטודנטים העירונית באשדוד הוקמה על ידי קבוצת ׳בקטע מקומי׳ במרכז כיוונים כדי לייצג את כלל הסטודנטים והסטודנטיות בעיר ללא הבדלי מוסד, תואר או שנתון.
               </p>
-            </div>
+            </section>
 
-            {/* Benefits box */}
-            <div style={{ ...infoCardStyle, marginTop: 12 }}>
-              <p style={{ ...sectionLabelStyle, marginBottom: 12 }}>למה להצטרף?</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {/* Benefits */}
+            <section style={{ marginTop: 26 }}>
+              <h2 style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 21, lineHeight: 1.25, color: "#5934ED" }}>
+                למה להצטרף?
+              </h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {BENEFITS.map(({ emoji, text }) => (
-                  <div key={text} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                    <span style={{ fontSize: 18, lineHeight: 1.5, flexShrink: 0 }}>{emoji}</span>
-                    <span style={{ fontFamily: "var(--font-rubik)", fontSize: 15, lineHeight: 1.55, color: "#C7CAD6" }}>
+                  <div key={text} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                    <span style={{ fontSize: 28, lineHeight: 1.15, flexShrink: 0 }}>{emoji}</span>
+                    <span style={{ fontFamily: "var(--font-rubik)", fontSize: 17, fontWeight: 800, lineHeight: 1.5, color: "#683633" }}>
                       {text}
                     </span>
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
 
             <div style={{ height: 24 }} />
           </div>
@@ -249,7 +253,7 @@ export default function RegisterPage() {
       style={{
         minHeight: "100dvh",
         background: "#DFDBD3",
-        padding: "0 14px 56px",
+        padding: "0 14px 124px",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -260,20 +264,30 @@ export default function RegisterPage() {
         {headerBlock}
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <Field label="אימייל *">
+          <Field label="אימייל">
             <input type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="כתובת אימייל" style={inputStyle} />
           </Field>
           <Field label="שם מלא">
-            <input type="text" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="שם פרטי ומשפחה" style={inputStyle} />
+            <input type="text" required value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="שם פרטי ומשפחה" style={inputStyle} />
           </Field>
           <Field label="טלפון">
-            <input type="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="05X-XXXXXXX" style={inputStyle} />
+            <input
+              type="tel"
+              required
+              inputMode="numeric"
+              pattern="05[0-9]{8}"
+              maxLength={10}
+              value={form.phone}
+              onChange={(e) => set("phone", e.target.value.replace(/\D/g, "").slice(0, 10))}
+              placeholder="05XXXXXXXX"
+              style={inputStyle}
+            />
           </Field>
           <Field label="תאריך לידה">
-            <input type="date" value={form.birth_date} onChange={(e) => set("birth_date", e.target.value)} style={inputStyle} />
+            <input type="date" required value={form.birth_date} onChange={(e) => set("birth_date", e.target.value)} style={inputStyle} />
           </Field>
           <Field label="אזור מגורים">
-            <select value={form.region} onChange={(e) => set("region", e.target.value)} style={inputStyle}>
+            <select required value={form.region} onChange={(e) => set("region", e.target.value)} style={inputStyle}>
               <option value="">בחר אזור...</option>
               {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
@@ -282,10 +296,10 @@ export default function RegisterPage() {
             <InstitutionInput value={form.institution} onChange={(v) => set("institution", v)} />
           </Field>
           <Field label="תואר לימוד">
-            <input type="text" value={form.degree} onChange={(e) => set("degree", e.target.value)} placeholder="לדוגמה: תקשורת, מנהל עסקים" style={inputStyle} />
+            <input type="text" required value={form.degree} onChange={(e) => set("degree", e.target.value)} placeholder="לדוגמה: תקשורת, מנהל עסקים" style={inputStyle} />
           </Field>
           <Field label="שנתון">
-            <select value={form.study_year} onChange={(e) => set("study_year", e.target.value)} style={inputStyle}>
+            <select required value={form.study_year} onChange={(e) => set("study_year", e.target.value)} style={inputStyle}>
               <option value="">בחר...</option>
               {STUDY_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
             </select>
@@ -296,11 +310,12 @@ export default function RegisterPage() {
             <label style={{ display: "flex", alignItems: "flex-start", gap: 12, cursor: "pointer" }}>
               <input
                 type="checkbox"
+                required
                 checked={form.privacy_consent}
                 onChange={(e) => set("privacy_consent", e.target.checked)}
-                style={{ width: 18, height: 18, marginTop: 3, flexShrink: 0, cursor: "pointer", accentColor: "#5934ED" }}
+                style={{ width: 18, height: 18, marginTop: 3, flexShrink: 0, cursor: "pointer", accentColor: "#683633" }}
               />
-              <span style={{ fontSize: 14, lineHeight: 1.6, color: "#C7CAD6", fontFamily: "var(--font-rubik)", fontWeight: 600 }}>
+              <span style={{ fontSize: 14, lineHeight: 1.6, color: "#683633", fontFamily: "var(--font-rubik)", fontWeight: 600 }}>
                 קראתי ואני מסכים/ה{" "}
                 <button
                   type="button"
@@ -320,20 +335,31 @@ export default function RegisterPage() {
             </p>
           )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ ...primaryBtnStyle, marginTop: 8, opacity: loading ? 0.6 : 1, cursor: loading ? "not-allowed" : "pointer" }}
+          <div
+            style={{
+              position: "fixed",
+              right: 0,
+              bottom: 0,
+              left: 0,
+              zIndex: 20,
+              padding: "16px 14px calc(16px + env(safe-area-inset-bottom))",
+              background: "linear-gradient(to top, #DFDBD3 72%, rgba(223, 219, 211, 0) 100%)",
+            }}
           >
-            {loading ? "נרשם..." : "הירשם למועדון"}
-          </button>
-
-          <p style={{ margin: "4px 0 0", textAlign: "center", fontSize: 14, color: "#9CA0AE", fontFamily: "var(--font-rubik)", fontWeight: 700 }}>
-            כבר יש לך חשבון?{" "}
-            <Link href="/welcome" style={{ color: "#5934ED", fontWeight: 900, textDecoration: "none" }}>
-              כניסה
-            </Link>
-          </p>
+            <div style={{ maxWidth: 480, margin: "0 auto" }}>
+              <button
+                type="submit"
+                disabled={loading || !isFormComplete}
+                style={{
+                  ...primaryBtnStyle,
+                  opacity: isFormComplete && !loading ? 1 : 0.45,
+                  cursor: loading || !isFormComplete ? "not-allowed" : "pointer",
+                }}
+              >
+                {loading ? "מאשר..." : "אישור הרשמה"}
+              </button>
+            </div>
+          </div>
         </form>
       </div>
 
@@ -402,6 +428,73 @@ export default function RegisterPage() {
           </div>
         </>
       )}
+
+      {duplicatePhoneOpen && (
+        <>
+          <div
+            onClick={() => setDuplicatePhoneOpen(false)}
+            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 110 }}
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="duplicate-phone-title"
+            style={{
+              position: "fixed",
+              top: "50%",
+              right: 20,
+              left: 20,
+              zIndex: 111,
+              transform: "translateY(-50%)",
+              maxWidth: 440,
+              margin: "0 auto",
+              padding: "28px 20px 20px",
+              borderRadius: 18,
+              background: "#EFF2EC",
+              textAlign: "center",
+              boxShadow: "0 18px 48px rgba(0,0,0,0.28)",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setDuplicatePhoneOpen(false)}
+              aria-label="סגירה"
+              style={{
+                position: "absolute",
+                top: 12,
+                left: 12,
+                width: 34,
+                height: 34,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "none",
+                borderRadius: "50%",
+                background: "transparent",
+                color: "#683633",
+                cursor: "pointer",
+              }}
+            >
+              <X size={21} />
+            </button>
+            <h2
+              id="duplicate-phone-title"
+              style={{ margin: "8px 0 10px", fontFamily: "var(--font-rubik)", fontSize: 22, fontWeight: 900, color: "#683633" }}
+            >
+              נראה שכבר נרשמת למועדון
+            </h2>
+            <p style={{ margin: "0 0 20px", fontFamily: "var(--font-rubik)", fontSize: 15, fontWeight: 700, lineHeight: 1.55, color: "#683633" }}>
+              מספר הנייד הזה כבר קיים במערכת. אפשר להיכנס באמצעות קוד לנייד.
+            </p>
+            <Link
+              href={`/welcome?phone=${encodeURIComponent(form.phone)}`}
+              style={{ ...primaryBtnStyle, display: "block", boxSizing: "border-box", textAlign: "center", textDecoration: "none" }}
+            >
+              כניסה עם קוד לנייד
+            </Link>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -414,6 +507,7 @@ function InstitutionInput({ value, onChange }: { value: string; onChange: (v: st
     <div style={{ position: "relative" }}>
       <input
         type="text"
+        required
         value={value}
         onChange={(e) => { onChange(e.target.value); setOpen(true); }}
         onFocus={() => setOpen(true)}
@@ -496,21 +590,4 @@ const primaryBtnStyle: React.CSSProperties = {
   fontWeight: 900,
   fontSize: 16,
   cursor: "pointer",
-};
-
-const infoCardStyle: React.CSSProperties = {
-  padding: "16px",
-  background: "#EFF2EC",
-  borderRadius: 24,
-  border: "none",
-};
-
-const sectionLabelStyle: React.CSSProperties = {
-  margin: "0 0 8px",
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 12,
-  letterSpacing: "0.06em",
-  textTransform: "uppercase",
-  color: "#5934ED",
 };
