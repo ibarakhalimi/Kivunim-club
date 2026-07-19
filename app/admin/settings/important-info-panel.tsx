@@ -89,18 +89,18 @@ function RichTextEditor({
         placeholder="<p>כתוב כאן את פירוט התוכן...</p>"
         style={{
           minHeight: 120,
-          border: "1px solid #CBD5E1",
-          borderRadius: 12,
-          background: "#FFFFFF",
+          border: "1px solid var(--color-text-on-dark)",
+          borderRadius: "var(--shape-radius-lg)",
+          background: "var(--color-surface-raised)",
           padding: "11px 12px",
-          fontSize: 14,
-          fontWeight: 600,
+          fontSize: "var(--font-size-base)",
+          fontWeight: "var(--font-weight-semibold)",
           lineHeight: 1.65,
-          color: "#0F172A",
+          color: "var(--color-admin-dark)",
           outline: "none",
           resize: "vertical",
           direction: "rtl",
-          fontFamily: "var(--font-rubik)",
+          fontFamily: "var(--font-family-sans)",
         }}
       />
     </div>
@@ -116,7 +116,7 @@ function DeleteInfoPageButton({ pageId }: { pageId: string }) {
     <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
       <input type="hidden" name="id" value={pageId} />
       {state.error && (
-        <p style={{ margin: 0, color: "#DC2626", fontSize: 13, fontWeight: 800 }}>{state.error}</p>
+        <p style={{ margin: 0, color: "var(--color-danger)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)" }}>{state.error}</p>
       )}
       <button
         type="submit"
@@ -129,13 +129,13 @@ function DeleteInfoPageButton({ pageId }: { pageId: string }) {
         style={{
           width: "100%",
           height: 42,
-          borderRadius: 14,
-          border: "1px solid #FECACA",
-          background: "#FEF2F2",
-          color: "#DC2626",
-          fontSize: 13,
-          fontWeight: 900,
-          fontFamily: "var(--font-rubik)",
+          borderRadius: "var(--shape-radius-xl)",
+          border: "1px solid var(--color-red-200)",
+          background: "var(--color-red-50)",
+          color: "var(--color-danger)",
+          fontSize: "var(--font-size-md)",
+          fontWeight: "var(--font-weight-black)",
+          fontFamily: "var(--font-family-sans)",
           cursor: isPending ? "not-allowed" : "pointer",
           display: "flex",
           alignItems: "center",
@@ -191,16 +191,16 @@ function InfoPageForm({ page, mode = "edit" }: { page: ImportantInfoPage; mode?:
           alignItems: "center",
           gap: 8,
           width: "fit-content",
-          borderRadius: 999,
-          background: page.is_active ? "#ECFDF5" : "#F1F5F9",
-          color: page.is_active ? "#15803D" : "#64748B",
+          borderRadius: "var(--shape-radius-pill)",
+          background: page.is_active ? "var(--color-emerald-50)" : "var(--color-surface-soft)",
+          color: page.is_active ? "var(--color-green-700)" : "var(--color-text-secondary)",
           padding: "7px 10px",
-          fontSize: 12,
-          fontWeight: 900,
+          fontSize: "var(--font-size-sm)",
+          fontWeight: "var(--font-weight-black)",
           cursor: "pointer",
         }}
       >
-        <input name="is_active" type="checkbox" defaultChecked={page.is_active} style={{ width: 16, height: 16, accentColor: "#16A34A" }} />
+        <input name="is_active" type="checkbox" defaultChecked={page.is_active} style={{ width: 16, height: 16, accentColor: "var(--color-success)" }} />
         {page.is_active ? <Eye size={15} strokeWidth={2.2} /> : <EyeOff size={15} strokeWidth={2.2} />}
         להציג באפליקציה
       </label>
@@ -211,10 +211,10 @@ function InfoPageForm({ page, mode = "edit" }: { page: ImportantInfoPage; mode?:
       </div>
 
       {state.error && (
-        <p style={{ margin: 0, color: "#DC2626", fontSize: 13, fontWeight: 800 }}>{state.error}</p>
+        <p style={{ margin: 0, color: "var(--color-danger)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)" }}>{state.error}</p>
       )}
       {state.success && (
-        <p style={{ margin: 0, color: "#15803D", fontSize: 13, fontWeight: 800 }}>
+        <p style={{ margin: 0, color: "var(--color-green-700)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)" }}>
           {mode === "create" ? "עמוד המידע נוצר" : "עמוד המידע נשמר"}
         </p>
       )}
@@ -225,13 +225,13 @@ function InfoPageForm({ page, mode = "edit" }: { page: ImportantInfoPage; mode?:
         style={{
           width: "100%",
           height: 44,
-          borderRadius: 14,
+          borderRadius: "var(--shape-radius-xl)",
           border: "none",
-          background: isPending ? "#94A3B8" : "#1E40AF",
-          color: "#fff",
-          fontSize: 14,
-          fontWeight: 900,
-          fontFamily: "var(--font-rubik)",
+          background: isPending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
+          color: "var(--color-surface-raised)",
+          fontSize: "var(--font-size-base)",
+          fontWeight: "var(--font-weight-black)",
+          fontFamily: "var(--font-family-sans)",
           cursor: isPending ? "not-allowed" : "pointer",
           display: "flex",
           alignItems: "center",
@@ -262,9 +262,9 @@ function InfoPageAccordionItem({
   return (
     <article
       style={{
-        border: "1px solid #E2E8F0",
-        borderRadius: 16,
-        background: isOpen ? "#F8FAFC" : "#FFFFFF",
+        border: "1px solid var(--color-border-subtle)",
+        borderRadius: "var(--shape-radius-2xl)",
+        background: isOpen ? "var(--color-surface-muted)" : "var(--color-surface-raised)",
         overflow: "hidden",
       }}
     >
@@ -283,32 +283,32 @@ function InfoPageAccordionItem({
           gap: 12,
           cursor: "pointer",
           textAlign: "right",
-          fontFamily: "var(--font-rubik)",
+          fontFamily: "var(--font-family-sans)",
         }}
       >
         <span style={{ minWidth: 0 }}>
-          <span style={{ display: "block", marginBottom: 5, fontSize: 15, fontWeight: 950, color: "#0F172A" }}>
+          <span style={{ display: "block", marginBottom: 5, fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
             {page.title}
           </span>
           {page.subtitle && (
-            <span style={{ display: "block", margin: "0 0 7px", fontSize: 12, fontWeight: 750, color: "#64748B", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <span style={{ display: "block", margin: "0 0 7px", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {page.subtitle}
             </span>
           )}
           <span style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap" }}>
             <span
               style={{
-                borderRadius: 999,
-                background: page.is_active ? "#ECFDF5" : "#F1F5F9",
-                color: page.is_active ? "#15803D" : "#64748B",
+                borderRadius: "var(--shape-radius-pill)",
+                background: page.is_active ? "var(--color-emerald-50)" : "var(--color-surface-soft)",
+                color: page.is_active ? "var(--color-green-700)" : "var(--color-text-secondary)",
                 padding: "4px 8px",
-                fontSize: 11,
-                fontWeight: 900,
+                fontSize: "var(--font-size-xs)",
+                fontWeight: "var(--font-weight-black)",
               }}
             >
               {page.is_active ? "מוצג באפליקציה" : "מוסתר"}
             </span>
-            <span style={{ fontSize: 11, fontWeight: 800, color: "#94A3B8" }}>
+            <span style={{ fontSize: "var(--font-size-xs)", fontWeight: "var(--font-weight-extrabold)", color: "var(--color-text-tertiary)" }}>
               סדר {page.sort_order}
             </span>
           </span>
@@ -317,9 +317,9 @@ function InfoPageAccordionItem({
           style={{
             width: 34,
             height: 34,
-            borderRadius: 10,
-            background: "#EFF6FF",
-            color: "#1E40AF",
+            borderRadius: "var(--shape-radius-md)",
+            background: "var(--color-blue-50)",
+            color: "var(--color-brand-blue)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -345,9 +345,9 @@ export function ImportantInfoPanel({ pages }: { pages: ImportantInfoPage[] }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <article
         style={{
-          border: "1px solid #BFDBFE",
-          borderRadius: 16,
-          background: createOpen ? "#EFF6FF" : "#FFFFFF",
+          border: "1px solid var(--color-blue-200)",
+          borderRadius: "var(--shape-radius-2xl)",
+          background: createOpen ? "var(--color-blue-50)" : "var(--color-surface-raised)",
           overflow: "hidden",
         }}
       >
@@ -369,23 +369,23 @@ export function ImportantInfoPanel({ pages }: { pages: ImportantInfoPage[] }) {
             gap: 12,
             cursor: "pointer",
             textAlign: "right",
-            fontFamily: "var(--font-rubik)",
+            fontFamily: "var(--font-family-sans)",
           }}
         >
           <span style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
-            <span style={{ width: 34, height: 34, borderRadius: 10, background: "#DBEAFE", color: "#1E40AF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <span style={{ width: 34, height: 34, borderRadius: "var(--shape-radius-md)", background: "var(--color-blue-100)", color: "var(--color-brand-blue)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <Plus size={18} strokeWidth={2.4} />
             </span>
             <span style={{ minWidth: 0 }}>
-              <span style={{ display: "block", marginBottom: 3, fontSize: 15, fontWeight: 950, color: "#0F172A" }}>
+              <span style={{ display: "block", marginBottom: 3, fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
                 הוספת עמוד מידע חדש
               </span>
-              <span style={{ display: "block", fontSize: 12, fontWeight: 750, color: "#64748B" }}>
+              <span style={{ display: "block", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)" }}>
                 יצירת כותרת, כותרת משנה ופירוט תוכן
               </span>
             </span>
           </span>
-          <span style={{ transform: createOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 180ms ease", color: "#1E40AF", flexShrink: 0 }}>
+          <span style={{ transform: createOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 180ms ease", color: "var(--color-brand-blue)", flexShrink: 0 }}>
             <ChevronDown size={18} strokeWidth={2.4} />
           </span>
         </button>
@@ -417,10 +417,10 @@ const fieldWrapStyle: React.CSSProperties = {
 const toolbarButtonStyle: React.CSSProperties = {
   width: 34,
   height: 34,
-  borderRadius: 10,
-  border: "1px solid #CBD5E1",
-  background: "#FFFFFF",
-  color: "#0F172A",
+  borderRadius: "var(--shape-radius-md)",
+  border: "1px solid var(--color-text-on-dark)",
+  background: "var(--color-surface-raised)",
+  color: "var(--color-admin-dark)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -428,21 +428,21 @@ const toolbarButtonStyle: React.CSSProperties = {
 };
 
 const labelStyle: React.CSSProperties = {
-  fontSize: 12,
-  fontWeight: 850,
-  color: "#64748B",
+  fontSize: "var(--font-size-sm)",
+  fontWeight: "var(--font-weight-extrabold)",
+  color: "var(--color-text-secondary)",
 };
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
   minHeight: 42,
-  border: "1px solid #CBD5E1",
-  borderRadius: 12,
-  background: "#fff",
+  border: "1px solid var(--color-text-on-dark)",
+  borderRadius: "var(--shape-radius-lg)",
+  background: "var(--color-surface-raised)",
   padding: "0 10px",
-  fontFamily: "var(--font-rubik)",
-  fontSize: 14,
-  fontWeight: 700,
-  color: "#0F172A",
+  fontFamily: "var(--font-family-sans)",
+  fontSize: "var(--font-size-base)",
+  fontWeight: "var(--font-weight-bold)",
+  color: "var(--color-admin-dark)",
   outline: "none",
 };

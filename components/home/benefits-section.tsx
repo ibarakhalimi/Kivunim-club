@@ -12,17 +12,17 @@ const CATEGORY_EMOJI: Record<string, string> = {
 };
 
 const CATEGORY_BG: Record<string, string> = {
-  "אוכל": "rgba(239,68,68,0.15)", "קפה": "rgba(251,146,60,0.15)", "ספורט": "rgba(52,211,153,0.15)",
-  "בריאות": "rgba(77,163,255,0.15)", "יופי": "rgba(167,139,250,0.15)", "בידור": "rgba(139,92,246,0.15)",
-  "קניות": "rgba(255,186,88,0.15)", "טכנולוגיה": "rgba(52,211,153,0.15)", "תחבורה": "rgba(77,163,255,0.15)",
-  "חינוך": "rgba(89,52,237,0.15)",
+  "אוכל": "color-mix(in srgb, var(--color-red-500) 15%, transparent)", "קפה": "color-mix(in srgb, var(--color-orange-400) 15%, transparent)", "ספורט": "color-mix(in srgb, var(--color-success-bright) 15%, transparent)",
+  "בריאות": "color-mix(in srgb, var(--color-sky) 15%, transparent)", "יופי": "color-mix(in srgb, var(--color-violet-400) 15%, transparent)", "בידור": "color-mix(in srgb, var(--color-violet-500) 15%, transparent)",
+  "קניות": "color-mix(in srgb, var(--color-yellow-accent) 15%, transparent)", "טכנולוגיה": "color-mix(in srgb, var(--color-success-bright) 15%, transparent)", "תחבורה": "color-mix(in srgb, var(--color-sky) 15%, transparent)",
+  "חינוך": "color-mix(in srgb, var(--color-brand) 15%, transparent)",
 };
 
 const CATEGORY_COLOR: Record<string, string> = {
-  "אוכל": "#EF4444", "קפה": "#FB923C", "ספורט": "#34D399",
-  "בריאות": "#4DA3FF", "יופי": "#A78BFA", "בידור": "#8B5CF6",
-  "קניות": "#FFBA58", "טכנולוגיה": "#34D399", "תחבורה": "#4DA3FF",
-  "חינוך": "#5934ED",
+  "אוכל": "var(--color-red-500)", "קפה": "var(--color-orange-400)", "ספורט": "var(--color-success-bright)",
+  "בריאות": "var(--color-sky)", "יופי": "var(--color-violet-400)", "בידור": "var(--color-violet-500)",
+  "קניות": "var(--color-yellow-accent)", "טכנולוגיה": "var(--color-success-bright)", "תחבורה": "var(--color-sky)",
+  "חינוך": "var(--color-brand)",
 };
 
 function categoryEmoji(category: string): string {
@@ -30,11 +30,11 @@ function categoryEmoji(category: string): string {
 }
 
 function categoryBg(category: string): string {
-  return CATEGORY_BG[category] ?? "rgba(255,255,255,0.06)";
+  return CATEGORY_BG[category] ?? "color-mix(in srgb, var(--color-surface-raised) 06%, transparent)";
 }
 
 function categoryColor(category: string): string {
-  return CATEGORY_COLOR[category] ?? "#9CA0AE";
+  return CATEGORY_COLOR[category] ?? "var(--color-text-disabled)";
 }
 
 function isExpired(expiresAt: string | null) {
@@ -66,7 +66,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
       <div style={{ width: "100%", boxSizing: "border-box" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12, paddingInline: 2 }}>
-          <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 16, lineHeight: 1.1, color: "#290800" }}>
+          <h2 style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xl)", lineHeight: 1.1, color: "var(--color-ink)" }}>
             ההטבות שלך
           </h2>
         </div>
@@ -82,13 +82,13 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 display: "flex",
                 gap: 12,
                 alignItems: "center",
-                background: "#EFF2EC",
-                borderRadius: 22,
+                background: "var(--color-surface)",
+                borderRadius: "var(--shape-radius-5xl)",
                 cursor: "pointer",
                 boxSizing: "border-box",
               }}
             >
-              <div style={{ width: 54, height: 54, borderRadius: "50%", background: categoryBg(category), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 23, flexShrink: 0, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div style={{ width: 54, height: 54, borderRadius: "var(--shape-radius-circle)", background: categoryBg(category), display: "flex", alignItems: "center", justifyContent: "center", fontSize: "var(--font-size-4xl)", flexShrink: 0, overflow: "hidden", border: "1px solid color-mix(in srgb, var(--color-surface-raised) 08%, transparent)" }}>
                 {benefit.image_url ? (
                   <img
                     src={benefit.image_url}
@@ -100,11 +100,11 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 )}
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
-                <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 16, lineHeight: 1.25, color: "#290800" }}>
+                <p style={{ margin: "0 0 4px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", lineHeight: 1.25, color: "var(--color-ink)" }}>
                   {benefit.business}
                 </p>
                 {category && (
-                  <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.35, color: categoryColor(category) }}>
+                  <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-sm)", lineHeight: 1.35, color: categoryColor(category) }}>
                     {category}
                   </p>
                 )}
@@ -114,13 +114,13 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                   alignSelf: "center",
                   flexShrink: 0,
                   maxWidth: "38%",
-                  borderRadius: 999,
-                  background: "rgba(89, 52, 237, 0.14)",
-                  color: "#5934ED",
+                  borderRadius: "var(--shape-radius-pill)",
+                  background: "color-mix(in srgb, var(--color-brand) 14%, transparent)",
+                  color: "var(--color-brand)",
                   padding: "7px 10px",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 950,
-                  fontSize: 12,
+                  fontFamily: "var(--font-family-sans)",
+                  fontWeight: "var(--font-weight-black)",
+                  fontSize: "var(--font-size-sm)",
                   lineHeight: 1.2,
                   textAlign: "center",
                 }}
@@ -140,7 +140,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
           position: "fixed",
           inset: 0,
           zIndex: 1000,
-          background: "rgba(0,0,0,0.5)",
+          background: "color-mix(in srgb, var(--color-overlay) 5%, transparent)",
           display: "flex",
           alignItems: "flex-end",
         }}
@@ -150,9 +150,9 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
           style={{
             width: "100%",
             maxHeight: "86dvh",
-            borderRadius: "26px 26px 0 0",
-            background: "#EFF2EC",
-            border: "1px solid rgba(41,8,0,0.08)",
+            borderRadius: "var(--shape-radius-sheet)",
+            background: "var(--color-surface)",
+            border: "1px solid color-mix(in srgb, var(--color-ink) 08%, transparent)",
             borderBottom: "none",
             overflow: "hidden",
             direction: "rtl",
@@ -168,11 +168,11 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
               style={{
                 width: 34,
                 height: 34,
-                borderRadius: "50%",
+                borderRadius: "var(--shape-radius-circle)",
                 border: "none",
-                background: "#CBD6E6",
-                color: "#290800",
-                fontSize: 18,
+                background: "var(--color-neutral-blue)",
+                color: "var(--color-ink)",
+                fontSize: "var(--font-size-2xl)",
                 lineHeight: 1,
                 cursor: "pointer",
                 marginBottom: 12,
@@ -185,14 +185,14 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
               style={{
                 width: "100%",
                 aspectRatio: selectedBenefit.image_url ? "1.9 / 1" : "2.8 / 1",
-                borderRadius: 20,
+                borderRadius: "var(--shape-radius-4xl)",
                 background: categoryBg(selectedBenefit.category ?? ""),
                 overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 color: categoryColor(selectedBenefit.category ?? ""),
-                fontSize: 44,
+                fontSize: "var(--font-size-7xl)",
                 marginBottom: 16,
               }}
             >
@@ -210,11 +210,11 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
               <div style={{ minWidth: 0 }}>
                 {selectedBenefit.category && (
-                  <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 12, color: categoryColor(selectedBenefit.category) }}>
+                  <p style={{ margin: "0 0 5px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-sm)", color: categoryColor(selectedBenefit.category) }}>
                     {selectedBenefit.category}
                   </p>
                 )}
-                <h2 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 24, lineHeight: 1.15, color: "#290800" }}>
+                <h2 style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-4xl)", lineHeight: 1.15, color: "var(--color-ink)" }}>
                   {selectedBenefit.business}
                 </h2>
               </div>
@@ -222,13 +222,13 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 style={{
                   flexShrink: 0,
                   maxWidth: "42%",
-                  borderRadius: 999,
-                  background: "rgba(89,52,237,0.14)",
-                  color: "#5934ED",
+                  borderRadius: "var(--shape-radius-pill)",
+                  background: "color-mix(in srgb, var(--color-brand) 14%, transparent)",
+                  color: "var(--color-brand)",
                   padding: "7px 10px",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 950,
-                  fontSize: 12,
+                  fontFamily: "var(--font-family-sans)",
+                  fontWeight: "var(--font-weight-black)",
+                  fontSize: "var(--font-size-sm)",
                   lineHeight: 1.2,
                   textAlign: "center",
                 }}
@@ -238,7 +238,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             </div>
 
             {selectedBenefit.business_description && (
-              <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, lineHeight: 1.55, color: "#64748B" }}>
+              <p style={{ margin: "0 0 14px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-base)", lineHeight: 1.55, color: "var(--color-text-secondary)" }}>
                 {selectedBenefit.business_description}
               </p>
             )}
@@ -246,13 +246,13 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             {selectedBenefit.description && (
               <div
                 dangerouslySetInnerHTML={{ __html: selectedBenefit.description }}
-                style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 15, lineHeight: 1.75, color: "#290800" }}
+                style={{ margin: "0 0 16px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-lg)", lineHeight: 1.75, color: "var(--color-ink)" }}
               />
             )}
 
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {selectedBenefit.location && (
-                <div style={{ borderRadius: 14, background: "#DFDBD3", padding: "11px 12px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: "#290800" }}>
+                <div style={{ borderRadius: "var(--shape-radius-xl)", background: "var(--color-app-bg)", padding: "11px 12px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-md)", color: "var(--color-ink)" }}>
                   {selectedBenefit.location}
                 </div>
               )}
@@ -264,12 +264,12 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                     alignItems: "center",
                     justifyContent: "center",
                     minHeight: 48,
-                    borderRadius: 16,
-                    background: "#5934ED",
-                    color: "#FFFFFF",
-                    fontFamily: "var(--font-rubik)",
-                    fontWeight: 950,
-                    fontSize: 15,
+                    borderRadius: "var(--shape-radius-2xl)",
+                    background: "var(--color-brand)",
+                    color: "var(--color-surface-raised)",
+                    fontFamily: "var(--font-family-sans)",
+                    fontWeight: "var(--font-weight-black)",
+                    fontSize: "var(--font-size-lg)",
                     textDecoration: "none",
                   }}
                 >

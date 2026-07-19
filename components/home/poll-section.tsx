@@ -75,9 +75,9 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
     <div
       style={{
         flex: "0 0 100%",
-        background: "#EFF2EC",
+        background: "var(--color-surface)",
         border: "none",
-        borderRadius: 22,
+        borderRadius: "var(--shape-radius-5xl)",
         padding: 18,
         scrollSnapAlign: "start",
         boxShadow: "none",
@@ -87,11 +87,11 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
       <p
         style={{
           margin: "0 0 14px",
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 800,
-          fontSize: 17,
+          fontFamily: "var(--font-family-sans)",
+          fontWeight: "var(--font-weight-extrabold)",
+          fontSize: "var(--font-size-xl)",
           lineHeight: 1.3,
-          color: "#290800",
+          color: "var(--color-ink)",
         }}
       >
         {poll.question}
@@ -110,10 +110,10 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
               <div
                 key={idx}
                 style={{
-                  borderRadius: 10,
+                  borderRadius: "var(--shape-radius-md)",
                   overflow: "hidden",
-                  background: isChosen ? "rgba(139,92,246,0.12)" : "#2F3344",
-                  border: `1px solid ${isChosen ? "rgba(139,92,246,0.3)" : "rgba(255,255,255,0.06)"}`,
+                  background: isChosen ? "color-mix(in srgb, var(--color-violet-500) 12%, transparent)" : "var(--color-neutral-dark)",
+                  border: `1px solid ${isChosen ? "color-mix(in srgb, var(--color-violet-500) 3%, transparent)" : "color-mix(in srgb, var(--color-surface-raised) 06%, transparent)"}`,
                 }}
               >
                 <div style={{ position: "relative", padding: "10px 12px" }}>
@@ -122,15 +122,15 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
                       position: "absolute",
                       inset: 0,
                       width: `${pct}%`,
-                      background: isChosen ? "rgba(139,92,246,0.12)" : "rgba(255,255,255,0.04)",
+                      background: isChosen ? "color-mix(in srgb, var(--color-violet-500) 12%, transparent)" : "color-mix(in srgb, var(--color-surface-raised) 04%, transparent)",
                       transition: "width 0.4s ease",
                     }}
                   />
                   <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: isChosen ? 800 : 600, fontSize: 13, color: isChosen ? "#A78BFA" : "#9CA0AE" }}>
+                    <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: isChosen ? "var(--font-weight-extrabold)" : "var(--font-weight-semibold)", fontSize: "var(--font-size-md)", color: isChosen ? "var(--color-violet-400)" : "var(--color-text-disabled)" }}>
                       {isChosen ? "✓ " : ""}{label}
                     </span>
-                    <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: isChosen ? "#A78BFA" : "#7C808E" }}>
+                    <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-sm)", color: isChosen ? "var(--color-violet-400)" : "var(--color-neutral-700)" }}>
                       {pct}%
                     </span>
                   </div>
@@ -147,13 +147,13 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
               style={{
                 width: "100%",
                 padding: "10px 12px",
-                background: "#2F3344",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: 10,
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 700,
-                fontSize: 13,
-                color: "#290800",
+                background: "var(--color-neutral-dark)",
+                border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+                borderRadius: "var(--shape-radius-md)",
+                fontFamily: "var(--font-family-sans)",
+                fontWeight: "var(--font-weight-bold)",
+                fontSize: "var(--font-size-md)",
+                color: "var(--color-ink)",
                 cursor: isPending ? "not-allowed" : "pointer",
                 textAlign: "right",
               }}
@@ -164,7 +164,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
         })}
       </div>
 
-      <p style={{ margin: "12px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, color: "#5934ED", textAlign: "center" }}>
+      <p style={{ margin: "12px 0 0", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-sm)", color: "var(--color-brand)", textAlign: "center" }}>
         {total} אנשים כבר ענו על הסקר
       </p>
     </div>

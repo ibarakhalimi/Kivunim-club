@@ -21,7 +21,7 @@ function EditForm({ event, onDone }: { event: Event; onDone: () => void }) {
   return (
     <form
       action={formAction}
-      style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid #E2E8F0" }}
+      style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--color-border-subtle)" }}
     >
       <input type="hidden" name="existing_image_url" value={event.image_url ?? ""} />
 
@@ -61,11 +61,11 @@ function EditForm({ event, onDone }: { event: Event; onDone: () => void }) {
       </div>
       <CostFields isPaid={isPaid} onPaidChange={setIsPaid} defaultPrice={event.price_amount} />
       <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-        <input name="is_featured" type="checkbox" defaultChecked={event.is_featured} style={{ width: 16, height: 16, accentColor: "#1E40AF" }} />
+        <input name="is_featured" type="checkbox" defaultChecked={event.is_featured} style={{ width: 16, height: 16, accentColor: "var(--color-brand-blue)" }} />
         <span style={labelStyle}>מוצג בראש הדף</span>
       </label>
 
-      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 }}>{state.error}</p>}
+      {state.error && <p style={{ margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-danger)", fontWeight: "var(--font-weight-semibold)" }}>{state.error}</p>}
 
       <div style={{ display: "flex", gap: 10 }}>
         <button type="submit" disabled={pending} style={btnPrimary(pending)}>
@@ -99,28 +99,28 @@ function EventRow({ event }: { event: Event }) {
     : "ללא עלות";
 
   return (
-    <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.05)", padding: "14px 16px" }}>
+    <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-md)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)", padding: "14px 16px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div style={{ display: "flex", gap: 12, flex: 1, minWidth: 0 }}>
           {event.image_url && (
             <img
               src={event.image_url}
               alt={event.title}
-              style={{ width: 52, height: 52, objectFit: "cover", borderRadius: 8, border: "1px solid #E2E8F0", flexShrink: 0 }}
+              style={{ width: 52, height: 52, objectFit: "cover", borderRadius: "var(--shape-radius-sm)", border: "1px solid var(--color-border-subtle)", flexShrink: 0 }}
             />
           )}
           <div style={{ minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 15, color: "#0F172A" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-lg)", color: "var(--color-admin-dark)" }}>
                 {event.title}
               </p>
               {event.is_featured && (
-                <span style={{ fontSize: 11, fontWeight: 600, background: "#EFF6FF", color: "#1E40AF", border: "1px solid #BFDBFE", padding: "2px 8px", borderRadius: 99 }}>
+                <span style={{ fontSize: "var(--font-size-xs)", fontWeight: "var(--font-weight-semibold)", background: "var(--color-blue-50)", color: "var(--color-brand-blue)", border: "1px solid var(--color-blue-200)", padding: "2px 8px", borderRadius: "var(--shape-radius-pill)" }}>
                   מוצג
                 </span>
               )}
             </div>
-            <p style={{ margin: 0, fontSize: 13, color: "#64748B", fontFamily: "var(--font-rubik)", fontWeight: 500 }}>
+            <p style={{ margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-medium)" }}>
               {event.event_date} · {event.start_hour}{event.end_hour ? `-${event.end_hour}` : ""} · {event.location} · {costLabel}
             </p>
           </div>
@@ -131,12 +131,12 @@ function EventRow({ event }: { event: Event }) {
             onClick={handleToggle}
             disabled={featuring}
             title={event.is_featured ? "הסר מ-Featured" : "הוסף ל-Featured"}
-            style={{ ...iconBtn, background: event.is_featured ? "#EFF6FF" : "#F8FAFC", color: event.is_featured ? "#1E40AF" : "#94A3B8" }}
+            style={{ ...iconBtn, background: event.is_featured ? "var(--color-blue-50)" : "var(--color-surface-muted)", color: event.is_featured ? "var(--color-brand-blue)" : "var(--color-text-tertiary)" }}
           >
             ★
           </button>
           <button onClick={() => setEditing((v) => !v)} style={iconBtn} title="עריכה">✏️</button>
-          <button onClick={handleDelete} disabled={deleting} style={{ ...iconBtn, color: "#DC2626" }} title="מחיקה">
+          <button onClick={handleDelete} disabled={deleting} style={{ ...iconBtn, color: "var(--color-danger)" }} title="מחיקה">
             {deleting ? "…" : "🗑"}
           </button>
         </div>
@@ -149,7 +149,7 @@ function EventRow({ event }: { event: Event }) {
 
 export function EventList({ events }: { events: Event[] }) {
   if (events.length === 0) {
-    return <p style={{ color: "#64748B", fontSize: 14, fontFamily: "var(--font-rubik)" }}>אין אירועים עדיין.</p>;
+    return <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-base)", fontFamily: "var(--font-family-sans)" }}>אין אירועים עדיין.</p>;
   }
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -159,17 +159,17 @@ export function EventList({ events }: { events: Event[] }) {
 }
 
 const iconBtn: React.CSSProperties = {
-  width: 32, height: 32, border: "1px solid #E2E8F0", borderRadius: 8,
-  background: "#F8FAFC", cursor: "pointer", fontSize: 14, display: "flex",
+  width: 32, height: 32, border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-sm)",
+  background: "var(--color-surface-muted)", cursor: "pointer", fontSize: "var(--font-size-base)", display: "flex",
   alignItems: "center", justifyContent: "center", flexShrink: 0,
 };
 const btnPrimary = (pending: boolean): React.CSSProperties => ({
-  padding: "9px 20px", background: pending ? "#94A3B8" : "#1E40AF", color: "#fff",
-  border: "none", borderRadius: 8, fontFamily: "var(--font-rubik)",
-  fontWeight: 700, fontSize: 14, cursor: pending ? "not-allowed" : "pointer",
+  padding: "9px 20px", background: pending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)", color: "var(--color-surface-raised)",
+  border: "none", borderRadius: "var(--shape-radius-sm)", fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-base)", cursor: pending ? "not-allowed" : "pointer",
 });
 const btnGhost: React.CSSProperties = {
-  padding: "9px 20px", background: "#fff", color: "#475569",
-  border: "1px solid #E2E8F0", borderRadius: 8, fontFamily: "var(--font-rubik)",
-  fontWeight: 600, fontSize: 14, cursor: "pointer",
+  padding: "9px 20px", background: "var(--color-surface-raised)", color: "var(--color-slate-600)",
+  border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-sm)", fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-base)", cursor: "pointer",
 };

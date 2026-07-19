@@ -17,16 +17,16 @@ export default async function AdminSettingsPage() {
       dir="rtl"
       style={{
         minHeight: "100dvh",
-        background: "#F8FAFC",
+        background: "var(--color-surface-muted)",
         padding: "24px 16px 46px",
-        fontFamily: "var(--font-rubik)",
+        fontFamily: "var(--font-family-sans)",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22 }}>
-        <a href="/admin" style={{ fontSize: 13, color: "#64748B", textDecoration: "none", fontWeight: 700 }}>
+        <a href="/admin" style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)", textDecoration: "none", fontWeight: "var(--font-weight-bold)" }}>
           ← פאנל ניהול
         </a>
-        <h1 style={{ margin: 0, fontSize: 24, fontWeight: 900, color: "#0F172A" }}>הגדרות</h1>
+        <h1 style={{ margin: 0, fontSize: "var(--font-size-4xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>הגדרות</h1>
       </div>
 
       <AppSettingsForm settings={appSettings} />

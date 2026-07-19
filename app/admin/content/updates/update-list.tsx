@@ -32,7 +32,7 @@ function EditUpdateForm({ update, onDone }: { update: Update; onDone: () => void
   }, [state.success, onDone]);
 
   return (
-    <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid #E2E8F0" }}>
+    <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--color-border-subtle)" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={labelStyle}>טאב עליון *</label>
         <input name="tab_label" required maxLength={32} defaultValue={update.tab_label} style={inputStyle} />
@@ -60,11 +60,11 @@ function EditUpdateForm({ update, onDone }: { update: Update; onDone: () => void
       </div>
 
       <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-        <input name="is_active" type="checkbox" defaultChecked={update.is_active} style={{ width: 16, height: 16, accentColor: "#B45309" }} />
+        <input name="is_active" type="checkbox" defaultChecked={update.is_active} style={{ width: 16, height: 16, accentColor: "var(--color-amber-800)" }} />
         <span style={labelStyle}>מוצג באפליקציה</span>
       </label>
 
-      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 }}>{state.error}</p>}
+      {state.error && <p style={{ margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-danger)", fontWeight: "var(--font-weight-semibold)" }}>{state.error}</p>}
 
       <div style={{ display: "flex", gap: 10 }}>
         <button type="submit" disabled={pending} style={primaryButton(pending)}>
@@ -106,39 +106,39 @@ function UpdateRow({ update }: { update: Update }) {
   }
 
   return (
-    <article style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 12, padding: "14px 16px" }}>
+    <article style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-lg)", padding: "14px 16px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div style={{ minWidth: 0, flex: 1 }}>
-          <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, color: "#5934ED" }}>
+          <p style={{ margin: "0 0 4px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-sm)", color: "var(--color-brand)" }}>
             {update.tab_label}
           </p>
-          <p style={{ margin: "0 0 4px", fontSize: 12, color: "#94A3B8", fontWeight: 600 }}>
+          <p style={{ margin: "0 0 4px", fontSize: "var(--font-size-sm)", color: "var(--color-text-tertiary)", fontWeight: "var(--font-weight-semibold)" }}>
             {formatDate(update.published_at)}
           </p>
-          <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 16, color: "#0F172A" }}>
+          <p style={{ margin: "0 0 5px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
             {update.title}
           </p>
-          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#475569", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+          <p style={{ margin: 0, fontSize: "var(--font-size-base)", lineHeight: 1.5, color: "var(--color-slate-600)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
             {update.description}
           </p>
           {update.button_link_url && update.button_text && (
-            <p style={{ margin: "8px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#B45309" }}>
+            <p style={{ margin: "8px 0 0", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-amber-800)" }}>
               כפתור: {update.button_text}
             </p>
           )}
 
-          <div style={{ display: "flex", gap: 14, marginTop: 10, color: "#475569", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13 }}>
+          <div style={{ display: "flex", gap: 14, marginTop: 10, color: "var(--color-slate-600)", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-md)" }}>
             <label style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: toggling ? "wait" : "pointer" }}>
-              <input type="radio" name={`active-${update.id}`} checked={isActive} disabled={toggling} onChange={() => setActive(true)} style={{ accentColor: "#B45309" }} />
+              <input type="radio" name={`active-${update.id}`} checked={isActive} disabled={toggling} onChange={() => setActive(true)} style={{ accentColor: "var(--color-amber-800)" }} />
               מוצג
             </label>
             <label style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: toggling ? "wait" : "pointer" }}>
-              <input type="radio" name={`active-${update.id}`} checked={!isActive} disabled={toggling} onChange={() => setActive(false)} style={{ accentColor: "#B45309" }} />
+              <input type="radio" name={`active-${update.id}`} checked={!isActive} disabled={toggling} onChange={() => setActive(false)} style={{ accentColor: "var(--color-amber-800)" }} />
               לא מוצג
             </label>
           </div>
           {error && (
-            <p style={{ margin: "8px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#DC2626" }}>
+            <p style={{ margin: "8px 0 0", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-danger)" }}>
               {error}
             </p>
           )}
@@ -146,7 +146,7 @@ function UpdateRow({ update }: { update: Update }) {
 
         <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
           <button onClick={() => setEditing((value) => !value)} style={iconButton} title="עריכה">✏️</button>
-          <button onClick={handleDelete} disabled={deleting} style={{ ...iconButton, color: "#DC2626" }} title="מחיקה">
+          <button onClick={handleDelete} disabled={deleting} style={{ ...iconButton, color: "var(--color-danger)" }} title="מחיקה">
             {deleting ? "…" : "🗑"}
           </button>
         </div>
@@ -159,7 +159,7 @@ function UpdateRow({ update }: { update: Update }) {
 
 export function UpdateList({ updates }: { updates: Update[] }) {
   if (updates.length === 0) {
-    return <p style={{ color: "#64748B", fontSize: 14, fontFamily: "var(--font-rubik)" }}>אין עדכונים עדיין.</p>;
+    return <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-base)", fontFamily: "var(--font-family-sans)" }}>אין עדכונים עדיין.</p>;
   }
 
   return (
@@ -172,11 +172,11 @@ export function UpdateList({ updates }: { updates: Update[] }) {
 const iconButton: React.CSSProperties = {
   width: 32,
   height: 32,
-  border: "1px solid #E2E8F0",
-  borderRadius: 8,
-  background: "#F8FAFC",
+  border: "1px solid var(--color-border-subtle)",
+  borderRadius: "var(--shape-radius-sm)",
+  background: "var(--color-surface-muted)",
   cursor: "pointer",
-  fontSize: 14,
+  fontSize: "var(--font-size-base)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -185,24 +185,24 @@ const iconButton: React.CSSProperties = {
 
 const primaryButton = (pending: boolean): React.CSSProperties => ({
   padding: "9px 20px",
-  background: pending ? "#94A3B8" : "#B45309",
-  color: "#fff",
+  background: pending ? "var(--color-text-tertiary)" : "var(--color-amber-800)",
+  color: "var(--color-surface-raised)",
   border: "none",
-  borderRadius: 8,
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 14,
+  borderRadius: "var(--shape-radius-sm)",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)",
+  fontSize: "var(--font-size-base)",
   cursor: pending ? "not-allowed" : "pointer",
 });
 
 const ghostButton: React.CSSProperties = {
   padding: "9px 20px",
-  background: "#fff",
-  color: "#475569",
-  border: "1px solid #E2E8F0",
-  borderRadius: 8,
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 600,
-  fontSize: 14,
+  background: "var(--color-surface-raised)",
+  color: "var(--color-slate-600)",
+  border: "1px solid var(--color-border-subtle)",
+  borderRadius: "var(--shape-radius-sm)",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-semibold)",
+  fontSize: "var(--font-size-base)",
   cursor: "pointer",
 };

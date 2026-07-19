@@ -31,10 +31,10 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             width: "100%",
             minHeight: 116,
             border: "none",
-            borderRadius: 22,
-            background: "#EFF2EC",
+            borderRadius: "var(--shape-radius-5xl)",
+            background: "var(--color-surface)",
             padding: 12,
-            color: "#290800",
+            color: "var(--color-ink)",
             textAlign: "right",
             boxSizing: "border-box",
             display: "flex",
@@ -47,10 +47,10 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             style={{
               width: 46,
               height: 46,
-              borderRadius: 16,
-              background: "rgba(89, 52, 237, 0.14)",
-              border: "1px solid rgba(89, 52, 237, 0.22)",
-              color: "#5934ED",
+              borderRadius: "var(--shape-radius-2xl)",
+              background: "color-mix(in srgb, var(--color-brand) 14%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-brand) 22%, transparent)",
+              color: "var(--color-brand)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -59,10 +59,10 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             <CalendarDays size={22} strokeWidth={2.2} />
           </div>
           <div>
-            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#5934ED" }}>
+            <p style={{ margin: "0 0 5px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xs)", color: "var(--color-brand)" }}>
               אירועים
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#290800" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-lg)", lineHeight: 1.22, color: "var(--color-ink)" }}>
               אין אירועים להצגה כרגע
             </p>
           </div>
@@ -79,7 +79,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
   return (
     <>
     <section style={{ width: "100%", gridColumn: "1 / -1", minWidth: 0, boxSizing: "border-box" }}>
-      <h2 style={{ margin: "0 2px 12px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 16, lineHeight: 1.1, color: "#290800" }}>
+      <h2 style={{ margin: "0 2px 12px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xl)", lineHeight: 1.1, color: "var(--color-ink)" }}>
         אירוע קרוב
       </h2>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -87,7 +87,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
           const timeRange = item.end_hour ? `${item.start_hour}-${item.end_hour}` : item.start_hour;
           const eventMeta = [item.location, timeRange].filter(Boolean).join(" · ");
           const costLabel = item.is_paid && item.price_amount !== null ? `₪${item.price_amount}` : "ללא עלות";
-          const costColor = item.is_paid ? "#5934ED" : "#D7DAE3";
+          const costColor = item.is_paid ? "var(--color-brand)" : "var(--color-neutral-200)";
           return (
       <button
         key={item.id}
@@ -95,9 +95,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
         onClick={() => setSelectedEvent(item)}
         style={{
           width: "100%",
-          background: "#EFF2EC",
+          background: "var(--color-surface)",
           border: "none",
-          borderRadius: 22,
+          borderRadius: "var(--shape-radius-5xl)",
           boxShadow: "none",
           padding: 12,
           display: "flex",
@@ -117,13 +117,13 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             minHeight: 118,
             alignSelf: "stretch",
             flexShrink: 0,
-            borderRadius: 18,
-            background: "rgba(89, 52, 237, 0.12)",
+            borderRadius: "var(--shape-radius-3xl)",
+            background: "color-mix(in srgb, var(--color-brand) 12%, transparent)",
             overflow: "hidden",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "#5934ED",
+            color: "var(--color-brand)",
             position: "relative",
           }}
         >
@@ -135,18 +135,18 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
         </div>
 
         <div style={{ minWidth: 0, flex: 1, display: "flex", flexDirection: "column", direction: "rtl", paddingBlock: 2, boxSizing: "border-box" }}>
-          <p style={{ margin: "0 0 4px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.3, color: "#9CA0AE" }}>
+          <p style={{ margin: "0 0 4px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-sm)", lineHeight: 1.3, color: "var(--color-text-disabled)" }}>
             {formatDate(item.event_date)}
           </p>
-          <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 18, lineHeight: 1.2, color: "#290800", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <h3 style={{ margin: "0 0 7px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-2xl)", lineHeight: 1.2, color: "var(--color-ink)", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
             {item.title}
           </h3>
           {eventMeta && (
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 12, lineHeight: 1.3, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-sm)", lineHeight: 1.3, color: "var(--color-text-disabled)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
               {eventMeta}
             </p>
           )}
-          <p style={{ margin: "7px 0 0", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 12, lineHeight: 1.2, color: costColor }}>
+          <p style={{ margin: "7px 0 0", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-sm)", lineHeight: 1.2, color: costColor }}>
             {costLabel}
           </p>
         </div>
@@ -162,7 +162,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
           position: "fixed",
           inset: 0,
           zIndex: 1000,
-          background: "rgba(0,0,0,0.58)",
+          background: "color-mix(in srgb, var(--color-overlay) 58%, transparent)",
           display: "flex",
           alignItems: "flex-end",
         }}
@@ -172,9 +172,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
           style={{
             width: "100%",
             maxHeight: "86dvh",
-            borderRadius: "26px 26px 0 0",
-            background: "#EFF2EC",
-            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: "var(--shape-radius-sheet)",
+            background: "var(--color-surface)",
+            border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
             borderBottom: "none",
             overflow: "hidden",
             direction: "rtl",
@@ -187,13 +187,13 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
               style={{
                 width: "100%",
                 aspectRatio: "1.8 / 1",
-                borderRadius: "26px 26px 0 0",
-                background: "rgba(89, 52, 237, 0.12)",
+                borderRadius: "var(--shape-radius-sheet)",
+                background: "color-mix(in srgb, var(--color-brand) 12%, transparent)",
                 overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#5934ED",
+                color: "var(--color-brand)",
                 marginBottom: 22,
                 position: "relative",
               }}
@@ -209,11 +209,11 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                   zIndex: 2,
                   width: 36,
                   height: 36,
-                  borderRadius: "50%",
-                  border: "1px solid rgba(255,255,255,0.45)",
-                  background: "rgba(41,8,0,0.38)",
-                  color: "#FFFFFF",
-                  fontSize: 20,
+                  borderRadius: "var(--shape-radius-circle)",
+                  border: "1px solid color-mix(in srgb, var(--color-surface-raised) 45%, transparent)",
+                  background: "color-mix(in srgb, var(--color-ink) 38%, transparent)",
+                  color: "var(--color-surface-raised)",
+                  fontSize: "var(--font-size-3xl)",
                   lineHeight: 1,
                   cursor: "pointer",
                   display: "flex",
@@ -232,26 +232,26 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             </div>
 
             <div style={{ padding: "0 16px" }}>
-              <p style={{ margin: "0 0 8px", fontFamily: "var(--font-rubik)", fontWeight: 950, fontSize: 13, lineHeight: 1.35, color: "#5934ED" }}>
+              <p style={{ margin: "0 0 8px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-md)", lineHeight: 1.35, color: "var(--color-brand)" }}>
                 {formatDate(selectedEvent.event_date)}
                 {selectedTimeRange ? ` · ${selectedTimeRange}` : ""}
               </p>
-              <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 1000, fontSize: 26, lineHeight: 1.12, color: "#290800" }}>
+              <h2 style={{ margin: "0 0 10px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-4xl)", lineHeight: 1.12, color: "var(--color-ink)" }}>
                 {selectedEvent.title}
               </h2>
               {selectedEvent.location && (
-                <p style={{ margin: "0 0 10px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, lineHeight: 1.45, color: "#64748B" }}>
+                <p style={{ margin: "0 0 10px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-base)", lineHeight: 1.45, color: "var(--color-text-secondary)" }}>
                   {selectedEvent.location}
                 </p>
               )}
-              <p style={{ margin: "0 0 14px", fontFamily: "var(--font-rubik)", fontWeight: 1000, fontSize: 15, lineHeight: 1.3, color: selectedEvent.is_paid ? "#5934ED" : "#290800" }}>
+              <p style={{ margin: "0 0 14px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-lg)", lineHeight: 1.3, color: selectedEvent.is_paid ? "var(--color-brand)" : "var(--color-ink)" }}>
                 {selectedCostLabel}
               </p>
 
               {selectedEvent.description && (
                 <div
                   dangerouslySetInnerHTML={{ __html: selectedEvent.description }}
-                  style={{ margin: "0 0 18px", fontFamily: "var(--font-rubik)", fontWeight: 500, fontSize: 15, lineHeight: 1.75, color: "#C7CAD6" }}
+                  style={{ margin: "0 0 18px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-lg)", lineHeight: 1.75, color: "var(--color-neutral-300)" }}
                 />
               )}
             </div>
@@ -260,8 +260,8 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             style={{
               flexShrink: 0,
               padding: "12px 16px 22px",
-              background: "#EFF2EC",
-              borderTop: "1px solid rgba(41,8,0,0.08)",
+              background: "var(--color-surface)",
+              borderTop: "1px solid color-mix(in srgb, var(--color-ink) 08%, transparent)",
             }}
           >
             {selectedEvent.registration_url ? (
@@ -274,12 +274,12 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                   alignItems: "center",
                   justifyContent: "center",
                   minHeight: 50,
-                  borderRadius: 16,
-                  background: "#5934ED",
-                  color: "#FFFFFF",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 950,
-                  fontSize: 15,
+                  borderRadius: "var(--shape-radius-2xl)",
+                  background: "var(--color-brand)",
+                  color: "var(--color-surface-raised)",
+                  fontFamily: "var(--font-family-sans)",
+                  fontWeight: "var(--font-weight-black)",
+                  fontSize: "var(--font-size-lg)",
                   lineHeight: 1,
                   textAlign: "center",
                   textDecoration: "none",
@@ -294,13 +294,13 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                 style={{
                   width: "100%",
                   minHeight: 50,
-                  borderRadius: 16,
+                  borderRadius: "var(--shape-radius-2xl)",
                   border: "none",
-                  background: "#111522",
-                  color: "#7C808E",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 950,
-                  fontSize: 15,
+                  background: "var(--color-neutral-deep)",
+                  color: "var(--color-neutral-700)",
+                  fontFamily: "var(--font-family-sans)",
+                  fontWeight: "var(--font-weight-black)",
+                  fontSize: "var(--font-size-lg)",
                   cursor: "not-allowed",
                 }}
               >

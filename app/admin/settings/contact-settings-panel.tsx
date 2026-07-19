@@ -78,10 +78,10 @@ export function ContactSettingsPanel({
         </label>
 
         {state.error && (
-          <p style={{ margin: 0, color: "#DC2626", fontSize: 13, fontWeight: 800 }}>{state.error}</p>
+          <p style={{ margin: 0, color: "var(--color-danger)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)" }}>{state.error}</p>
         )}
         {state.success && (
-          <p style={{ margin: 0, color: "#15803D", fontSize: 13, fontWeight: 800 }}>פרטי הקשר נשמרו</p>
+          <p style={{ margin: 0, color: "var(--color-green-700)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)" }}>פרטי הקשר נשמרו</p>
         )}
 
         <button
@@ -90,13 +90,13 @@ export function ContactSettingsPanel({
           style={{
             width: "100%",
             height: 48,
-            borderRadius: 16,
+            borderRadius: "var(--shape-radius-2xl)",
             border: "none",
-            background: isPending ? "#94A3B8" : "#1E40AF",
-            color: "#fff",
-            fontSize: 15,
-            fontWeight: 900,
-            fontFamily: "var(--font-rubik)",
+            background: isPending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
+            color: "var(--color-surface-raised)",
+            fontSize: "var(--font-size-lg)",
+            fontWeight: "var(--font-weight-black)",
+            fontFamily: "var(--font-family-sans)",
             cursor: isPending ? "not-allowed" : "pointer",
           }}
         >
@@ -106,16 +106,16 @@ export function ContactSettingsPanel({
 
       <section style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <div>
-          <h3 style={{ margin: "0 0 4px", fontSize: 16, fontWeight: 950, color: "#0F172A" }}>
+          <h3 style={{ margin: "0 0 4px", fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
             פניות מהאפליקציה
           </h3>
-          <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: "#64748B" }}>
+          <p style={{ margin: 0, fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)" }}>
             כל פנייה שנשלחת דרך “יצירת קשר” תופיע כאן.
           </p>
         </div>
 
         {inquiries.length === 0 ? (
-          <p style={{ margin: 0, color: "#64748B", fontSize: 13, fontWeight: 700 }}>
+          <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-bold)" }}>
             אין פניות עדיין.
           </p>
         ) : (
@@ -123,33 +123,33 @@ export function ContactSettingsPanel({
             <article
               key={inquiry.id}
               style={{
-                border: "1px solid #E2E8F0",
-                borderRadius: 14,
-                background: "#F8FAFC",
+                border: "1px solid var(--color-border-subtle)",
+                borderRadius: "var(--shape-radius-xl)",
+                background: "var(--color-surface-muted)",
                 padding: "12px 14px",
               }}
             >
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10, marginBottom: 8 }}>
                 <div>
-                  <p style={{ margin: "0 0 3px", fontSize: 15, fontWeight: 900, color: "#0F172A" }}>
+                  <p style={{ margin: "0 0 3px", fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
                     {inquiry.user_name ?? "משתמש"}
                   </p>
-                  <p style={{ margin: 0, fontSize: 11, fontWeight: 750, color: "#94A3B8" }}>
+                  <p style={{ margin: 0, fontSize: "var(--font-size-xs)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-tertiary)" }}>
                     {formatDate(inquiry.created_at)}
                   </p>
                 </div>
-                <span style={{ borderRadius: 999, background: "#EEF2FF", color: "#4338CA", padding: "5px 8px", fontWeight: 850, fontSize: 11, flexShrink: 0 }}>
+                <span style={{ borderRadius: "var(--shape-radius-pill)", background: "var(--color-indigo-50)", color: "var(--color-indigo-700)", padding: "5px 8px", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xs)", flexShrink: 0 }}>
                   {inquiry.subject}
                 </span>
               </div>
 
               {(inquiry.user_phone || inquiry.user_email) && (
-                <p style={{ margin: "0 0 8px", fontSize: 12, fontWeight: 750, color: "#64748B", direction: "ltr", textAlign: "right" }}>
+                <p style={{ margin: "0 0 8px", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)", direction: "ltr", textAlign: "right" }}>
                   {[inquiry.user_phone, inquiry.user_email].filter(Boolean).join(" · ")}
                 </p>
               )}
 
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, lineHeight: 1.55, color: "#334155", whiteSpace: "pre-wrap" }}>
+              <p style={{ margin: 0, fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-semibold)", lineHeight: 1.55, color: "var(--color-admin-hover)", whiteSpace: "pre-wrap" }}>
                 {inquiry.message}
               </p>
             </article>
@@ -170,21 +170,21 @@ const labelStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   gap: 6,
-  fontSize: 12,
-  fontWeight: 850,
-  color: "#64748B",
+  fontSize: "var(--font-size-sm)",
+  fontWeight: "var(--font-weight-extrabold)",
+  color: "var(--color-text-secondary)",
 };
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
   minHeight: 43,
-  border: "1px solid #CBD5E1",
-  borderRadius: 12,
-  background: "#fff",
+  border: "1px solid var(--color-text-on-dark)",
+  borderRadius: "var(--shape-radius-lg)",
+  background: "var(--color-surface-raised)",
   padding: "0 11px",
-  fontFamily: "var(--font-rubik)",
-  fontSize: 14,
-  fontWeight: 700,
-  color: "#0F172A",
+  fontFamily: "var(--font-family-sans)",
+  fontSize: "var(--font-size-base)",
+  fontWeight: "var(--font-weight-bold)",
+  color: "var(--color-admin-dark)",
   outline: "none",
 };

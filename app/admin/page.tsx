@@ -10,31 +10,31 @@ export default async function AdminPage() {
     {
       label: "מס׳ חברים במועדון",
       value: membersCount ?? 0,
-      bg: "#EEF2FF",
-      color: "#4338CA",
+      bg: "var(--color-indigo-50)",
+      color: "var(--color-indigo-700)",
     },
-    { label: "מדד עתידי", value: "-", bg: "#FFFFFF", color: "#64748B" },
-    { label: "מדד עתידי", value: "-", bg: "#FFFFFF", color: "#64748B" },
-    { label: "מדד עתידי", value: "-", bg: "#FFFFFF", color: "#64748B" },
+    { label: "מדד עתידי", value: "-", bg: "var(--color-surface-raised)", color: "var(--color-text-secondary)" },
+    { label: "מדד עתידי", value: "-", bg: "var(--color-surface-raised)", color: "var(--color-text-secondary)" },
+    { label: "מדד עתידי", value: "-", bg: "var(--color-surface-raised)", color: "var(--color-text-secondary)" },
   ];
 
   return (
     <div
       style={{
         minHeight: "100dvh",
-        background: "#F8FAFC",
+        background: "var(--color-surface-muted)",
         padding: "32px 16px 40px",
-        fontFamily: "var(--font-rubik)",
+        fontFamily: "var(--font-family-sans)",
         direction: "rtl",
       }}
     >
       <h1
         style={{
           margin: "0 0 6px",
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 900,
-          fontSize: 28,
-          color: "#0F172A",
+          fontFamily: "var(--font-family-sans)",
+          fontWeight: "var(--font-weight-black)",
+          fontSize: "var(--font-size-5xl)",
+          color: "var(--color-admin-dark)",
         }}
       >
         ברוך הבא למערכת ניהול
@@ -42,9 +42,9 @@ export default async function AdminPage() {
       <p
         style={{
           margin: "0 0 28px",
-          fontSize: 14,
-          color: "#64748B",
-          fontWeight: 600,
+          fontSize: "var(--font-size-base)",
+          color: "var(--color-text-secondary)",
+          fontWeight: "var(--font-weight-semibold)",
         }}
       >
         כיוונים · דשבורד ראשי
@@ -73,11 +73,11 @@ export default async function AdminPage() {
       <section
         aria-label="מדדי מערכת"
         style={{
-          background: "#FFFFFF",
-          border: "1px solid #E2E8F0",
-          borderRadius: 16,
+          background: "var(--color-surface-raised)",
+          border: "1px solid var(--color-border-subtle)",
+          borderRadius: "var(--shape-radius-2xl)",
           padding: 16,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+          boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
         }}
       >
         <div className="kv-admin-metrics-grid">
@@ -86,8 +86,8 @@ export default async function AdminPage() {
               key={`${metric.label}-${index}`}
               style={{
                 minHeight: 132,
-                border: "1px solid #E2E8F0",
-                borderRadius: 14,
+                border: "1px solid var(--color-border-subtle)",
+                borderRadius: "var(--shape-radius-xl)",
                 background: metric.bg,
                 padding: 16,
                 display: "flex",
@@ -95,10 +95,10 @@ export default async function AdminPage() {
                 justifyContent: "space-between",
               }}
             >
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: "#64748B" }}>
+              <p style={{ margin: 0, fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)", color: "var(--color-text-secondary)" }}>
                 {metric.label}
               </p>
-              <p style={{ margin: 0, fontSize: 34, lineHeight: 1, fontWeight: 950, color: metric.color }}>
+              <p style={{ margin: 0, fontSize: "var(--font-size-6xl)", lineHeight: 1, fontWeight: "var(--font-weight-black)", color: metric.color }}>
                 {metric.value}
               </p>
             </article>

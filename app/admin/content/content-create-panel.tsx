@@ -33,16 +33,16 @@ export function ContentCreatePanel({
         style={{
           minHeight: 42,
           border: "none",
-          borderRadius: 10,
-          background: "#0F172A",
-          color: "#FFFFFF",
+          borderRadius: "var(--shape-radius-md)",
+          background: "var(--color-admin-dark)",
+          color: "var(--color-surface-raised)",
           display: "inline-flex",
           alignItems: "center",
           gap: 8,
           padding: "0 16px",
-          fontFamily: "var(--font-rubik)",
-          fontSize: 14,
-          fontWeight: 900,
+          fontFamily: "var(--font-family-sans)",
+          fontSize: "var(--font-size-base)",
+          fontWeight: "var(--font-weight-black)",
           cursor: "pointer",
         }}
       >
@@ -59,7 +59,7 @@ export function ContentCreatePanel({
             position: "fixed",
             inset: 0,
             zIndex: 80,
-            background: "rgba(15, 23, 42, 0.55)",
+            background: "color-mix(in srgb, var(--color-admin-dark) 55%, transparent)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -75,9 +75,9 @@ export function ContentCreatePanel({
               maxWidth: 620,
               maxHeight: "calc(100dvh - 32px)",
               overflowY: "auto",
-              borderRadius: 14,
-              background: "#FFFFFF",
-              boxShadow: "0 24px 80px rgba(15, 23, 42, 0.28)",
+              borderRadius: "var(--shape-radius-xl)",
+              background: "var(--color-surface-raised)",
+              boxShadow: "0 24px 80px color-mix(in srgb, var(--color-admin-dark) 28%, transparent)",
             }}
           >
             <div
@@ -87,14 +87,14 @@ export function ContentCreatePanel({
                 justifyContent: "space-between",
                 gap: 12,
                 padding: "14px 16px",
-                borderBottom: "1px solid #E2E8F0",
+                borderBottom: "1px solid var(--color-border-subtle)",
                 position: "sticky",
                 top: 0,
                 zIndex: 1,
-                background: "#FFFFFF",
+                background: "var(--color-surface-raised)",
               }}
             >
-              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: "#0F172A" }}>
+              <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
                 הוספת {label}
               </h2>
               <button
@@ -104,11 +104,11 @@ export function ContentCreatePanel({
                 style={{
                   width: 34,
                   height: 34,
-                  border: "1px solid #E2E8F0",
-                  borderRadius: 8,
-                  background: "#FFFFFF",
-                  color: "#0F172A",
-                  fontSize: 20,
+                  border: "1px solid var(--color-border-subtle)",
+                  borderRadius: "var(--shape-radius-sm)",
+                  background: "var(--color-surface-raised)",
+                  color: "var(--color-admin-dark)",
+                  fontSize: "var(--font-size-3xl)",
                   lineHeight: 1,
                   cursor: "pointer",
                 }}

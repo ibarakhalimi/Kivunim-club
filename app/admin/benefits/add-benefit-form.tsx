@@ -63,21 +63,21 @@ export function AddBenefitForm({ categories = [] }: { categories?: string[] }) {
                 style={{
                   alignSelf: "flex-start",
                   minHeight: 30,
-                  border: "1px solid #CBD5E1",
-                  borderRadius: 999,
-                  background: "#FFFFFF",
-                  color: "#1E40AF",
+                  border: "1px solid var(--color-text-on-dark)",
+                  borderRadius: "var(--shape-radius-pill)",
+                  background: "var(--color-surface-raised)",
+                  color: "var(--color-brand-blue)",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 6,
                   padding: "0 10px",
-                  fontFamily: "var(--font-rubik)",
-                  fontSize: 12,
-                  fontWeight: 800,
+                  fontFamily: "var(--font-family-sans)",
+                  fontSize: "var(--font-size-sm)",
+                  fontWeight: "var(--font-weight-extrabold)",
                   cursor: "pointer",
                 }}
               >
-                <span style={{ fontSize: 16, lineHeight: 1 }}>+</span>
+                <span style={{ fontSize: "var(--font-size-xl)", lineHeight: 1 }}>+</span>
                 <span>{customCategory ? "בחירה מרשימה" : "קטגוריה חדשה"}</span>
               </button>
             </div>
@@ -100,7 +100,7 @@ export function AddBenefitForm({ categories = [] }: { categories?: string[] }) {
         </FormSection>
 
         <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-          <input name="is_active" type="checkbox" defaultChecked style={{ width: 16, height: 16, accentColor: "#1E40AF" }} />
+          <input name="is_active" type="checkbox" defaultChecked style={{ width: 16, height: 16, accentColor: "var(--color-brand-blue)" }} />
           <span style={labelStyle}>פעיל (מוצג לחברים)</span>
         </label>
 
@@ -143,21 +143,21 @@ export function ImagePicker({
         }}
       />
       {displayed ? (
-        <div style={{ position: "relative", width: 80, height: 80, borderRadius: 8, overflow: "hidden", border: "1px solid #E2E8F0" }}>
+        <div style={{ position: "relative", width: 80, height: 80, borderRadius: "var(--shape-radius-sm)", overflow: "hidden", border: "1px solid var(--color-border-subtle)" }}>
           <img src={displayed} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           <button type="button" onClick={() => { onPreview(null); if (inputRef.current) inputRef.current.value = ""; }}
-            style={{ position: "absolute", top: 3, left: 3, width: 22, height: 22, background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: "50%", fontSize: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            style={{ position: "absolute", top: 3, left: 3, width: 22, height: 22, background: "color-mix(in srgb, var(--color-overlay) 6%, transparent)", color: "var(--color-surface-raised)", border: "none", borderRadius: "var(--shape-radius-circle)", fontSize: "var(--font-size-2xs)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
             ✕
           </button>
           <button type="button" onClick={() => inputRef.current?.click()}
-            style={{ position: "absolute", bottom: 3, left: 3, padding: "2px 6px", background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: 99, fontSize: 10, fontFamily: "var(--font-rubik)", fontWeight: 600, cursor: "pointer" }}>
+            style={{ position: "absolute", bottom: 3, left: 3, padding: "2px 6px", background: "color-mix(in srgb, var(--color-overlay) 6%, transparent)", color: "var(--color-surface-raised)", border: "none", borderRadius: "var(--shape-radius-pill)", fontSize: "var(--font-size-2xs)", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", cursor: "pointer" }}>
             החלף
           </button>
         </div>
       ) : (
         <button type="button" onClick={() => inputRef.current?.click()}
-          style={{ padding: "12px 20px", border: "1.5px dashed #CBD5E1", background: "#F8FAFC", borderRadius: 8, cursor: "pointer", fontSize: 13, fontFamily: "var(--font-rubik)", fontWeight: 600, color: "#64748B", display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 20 }}>📷</span> העלה לוגו / תמונה
+          style={{ padding: "12px 20px", border: "1.5px dashed var(--color-text-on-dark)", background: "var(--color-surface-muted)", borderRadius: "var(--shape-radius-sm)", cursor: "pointer", fontSize: "var(--font-size-md)", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: "var(--font-size-3xl)" }}>📷</span> העלה לוגו / תמונה
         </button>
       )}
     </div>
@@ -174,63 +174,63 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 export const cardStyle: React.CSSProperties = {
-  background: "#fff",
-  border: "1px solid #E2E8F0",
-  borderRadius: 12,
-  boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+  background: "var(--color-surface-raised)",
+  border: "1px solid var(--color-border-subtle)",
+  borderRadius: "var(--shape-radius-lg)",
+  boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
   padding: "20px 18px",
 };
 export const headingStyle: React.CSSProperties = {
   margin: "0 0 16px",
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 18,
-  color: "#0F172A",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)",
+  fontSize: "var(--font-size-2xl)",
+  color: "var(--color-admin-dark)",
 };
 export const formStyle: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 14 };
 const sectionStyle: React.CSSProperties = {
-  border: "1px solid #E2E8F0",
-  borderRadius: 10,
+  border: "1px solid var(--color-border-subtle)",
+  borderRadius: "var(--shape-radius-md)",
   padding: 14,
-  background: "#F8FAFC",
+  background: "var(--color-surface-muted)",
 };
 const sectionHeadingStyle: React.CSSProperties = {
   margin: "0 0 12px",
-  fontFamily: "var(--font-rubik)",
-  fontSize: 15,
-  fontWeight: 900,
-  color: "#0F172A",
+  fontFamily: "var(--font-family-sans)",
+  fontSize: "var(--font-size-lg)",
+  fontWeight: "var(--font-weight-black)",
+  color: "var(--color-admin-dark)",
 };
 export const labelStyle: React.CSSProperties = {
-  fontSize: 13,
-  fontWeight: 600,
-  color: "#475569",
-  fontFamily: "var(--font-rubik)",
+  fontSize: "var(--font-size-md)",
+  fontWeight: "var(--font-weight-semibold)",
+  color: "var(--color-slate-600)",
+  fontFamily: "var(--font-family-sans)",
 };
 export const inputStyle: React.CSSProperties = {
   padding: "10px 12px",
-  fontSize: 14,
-  fontFamily: "var(--font-rubik)",
-  border: "1px solid #CBD5E1",
-  borderRadius: 8,
-  background: "#fff",
-  color: "#0F172A",
+  fontSize: "var(--font-size-base)",
+  fontFamily: "var(--font-family-sans)",
+  border: "1px solid var(--color-text-on-dark)",
+  borderRadius: "var(--shape-radius-sm)",
+  background: "var(--color-surface-raised)",
+  color: "var(--color-admin-dark)",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
   direction: "rtl",
 };
-const errorStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 };
-const successStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#16A34A", fontWeight: 600 };
+const errorStyle: React.CSSProperties = { margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-danger)", fontWeight: "var(--font-weight-semibold)" };
+const successStyle: React.CSSProperties = { margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-success)", fontWeight: "var(--font-weight-semibold)" };
 const submitStyle = (p: boolean): React.CSSProperties => ({
   marginTop: 4,
   padding: "11px 24px",
-  background: p ? "#94A3B8" : "#1E40AF",
-  color: "#fff",
+  background: p ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
+  color: "var(--color-surface-raised)",
   border: "none",
-  borderRadius: 8,
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 15,
+  borderRadius: "var(--shape-radius-sm)",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)",
+  fontSize: "var(--font-size-lg)",
   cursor: p ? "not-allowed" : "pointer",
 });

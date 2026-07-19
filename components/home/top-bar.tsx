@@ -76,7 +76,7 @@ export function TopBar() {
           justifyContent: "space-between",
           padding: "12px 16px",
           background: scrolled
-            ? "linear-gradient(to bottom, rgba(248,250,252,0.78) 0%, rgba(248,250,252,0.62) 68%, rgba(248,250,252,0) 100%)"
+            ? "linear-gradient(to bottom, color-mix(in srgb, var(--color-surface-muted) 78%, transparent) 0%, color-mix(in srgb, var(--color-surface-muted) 62%, transparent) 68%, transparent 100%)"
             : "transparent",
           borderBottom: "1px solid transparent",
           backdropFilter: scrolled ? "blur(18px) saturate(1.25)" : "none",
@@ -90,7 +90,7 @@ export function TopBar() {
         {/* Logo + title */}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <Image src="/logo-aguda.png" alt="לוגו" width={36} height={36} style={{ display: "block" }} />
-          <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 17, color: "#290800" }}>
+          <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-ink)" }}>
             קלאב סטודנטיאלי
           </span>
         </div>
@@ -102,16 +102,16 @@ export function TopBar() {
             style={{
               width: 38,
               height: 38,
-              borderRadius: "50%",
-              background: "#DBEAFE",
-              border: "1px solid #BFDBFE",
+              borderRadius: "var(--shape-radius-circle)",
+              background: "var(--color-blue-100)",
+              border: "1px solid var(--color-blue-200)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
             }}
           >
-            <User size={18} strokeWidth={2} color="#1E40AF" />
+            <User size={18} strokeWidth={2} color="var(--color-brand-blue)" />
           </button>
           <button
             onClick={() => setOpen(true)}
@@ -119,16 +119,16 @@ export function TopBar() {
             style={{
               width: 38,
               height: 38,
-              borderRadius: "50%",
-              background: "#F1F5F9",
-              border: "1px solid #E2E8F0",
+              borderRadius: "var(--shape-radius-circle)",
+              background: "var(--color-surface-soft)",
+              border: "1px solid var(--color-border-subtle)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
             }}
           >
-            <Menu size={19} strokeWidth={2} color="#0F172A" />
+            <Menu size={19} strokeWidth={2} color="var(--color-admin-dark)" />
           </button>
         </div>
       </header>
@@ -138,16 +138,16 @@ export function TopBar() {
         <>
           <div
             onClick={() => setOpen(false)}
-            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 100 }}
+            style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 3%, transparent)", zIndex: 100 }}
           />
           <div
             style={{
               position: "fixed",
               bottom: 0, left: 0, right: 0,
               zIndex: 101,
-              background: "#fff",
-              borderRadius: "16px 16px 0 0",
-              border: "1px solid #E2E8F0",
+              background: "var(--color-surface-raised)",
+              borderRadius: "var(--shape-radius-sheet-compact)",
+              border: "1px solid var(--color-border-subtle)",
               borderBottom: "none",
               direction: "rtl",
               padding: "24px 20px 48px",
@@ -158,12 +158,12 @@ export function TopBar() {
               style={{
                 position: "absolute", top: 14, left: 16,
                 width: 32, height: 32,
-                background: "#F1F5F9",
+                background: "var(--color-surface-soft)",
                 border: "none",
-                borderRadius: "50%",
-                fontSize: 14,
+                borderRadius: "var(--shape-radius-circle)",
+                fontSize: "var(--font-size-base)",
                 cursor: "pointer",
-                color: "#64748B",
+                color: "var(--color-text-secondary)",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}
             >
@@ -176,21 +176,21 @@ export function TopBar() {
                 style={{
                   width: 52,
                   height: 52,
-                  borderRadius: "50%",
-                  background: "#DBEAFE",
+                  borderRadius: "var(--shape-radius-circle)",
+                  background: "var(--color-blue-100)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
                 }}
               >
-                <User size={24} strokeWidth={1.8} color="#1E40AF" />
+                <User size={24} strokeWidth={1.8} color="var(--color-brand-blue)" />
               </div>
               <div>
-                <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#290800" }}>
+                <p style={{ margin: "0 0 2px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-2xl)", color: "var(--color-ink)" }}>
                   {profile.name ?? "משתמש"}
                 </p>
-                <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 13, color: "#64748B" }}>
+                <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-regular)", fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)" }}>
                   {profile.email ?? ""}
                 </p>
               </div>
@@ -211,13 +211,13 @@ export function TopBar() {
                     justifyContent: "space-between",
                     alignItems: "center",
                     padding: "10px 14px",
-                    background: "#F8FAFC",
-                    borderRadius: 8,
-                    border: "1px solid #F1F5F9",
+                    background: "var(--color-surface-muted)",
+                    borderRadius: "var(--shape-radius-sm)",
+                    border: "1px solid var(--color-surface-soft)",
                   }}
                 >
-                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 13, color: "#64748B" }}>{label}</span>
-                  <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 14, color: "#290800" }}>{value}</span>
+                  <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)" }}>{label}</span>
+                  <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-base)", color: "var(--color-ink)" }}>{value}</span>
                 </div>
               ))}
             </div>
@@ -228,13 +228,13 @@ export function TopBar() {
               style={{
                 width: "100%",
                 padding: "13px 0",
-                background: "#fff",
-                color: "#DC2626",
-                border: "1px solid #FECACA",
-                borderRadius: 10,
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 700,
-                fontSize: 15,
+                background: "var(--color-surface-raised)",
+                color: "var(--color-danger)",
+                border: "1px solid var(--color-red-200)",
+                borderRadius: "var(--shape-radius-md)",
+                fontFamily: "var(--font-family-sans)",
+                fontWeight: "var(--font-weight-bold)",
+                fontSize: "var(--font-size-lg)",
                 cursor: "pointer",
               }}
             >

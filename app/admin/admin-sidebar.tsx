@@ -52,8 +52,8 @@ export function AdminSidebar() {
       style={{
         width: 236,
         minHeight: "100dvh",
-        background: "#0F172A",
-        borderLeft: "1px solid rgba(255,255,255,0.08)",
+        background: "var(--color-admin-dark)",
+        borderLeft: "1px solid color-mix(in srgb, var(--color-surface-raised) 08%, transparent)",
         padding: "20px 14px",
         boxSizing: "border-box",
         position: "sticky",
@@ -63,10 +63,10 @@ export function AdminSidebar() {
       }}
     >
       <div style={{ marginBottom: 22, padding: "0 6px" }}>
-        <p style={{ margin: "0 0 4px", fontSize: 18, fontWeight: 900, color: "#FFFFFF" }}>
+        <p style={{ margin: "0 0 4px", fontSize: "var(--font-size-2xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-surface-raised)" }}>
           פאנל ניהול
         </p>
-        <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: "#94A3B8" }}>
+        <p style={{ margin: 0, fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-tertiary)" }}>
           מועדון כיוונים
         </p>
       </div>
@@ -81,16 +81,16 @@ export function AdminSidebar() {
                 aria-current={active ? "page" : undefined}
                 style={{
                   minHeight: 44,
-                  borderRadius: 12,
+                  borderRadius: "var(--shape-radius-lg)",
                   padding: "0 12px",
                   display: "flex",
                   alignItems: "center",
                   gap: 10,
                   textDecoration: "none",
-                  background: active ? "#F7F8FF" : "transparent",
-                  color: active ? "#0F172A" : "#CBD5E1",
-                  fontSize: 14,
-                  fontWeight: 900,
+                  background: active ? "var(--color-surface-tinted)" : "transparent",
+                  color: active ? "var(--color-admin-dark)" : "var(--color-text-on-dark)",
+                  fontSize: "var(--font-size-base)",
+                  fontWeight: "var(--font-weight-black)",
                 }}
               >
                 <Icon size={18} strokeWidth={2.2} />
@@ -110,16 +110,16 @@ export function AdminSidebar() {
                         aria-current={subActive ? "page" : undefined}
                         style={{
                           minHeight: 34,
-                          borderRadius: 10,
+                          borderRadius: "var(--shape-radius-md)",
                           padding: "0 10px",
                           display: "flex",
                           alignItems: "center",
                           gap: 8,
                           textDecoration: "none",
-                          background: subActive ? "rgba(247,248,255,0.12)" : "transparent",
-                          color: subActive ? "#FFFFFF" : "#94A3B8",
-                          fontSize: 13,
-                          fontWeight: 800,
+                          background: subActive ? "color-mix(in srgb, var(--color-surface-tinted) 12%, transparent)" : "transparent",
+                          color: subActive ? "var(--color-surface-raised)" : "var(--color-text-tertiary)",
+                          fontSize: "var(--font-size-md)",
+                          fontWeight: "var(--font-weight-extrabold)",
                         }}
                       >
                         <subItem.Icon size={15} strokeWidth={2.2} />

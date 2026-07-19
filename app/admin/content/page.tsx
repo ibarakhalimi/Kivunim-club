@@ -48,16 +48,16 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
     <div
       style={{
         minHeight: "100dvh",
-        background: "#F8FAFC",
+        background: "var(--color-surface-muted)",
         padding: "32px 16px 40px",
         direction: "rtl",
-        fontFamily: "var(--font-rubik)",
+        fontFamily: "var(--font-family-sans)",
       }}
     >
-      <h1 style={{ margin: "0 0 4px", fontSize: 28, fontWeight: 900, color: "#0F172A" }}>
+      <h1 style={{ margin: "0 0 4px", fontSize: "var(--font-size-5xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
         ניהול תוכן
       </h1>
-      <p style={{ margin: "0 0 20px", fontSize: 14, fontWeight: 600, color: "#64748B" }}>
+      <p style={{ margin: "0 0 20px", fontSize: "var(--font-size-base)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-text-secondary)" }}>
         ניהול עדכונים, אירועים והטבות מתוך מסך אחד.
       </p>
 
@@ -81,16 +81,16 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
               style={{
                 minHeight: 40,
                 minWidth: 92,
-                borderRadius: 999,
-                border: active ? "1px solid #0F172A" : "1px solid #E2E8F0",
-                background: active ? "#0F172A" : "#FFFFFF",
-                color: active ? "#FFFFFF" : "#475569",
+                borderRadius: "var(--shape-radius-pill)",
+                border: active ? "1px solid var(--color-admin-dark)" : "1px solid var(--color-border-subtle)",
+                background: active ? "var(--color-admin-dark)" : "var(--color-surface-raised)",
+                color: active ? "var(--color-surface-raised)" : "var(--color-slate-600)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 textDecoration: "none",
-                fontSize: 14,
-                fontWeight: 900,
+                fontSize: "var(--font-size-base)",
+                fontWeight: "var(--font-weight-black)",
                 padding: "0 18px",
                 flexShrink: 0,
               }}
@@ -105,7 +105,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
         <section>
           <ContentCreatePanel activeTab={activeTab} />
           <div style={{ marginTop: 28 }}>
-            <h2 style={{ margin: "0 0 14px", fontWeight: 900, fontSize: 16, color: "#0F172A" }}>
+            <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
               עדכונים קיימים
             </h2>
             <UpdateList updates={updates ?? []} />
@@ -118,7 +118,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
           <ContentCreatePanel activeTab={activeTab} />
           {events && events.length > 0 && (
             <div style={{ marginTop: 28 }}>
-              <h2 style={{ margin: "0 0 14px", fontWeight: 900, fontSize: 16, color: "#0F172A" }}>
+              <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
                 כל האירועים
               </h2>
               <EventList events={events} />
@@ -132,7 +132,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
           <ContentCreatePanel activeTab={activeTab} benefitCategories={benefitCategories} />
           {benefits && benefits.length > 0 && (
             <div style={{ marginTop: 28 }}>
-              <h2 style={{ margin: "0 0 14px", fontWeight: 900, fontSize: 16, color: "#0F172A" }}>
+              <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
                 כל ההטבות
               </h2>
               <BenefitList benefits={benefits} />
@@ -144,7 +144,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
       {activeTab === "info" && (
         <section>
           <div style={{ marginTop: 4 }}>
-            <h2 style={{ margin: "0 0 14px", fontWeight: 900, fontSize: 16, color: "#0F172A" }}>
+            <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
               עמודי מידע
             </h2>
             <ImportantInfoPanel pages={importantInfoPages} />

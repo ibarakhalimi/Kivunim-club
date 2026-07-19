@@ -10,12 +10,12 @@ export function WelcomeStrip({ name, points, tier }: WelcomeStripProps) {
       <h1
         style={{
           margin: 0,
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 900,
-          fontSize: 40,
+          fontFamily: "var(--font-family-sans)",
+          fontWeight: "var(--font-weight-black)",
+          fontSize: "var(--font-size-7xl)",
           lineHeight: 1.0,
           letterSpacing: "-0.025em",
-          color: "var(--color-text-primary)",
+          color: "var(--color-ink)",
         }}
       >
         היי {name}{" "}
@@ -39,11 +39,11 @@ export function WelcomeStrip({ name, points, tier }: WelcomeStripProps) {
             alignItems: "center",
             gap: 5,
             padding: "4px 10px 5px",
-            background: "var(--color-accent-highlight)",
-            color: "var(--color-text-primary)",
-            borderRadius: 999,
-            fontSize: 12,
-            fontWeight: 700,
+            background: "var(--color-brand)",
+            color: "var(--color-ink)",
+            borderRadius: "var(--shape-radius-pill)",
+            fontSize: "var(--font-size-sm)",
+            fontWeight: "var(--font-weight-bold)",
             letterSpacing: "-0.005em",
           }}
         >
@@ -51,9 +51,9 @@ export function WelcomeStrip({ name, points, tier }: WelcomeStripProps) {
         </span>
         <span
           style={{
-            fontSize: 13,
+            fontSize: "var(--font-size-md)",
             color: "var(--color-text-secondary)",
-            fontWeight: 500,
+            fontWeight: "var(--font-weight-medium)",
           }}
         >
           {points.toLocaleString("he-IL")} נק׳ · 4 אירועים החודש

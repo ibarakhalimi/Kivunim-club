@@ -27,9 +27,9 @@ export function CheckInButton() {
       <button
         onClick={() => setOpen(true)}
         style={{
-          background: "#EFF6FF",
-          border: "1px solid #BFDBFE",
-          borderRadius: 12,
+          background: "var(--color-blue-50)",
+          border: "1px solid var(--color-blue-200)",
+          borderRadius: "var(--shape-radius-lg)",
           boxShadow: "none",
           padding: "14px 8px",
           display: "flex",
@@ -42,13 +42,13 @@ export function CheckInButton() {
           aspectRatio: "1 / 1",
         }}
       >
-        <span style={{ fontSize: 24 }}>📅</span>
+        <span style={{ fontSize: "var(--font-size-4xl)" }}>📅</span>
         <span
           style={{
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 600,
-            fontSize: 12,
-            color: "#1E40AF",
+            fontFamily: "var(--font-family-sans)",
+            fontWeight: "var(--font-weight-semibold)",
+            fontSize: "var(--font-size-sm)",
+            color: "var(--color-brand-blue)",
             lineHeight: 1.2,
             textAlign: "center",
           }}
@@ -60,7 +60,7 @@ export function CheckInButton() {
       {open && (
         <div
           onClick={() => setOpen(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 50 }}
+          style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 3%, transparent)", zIndex: 50 }}
         />
       )}
 
@@ -70,9 +70,9 @@ export function CheckInButton() {
             position: "fixed",
             bottom: 0, left: 0, right: 0,
             zIndex: 51,
-            background: "#fff",
-            borderRadius: "16px 16px 0 0",
-            border: "1px solid #E2E8F0",
+            background: "var(--color-surface-raised)",
+            borderRadius: "var(--shape-radius-sheet-compact)",
+            border: "1px solid var(--color-border-subtle)",
             borderBottom: "none",
             direction: "rtl",
             padding: "28px 24px 48px",
@@ -83,12 +83,12 @@ export function CheckInButton() {
             style={{
               position: "absolute", top: 16, left: 16,
               width: 32, height: 32,
-              background: "#F1F5F9",
+              background: "var(--color-surface-soft)",
               border: "none",
-              borderRadius: "50%",
-              fontSize: 15,
+              borderRadius: "var(--shape-radius-circle)",
+              fontSize: "var(--font-size-lg)",
               cursor: "pointer",
-              color: "#64748B",
+              color: "var(--color-text-secondary)",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}
           >
@@ -96,10 +96,10 @@ export function CheckInButton() {
           </button>
 
           <div style={{ marginBottom: 20 }}>
-            <p style={{ margin: "0 0 6px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 20, color: "#290800" }}>
+            <p style={{ margin: "0 0 6px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-3xl)", color: "var(--color-ink)" }}>
               אישור הגעה בכיוונים
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 15, lineHeight: 1.6, color: "#64748B" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-regular)", fontSize: "var(--font-size-lg)", lineHeight: 1.6, color: "var(--color-text-secondary)" }}>
               כדי להשתמש בסביבת הלימודים בצורה חופשית יש לציין שהגעת
             </p>
           </div>
@@ -110,13 +110,13 @@ export function CheckInButton() {
             style={{
               width: "100%",
               padding: "14px 0",
-              background: isPending ? "#94A3B8" : "#1E40AF",
-              color: "#fff",
+              background: isPending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
+              color: "var(--color-surface-raised)",
               border: "none",
-              borderRadius: 10,
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 700,
-              fontSize: 16,
+              borderRadius: "var(--shape-radius-md)",
+              fontFamily: "var(--font-family-sans)",
+              fontWeight: "var(--font-weight-bold)",
+              fontSize: "var(--font-size-xl)",
               cursor: isPending ? "not-allowed" : "pointer",
             }}
           >
@@ -133,13 +133,13 @@ export function CheckInButton() {
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 99,
-            background: "#0F172A",
-            color: "#fff",
+            background: "var(--color-admin-dark)",
+            color: "var(--color-surface-raised)",
             padding: "11px 22px",
-            borderRadius: 99,
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 600,
-            fontSize: 14,
+            borderRadius: "var(--shape-radius-pill)",
+            fontFamily: "var(--font-family-sans)",
+            fontWeight: "var(--font-weight-semibold)",
+            fontSize: "var(--font-size-base)",
             whiteSpace: "nowrap",
             pointerEvents: "none",
           }}

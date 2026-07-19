@@ -62,21 +62,21 @@ function CheckInResult({ ok, title, description }: { ok: boolean; title: string;
       dir="rtl"
       style={{
         minHeight: "100dvh",
-        background: ok ? "#F0FDF4" : "#FFF7ED",
+        background: ok ? "var(--color-green-50)" : "var(--color-orange-50)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         padding: 24,
-        fontFamily: "var(--font-rubik)",
+        fontFamily: "var(--font-family-sans)",
       }}
     >
       <div
         style={{
           width: "100%",
           maxWidth: 360,
-          borderRadius: 28,
-          background: "#fff",
-          border: `1px solid ${ok ? "#BBF7D0" : "#FED7AA"}`,
+          borderRadius: "var(--shape-radius-7xl)",
+          background: "var(--color-surface-raised)",
+          border: `1px solid ${ok ? "var(--color-green-200)" : "var(--color-orange-200)"}`,
           padding: "30px 22px",
           textAlign: "center",
         }}
@@ -85,9 +85,9 @@ function CheckInResult({ ok, title, description }: { ok: boolean; title: string;
           style={{
             width: 76,
             height: 76,
-            borderRadius: "50%",
-            background: ok ? "#DCFCE7" : "#FFEDD5",
-            color: ok ? "#16A34A" : "#EA580C",
+            borderRadius: "var(--shape-radius-circle)",
+            background: ok ? "var(--color-green-100)" : "var(--color-orange-100)",
+            color: ok ? "var(--color-success)" : "var(--color-orange-600)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -96,10 +96,10 @@ function CheckInResult({ ok, title, description }: { ok: boolean; title: string;
         >
           {ok ? <CheckCircle2 size={42} strokeWidth={2.4} /> : <TriangleAlert size={40} strokeWidth={2.35} />}
         </div>
-        <h1 style={{ margin: "0 0 6px", fontSize: 27, lineHeight: 1.1, fontWeight: 900, color: "#290800" }}>
+        <h1 style={{ margin: "0 0 6px", fontSize: "var(--font-size-5xl)", lineHeight: 1.1, fontWeight: "var(--font-weight-black)", color: "var(--color-ink)" }}>
           {title}
         </h1>
-        <p style={{ margin: "0 0 22px", fontSize: 14, lineHeight: 1.55, fontWeight: 600, color: "#64748B" }}>
+        <p style={{ margin: "0 0 22px", fontSize: "var(--font-size-base)", lineHeight: 1.55, fontWeight: "var(--font-weight-semibold)", color: "var(--color-text-secondary)" }}>
           {description}
         </p>
         <Link
@@ -110,12 +110,12 @@ function CheckInResult({ ok, title, description }: { ok: boolean; title: string;
             justifyContent: "center",
             width: "100%",
             height: 46,
-            borderRadius: 16,
-            background: ok ? "#16A34A" : "#EA580C",
-            color: "#fff",
+            borderRadius: "var(--shape-radius-2xl)",
+            background: ok ? "var(--color-success)" : "var(--color-orange-600)",
+            color: "var(--color-surface-raised)",
             textDecoration: "none",
-            fontSize: 14,
-            fontWeight: 900,
+            fontSize: "var(--font-size-base)",
+            fontWeight: "var(--font-weight-black)",
           }}
         >
           חזרה לאפליקציה

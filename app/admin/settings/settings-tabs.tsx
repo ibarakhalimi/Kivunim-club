@@ -58,18 +58,18 @@ export function SettingsTabs({
               onClick={() => setActiveKey(tab.key)}
               style={{
                 minHeight: 48,
-                border: `1px solid ${isActive ? "#1E40AF" : "#E2E8F0"}`,
-                borderRadius: 14,
-                background: isActive ? "#EFF6FF" : "#FFFFFF",
-                color: isActive ? "#1E40AF" : "#475569",
+                border: `1px solid ${isActive ? "var(--color-brand-blue)" : "var(--color-border-subtle)"}`,
+                borderRadius: "var(--shape-radius-xl)",
+                background: isActive ? "var(--color-blue-50)" : "var(--color-surface-raised)",
+                color: isActive ? "var(--color-brand-blue)" : "var(--color-slate-600)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 7,
                 padding: "0 10px",
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 13,
+                fontFamily: "var(--font-family-sans)",
+                fontWeight: "var(--font-weight-black)",
+                fontSize: "var(--font-size-md)",
                 cursor: "pointer",
                 whiteSpace: "nowrap",
               }}
@@ -84,11 +84,11 @@ export function SettingsTabs({
       <div
         role="tabpanel"
         style={{
-          background: "#FFFFFF",
-          border: "1px solid #E2E8F0",
-          borderRadius: 16,
+          background: "var(--color-surface-raised)",
+          border: "1px solid var(--color-border-subtle)",
+          borderRadius: "var(--shape-radius-2xl)",
           padding: 16,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+          boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
@@ -96,9 +96,9 @@ export function SettingsTabs({
             style={{
               width: 38,
               height: 38,
-              borderRadius: 12,
-              background: "#EFF6FF",
-              color: "#1E40AF",
+              borderRadius: "var(--shape-radius-lg)",
+              background: "var(--color-blue-50)",
+              color: "var(--color-brand-blue)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -108,10 +108,10 @@ export function SettingsTabs({
             <activeTab.Icon size={20} strokeWidth={2.25} />
           </span>
           <div>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 950, color: "#0F172A" }}>
+            <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
               {activeTab.title}
             </h2>
-            <p style={{ margin: "3px 0 0", fontSize: 13, fontWeight: 650, lineHeight: 1.45, color: "#64748B" }}>
+            <p style={{ margin: "3px 0 0", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-semibold)", lineHeight: 1.45, color: "var(--color-text-secondary)" }}>
               {activeTab.description}
             </p>
           </div>

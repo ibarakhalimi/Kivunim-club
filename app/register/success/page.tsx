@@ -6,7 +6,7 @@ export default function RegisterSuccessPage() {
     <div
       style={{
         height: "100dvh",
-        background: "#DFDBD3",
+        background: "var(--color-app-bg)",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -28,8 +28,8 @@ export default function RegisterSuccessPage() {
           style={{
             width: 92,
             height: 92,
-            borderRadius: 28,
-            background: "#F7F8FF",
+            borderRadius: "var(--shape-radius-7xl)",
+            background: "var(--color-surface-tinted)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -40,13 +40,13 @@ export default function RegisterSuccessPage() {
         <span
           style={{
             display: "inline-block",
-            background: "rgba(89, 52, 237, 0.14)",
-            borderRadius: 20,
+            background: "color-mix(in srgb, var(--color-brand) 14%, transparent)",
+            borderRadius: "var(--shape-radius-4xl)",
             padding: "3px 14px",
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 900,
-            fontSize: 13,
-            color: "#5934ED",
+            fontFamily: "var(--font-family-sans)",
+            fontWeight: "var(--font-weight-black)",
+            fontSize: "var(--font-size-md)",
+            color: "var(--color-brand)",
           }}
         >
           ברוך הבא למועדון
@@ -54,11 +54,11 @@ export default function RegisterSuccessPage() {
         <h1
           style={{
             margin: 0,
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 900,
-            fontSize: 31,
+            fontFamily: "var(--font-family-sans)",
+            fontWeight: "var(--font-weight-black)",
+            fontSize: "var(--font-size-6xl)",
             lineHeight: 1.12,
-            color: "#290800",
+            color: "var(--color-ink)",
             textAlign: "center",
           }}
         >
@@ -83,12 +83,12 @@ export default function RegisterSuccessPage() {
           style={{
             width: 72,
             height: 72,
-            borderRadius: "50%",
-            background: "#EFF2EC",
+            borderRadius: "var(--shape-radius-circle)",
+            background: "var(--color-surface)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 36,
+            fontSize: "var(--font-size-6xl)",
             marginBottom: 8,
           }}
         >
@@ -97,10 +97,10 @@ export default function RegisterSuccessPage() {
         <h2
           style={{
             margin: 0,
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 900,
-            fontSize: 26,
-            color: "#290800",
+            fontFamily: "var(--font-family-sans)",
+            fontWeight: "var(--font-weight-black)",
+            fontSize: "var(--font-size-4xl)",
+            color: "var(--color-ink)",
           }}
         >
           ההרשמה התקבלה!
@@ -108,10 +108,10 @@ export default function RegisterSuccessPage() {
         <p
           style={{
             margin: 0,
-            fontFamily: "var(--font-rubik)",
-            fontWeight: 600,
-            fontSize: 16,
-            color: "#683633",
+            fontFamily: "var(--font-family-sans)",
+            fontWeight: "var(--font-weight-semibold)",
+            fontSize: "var(--font-size-xl)",
+            color: "var(--color-warm-ink)",
             lineHeight: 1.6,
             maxWidth: 300,
           }}
@@ -133,13 +133,13 @@ export default function RegisterSuccessPage() {
               style={{
                 width: "100%",
                 padding: "15px 0",
-                background: "#5934ED",
-                color: "#fff",
+                background: "var(--color-brand)",
+                color: "var(--color-surface-raised)",
                 border: "none",
-                borderRadius: 18,
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 17,
+                borderRadius: "var(--shape-radius-3xl)",
+                fontFamily: "var(--font-family-sans)",
+                fontWeight: "var(--font-weight-black)",
+                fontSize: "var(--font-size-xl)",
                 textAlign: "center",
                 cursor: "pointer",
               }}

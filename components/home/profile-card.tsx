@@ -131,7 +131,7 @@ export function ProfileCard() {
           gap: 10,
           background: "transparent",
           border: "none",
-          borderRadius: 14,
+          borderRadius: "var(--shape-radius-xl)",
           boxShadow: "none",
           padding: "5px 2px",
           minHeight: 64,
@@ -141,12 +141,12 @@ export function ProfileCard() {
           <p
             style={{
               margin: 0,
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 900,
-              fontSize: 18,
+              fontFamily: "var(--font-family-sans)",
+              fontWeight: "var(--font-weight-black)",
+              fontSize: "var(--font-size-2xl)",
               lineHeight: 1.1,
               letterSpacing: 0,
-              color: "#290800",
+              color: "var(--color-ink)",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -157,11 +157,11 @@ export function ProfileCard() {
           <p
             style={{
               margin: "3px 0 0",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 700,
-              fontSize: 12,
+              fontFamily: "var(--font-family-sans)",
+              fontWeight: "var(--font-weight-bold)",
+              fontSize: "var(--font-size-sm)",
               lineHeight: 1.15,
-              color: "rgba(41,8,0,0.7)",
+              color: "color-mix(in srgb, var(--color-ink) 7%, transparent)",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -179,14 +179,14 @@ export function ProfileCard() {
             style={{
               width: 42,
               height: 42,
-              borderRadius: "50%",
-              background: isAuthenticated === null ? "#EFF2EC" : isAuthenticated ? "rgba(34, 139, 74, 0.14)" : "rgba(201, 48, 48, 0.14)",
-              border: `2px solid ${isAuthenticated === null ? "#9CA0AE" : isAuthenticated ? "#228B4A" : "#C93030"}`,
+              borderRadius: "var(--shape-radius-circle)",
+              background: isAuthenticated === null ? "var(--color-surface)" : isAuthenticated ? "color-mix(in srgb, var(--color-status-online) 14%, transparent)" : "color-mix(in srgb, var(--color-red-600) 14%, transparent)",
+              border: `2px solid ${isAuthenticated === null ? "var(--color-text-disabled)" : isAuthenticated ? "var(--color-status-online)" : "var(--color-red-600)"}`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              color: isAuthenticated === null ? "#9CA0AE" : isAuthenticated ? "#228B4A" : "#C93030",
+              color: isAuthenticated === null ? "var(--color-text-disabled)" : isAuthenticated ? "var(--color-status-online)" : "var(--color-red-600)",
               flexShrink: 0,
             }}
           >
@@ -197,9 +197,9 @@ export function ProfileCard() {
             style={{
               minWidth: 78,
               height: 42,
-              borderRadius: 24,
-              background: "rgba(89,52,237,0.15)",
-              border: "1px solid rgba(89,52,237,0.25)",
+              borderRadius: "var(--shape-radius-6xl)",
+              background: "color-mix(in srgb, var(--color-brand) 15%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-brand) 25%, transparent)",
               padding: "0 11px",
               display: "flex",
               alignItems: "center",
@@ -207,16 +207,16 @@ export function ProfileCard() {
               gap: 7,
             }}
           >
-            <Coins size={18} strokeWidth={2.2} color="#5934ED" />
+            <Coins size={18} strokeWidth={2.2} color="var(--color-brand)" />
             <p
               suppressHydrationWarning
               style={{
                 margin: 0,
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 20,
+                fontFamily: "var(--font-family-sans)",
+                fontWeight: "var(--font-weight-black)",
+                fontSize: "var(--font-size-3xl)",
                 lineHeight: 1,
-                color: "#5934ED",
+                color: "var(--color-brand)",
               }}
             >
               {profile.points.toLocaleString("he-IL")}
@@ -229,7 +229,7 @@ export function ProfileCard() {
       <>
         <div
           onClick={() => setOpen(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100 }}
+          style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 5%, transparent)", zIndex: 100 }}
         />
         <div
           style={{
@@ -238,9 +238,9 @@ export function ProfileCard() {
             left: 0,
             right: 0,
             zIndex: 101,
-            background: "#EFF2EC",
-            borderRadius: "26px 26px 0 0",
-            border: "1px solid rgba(255,255,255,0.06)",
+            background: "var(--color-surface)",
+            borderRadius: "var(--shape-radius-sheet)",
+            border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
             borderBottom: "none",
             direction: "rtl",
             padding: "24px 20px 48px",
@@ -258,10 +258,10 @@ export function ProfileCard() {
               height: 32,
               background: "transparent",
               border: "none",
-              borderRadius: "50%",
-              fontSize: 14,
+              borderRadius: "var(--shape-radius-circle)",
+              fontSize: "var(--font-size-base)",
               cursor: "pointer",
-              color: "#683633",
+              color: "var(--color-warm-ink)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -275,9 +275,9 @@ export function ProfileCard() {
               style={{
                 width: 52,
                 height: 52,
-                borderRadius: "50%",
-                background: "#2F3344",
-                color: "#9CA0AE",
+                borderRadius: "var(--shape-radius-circle)",
+                background: "var(--color-neutral-dark)",
+                color: "var(--color-text-disabled)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -287,10 +287,10 @@ export function ProfileCard() {
               <User size={24} strokeWidth={1.8} />
             </div>
             <div>
-              <p style={{ margin: "0 0 2px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 18, color: "#290800" }}>
+              <p style={{ margin: "0 0 2px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-2xl)", color: "var(--color-ink)" }}>
                 {profile.name}
               </p>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 400, fontSize: 13, color: "#9CA0AE" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-regular)", fontSize: "var(--font-size-md)", color: "var(--color-text-disabled)" }}>
                 {profile.email ?? ""}
               </p>
             </div>
@@ -316,14 +316,14 @@ export function ProfileCard() {
                   justifyContent: "space-between",
                   alignItems: "center",
                   padding: "10px 14px",
-                  background: "#D4CFC4",
-                  borderRadius: 8,
+                  background: "var(--color-stone-border)",
+                  borderRadius: "var(--shape-radius-sm)",
                   border: "none",
                   gap: 16,
                 }}
               >
-                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 13, color: "#683633", flexShrink: 0 }}>{label}</span>
-                <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 14, color: "#290800", textAlign: "left", overflowWrap: "anywhere" }}>{value}</span>
+                <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-md)", color: "var(--color-warm-ink)", flexShrink: 0 }}>{label}</span>
+                <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-base)", color: "var(--color-ink)", textAlign: "left", overflowWrap: "anywhere" }}>{value}</span>
               </div>
             ))}
           </div>
@@ -333,13 +333,13 @@ export function ProfileCard() {
             style={{
               width: "100%",
               padding: "13px 0",
-              background: "rgba(255,69,58,0.1)",
-              color: "#FF453A",
-              border: "1px solid rgba(255,69,58,0.3)",
-              borderRadius: 10,
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 700,
-              fontSize: 15,
+              background: "color-mix(in srgb, var(--color-ios-danger) 1%, transparent)",
+              color: "var(--color-ios-danger)",
+              border: "1px solid color-mix(in srgb, var(--color-ios-danger) 3%, transparent)",
+              borderRadius: "var(--shape-radius-md)",
+              fontFamily: "var(--font-family-sans)",
+              fontWeight: "var(--font-weight-bold)",
+              fontSize: "var(--font-size-lg)",
               cursor: "pointer",
             }}
           >

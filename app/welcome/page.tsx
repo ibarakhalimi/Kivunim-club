@@ -19,7 +19,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
       style={{
         height: "100dvh",
         width: "100%",
-        background: "#DFDBD3",
+        background: "var(--color-app-bg)",
         direction: "rtl",
         display: "flex",
         flexDirection: "column",
@@ -55,12 +55,12 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
           {/* Logo with floating icons */}
           <div style={{ position: "relative", width: "calc(100vw - 28px)", maxWidth: 520, height: 156, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ position: "absolute", top: 0, right: 0, fontSize: 36, lineHeight: 1, animation: "float 3.2s ease-in-out infinite", animationDelay: "0s", display: "block" }}>🎉</span>
-            <span style={{ position: "absolute", top: 24, left: 0, fontSize: 34, lineHeight: 1, animation: "float 2.8s ease-in-out infinite", animationDelay: "0.6s", display: "block" }}>🎟️</span>
-            <span style={{ position: "absolute", bottom: 10, right: "3%", fontSize: 35, lineHeight: 1, animation: "float 3.5s ease-in-out infinite", animationDelay: "1.1s", display: "block" }}>⭐</span>
-            <span style={{ position: "absolute", bottom: 16, left: "4%", fontSize: 34, lineHeight: 1, animation: "float 3.0s ease-in-out infinite", animationDelay: "0.3s", display: "block" }}>🎁</span>
-            <span style={{ position: "absolute", top: 0, left: "23%", fontSize: 33, lineHeight: 1, animation: "float 2.6s ease-in-out infinite", animationDelay: "1.5s", display: "block" }}>🏆</span>
-            <span style={{ position: "absolute", bottom: 0, right: "25%", fontSize: 32, lineHeight: 1, animation: "float 3.3s ease-in-out infinite", animationDelay: "0.9s", display: "block" }}>👥</span>
+            <span style={{ position: "absolute", top: 0, right: 0, fontSize: "var(--font-size-6xl)", lineHeight: 1, animation: "float 3.2s ease-in-out infinite", animationDelay: "0s", display: "block" }}>🎉</span>
+            <span style={{ position: "absolute", top: 24, left: 0, fontSize: "var(--font-size-6xl)", lineHeight: 1, animation: "float 2.8s ease-in-out infinite", animationDelay: "0.6s", display: "block" }}>🎟️</span>
+            <span style={{ position: "absolute", bottom: 10, right: "3%", fontSize: "var(--font-size-6xl)", lineHeight: 1, animation: "float 3.5s ease-in-out infinite", animationDelay: "1.1s", display: "block" }}>⭐</span>
+            <span style={{ position: "absolute", bottom: 16, left: "4%", fontSize: "var(--font-size-6xl)", lineHeight: 1, animation: "float 3.0s ease-in-out infinite", animationDelay: "0.3s", display: "block" }}>🎁</span>
+            <span style={{ position: "absolute", top: 0, left: "23%", fontSize: "var(--font-size-6xl)", lineHeight: 1, animation: "float 2.6s ease-in-out infinite", animationDelay: "1.5s", display: "block" }}>🏆</span>
+            <span style={{ position: "absolute", bottom: 0, right: "25%", fontSize: "var(--font-size-6xl)", lineHeight: 1, animation: "float 3.3s ease-in-out infinite", animationDelay: "0.9s", display: "block" }}>👥</span>
             <div
               style={{
                 width: 146,
@@ -84,11 +84,11 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
           <h1
             style={{
               margin: 0,
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 900,
-              fontSize: 24,
+              fontFamily: "var(--font-family-sans)",
+              fontWeight: "var(--font-weight-black)",
+              fontSize: "var(--font-size-4xl)",
               lineHeight: 1.12,
-              color: "#290800",
+              color: "var(--color-ink)",
               maxWidth: 360,
             }}
           >
@@ -105,10 +105,10 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
           <p
             style={{
               margin: 0,
-              color: "#290800",
-              fontFamily: "var(--font-rubik)",
-              fontSize: 14,
-              fontWeight: 800,
+              color: "var(--color-ink)",
+              fontFamily: "var(--font-family-sans)",
+              fontSize: "var(--font-size-base)",
+              fontWeight: "var(--font-weight-extrabold)",
               textAlign: "center",
             }}
           >
@@ -119,13 +119,13 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
               style={{
                 width: "100%",
                 padding: "15px 0",
-                background: "#5934ED",
-                color: "#FFFFFF",
+                background: "var(--color-brand)",
+                color: "var(--color-surface-raised)",
                 border: "none",
-                borderRadius: 18,
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 900,
-                fontSize: 17,
+                borderRadius: "var(--shape-radius-3xl)",
+                fontFamily: "var(--font-family-sans)",
+                fontWeight: "var(--font-weight-black)",
+                fontSize: "var(--font-size-xl)",
                 textAlign: "center",
                 cursor: "pointer",
               }}

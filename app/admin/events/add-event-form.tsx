@@ -43,7 +43,7 @@ export function AddEventForm() {
         </Field>
         <CostFields isPaid={isPaid} onPaidChange={setIsPaid} />
         <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-          <input name="is_featured" type="checkbox" style={{ width: 16, height: 16, cursor: "pointer", accentColor: "#1E40AF" }} />
+          <input name="is_featured" type="checkbox" style={{ width: 16, height: 16, cursor: "pointer", accentColor: "var(--color-brand-blue)" }} />
           <span style={labelStyle}>מוצג בראש הדף</span>
         </label>
 
@@ -78,7 +78,7 @@ export function CostFields({
             value="false"
             checked={!isPaid}
             onChange={() => onPaidChange(false)}
-            style={{ accentColor: "#1E40AF" }}
+            style={{ accentColor: "var(--color-brand-blue)" }}
           />
           ללא עלות
         </label>
@@ -89,7 +89,7 @@ export function CostFields({
             value="true"
             checked={isPaid}
             onChange={() => onPaidChange(true)}
-            style={{ accentColor: "#1E40AF" }}
+            style={{ accentColor: "var(--color-brand-blue)" }}
           />
           בתשלום
         </label>
@@ -134,9 +134,9 @@ export function RichTextEditor({
   }
 
   return (
-    <div style={{ border: "1px solid #CBD5E1", borderRadius: 8, overflow: "hidden", background: "#fff" }}>
+    <div style={{ border: "1px solid var(--color-text-on-dark)", borderRadius: "var(--shape-radius-sm)", overflow: "hidden", background: "var(--color-surface-raised)" }}>
       <input ref={inputRef} type="hidden" name={name} defaultValue={initialHtml ?? ""} />
-      <div style={{ display: "flex", alignItems: "center", gap: 4, padding: 8, borderBottom: "1px solid #E2E8F0", background: "#F8FAFC", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 4, padding: 8, borderBottom: "1px solid var(--color-border-subtle)", background: "var(--color-surface-muted)", flexWrap: "wrap" }}>
         <ToolbarButton label="B" title="מודגש" onClick={() => applyCommand("bold")} />
         <ToolbarButton label="I" title="נטוי" onClick={() => applyCommand("italic")} />
         <ToolbarButton label="U" title="קו תחתון" onClick={() => applyCommand("underline")} />
@@ -156,10 +156,10 @@ export function RichTextEditor({
         style={{
           minHeight: 140,
           padding: "11px 12px",
-          fontFamily: "var(--font-rubik)",
-          fontSize: 14,
+          fontFamily: "var(--font-family-sans)",
+          fontSize: "var(--font-size-base)",
           lineHeight: 1.65,
-          color: "#0F172A",
+          color: "var(--color-admin-dark)",
           outline: "none",
           direction: "rtl",
         }}
@@ -177,13 +177,13 @@ function ToolbarButton({ label, title, onClick }: { label: string; title: string
       style={{
         width: 30,
         height: 30,
-        border: "1px solid #CBD5E1",
-        borderRadius: 6,
-        background: "#fff",
-        color: "#0F172A",
-        fontFamily: "var(--font-rubik)",
-        fontWeight: 800,
-        fontSize: 13,
+        border: "1px solid var(--color-text-on-dark)",
+        borderRadius: "var(--shape-radius-xs)",
+        background: "var(--color-surface-raised)",
+        color: "var(--color-admin-dark)",
+        fontFamily: "var(--font-family-sans)",
+        fontWeight: "var(--font-weight-extrabold)",
+        fontSize: "var(--font-size-md)",
         cursor: "pointer",
       }}
     >
@@ -222,19 +222,19 @@ export function ImagePicker({
     <div>
       <input ref={inputRef} name={name} type="file" accept="image/*" onChange={handleChange} style={{ display: "none" }} />
       {displayed ? (
-        <div style={{ position: "relative", width: "100%", height: 140, borderRadius: 8, overflow: "hidden", border: "1px solid #E2E8F0" }}>
+        <div style={{ position: "relative", width: "100%", height: 140, borderRadius: "var(--shape-radius-sm)", overflow: "hidden", border: "1px solid var(--color-border-subtle)" }}>
           <img src={displayed} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           <button
             type="button"
             onClick={() => { onPreview(null); if (inputRef.current) inputRef.current.value = ""; }}
-            style={{ position: "absolute", top: 8, left: 8, width: 28, height: 28, background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: "50%", fontSize: 12, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+            style={{ position: "absolute", top: 8, left: 8, width: 28, height: 28, background: "color-mix(in srgb, var(--color-overlay) 6%, transparent)", color: "var(--color-surface-raised)", border: "none", borderRadius: "var(--shape-radius-circle)", fontSize: "var(--font-size-sm)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
           >
             ✕
           </button>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            style={{ position: "absolute", bottom: 8, left: 8, padding: "4px 10px", background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: 99, fontSize: 12, fontFamily: "var(--font-rubik)", fontWeight: 600, cursor: "pointer" }}
+            style={{ position: "absolute", bottom: 8, left: 8, padding: "4px 10px", background: "color-mix(in srgb, var(--color-overlay) 6%, transparent)", color: "var(--color-surface-raised)", border: "none", borderRadius: "var(--shape-radius-pill)", fontSize: "var(--font-size-sm)", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", cursor: "pointer" }}
           >
             החלף
           </button>
@@ -243,9 +243,9 @@ export function ImagePicker({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          style={{ width: "100%", padding: "24px 0", border: "1.5px dashed #CBD5E1", borderRadius: 8, background: "#F8FAFC", cursor: "pointer", fontSize: 13, fontFamily: "var(--font-rubik)", fontWeight: 600, color: "#64748B", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
+          style={{ width: "100%", padding: "24px 0", border: "1.5px dashed var(--color-text-on-dark)", borderRadius: "var(--shape-radius-sm)", background: "var(--color-surface-muted)", cursor: "pointer", fontSize: "var(--font-size-md)", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-text-secondary)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
         >
-          <span style={{ fontSize: 26 }}>📷</span>
+          <span style={{ fontSize: "var(--font-size-4xl)" }}>📷</span>
           לחץ להעלאת תמונה
         </button>
       )}
@@ -263,66 +263,66 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 export const cardStyle: React.CSSProperties = {
-  background: "#fff",
-  border: "1px solid #E2E8F0",
-  borderRadius: 12,
-  boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+  background: "var(--color-surface-raised)",
+  border: "1px solid var(--color-border-subtle)",
+  borderRadius: "var(--shape-radius-lg)",
+  boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
   padding: "20px 18px",
 };
 export const headingStyle: React.CSSProperties = {
   margin: "0 0 16px",
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 18,
-  color: "#0F172A",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)",
+  fontSize: "var(--font-size-2xl)",
+  color: "var(--color-admin-dark)",
 };
 export const formStyle: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 14 };
 export const labelStyle: React.CSSProperties = {
-  fontSize: 13,
-  fontWeight: 600,
-  color: "#475569",
-  fontFamily: "var(--font-rubik)",
+  fontSize: "var(--font-size-md)",
+  fontWeight: "var(--font-weight-semibold)",
+  color: "var(--color-slate-600)",
+  fontFamily: "var(--font-family-sans)",
 };
 export const inputStyle: React.CSSProperties = {
   padding: "10px 12px",
-  fontSize: 14,
-  fontFamily: "var(--font-rubik)",
-  border: "1px solid #CBD5E1",
-  borderRadius: 8,
-  background: "#fff",
-  color: "#0F172A",
+  fontSize: "var(--font-size-base)",
+  fontFamily: "var(--font-family-sans)",
+  border: "1px solid var(--color-text-on-dark)",
+  borderRadius: "var(--shape-radius-sm)",
+  background: "var(--color-surface-raised)",
+  color: "var(--color-admin-dark)",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
   direction: "rtl",
 };
-const errorStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 };
-const successStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#16A34A", fontWeight: 600 };
+const errorStyle: React.CSSProperties = { margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-danger)", fontWeight: "var(--font-weight-semibold)" };
+const successStyle: React.CSSProperties = { margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-success)", fontWeight: "var(--font-weight-semibold)" };
 const submitStyle = (pending: boolean): React.CSSProperties => ({
   marginTop: 4,
   padding: "11px 24px",
-  background: pending ? "#94A3B8" : "#1E40AF",
-  color: "#fff",
+  background: pending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
+  color: "var(--color-surface-raised)",
   border: "none",
-  borderRadius: 8,
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 15,
+  borderRadius: "var(--shape-radius-sm)",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)",
+  fontSize: "var(--font-size-lg)",
   cursor: pending ? "not-allowed" : "pointer",
 });
 
 const choiceStyle = (active: boolean): React.CSSProperties => ({
   minHeight: 42,
-  border: `1px solid ${active ? "#1E40AF" : "#CBD5E1"}`,
-  borderRadius: 8,
-  background: active ? "#EFF6FF" : "#fff",
-  color: active ? "#1E40AF" : "#475569",
+  border: `1px solid ${active ? "var(--color-brand-blue)" : "var(--color-text-on-dark)"}`,
+  borderRadius: "var(--shape-radius-sm)",
+  background: active ? "var(--color-blue-50)" : "var(--color-surface-raised)",
+  color: active ? "var(--color-brand-blue)" : "var(--color-slate-600)",
   display: "flex",
   alignItems: "center",
   gap: 8,
   padding: "0 12px",
-  fontFamily: "var(--font-rubik)",
-  fontSize: 13,
-  fontWeight: 700,
+  fontFamily: "var(--font-family-sans)",
+  fontSize: "var(--font-size-md)",
+  fontWeight: "var(--font-weight-bold)",
   cursor: "pointer",
 });

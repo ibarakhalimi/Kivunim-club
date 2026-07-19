@@ -20,11 +20,11 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
     <form
       action={formAction}
       style={{
-        background: "#FFFFFF",
-        border: "1px solid #E2E8F0",
-        borderRadius: 16,
+        background: "var(--color-surface-raised)",
+        border: "1px solid var(--color-border-subtle)",
+        borderRadius: "var(--shape-radius-2xl)",
         padding: 16,
-        boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+        boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
         marginBottom: 14,
       }}
     >
@@ -33,9 +33,9 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
           style={{
             width: 38,
             height: 38,
-            borderRadius: 12,
-            background: "#ECFDF5",
-            color: "#15803D",
+            borderRadius: "var(--shape-radius-lg)",
+            background: "var(--color-emerald-50)",
+            color: "var(--color-green-700)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -45,10 +45,10 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
           <ShieldCheck size={20} strokeWidth={2.25} />
         </span>
         <div>
-          <h2 style={{ margin: 0, fontSize: 17, fontWeight: 950, color: "#0F172A" }}>
+          <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
             מצב בדיקה
           </h2>
-          <p style={{ margin: "3px 0 0", fontSize: 13, fontWeight: 650, lineHeight: 1.45, color: "#64748B" }}>
+          <p style={{ margin: "3px 0 0", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-semibold)", lineHeight: 1.45, color: "var(--color-text-secondary)" }}>
             כשמסומן, האפליקציה פתוחה בלי התחברות. כשלא מסומן, משתמש לא מחובר יועבר ל-/welcome.
           </p>
         </div>
@@ -60,13 +60,13 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
           alignItems: "center",
           gap: 9,
           width: "fit-content",
-          borderRadius: 999,
-          background: "#F8FAFC",
-          border: "1px solid #E2E8F0",
+          borderRadius: "var(--shape-radius-pill)",
+          background: "var(--color-surface-muted)",
+          border: "1px solid var(--color-border-subtle)",
           padding: "9px 12px",
-          fontSize: 13,
-          fontWeight: 900,
-          color: "#0F172A",
+          fontSize: "var(--font-size-md)",
+          fontWeight: "var(--font-weight-black)",
+          color: "var(--color-admin-dark)",
           cursor: "pointer",
         }}
       >
@@ -74,16 +74,16 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
           name="test_mode"
           type="checkbox"
           defaultChecked={settings.test_mode}
-          style={{ width: 18, height: 18, accentColor: "#16A34A" }}
+          style={{ width: 18, height: 18, accentColor: "var(--color-success)" }}
         />
         מצב בדיקה פעיל
       </label>
 
       {state.error && (
-        <p style={{ margin: "10px 0 0", color: "#DC2626", fontSize: 13, fontWeight: 800 }}>{state.error}</p>
+        <p style={{ margin: "10px 0 0", color: "var(--color-danger)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)" }}>{state.error}</p>
       )}
       {state.success && (
-        <p style={{ margin: "10px 0 0", color: "#15803D", fontSize: 13, fontWeight: 800 }}>ההגדרה נשמרה</p>
+        <p style={{ margin: "10px 0 0", color: "var(--color-green-700)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)" }}>ההגדרה נשמרה</p>
       )}
 
       <button
@@ -92,13 +92,13 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
         style={{
           width: "100%",
           height: 44,
-          borderRadius: 14,
+          borderRadius: "var(--shape-radius-xl)",
           border: "none",
-          background: isPending ? "#94A3B8" : "#16A34A",
-          color: "#fff",
-          fontSize: 14,
-          fontWeight: 900,
-          fontFamily: "var(--font-rubik)",
+          background: isPending ? "var(--color-text-tertiary)" : "var(--color-success)",
+          color: "var(--color-surface-raised)",
+          fontSize: "var(--font-size-base)",
+          fontWeight: "var(--font-weight-black)",
+          fontFamily: "var(--font-family-sans)",
           cursor: isPending ? "not-allowed" : "pointer",
           marginTop: 12,
         }}

@@ -78,11 +78,11 @@ function EditForm({ benefit, categories, onDone }: { benefit: Benefit; categorie
       </FormSection>
 
       <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-        <input name="is_active" type="checkbox" defaultChecked={benefit.is_active} style={{ width: 16, height: 16, accentColor: "#1E40AF" }} />
+        <input name="is_active" type="checkbox" defaultChecked={benefit.is_active} style={{ width: 16, height: 16, accentColor: "var(--color-brand-blue)" }} />
         <span style={labelStyle}>פעיל</span>
       </label>
 
-      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 }}>{state.error}</p>}
+      {state.error && <p style={{ margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-danger)", fontWeight: "var(--font-weight-semibold)" }}>{state.error}</p>}
 
       <div style={{ display: "flex", gap: 10 }}>
         <button type="submit" disabled={pending} style={btnPrimary(pending)}>{pending ? "שומר..." : "שמור"}</button>
@@ -102,7 +102,7 @@ function EditBenefitModal({ benefit, categories, onClose }: { benefit: Benefit; 
         position: "fixed",
         inset: 0,
         zIndex: 90,
-        background: "rgba(15, 23, 42, 0.55)",
+        background: "color-mix(in srgb, var(--color-admin-dark) 55%, transparent)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -118,9 +118,9 @@ function EditBenefitModal({ benefit, categories, onClose }: { benefit: Benefit; 
           maxWidth: 620,
           maxHeight: "calc(100dvh - 32px)",
           overflowY: "auto",
-          borderRadius: 14,
-          background: "#FFFFFF",
-          boxShadow: "0 24px 80px rgba(15, 23, 42, 0.28)",
+          borderRadius: "var(--shape-radius-xl)",
+          background: "var(--color-surface-raised)",
+          boxShadow: "0 24px 80px color-mix(in srgb, var(--color-admin-dark) 28%, transparent)",
         }}
       >
         <div
@@ -130,14 +130,14 @@ function EditBenefitModal({ benefit, categories, onClose }: { benefit: Benefit; 
             justifyContent: "space-between",
             gap: 12,
             padding: "14px 16px",
-            borderBottom: "1px solid #E2E8F0",
+            borderBottom: "1px solid var(--color-border-subtle)",
             position: "sticky",
             top: 0,
             zIndex: 1,
-            background: "#FFFFFF",
+            background: "var(--color-surface-raised)",
           }}
         >
-          <h2 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: "#0F172A" }}>
+          <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
             עריכת הטבה
           </h2>
           <button type="button" onClick={onClose} aria-label="סגירת חלון" style={closeBtn}>
@@ -192,37 +192,37 @@ function BenefitCard({ benefit, categories }: { benefit: Benefit; categories: st
   }
 
   return (
-    <div style={{ background: "#fff", border: expired ? "1px solid #CBD5E1" : "1px solid #E2E8F0", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.05)", padding: 14, opacity: expired ? 0.78 : 1, minWidth: 0 }}>
+    <div style={{ background: "var(--color-surface-raised)", border: expired ? "1px solid var(--color-text-on-dark)" : "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-md)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)", padding: 14, opacity: expired ? 0.78 : 1, minWidth: 0 }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 12, minHeight: "100%" }}>
         <div style={{ display: "flex", gap: 12, minWidth: 0 }}>
           <div style={{ flexShrink: 0 }}>
             {benefit.image_url ? (
               <img src={benefit.image_url} alt={benefit.business}
-                style={{ width: 54, height: 54, objectFit: "cover", borderRadius: 8, border: "1px solid #E2E8F0" }} />
+                style={{ width: 54, height: 54, objectFit: "cover", borderRadius: "var(--shape-radius-sm)", border: "1px solid var(--color-border-subtle)" }} />
             ) : (
-              <div style={{ width: 54, height: 54, background: "#F1F5F9", borderRadius: 8, border: "1px solid #E2E8F0" }} />
+              <div style={{ width: 54, height: 54, background: "var(--color-surface-soft)", borderRadius: "var(--shape-radius-sm)", border: "1px solid var(--color-border-subtle)" }} />
             )}
           </div>
           <div style={{ minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3, flexWrap: "wrap" }}>
-              <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 15, color: "#0F172A", overflowWrap: "anywhere" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-lg)", color: "var(--color-admin-dark)", overflowWrap: "anywhere" }}>
                 {benefit.business}
               </p>
-              <span style={{ fontSize: 11, fontWeight: 600, background: expired ? "#F1F5F9" : "#F1F5F9", color: expired ? "#64748B" : "#475569", border: "1px solid #E2E8F0", padding: "2px 7px", borderRadius: 99 }}>
+              <span style={{ fontSize: "var(--font-size-xs)", fontWeight: "var(--font-weight-semibold)", background: expired ? "var(--color-surface-soft)" : "var(--color-surface-soft)", color: expired ? "var(--color-text-secondary)" : "var(--color-slate-600)", border: "1px solid var(--color-border-subtle)", padding: "2px 7px", borderRadius: "var(--shape-radius-pill)" }}>
                 {expired ? "הטבות שהסתיימו" : benefit.category}
               </span>
               {!benefit.is_active && (
-                <span style={{ fontSize: 11, fontWeight: 600, background: "#FEE2E2", color: "#DC2626", border: "1px solid #FECACA", padding: "2px 7px", borderRadius: 99 }}>
+                <span style={{ fontSize: "var(--font-size-xs)", fontWeight: "var(--font-weight-semibold)", background: "var(--color-red-100)", color: "var(--color-danger)", border: "1px solid var(--color-red-200)", padding: "2px 7px", borderRadius: "var(--shape-radius-pill)" }}>
                   לא פעיל
                 </span>
               )}
               {expired && (
-                <span style={{ fontSize: 11, fontWeight: 700, background: "#F1F5F9", color: "#64748B", border: "1px solid #CBD5E1", padding: "2px 7px", borderRadius: 99 }}>
+                <span style={{ fontSize: "var(--font-size-xs)", fontWeight: "var(--font-weight-bold)", background: "var(--color-surface-soft)", color: "var(--color-text-secondary)", border: "1px solid var(--color-text-on-dark)", padding: "2px 7px", borderRadius: "var(--shape-radius-pill)" }}>
                   פג תוקף
                 </span>
               )}
             </div>
-            <p style={{ margin: 0, fontSize: 14, fontWeight: 800, color: "#1E40AF", fontFamily: "var(--font-rubik)", overflowWrap: "anywhere" }}>
+            <p style={{ margin: 0, fontSize: "var(--font-size-base)", fontWeight: "var(--font-weight-extrabold)", color: "var(--color-brand-blue)", fontFamily: "var(--font-family-sans)", overflowWrap: "anywhere" }}>
               {benefit.deal}
             </p>
           </div>
@@ -231,11 +231,11 @@ function BenefitCard({ benefit, categories }: { benefit: Benefit; categories: st
         <div style={{ display: "flex", gap: 6, flexShrink: 0, marginTop: "auto" }}>
           <button onClick={handleToggle} disabled={toggling}
             title={benefit.is_active ? "השבת" : "הפעל"}
-            style={{ ...iconBtn, background: benefit.is_active ? "#DCFCE7" : "#F1F5F9", color: benefit.is_active ? "#16A34A" : "#94A3B8" }}>
+            style={{ ...iconBtn, background: benefit.is_active ? "var(--color-green-100)" : "var(--color-surface-soft)", color: benefit.is_active ? "var(--color-success)" : "var(--color-text-tertiary)" }}>
             {benefit.is_active ? "●" : "○"}
           </button>
           <button onClick={() => setEditing(true)} style={iconBtn} title="עריכה">✏️</button>
-          <button onClick={handleDelete} disabled={deleting} style={{ ...iconBtn, color: "#DC2626" }} title="מחיקה">
+          <button onClick={handleDelete} disabled={deleting} style={{ ...iconBtn, color: "var(--color-danger)" }} title="מחיקה">
             {deleting ? "…" : "🗑"}
           </button>
         </div>
@@ -250,7 +250,7 @@ export function BenefitList({ benefits }: { benefits: Benefit[] }) {
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
 
   if (benefits.length === 0) {
-    return <p style={{ color: "#64748B", fontSize: 14, fontFamily: "var(--font-rubik)" }}>אין הטבות עדיין.</p>;
+    return <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-base)", fontFamily: "var(--font-family-sans)" }}>אין הטבות עדיין.</p>;
   }
 
   const filteredBenefits = benefits.filter((benefit) => {
@@ -305,14 +305,14 @@ export function BenefitList({ benefits }: { benefits: Benefit[] }) {
               aria-pressed={active}
               style={{
                 minHeight: 34,
-                borderRadius: 999,
-                border: active ? "1px solid #0F172A" : "1px solid #E2E8F0",
-                background: active ? "#0F172A" : "#FFFFFF",
-                color: active ? "#FFFFFF" : "#475569",
+                borderRadius: "var(--shape-radius-pill)",
+                border: active ? "1px solid var(--color-admin-dark)" : "1px solid var(--color-border-subtle)",
+                background: active ? "var(--color-admin-dark)" : "var(--color-surface-raised)",
+                color: active ? "var(--color-surface-raised)" : "var(--color-slate-600)",
                 padding: "0 14px",
-                fontFamily: "var(--font-rubik)",
-                fontSize: 13,
-                fontWeight: 800,
+                fontFamily: "var(--font-family-sans)",
+                fontSize: "var(--font-size-md)",
+                fontWeight: "var(--font-weight-extrabold)",
                 cursor: "pointer",
               }}
             >
@@ -327,7 +327,7 @@ export function BenefitList({ benefits }: { benefits: Benefit[] }) {
           {filteredBenefits.map((benefit) => <BenefitCard key={benefit.id} benefit={benefit} categories={benefitCategories} />)}
         </div>
       ) : (
-        <p style={{ margin: 0, color: "#64748B", fontSize: 14, fontFamily: "var(--font-rubik)" }}>
+        <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: "var(--font-size-base)", fontFamily: "var(--font-family-sans)" }}>
           אין הטבות להצגה בפילטר הזה.
         </p>
       )}
@@ -336,41 +336,41 @@ export function BenefitList({ benefits }: { benefits: Benefit[] }) {
 }
 
 const iconBtn: React.CSSProperties = {
-  width: 32, height: 32, border: "1px solid #E2E8F0", borderRadius: 8,
-  background: "#F8FAFC", cursor: "pointer", fontSize: 14, display: "flex",
+  width: 32, height: 32, border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-sm)",
+  background: "var(--color-surface-muted)", cursor: "pointer", fontSize: "var(--font-size-base)", display: "flex",
   alignItems: "center", justifyContent: "center", flexShrink: 0,
 };
 const closeBtn: React.CSSProperties = {
   width: 34,
   height: 34,
-  border: "1px solid #E2E8F0",
-  borderRadius: 8,
-  background: "#FFFFFF",
-  color: "#0F172A",
-  fontSize: 20,
+  border: "1px solid var(--color-border-subtle)",
+  borderRadius: "var(--shape-radius-sm)",
+  background: "var(--color-surface-raised)",
+  color: "var(--color-admin-dark)",
+  fontSize: "var(--font-size-3xl)",
   lineHeight: 1,
   cursor: "pointer",
 };
 const sectionStyle: React.CSSProperties = {
-  border: "1px solid #E2E8F0",
-  borderRadius: 10,
+  border: "1px solid var(--color-border-subtle)",
+  borderRadius: "var(--shape-radius-md)",
   padding: 14,
-  background: "#F8FAFC",
+  background: "var(--color-surface-muted)",
 };
 const sectionHeadingStyle: React.CSSProperties = {
   margin: "0 0 12px",
-  fontFamily: "var(--font-rubik)",
-  fontSize: 15,
-  fontWeight: 900,
-  color: "#0F172A",
+  fontFamily: "var(--font-family-sans)",
+  fontSize: "var(--font-size-lg)",
+  fontWeight: "var(--font-weight-black)",
+  color: "var(--color-admin-dark)",
 };
 const btnPrimary = (p: boolean): React.CSSProperties => ({
-  padding: "9px 20px", background: p ? "#94A3B8" : "#1E40AF", color: "#fff",
-  border: "none", borderRadius: 8, fontFamily: "var(--font-rubik)",
-  fontWeight: 700, fontSize: 14, cursor: p ? "not-allowed" : "pointer",
+  padding: "9px 20px", background: p ? "var(--color-text-tertiary)" : "var(--color-brand-blue)", color: "var(--color-surface-raised)",
+  border: "none", borderRadius: "var(--shape-radius-sm)", fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-base)", cursor: p ? "not-allowed" : "pointer",
 });
 const btnGhost: React.CSSProperties = {
-  padding: "9px 20px", background: "#fff", color: "#475569",
-  border: "1px solid #E2E8F0", borderRadius: 8, fontFamily: "var(--font-rubik)",
-  fontWeight: 600, fontSize: 14, cursor: "pointer",
+  padding: "9px 20px", background: "var(--color-surface-raised)", color: "var(--color-slate-600)",
+  border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-sm)", fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-base)", cursor: "pointer",
 };

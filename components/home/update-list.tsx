@@ -26,9 +26,9 @@ function UpdateCard({ update, currentTime }: { update: Update; currentTime: stri
       style={{
         width: "100%",
         minHeight: 116,
-        background: "#EFF2EC",
+        background: "var(--color-surface)",
         border: "none",
-        borderRadius: 22,
+        borderRadius: "var(--shape-radius-5xl)",
         boxShadow: "none",
         padding: 12,
         display: "flex",
@@ -45,13 +45,13 @@ function UpdateCard({ update, currentTime }: { update: Update; currentTime: stri
           style={{
             width: 46,
             height: 46,
-            borderRadius: 16,
-            background: "rgba(251, 146, 60, 0.14)",
-            border: "1px solid rgba(251, 146, 60, 0.22)",
+            borderRadius: "var(--shape-radius-2xl)",
+            background: "color-mix(in srgb, var(--color-orange-400) 14%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--color-orange-400) 22%, transparent)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "#FB923C",
+            color: "var(--color-orange-400)",
             flexShrink: 0,
           }}
         >
@@ -59,14 +59,14 @@ function UpdateCard({ update, currentTime }: { update: Update; currentTime: stri
         </div>
 
         <div style={{ minWidth: 0, flex: 1 }}>
-          <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 800, fontSize: 11, color: "#FB923C" }}>
+          <p suppressHydrationWarning style={{ margin: "0 0 5px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xs)", color: "var(--color-orange-400)" }}>
             {timeAgo(update.published_at, currentTime)}
           </p>
-          <h3 style={{ margin: "0 0 5px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 15, lineHeight: 1.22, color: "#290800", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <h3 style={{ margin: "0 0 5px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-lg)", lineHeight: 1.22, color: "var(--color-ink)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
             {update.title}
           </h3>
           {update.description && (
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, lineHeight: 1.35, color: "#9CA0AE", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", lineHeight: 1.35, color: "var(--color-text-disabled)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
               {update.description}
             </p>
           )}

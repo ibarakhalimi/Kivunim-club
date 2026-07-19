@@ -65,12 +65,12 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
   const ideas = (ideasData ?? []) as Idea[];
 
   return (
-    <div style={{ minHeight: "100dvh", background: "#F8FAFC", padding: "24px 16px 40px", fontFamily: "var(--font-rubik)", direction: "rtl" }}>
+    <div style={{ minHeight: "100dvh", background: "var(--color-surface-muted)", padding: "24px 16px 40px", fontFamily: "var(--font-family-sans)", direction: "rtl" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-        <a href="/admin" style={{ fontSize: 13, color: "#64748B", textDecoration: "none", fontWeight: 500 }}>
+        <a href="/admin" style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)", textDecoration: "none", fontWeight: "var(--font-weight-medium)" }}>
           ← פאנל ניהול
         </a>
-        <h1 style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 24, color: "#0F172A" }}>
+        <h1 style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-4xl)", color: "var(--color-admin-dark)" }}>
           פניות
         </h1>
       </div>
@@ -95,16 +95,16 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
               style={{
                 minHeight: 40,
                 minWidth: 92,
-                borderRadius: 999,
-                border: active ? "1px solid #0F172A" : "1px solid #E2E8F0",
-                background: active ? "#0F172A" : "#FFFFFF",
-                color: active ? "#FFFFFF" : "#475569",
+                borderRadius: "var(--shape-radius-pill)",
+                border: active ? "1px solid var(--color-admin-dark)" : "1px solid var(--color-border-subtle)",
+                background: active ? "var(--color-admin-dark)" : "var(--color-surface-raised)",
+                color: active ? "var(--color-surface-raised)" : "var(--color-slate-600)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 textDecoration: "none",
-                fontSize: 14,
-                fontWeight: 900,
+                fontSize: "var(--font-size-base)",
+                fontWeight: "var(--font-weight-black)",
                 padding: "0 18px",
                 flexShrink: 0,
               }}
@@ -116,7 +116,7 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
       </nav>
 
       {activeTab === "inquiries" && inquiries.length === 0 ? (
-        <p style={{ margin: 0, color: "#64748B", fontSize: 14, fontWeight: 600 }}>
+        <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: "var(--font-size-base)", fontWeight: "var(--font-weight-semibold)" }}>
           אין פניות עדיין.
         </p>
       ) : activeTab === "inquiries" ? (
@@ -125,40 +125,40 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
             <article
               key={inquiry.id}
               style={{
-                background: "#fff",
-                border: "1px solid #E2E8F0",
-                borderRadius: 14,
+                background: "var(--color-surface-raised)",
+                border: "1px solid var(--color-border-subtle)",
+                borderRadius: "var(--shape-radius-xl)",
                 padding: "14px 16px",
               }}
             >
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
                 <div>
-                  <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 16, color: "#0F172A" }}>
+                  <p style={{ margin: "0 0 4px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
                     {inquiry.user_name ?? "משתמש"}
                   </p>
-                  <p style={{ margin: 0, fontWeight: 700, fontSize: 12, color: "#94A3B8" }}>
+                  <p style={{ margin: 0, fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-tertiary)" }}>
                     {formatDate(inquiry.created_at)}
                   </p>
                 </div>
-                <span style={{ flexShrink: 0, borderRadius: 999, background: "#EEF2FF", color: "#4338CA", padding: "5px 9px", fontWeight: 800, fontSize: 11 }}>
+                <span style={{ flexShrink: 0, borderRadius: "var(--shape-radius-pill)", background: "var(--color-indigo-50)", color: "var(--color-indigo-700)", padding: "5px 9px", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xs)" }}>
                   {inquiry.subject}
                 </span>
               </div>
 
               {(inquiry.user_email || inquiry.user_phone) && (
-                <p style={{ margin: "0 0 10px", fontWeight: 700, fontSize: 12, color: "#64748B", direction: "ltr", textAlign: "right" }}>
+                <p style={{ margin: "0 0 10px", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-secondary)", direction: "ltr", textAlign: "right" }}>
                   {[inquiry.user_phone, inquiry.user_email].filter(Boolean).join(" · ")}
                 </p>
               )}
 
-              <p style={{ margin: 0, fontWeight: 500, fontSize: 14, lineHeight: 1.65, color: "#334155", whiteSpace: "pre-wrap" }}>
+              <p style={{ margin: 0, fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-base)", lineHeight: 1.65, color: "var(--color-admin-hover)", whiteSpace: "pre-wrap" }}>
                 {inquiry.message}
               </p>
             </article>
           ))}
         </section>
       ) : ideas.length === 0 ? (
-        <p style={{ margin: 0, color: "#64748B", fontSize: 14, fontWeight: 600 }}>
+        <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: "var(--font-size-base)", fontWeight: "var(--font-weight-semibold)" }}>
           אין רעיונות עדיין.
         </p>
       ) : (
@@ -167,33 +167,33 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
             <article
               key={idea.id}
               style={{
-                background: "#fff",
-                border: "1px solid #FEF3C7",
-                borderRadius: 14,
+                background: "var(--color-surface-raised)",
+                border: "1px solid var(--color-amber-100)",
+                borderRadius: "var(--shape-radius-xl)",
                 padding: "14px 16px",
               }}
             >
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
                 <div>
-                  <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 16, color: "#0F172A" }}>
+                  <p style={{ margin: "0 0 4px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
                     {idea.user_name ?? "משתמש"}
                   </p>
-                  <p style={{ margin: 0, fontWeight: 700, fontSize: 12, color: "#94A3B8" }}>
+                  <p style={{ margin: 0, fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-tertiary)" }}>
                     {formatDate(idea.created_at)}
                   </p>
                 </div>
-                <span style={{ flexShrink: 0, borderRadius: 999, background: "#FEFCE8", color: "#A16207", padding: "5px 9px", fontWeight: 800, fontSize: 11 }}>
+                <span style={{ flexShrink: 0, borderRadius: "var(--shape-radius-pill)", background: "var(--color-amber-50)", color: "var(--color-amber-700)", padding: "5px 9px", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xs)" }}>
                   רעיון
                 </span>
               </div>
 
               {(idea.user_email || idea.user_phone) && (
-                <p style={{ margin: "0 0 10px", fontWeight: 700, fontSize: 12, color: "#64748B", direction: "ltr", textAlign: "right" }}>
+                <p style={{ margin: "0 0 10px", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-secondary)", direction: "ltr", textAlign: "right" }}>
                   {[idea.user_phone, idea.user_email].filter(Boolean).join(" · ")}
                 </p>
               )}
 
-              <p style={{ margin: 0, fontWeight: 500, fontSize: 14, lineHeight: 1.65, color: "#334155", whiteSpace: "pre-wrap" }}>
+              <p style={{ margin: 0, fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-base)", lineHeight: 1.65, color: "var(--color-admin-hover)", whiteSpace: "pre-wrap" }}>
                 {idea.idea_text}
               </p>
             </article>

@@ -35,7 +35,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       dir="rtl"
       style={{
         minHeight: "100dvh",
-        background: "#DFDBD3",
+        background: "var(--color-app-bg)",
         paddingBottom: 28,
       }}
     >

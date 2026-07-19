@@ -7,12 +7,12 @@ import { submitIdea } from "@/app/actions/ideas";
 import type { ContactSettings, ImportantInfoPage } from "@/app/admin/settings/actions";
 
 const ALL_ACTIONS = [
-  { Icon: Phone, label: "יצירת קשר", bg: "#DFDBD3", color: "#9CA0AE" },
-  { Icon: ClipboardList, label: "מידע חשוב", bg: "#DFDBD3", color: "#9CA0AE" },
-  { Icon: Lightbulb, label: "יש לי רעיון", bg: "#DFDBD3", color: "#9CA0AE" },
-  { Icon: Gift, label: "ההטבות שלי", bg: "#DFDBD3", color: "#9CA0AE" },
-  { Icon: CalendarDays, label: "אירועים קרובים", bg: "#DFDBD3", color: "#9CA0AE" },
-  { Icon: UserCheck, label: "בדיקת נוכחות", bg: "#DFDBD3", color: "#9CA0AE" },
+  { Icon: Phone, label: "יצירת קשר", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
+  { Icon: ClipboardList, label: "מידע חשוב", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
+  { Icon: Lightbulb, label: "יש לי רעיון", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
+  { Icon: Gift, label: "ההטבות שלי", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
+  { Icon: CalendarDays, label: "אירועים קרובים", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
+  { Icon: UserCheck, label: "בדיקת נוכחות", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
 ];
 
 const CONTACT_SUBJECTS = ["שאלה כללית", "הרשמה ופרטים", "הטבות", "אירועים", "בעיה באפליקציה", "אחר"];
@@ -24,9 +24,9 @@ const drawerStyle = (open: boolean): React.CSSProperties => ({
   left: 0,
   right: 0,
   zIndex: open ? 51 : -1,
-  background: "#EFF2EC",
-  borderRadius: "26px 26px 0 0",
-  border: "1px solid rgba(255,255,255,0.06)",
+  background: "var(--color-surface)",
+  borderRadius: "var(--shape-radius-sheet)",
+  border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
   borderBottom: "none",
   direction: "rtl",
   padding: "0 20px 52px",
@@ -38,7 +38,7 @@ const drawerStyle = (open: boolean): React.CSSProperties => ({
 const backdropStyle = (open: boolean): React.CSSProperties => ({
   position: "fixed",
   inset: 0,
-  background: "rgba(0,0,0,0.5)",
+  background: "color-mix(in srgb, var(--color-overlay) 5%, transparent)",
   zIndex: 50,
   opacity: open ? 1 : 0,
   pointerEvents: open ? "auto" : "none",
@@ -48,27 +48,27 @@ const backdropStyle = (open: boolean): React.CSSProperties => ({
 function Handle() {
   return (
     <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 16px" }}>
-      <div style={{ width: 36, height: 4, background: "#343847", borderRadius: 99 }} />
+      <div style={{ width: 36, height: 4, background: "var(--color-charcoal-2)", borderRadius: "var(--shape-radius-pill)" }} />
     </div>
   );
 }
 
 const fieldLabelStyle: React.CSSProperties = {
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 12,
-  color: "#9CA0AE",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)",
+  fontSize: "var(--font-size-sm)",
+  color: "var(--color-text-disabled)",
 };
 
 const fieldStyle: React.CSSProperties = {
   width: "100%",
-  border: "1px solid rgba(255,255,255,0.08)",
-  borderRadius: 10,
-  background: "#DFDBD3",
+  border: "1px solid color-mix(in srgb, var(--color-surface-raised) 08%, transparent)",
+  borderRadius: "var(--shape-radius-md)",
+  background: "var(--color-app-bg)",
   padding: "10px 12px",
-  fontFamily: "var(--font-rubik)",
-  fontSize: 14,
-  color: "#290800",
+  fontFamily: "var(--font-family-sans)",
+  fontSize: "var(--font-size-base)",
+  color: "var(--color-ink)",
   outline: "none",
   direction: "rtl",
 };
@@ -84,7 +84,7 @@ function ContactForm() {
     <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={fieldLabelStyle}>נושא הפנייה *</label>
-        <select name="subject" required defaultValue="" style={{ ...fieldStyle, background: "#DFDBD3" }}>
+        <select name="subject" required defaultValue="" style={{ ...fieldStyle, background: "var(--color-app-bg)" }}>
           <option value="" disabled>בחר נושא...</option>
           {CONTACT_SUBJECTS.map((subject) => (
             <option key={subject} value={subject}>{subject}</option>
@@ -94,24 +94,24 @@ function ContactForm() {
 
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <label style={fieldLabelStyle}>הודעה *</label>
-        <textarea name="message" required rows={4} placeholder="כתוב כאן את ההודעה..." style={{ ...fieldStyle, background: "#DFDBD3", resize: "vertical", lineHeight: 1.6 }} />
+        <textarea name="message" required rows={4} placeholder="כתוב כאן את ההודעה..." style={{ ...fieldStyle, background: "var(--color-app-bg)", resize: "vertical", lineHeight: 1.6 }} />
       </div>
 
-      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 700 }}>{state.error}</p>}
-      {state.success && <p style={{ margin: 0, fontSize: 13, color: "#34D399", fontWeight: 700 }}>✓ הפנייה נשלחה בהצלחה</p>}
+      {state.error && <p style={{ margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-danger)", fontWeight: "var(--font-weight-bold)" }}>{state.error}</p>}
+      {state.success && <p style={{ margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-success-bright)", fontWeight: "var(--font-weight-bold)" }}>✓ הפנייה נשלחה בהצלחה</p>}
 
       <button
         type="submit"
         disabled={pending}
         style={{
           border: "none",
-          borderRadius: 12,
-          background: pending ? "rgba(89,52,237,0.4)" : "#5934ED",
-          color: "#fff",
+          borderRadius: "var(--shape-radius-lg)",
+          background: pending ? "color-mix(in srgb, var(--color-brand) 4%, transparent)" : "var(--color-brand)",
+          color: "var(--color-surface-raised)",
           padding: "12px 14px",
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 900,
-          fontSize: 14,
+          fontFamily: "var(--font-family-sans)",
+          fontWeight: "var(--font-weight-black)",
+          fontSize: "var(--font-size-base)",
           cursor: pending ? "not-allowed" : "pointer",
         }}
       >
@@ -135,21 +135,21 @@ function IdeaForm() {
         <textarea name="idea_text" required rows={5} placeholder="כתוב כאן את הרעיון..." style={{ ...fieldStyle, resize: "vertical", lineHeight: 1.6 }} />
       </div>
 
-      {state.error && <p style={{ margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 700 }}>{state.error}</p>}
-      {state.success && <p style={{ margin: 0, fontSize: 13, color: "#34D399", fontWeight: 700 }}>✓ הרעיון נשלח בהצלחה</p>}
+      {state.error && <p style={{ margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-danger)", fontWeight: "var(--font-weight-bold)" }}>{state.error}</p>}
+      {state.success && <p style={{ margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-success-bright)", fontWeight: "var(--font-weight-bold)" }}>✓ הרעיון נשלח בהצלחה</p>}
 
       <button
         type="submit"
         disabled={pending}
         style={{
           border: "none",
-          borderRadius: 12,
-          background: pending ? "rgba(89,52,237,0.4)" : "#5934ED",
-          color: "#fff",
+          borderRadius: "var(--shape-radius-lg)",
+          background: pending ? "color-mix(in srgb, var(--color-brand) 4%, transparent)" : "var(--color-brand)",
+          color: "var(--color-surface-raised)",
           padding: "12px 14px",
-          fontFamily: "var(--font-rubik)",
-          fontWeight: 900,
-          fontSize: 14,
+          fontFamily: "var(--font-family-sans)",
+          fontWeight: "var(--font-weight-black)",
+          fontSize: "var(--font-size-base)",
           cursor: pending ? "not-allowed" : "pointer",
         }}
       >
@@ -190,8 +190,8 @@ export function ActionsGrid({
           href: `tel:${digitsOnly(contactSettings.mobile_phone)}`,
           label: contactSettings.mobile_phone,
           Icon: Phone,
-          bg: "rgba(77,163,255,0.15)",
-          color: "#4DA3FF",
+          bg: "color-mix(in srgb, var(--color-sky) 15%, transparent)",
+          color: "var(--color-sky)",
         }
       : null,
     contactSettings.whatsapp
@@ -200,8 +200,8 @@ export function ActionsGrid({
           href: whatsappHref(contactSettings.whatsapp),
           label: "וואטסאפ",
           Icon: MessageCircle,
-          bg: "rgba(52,211,153,0.15)",
-          color: "#34D399",
+          bg: "color-mix(in srgb, var(--color-success-bright) 15%, transparent)",
+          color: "var(--color-success-bright)",
           external: true,
         }
       : null,
@@ -211,8 +211,8 @@ export function ActionsGrid({
           href: `mailto:${contactSettings.email}`,
           label: contactSettings.email,
           Icon: Mail,
-          bg: "rgba(89,52,237,0.15)",
-          color: "#5934ED",
+          bg: "color-mix(in srgb, var(--color-brand) 15%, transparent)",
+          color: "var(--color-brand)",
         }
       : null,
   ].filter(Boolean) as Array<{
@@ -252,8 +252,8 @@ export function ActionsGrid({
               flex: 1,
               minWidth: 0,
               border: "none",
-              background: "#EFF2EC",
-              borderRadius: 20,
+              background: "var(--color-surface)",
+              borderRadius: "var(--shape-radius-4xl)",
               minHeight: 92,
               padding: "13px 8px",
               cursor: "pointer",
@@ -269,9 +269,9 @@ export function ActionsGrid({
               style={{
                 width: 40,
                 height: 40,
-                borderRadius: "50%",
-                background: "#CBD6E6",
-                color: "#5934ED",
+                borderRadius: "var(--shape-radius-circle)",
+                background: "var(--color-neutral-blue)",
+                color: "var(--color-brand)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -282,11 +282,11 @@ export function ActionsGrid({
             </span>
             <span
               style={{
-                fontFamily: "var(--font-rubik)",
-                fontWeight: 800,
-                fontSize: 11,
+                fontFamily: "var(--font-family-sans)",
+                fontWeight: "var(--font-weight-extrabold)",
+                fontSize: "var(--font-size-xs)",
                 lineHeight: 1.15,
-                color: "#290800",
+                color: "var(--color-ink)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -303,11 +303,11 @@ export function ActionsGrid({
             flex: 1,
             minWidth: 0,
             border: "none",
-            background: "#EFF2EC",
-            borderRadius: 20,
+            background: "var(--color-surface)",
+            borderRadius: "var(--shape-radius-4xl)",
             minHeight: 92,
             padding: "13px 8px",
-            color: "#290800",
+            color: "var(--color-ink)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -322,15 +322,15 @@ export function ActionsGrid({
               position: "absolute",
               top: -6,
               left: 8,
-              borderRadius: 999,
-              background: "#5934ED",
-              color: "#290800",
+              borderRadius: "var(--shape-radius-pill)",
+              background: "var(--color-brand)",
+              color: "var(--color-ink)",
               padding: "3px 8px",
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 900,
-              fontSize: 10,
+              fontFamily: "var(--font-family-sans)",
+              fontWeight: "var(--font-weight-black)",
+              fontSize: "var(--font-size-2xs)",
               lineHeight: 1,
-              boxShadow: "0 6px 14px rgba(0,0,0,0.22)",
+              boxShadow: "0 6px 14px color-mix(in srgb, var(--color-overlay) 22%, transparent)",
               pointerEvents: "none",
             }}
           >
@@ -340,9 +340,9 @@ export function ActionsGrid({
             style={{
               width: 40,
               height: 40,
-              borderRadius: "50%",
-              background: "#5934ED",
-              color: "#FFFFFF",
+              borderRadius: "var(--shape-radius-circle)",
+              background: "var(--color-brand)",
+              color: "var(--color-surface-raised)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -352,11 +352,11 @@ export function ActionsGrid({
           </span>
           <span
             style={{
-              fontFamily: "var(--font-rubik)",
-              fontWeight: 800,
-              fontSize: 11,
+              fontFamily: "var(--font-family-sans)",
+              fontWeight: "var(--font-weight-extrabold)",
+              fontSize: "var(--font-size-xs)",
               lineHeight: 1.15,
-              color: "#290800",
+              color: "var(--color-ink)",
               whiteSpace: "nowrap",
               textAlign: "center",
             }}
@@ -369,7 +369,7 @@ export function ActionsGrid({
       <div style={backdropStyle(actionsOpen)} onClick={() => setActionsOpen(false)} />
       <div style={drawerStyle(actionsOpen)}>
         <Handle />
-        <p style={{ margin: "0 0 16px", fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 18, color: "#290800" }}>
+        <p style={{ margin: "0 0 16px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-2xl)", color: "var(--color-ink)" }}>
           כל הפעולות
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -395,19 +395,19 @@ export function ActionsGrid({
                 display: "flex",
                 alignItems: "center",
                 gap: 14,
-                background: "#DFDBD3",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: 12,
+                background: "var(--color-app-bg)",
+                border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+                borderRadius: "var(--shape-radius-lg)",
                 padding: "12px 16px",
                 cursor: "pointer",
                 width: "100%",
                 textAlign: "right",
               }}
             >
-              <span style={{ width: 34, height: 34, borderRadius: 10, background: "rgba(89,52,237,0.15)", color: "#5934ED", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <span style={{ width: 34, height: 34, borderRadius: "var(--shape-radius-md)", background: "color-mix(in srgb, var(--color-brand) 15%, transparent)", color: "var(--color-brand)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <action.Icon size={18} strokeWidth={2.1} />
               </span>
-              <span style={{ fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 15, color: "#290800" }}>
+              <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-lg)", color: "var(--color-ink)" }}>
                 {action.label}
               </span>
             </button>
@@ -420,17 +420,17 @@ export function ActionsGrid({
         <Handle />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
           <div>
-            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#290800" }}>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-2xl)", color: "var(--color-ink)" }}>
               יצירת קשר
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-disabled)" }}>
               אנחנו כאן לכל שאלה או בקשה
             </p>
           </div>
           <button
             type="button"
             onClick={() => setContactOpen(false)}
-            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#DFDBD3", color: "#290800", cursor: "pointer" }}
+            style={{ width: 32, height: 32, borderRadius: "var(--shape-radius-circle)", border: "none", background: "var(--color-app-bg)", color: "var(--color-ink)", cursor: "pointer" }}
           >
             ✕
           </button>
@@ -450,13 +450,13 @@ export function ActionsGrid({
                   gap: 8,
                   minWidth: 0,
                   padding: "12px 10px",
-                  borderRadius: 14,
+                  borderRadius: "var(--shape-radius-xl)",
                   background: method.bg,
                   color: method.color,
                   textDecoration: "none",
-                  fontFamily: "var(--font-rubik)",
-                  fontWeight: 800,
-                  fontSize: 13,
+                  fontFamily: "var(--font-family-sans)",
+                  fontWeight: "var(--font-weight-extrabold)",
+                  fontSize: "var(--font-size-md)",
                 }}
               >
                 <method.Icon size={18} strokeWidth={2.2} />
@@ -482,10 +482,10 @@ export function ActionsGrid({
         <Handle />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
           <div>
-            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#290800" }}>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-2xl)", color: "var(--color-ink)" }}>
               {selectedInfoPage ? selectedInfoPage.title : "מידע חשוב"}
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-disabled)" }}>
               {selectedInfoPage ? "פירוט המידע" : "עמודי מידע ושירותים שימושיים"}
             </p>
           </div>
@@ -498,7 +498,7 @@ export function ActionsGrid({
               }
               setInfoOpen(false);
             }}
-            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#DFDBD3", color: "#290800", cursor: "pointer" }}
+            style={{ width: 32, height: 32, borderRadius: "var(--shape-radius-circle)", border: "none", background: "var(--color-app-bg)", color: "var(--color-ink)", cursor: "pointer" }}
           >
             {selectedInfoPage ? "←" : "✕"}
           </button>
@@ -507,9 +507,9 @@ export function ActionsGrid({
         {selectedInfoPage ? (
           <div
             style={{
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: 16,
-              background: "#DFDBD3",
+              border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+              borderRadius: "var(--shape-radius-2xl)",
+              background: "var(--color-app-bg)",
               padding: "14px",
               maxHeight: "52dvh",
               overflowY: "auto",
@@ -518,16 +518,16 @@ export function ActionsGrid({
             <div
               dangerouslySetInnerHTML={{ __html: selectedInfoPage.content_html }}
               style={{
-                fontFamily: "var(--font-rubik)",
-                fontSize: 14,
-                fontWeight: 600,
+                fontFamily: "var(--font-family-sans)",
+                fontSize: "var(--font-size-base)",
+                fontWeight: "var(--font-weight-semibold)",
                 lineHeight: 1.7,
-                color: "#290800",
+                color: "var(--color-ink)",
               }}
             />
           </div>
         ) : importantInfoPages.length === 0 ? (
-          <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 13, color: "#9CA0AE" }}>
+          <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-md)", color: "var(--color-text-disabled)" }}>
             אין מידע להצגה כרגע.
           </p>
         ) : (
@@ -539,9 +539,9 @@ export function ActionsGrid({
                   onClick={() => setSelectedInfoPage(page)}
                   style={{
                     width: "100%",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    borderRadius: 14,
-                    background: "#DFDBD3",
+                    border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+                    borderRadius: "var(--shape-radius-xl)",
+                    background: "var(--color-app-bg)",
                     padding: "12px",
                     display: "flex",
                     alignItems: "center",
@@ -550,14 +550,14 @@ export function ActionsGrid({
                     cursor: "pointer",
                   }}
                 >
-                  <span style={{ width: 36, height: 36, borderRadius: 12, background: "rgba(89,52,237,0.15)", color: "#5934ED", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ width: 36, height: 36, borderRadius: "var(--shape-radius-lg)", background: "color-mix(in srgb, var(--color-brand) 15%, transparent)", color: "var(--color-brand)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <FileText size={18} strokeWidth={2.15} />
                   </span>
                   <span style={{ minWidth: 0 }}>
-                    <span style={{ display: "block", marginBottom: 3, fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 14, color: "#290800" }}>
+                    <span style={{ display: "block", marginBottom: 3, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-base)", color: "var(--color-ink)" }}>
                       {page.title}
                     </span>
-                    <span style={{ display: "block", fontFamily: "var(--font-rubik)", fontWeight: 600, fontSize: 12, lineHeight: 1.35, color: "#9CA0AE", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <span style={{ display: "block", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-sm)", lineHeight: 1.35, color: "var(--color-text-disabled)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {page.subtitle}
                     </span>
                   </span>
@@ -572,17 +572,17 @@ export function ActionsGrid({
         <Handle />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
           <div>
-            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-rubik)", fontWeight: 900, fontSize: 19, color: "#290800" }}>
+            <p style={{ margin: "0 0 3px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-2xl)", color: "var(--color-ink)" }}>
               יש לי רעיון
             </p>
-            <p style={{ margin: 0, fontFamily: "var(--font-rubik)", fontWeight: 700, fontSize: 12, color: "#9CA0AE" }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-disabled)" }}>
               כתוב לנו רעיון לשיפור או פעילות חדשה
             </p>
           </div>
           <button
             type="button"
             onClick={() => setIdeaOpen(false)}
-            style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "#DFDBD3", color: "#290800", cursor: "pointer" }}
+            style={{ width: 32, height: 32, borderRadius: "var(--shape-radius-circle)", border: "none", background: "var(--color-app-bg)", color: "var(--color-ink)", cursor: "pointer" }}
           >
             ✕
           </button>

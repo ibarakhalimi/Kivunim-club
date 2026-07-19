@@ -43,7 +43,7 @@ export function AddUpdateForm() {
           </Field>
         </div>
         <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-          <input name="is_active" type="checkbox" defaultChecked style={{ width: 16, height: 16, accentColor: "#B45309" }} />
+          <input name="is_active" type="checkbox" defaultChecked style={{ width: 16, height: 16, accentColor: "var(--color-amber-800)" }} />
           <span style={labelStyle}>מוצג באפליקציה</span>
         </label>
 
@@ -68,49 +68,49 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 export const cardStyle: React.CSSProperties = {
-  background: "#fff",
-  border: "1px solid #E2E8F0",
-  borderRadius: 12,
-  boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+  background: "var(--color-surface-raised)",
+  border: "1px solid var(--color-border-subtle)",
+  borderRadius: "var(--shape-radius-lg)",
+  boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
   padding: "20px 18px",
 };
 export const headingStyle: React.CSSProperties = {
   margin: "0 0 16px",
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 18,
-  color: "#0F172A",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)",
+  fontSize: "var(--font-size-2xl)",
+  color: "var(--color-admin-dark)",
 };
 export const labelStyle: React.CSSProperties = {
-  fontSize: 13,
-  fontWeight: 600,
-  color: "#475569",
-  fontFamily: "var(--font-rubik)",
+  fontSize: "var(--font-size-md)",
+  fontWeight: "var(--font-weight-semibold)",
+  color: "var(--color-slate-600)",
+  fontFamily: "var(--font-family-sans)",
 };
 export const inputStyle: React.CSSProperties = {
   padding: "10px 12px",
-  fontSize: 14,
-  fontFamily: "var(--font-rubik)",
-  border: "1px solid #CBD5E1",
-  borderRadius: 8,
-  background: "#fff",
-  color: "#0F172A",
+  fontSize: "var(--font-size-base)",
+  fontFamily: "var(--font-family-sans)",
+  border: "1px solid var(--color-text-on-dark)",
+  borderRadius: "var(--shape-radius-sm)",
+  background: "var(--color-surface-raised)",
+  color: "var(--color-admin-dark)",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
   direction: "rtl",
 };
-const errorStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#DC2626", fontWeight: 600 };
-const successStyle: React.CSSProperties = { margin: 0, fontSize: 13, color: "#16A34A", fontWeight: 600 };
+const errorStyle: React.CSSProperties = { margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-danger)", fontWeight: "var(--font-weight-semibold)" };
+const successStyle: React.CSSProperties = { margin: 0, fontSize: "var(--font-size-md)", color: "var(--color-success)", fontWeight: "var(--font-weight-semibold)" };
 const submitStyle = (pending: boolean): React.CSSProperties => ({
   marginTop: 4,
   padding: "11px 24px",
-  background: pending ? "#94A3B8" : "#1E40AF",
-  color: "#fff",
+  background: pending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
+  color: "var(--color-surface-raised)",
   border: "none",
-  borderRadius: 8,
-  fontFamily: "var(--font-rubik)",
-  fontWeight: 700,
-  fontSize: 15,
+  borderRadius: "var(--shape-radius-sm)",
+  fontFamily: "var(--font-family-sans)",
+  fontWeight: "var(--font-weight-bold)",
+  fontSize: "var(--font-size-lg)",
   cursor: pending ? "not-allowed" : "pointer",
 });
