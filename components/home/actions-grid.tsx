@@ -242,13 +242,10 @@ export function ActionsGrid({
             key={`contained-${action.label}`}
             onClick={() => {
               if (action.label === "יצירת קשר") setContactOpen(true);
-              if (action.label === "מידע חשוב") {
-                setSelectedInfoPage(null);
-                setInfoOpen(true);
-              }
               if (action.label === "יש לי רעיון") setIdeaOpen(true);
             }}
             style={{
+              position: "relative",
               flex: 1,
               minWidth: 0,
               border: "none",
@@ -256,7 +253,7 @@ export function ActionsGrid({
               borderRadius: "var(--shape-radius-4xl)",
               minHeight: 92,
               padding: "13px 8px",
-              cursor: "pointer",
+              cursor: action.label === "מידע חשוב" ? "default" : "pointer",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -265,6 +262,27 @@ export function ActionsGrid({
               textAlign: "center",
             }}
           >
+            {action.label === "מידע חשוב" && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: -6,
+                  left: 8,
+                  borderRadius: "var(--shape-radius-pill)",
+                  background: "var(--color-brand)",
+                  color: "var(--color-ink)",
+                  padding: "3px 8px",
+                  fontFamily: "var(--font-family-sans)",
+                  fontWeight: "var(--font-weight-black)",
+                  fontSize: "var(--font-size-2xs)",
+                  lineHeight: 1,
+                  boxShadow: "0 6px 14px color-mix(in srgb, var(--color-overlay) 22%, transparent)",
+                  pointerEvents: "none",
+                }}
+              >
+                בקרוב
+              </span>
+            )}
             <span
               style={{
                 width: 40,
@@ -341,8 +359,8 @@ export function ActionsGrid({
               width: 40,
               height: 40,
               borderRadius: "var(--shape-radius-circle)",
-              background: "var(--color-brand)",
-              color: "var(--color-surface-raised)",
+              background: "var(--color-neutral-blue)",
+              color: "var(--color-brand)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

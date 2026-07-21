@@ -113,15 +113,15 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 style={{
                   alignSelf: "center",
                   flexShrink: 0,
-                  maxWidth: "38%",
+                  maxWidth: "44%",
                   borderRadius: "var(--shape-radius-pill)",
                   background: "color-mix(in srgb, var(--color-brand) 14%, transparent)",
                   color: "var(--color-brand)",
-                  padding: "7px 10px",
+                  padding: "8px 12px",
                   fontFamily: "var(--font-family-sans)",
-                  fontWeight: "var(--font-weight-black)",
-                  fontSize: "var(--font-size-sm)",
-                  lineHeight: 1.2,
+                  fontWeight: "var(--font-weight-extrabold)",
+                  fontSize: "var(--font-size-2xl)",
+                  lineHeight: 1.15,
                   textAlign: "center",
                 }}
               >
@@ -225,11 +225,11 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                   borderRadius: "var(--shape-radius-pill)",
                   background: "color-mix(in srgb, var(--color-brand) 14%, transparent)",
                   color: "var(--color-brand)",
-                  padding: "7px 10px",
+                  padding: "8px 12px",
                   fontFamily: "var(--font-family-sans)",
-                  fontWeight: "var(--font-weight-black)",
-                  fontSize: "var(--font-size-sm)",
-                  lineHeight: 1.2,
+                  fontWeight: "var(--font-weight-extrabold)",
+                  fontSize: "var(--font-size-2xl)",
+                  lineHeight: 1.15,
                   textAlign: "center",
                 }}
               >
