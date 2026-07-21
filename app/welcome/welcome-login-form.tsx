@@ -114,6 +114,10 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
       }}
     >
       <style>{`
+        @keyframes kv-login-spin {
+          to { transform: rotate(360deg); }
+        }
+
         .kv-welcome-field::placeholder {
           color: var(--color-ink);
           -webkit-text-fill-color: var(--color-ink);
@@ -180,9 +184,16 @@ export function WelcomeLoginForm({ nextPath }: WelcomeLoginFormProps) {
           <button
             type="submit"
             disabled={loading}
-            style={{ ...primaryButtonStyle, opacity: loading ? 0.75 : 1, cursor: loading ? "not-allowed" : "pointer" }}
+            aria-busy={loading}
+            style={{ ...primaryButtonStyle, opacity: loading ? 0.85 : 1, cursor: loading ? "wait" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 9 }}
           >
-            {loading ? "מאמת..." : "כניסה עם קוד"}
+            {loading && (
+              <span
+                aria-hidden="true"
+                style={{ width: 17, height: 17, borderRadius: "var(--shape-radius-circle)", border: "2px solid color-mix(in srgb, var(--color-on-accent) 35%, transparent)", borderTopColor: "var(--color-on-accent)", animation: "kv-login-spin 0.7s linear infinite", flexShrink: 0 }}
+              />
+            )}
+            {loading ? "מתחברים..." : "כניסה עם קוד"}
           </button>
           <button
             type="button"
