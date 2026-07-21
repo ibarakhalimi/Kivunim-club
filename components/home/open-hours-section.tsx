@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Camera, CheckCircle2, ChevronLeft, ChevronRight, Clock3, QrCode } from "lucide-react";
 import jsQR from "jsqr";
-import { checkIn } from "@/app/actions/check-in";
+import { checkIn, getMyCheckInCount } from "@/app/actions/check-in";
 import { getOpeningHoursWeek } from "@/app/admin/settings/actions";
 
 export type OpeningHourRow = {
@@ -61,6 +61,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
   const [checkInOpen, setCheckInOpen] = useState(false);
   const [scanState, setScanState] = useState<"intro" | "camera" | "welcome" | "error">("intro");
   const [scanError, setScanError] = useState("");
+  const [hasCheckedInToday, setHasCheckedInToday] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [isHoursWeekPending, startHoursWeekTransition] = useTransition();
   const [hoursWeekOffset, setHoursWeekOffset] = useState(0);
@@ -91,6 +92,10 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
     const timer = setTimeout(() => setToast(false), 3000);
     return () => clearTimeout(timer);
   }, [toast]);
+
+  useEffect(() => {
+    void getMyCheckInCount().then((result) => setHasCheckedInToday(result.checkedInToday));
+  }, []);
 
   useEffect(() => {
     if (checkInOpen) return;
@@ -217,6 +222,13 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
 
     startTransition(async () => {
       const result = await checkIn({ source: qrPayload ? "qr" : "manual", qrPayload });
+      if (result.alreadyCheckedIn) {
+        setHasCheckedInToday(true);
+        completingRef.current = false;
+        setScanState("error");
+        setScanError("כבר ביצעת צ׳קאין היום");
+        return;
+      }
       if (result?.error) {
         completingRef.current = false;
         setScanState("error");
@@ -224,6 +236,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
         return;
       }
 
+      setHasCheckedInToday(true);
       window.dispatchEvent(new Event("check-in-created"));
       setScanState("welcome");
       window.setTimeout(() => {
@@ -321,23 +334,23 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
 
         <button
           onClick={openCheckInSheet}
-          disabled={isPending}
+          disabled={isPending || hasCheckedInToday}
           style={{
             height: 40,
             width: "auto",
             border: "none",
             borderRadius: "var(--shape-radius-pill)",
-            background: isPending ? "color-mix(in srgb, var(--color-violet-500) 55%, transparent)" : "var(--color-violet-500)",
-            color: "var(--color-neutral-deep)",
+            background: hasCheckedInToday ? "var(--color-neutral-blue)" : isPending ? "color-mix(in srgb, var(--color-violet-500) 55%, transparent)" : "var(--color-violet-500)",
+            color: hasCheckedInToday ? "var(--color-brand)" : "var(--color-neutral-deep)",
             padding: "0 22px",
             fontFamily: "var(--font-family-sans)",
             fontWeight: "var(--font-weight-black)",
             fontSize: "var(--font-size-md)",
-            cursor: isPending ? "not-allowed" : "pointer",
+            cursor: isPending || hasCheckedInToday ? "default" : "pointer",
             whiteSpace: "nowrap",
           }}
         >
-          {isPending ? "מסמן..." : "צ׳קאין"}
+          {hasCheckedInToday ? "בוצע צ׳קאין" : isPending ? "מסמן..." : "צ׳קאין"}
         </button>
         </div>
       </div>

@@ -43,6 +43,16 @@ export default async function CheckInPage({ searchParams }: CheckInPageProps) {
     qrPayload: checkInPath,
   });
 
+  if (result.alreadyCheckedIn) {
+    return (
+      <CheckInResult
+        ok={true}
+        title="כבר בוצע צ׳קאין היום"
+        description="ניתן לבצע צ׳קאין פעם אחת בלבד בכל יום."
+      />
+    );
+  }
+
   if (result?.error) {
     return (
       <CheckInResult
