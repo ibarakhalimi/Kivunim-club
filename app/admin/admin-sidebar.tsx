@@ -16,6 +16,11 @@ const inquirySubItems = [
   { label: "רעיונות", href: "/admin/inquiries?tab=ideas", tab: "ideas", Icon: Lightbulb },
 ];
 
+const memberSubItems = [
+  { label: "רשימת חברים", href: "/admin/members", tab: "list", Icon: Users },
+  { label: "נתונים", href: "/admin/members/data", tab: "data", Icon: BarChart3 },
+];
+
 const CONTENT_PATHS = ["/admin/content"];
 const INQUIRY_PATHS = ["/admin/inquiries", "/admin/ideas"];
 
@@ -29,7 +34,7 @@ const items = [
     subItems: contentSubItems,
   },
   { label: "הגעות", href: "/admin/check-ins", Icon: LogIn, match: (path: string) => path.startsWith("/admin/check-ins") },
-  { label: "חברי מועדון", href: "/admin/members", Icon: Users, match: (path: string) => path.startsWith("/admin/members") },
+  { label: "חברי מועדון", href: "/admin/members", Icon: Users, match: (path: string) => path.startsWith("/admin/members"), subItems: memberSubItems },
   {
     label: "פניות",
     href: "/admin/inquiries",
@@ -45,6 +50,7 @@ export function AdminSidebar() {
   const searchParams = useSearchParams();
   const activeContentTab = searchParams.get("tab") ?? "updates";
   const activeInquiryTab = pathname.startsWith("/admin/ideas") ? "ideas" : searchParams.get("tab") ?? "inquiries";
+  const activeMemberTab = pathname.startsWith("/admin/members/data") ? "data" : "list";
 
   return (
     <aside
@@ -103,7 +109,8 @@ export function AdminSidebar() {
                   {subItems.map((subItem) => {
                     const subActive =
                       (pathname === "/admin/content" && activeContentTab === subItem.tab) ||
-                      ((pathname === "/admin/inquiries" || pathname.startsWith("/admin/ideas")) && activeInquiryTab === subItem.tab);
+                      ((pathname === "/admin/inquiries" || pathname.startsWith("/admin/ideas")) && activeInquiryTab === subItem.tab) ||
+                      (pathname.startsWith("/admin/members") && activeMemberTab === subItem.tab);
                     return (
                       <Link
                         key={subItem.href}
@@ -118,7 +125,7 @@ export function AdminSidebar() {
                           gap: 8,
                           textDecoration: "none",
                           background: subActive ? "color-mix(in srgb, var(--color-surface-tinted) 12%, transparent)" : "transparent",
-                          color: subActive ? "var(--color-surface-raised)" : "var(--color-text-tertiary)",
+                          color: subActive ? "var(--color-violet-400)" : "var(--color-text-tertiary)",
                           fontSize: "var(--font-size-md)",
                           fontWeight: "var(--font-weight-extrabold)",
                         }}

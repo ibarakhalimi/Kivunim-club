@@ -100,14 +100,23 @@ export async function checkIn(input: CheckInInput = {}) {
 export async function getMyCheckInCount() {
   const userClient = await createClient();
   const { data: { user } } = await userClient.auth.getUser();
-  if (!user) return { count: 0 };
+  if (!user) return { count: 0, lastCheckIn: null };
 
   const supabase = createAdminClient();
-  const { count, error } = await supabase
-    .from("check_ins")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", user.id);
+  const [{ count, error }, { data: latestCheckIn, error: latestError }] = await Promise.all([
+    supabase
+      .from("check_ins")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id),
+    supabase
+      .from("check_ins")
+      .select("checked_in_at")
+      .eq("user_id", user.id)
+      .order("checked_in_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
 
-  if (error) return { count: 0 };
-  return { count: count ?? 0 };
+  if (error || latestError) return { count: 0, lastCheckIn: null };
+  return { count: count ?? 0, lastCheckIn: latestCheckIn?.checked_in_at ?? null };
 }

@@ -98,7 +98,7 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
                 borderRadius: "var(--shape-radius-pill)",
                 border: active ? "1px solid var(--color-admin-dark)" : "1px solid var(--color-border-subtle)",
                 background: active ? "var(--color-admin-dark)" : "var(--color-surface-raised)",
-                color: active ? "var(--color-surface-raised)" : "var(--color-slate-600)",
+                color: active ? "var(--color-violet-400)" : "var(--color-slate-600)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

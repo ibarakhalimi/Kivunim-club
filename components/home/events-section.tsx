@@ -250,8 +250,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
 
               {selectedEvent.description && (
                 <div
+                  className="event-detail-content"
                   dangerouslySetInnerHTML={{ __html: selectedEvent.description }}
-                  style={{ margin: "0 0 18px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-lg)", lineHeight: 1.75, color: "var(--color-neutral-300)" }}
+                  style={{ margin: "0 0 18px", fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-lg)", lineHeight: 1.75 }}
                 />
               )}
             </div>

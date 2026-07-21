@@ -61,7 +61,7 @@ export function SettingsTabs({
                 border: `1px solid ${isActive ? "var(--color-brand-blue)" : "var(--color-border-subtle)"}`,
                 borderRadius: "var(--shape-radius-xl)",
                 background: isActive ? "var(--color-blue-50)" : "var(--color-surface-raised)",
-                color: isActive ? "var(--color-brand-blue)" : "var(--color-slate-600)",
+                color: isActive ? "var(--color-violet-400)" : "var(--color-slate-600)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

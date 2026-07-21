@@ -244,6 +244,12 @@
   --gutter:  16px;
 }
 
+.event-detail-content,
+.event-detail-content * {
+  color: var(--color-on-accent) !important;
+  font-family: var(--font-family-sans) !important;
+}
+
 .dark {
   --background:           var(--color-admin-dark);
   --foreground:           var(--color-surface-muted);

@@ -19,6 +19,7 @@ type ProfileCardState = {
   privacy_consent: boolean | null;
   role: string | null;
   created_at: string | null;
+  last_check_in: string | null;
   user_id: string | null;
 };
 
@@ -31,21 +32,22 @@ function formatBirthDate(value: string | null) {
 function formatCreatedAt(value: string | null) {
   if (!value) return null;
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("he-IL");
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString("he-IL", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
-function formatRole(value: string | null) {
-  if (value === "admin") return "מנהל/ת";
-  if (value === "member") return "חבר/ת מועדון";
-  return value;
+function formatCheckIn(value: string | null) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("he-IL", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
 export function ProfileCard() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [pointsOpen, setPointsOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [profile, setProfile] = useState<ProfileCardState>({
-    name: "משתמש",
+    name: "שם מלא",
     points: 0,
     email: null,
     phone: null,
@@ -57,6 +59,7 @@ export function ProfileCard() {
     privacy_consent: null,
     role: null,
     created_at: null,
+    last_check_in: null,
     user_id: null,
   });
 
@@ -75,9 +78,9 @@ export function ProfileCard() {
 
       const metadataName = typeof metadata.name === "string" ? metadata.name.trim() : "";
 
-      setProfile({
+      setProfile((current) => ({
         name: member?.name?.trim() || metadataName || "משתמש",
-        points: 0,
+        points: current.points,
         email: member?.email ?? user.email ?? null,
         phone: member?.phone ?? (typeof metadata.phone === "string" ? metadata.phone : user.phone ?? null),
         institution: member?.institution ?? (typeof metadata.institution === "string" ? metadata.institution : null),
@@ -88,13 +91,14 @@ export function ProfileCard() {
         privacy_consent: member?.privacy_consent ?? (typeof metadata.privacy_consent === "boolean" ? metadata.privacy_consent : null),
         role: member?.role ?? null,
         created_at: member?.created_at ?? null,
+        last_check_in: current.last_check_in,
         user_id: member?.user_id ?? user.id,
-      });
+      }));
     });
 
     async function refreshCheckInCount() {
       const result = await getMyCheckInCount();
-      setProfile((current) => ({ ...current, points: result.count }));
+      setProfile((current) => ({ ...current, points: result.count, last_check_in: result.lastCheckIn }));
     }
 
     refreshCheckInCount();
@@ -111,9 +115,9 @@ export function ProfileCard() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.body.style.overflow = open || pointsOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [open]);
+  }, [open, pointsOpen]);
 
   async function handleLogout() {
     await supabase.auth.signOut();
@@ -180,20 +184,23 @@ export function ProfileCard() {
               width: 42,
               height: 42,
               borderRadius: "var(--shape-radius-circle)",
-              background: isAuthenticated === null ? "var(--color-surface)" : isAuthenticated ? "color-mix(in srgb, var(--color-status-online) 14%, transparent)" : "color-mix(in srgb, var(--color-red-600) 14%, transparent)",
-              border: `2px solid ${isAuthenticated === null ? "var(--color-text-disabled)" : isAuthenticated ? "var(--color-status-online)" : "var(--color-red-600)"}`,
+              background: "var(--color-neutral-blue)",
+              border: "none",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              color: isAuthenticated === null ? "var(--color-text-disabled)" : isAuthenticated ? "var(--color-status-online)" : "var(--color-red-600)",
+              color: "var(--color-brand)",
               flexShrink: 0,
             }}
           >
             <User size={19} strokeWidth={2.15} />
           </button>
 
-          <div
+          <button
+            type="button"
+            onClick={() => setPointsOpen(true)}
+            aria-label={`יש לך ${profile.points} נקודות`}
             style={{
               minWidth: 78,
               height: 42,
@@ -205,6 +212,8 @@ export function ProfileCard() {
               alignItems: "center",
               justifyContent: "center",
               gap: 7,
+              cursor: "pointer",
+              fontFamily: "var(--font-family-sans)",
             }}
           >
             <Coins size={18} strokeWidth={2.2} color="var(--color-brand)" />
@@ -221,10 +230,59 @@ export function ProfileCard() {
             >
               {profile.points.toLocaleString("he-IL")}
             </p>
-          </div>
+          </button>
         </div>
       </div>
     </section>
+    {pointsOpen && (
+      <>
+        <div
+          onClick={() => setPointsOpen(false)}
+          style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 58%, transparent)", zIndex: 100 }}
+        />
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="הנקודות שלי"
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 101,
+            width: "min(calc(100% - 32px), 380px)",
+            background: "var(--color-surface)",
+            border: "1px solid color-mix(in srgb, var(--color-brand) 28%, transparent)",
+            borderRadius: "var(--shape-radius-5xl)",
+            padding: "28px 22px 24px",
+            boxSizing: "border-box",
+            direction: "rtl",
+            textAlign: "center",
+            boxShadow: "0 24px 70px color-mix(in srgb, var(--color-overlay) 45%, transparent)",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setPointsOpen(false)}
+            aria-label="סגירת חלון הנקודות"
+            style={{ position: "absolute", top: 12, left: 12, width: 32, height: 32, border: "none", borderRadius: "var(--shape-radius-circle)", background: "var(--color-neutral-dark)", color: "var(--color-text-disabled)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+          >
+            <X size={18} />
+          </button>
+
+          <Coins size={30} strokeWidth={2.15} color="var(--color-brand)" />
+          <p style={{ margin: "12px 0 2px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-7xl)", lineHeight: 1, color: "var(--color-brand)" }}>
+            {profile.points.toLocaleString("he-IL")}
+          </p>
+          <p style={{ margin: "0 0 18px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-lg)", color: "var(--color-ink)" }}>
+            נקודות
+          </p>
+          <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", fontSize: "var(--font-size-base)", lineHeight: 1.65, color: "var(--color-text-secondary)" }}>
+            על כל הגעה יומית מקבלים נקודה. בקרוב נספר לכם כיצד משתמשים בהן
+          </p>
+        </div>
+      </>
+    )}
     {open && (
       <>
         <div
@@ -291,24 +349,20 @@ export function ProfileCard() {
                 {profile.name}
               </p>
               <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-regular)", fontSize: "var(--font-size-md)", color: "var(--color-text-disabled)" }}>
-                {profile.email ?? ""}
+                {isAuthenticated ? profile.email ?? "פרטי חבר המועדון" : "משתמש לא מחובר"}
               </p>
             </div>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
             {[
-              { label: "טלפון", value: profile.phone },
-              { label: "מוסד לימוד", value: profile.institution },
-              { label: "תואר לימוד", value: profile.degree },
-              { label: "שנתון", value: profile.study_year },
-              { label: "אזור", value: profile.region },
+              { label: "מס׳ נייד", value: profile.phone },
               { label: "תאריך לידה", value: formatBirthDate(profile.birth_date) },
-              { label: "אישור פרטיות", value: profile.privacy_consent === null ? null : profile.privacy_consent ? "אושר" : "לא אושר" },
-              { label: "תפקיד", value: formatRole(profile.role) },
-              { label: "תאריך הצטרפות", value: formatCreatedAt(profile.created_at) },
-              { label: "מזהה משתמש", value: profile.user_id },
-            ].filter((row) => row.value !== null && row.value !== "").map(({ label, value }) => (
+              { label: "מוסד לימוד", value: profile.institution },
+              { label: "תואר", value: profile.degree },
+              { label: "תאריך הרשמה", value: formatCreatedAt(profile.created_at) },
+              { label: "הגעה אחרונה", value: formatCheckIn(profile.last_check_in) },
+            ].map(({ label, value }) => (
               <div
                 key={label}
                 style={{
@@ -323,7 +377,7 @@ export function ProfileCard() {
                 }}
               >
                 <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-md)", color: "var(--color-warm-ink)", flexShrink: 0 }}>{label}</span>
-                <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-base)", color: "var(--color-ink)", textAlign: "left", overflowWrap: "anywhere" }}>{value}</span>
+                <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-base)", color: value ? "var(--color-ink)" : "var(--color-text-disabled)", textAlign: "left", overflowWrap: "anywhere" }}>{value || "—"}</span>
               </div>
             ))}
           </div>
