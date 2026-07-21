@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { BarChart3, ClipboardList, FileText, Gift, Inbox, Lightbulb, LogIn, Mail, Megaphone, Settings, Ticket } from "lucide-react";
+import { BarChart3, ClipboardList, FileText, Gift, Inbox, Lightbulb, LogIn, Mail, Megaphone, Settings, Ticket, Users } from "lucide-react";
 
 const contentSubItems = [
   { label: "עדכונים", href: "/admin/content?tab=updates", tab: "updates", Icon: Megaphone },
@@ -29,6 +29,7 @@ const items = [
     subItems: contentSubItems,
   },
   { label: "הגעות", href: "/admin/check-ins", Icon: LogIn, match: (path: string) => path.startsWith("/admin/check-ins") },
+  { label: "חברי מועדון", href: "/admin/members", Icon: Users, match: (path: string) => path.startsWith("/admin/members") },
   {
     label: "פניות",
     href: "/admin/inquiries",

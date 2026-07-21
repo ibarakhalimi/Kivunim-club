@@ -116,7 +116,7 @@ export function FeaturedSlider({ updates }: { updates: FeaturedUpdate[] }) {
                   width: "90%",
                   minWidth: 0,
                   height: "100%",
-                  margin: "0 auto",
+                  margin: "0 0 0 auto",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",

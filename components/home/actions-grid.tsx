@@ -1,14 +1,14 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { CalendarDays, ClipboardList, FileText, Gift, Lightbulb, Mail, MessageCircle, Phone, Plus, UserCheck } from "lucide-react";
+import { CalendarDays, FileText, Gift, Info, Lightbulb, Mail, MessageCircle, Phone, Plus, UserCheck } from "lucide-react";
 import { submitContactInquiry } from "@/app/actions/contact";
 import { submitIdea } from "@/app/actions/ideas";
 import type { ContactSettings, ImportantInfoPage } from "@/app/admin/settings/actions";
 
 const ALL_ACTIONS = [
   { Icon: Phone, label: "יצירת קשר", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
-  { Icon: ClipboardList, label: "מידע חשוב", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
+  { Icon: Info, label: "מידע חשוב", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
   { Icon: Lightbulb, label: "יש לי רעיון", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
   { Icon: Gift, label: "ההטבות שלי", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },
   { Icon: CalendarDays, label: "אירועים קרובים", bg: "var(--color-app-bg)", color: "var(--color-text-disabled)" },

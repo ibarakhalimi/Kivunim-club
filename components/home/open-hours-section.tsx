@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { Camera, CheckCircle2, Info, QrCode } from "lucide-react";
+import { Camera, CheckCircle2, ChevronLeft, ChevronRight, Clock3, QrCode } from "lucide-react";
 import jsQR from "jsqr";
 import { checkIn } from "@/app/actions/check-in";
+import { getOpeningHoursWeek } from "@/app/admin/settings/actions";
 
 export type OpeningHourRow = {
+  date: string;
   day_key: string;
   day_label: string;
   sort_order: number;
@@ -14,6 +16,28 @@ export type OpeningHourRow = {
   close_time: string | null;
   note: string | null;
 };
+
+function parseLocalDate(date: string) {
+  const [year, month, day] = date.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function toDateString(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function addDays(date: string, days: number) {
+  const result = parseLocalDate(date);
+  result.setDate(result.getDate() + days);
+  return toDateString(result);
+}
+
+function formatDate(date: string) {
+  return parseLocalDate(date).toLocaleDateString("he-IL", { day: "2-digit", month: "2-digit" });
+}
 
 const DAY_KEYS_BY_JS_DAY = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const CHECK_IN_QR_PAYLOAD = "/check-in?token=kivunim%3Acheckin%3Amain&location=main";
@@ -38,6 +62,9 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
   const [scanState, setScanState] = useState<"intro" | "camera" | "welcome" | "error">("intro");
   const [scanError, setScanError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [isHoursWeekPending, startHoursWeekTransition] = useTransition();
+  const [hoursWeekOffset, setHoursWeekOffset] = useState(0);
+  const [hoursRows, setHoursRows] = useState(rows);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -98,6 +125,17 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
     setScanError("");
     completingRef.current = false;
     setCheckInOpen(true);
+  }
+
+  function moveHoursWeek(direction: -1 | 1) {
+    const nextOffset = hoursWeekOffset + direction;
+    if (nextOffset < 0 || nextOffset > 1 || !rows[0]?.date) return;
+
+    startHoursWeekTransition(async () => {
+      const nextRows = await getOpeningHoursWeek(addDays(rows[0].date, nextOffset * 7));
+      setHoursRows(nextRows);
+      setHoursWeekOffset(nextOffset);
+    });
   }
 
   async function startScanner() {
@@ -213,7 +251,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
         }}
       >
         <div style={{ minWidth: 0, flex: 1, paddingRight: 4 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 1 }}>
             <span
               style={{
                 width: 9,
@@ -223,9 +261,20 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                 flexShrink: 0,
               }}
             />
-            <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xs)", color: isOpenToday ? "var(--color-success-bright)" : "var(--color-warning)" }}>
+            <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-2xl)", lineHeight: 1.15, color: isOpenToday ? "var(--color-success-bright)" : "var(--color-warning)" }}>
               {isOpenToday ? "פתוח עכשיו" : "סגור עכשיו"}
             </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+            <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", lineHeight: 1.15, color: isOpenToday ? "var(--color-text-disabled)" : "var(--color-warning)", whiteSpace: "nowrap" }}>
+              {isOpenToday && closeTime
+                ? `עד ${closeTime}`
+                : isOpenToday
+                ? "פתוח"
+                : nextOpenTime
+                ? `נתראה מחר ב${nextOpenTime}`
+                : "סגור"}
+            </p>
             {todayNote && (
               <span
                 style={{
@@ -247,15 +296,6 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               </span>
             )}
           </div>
-          <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-2xl)", lineHeight: 1.15, color: isOpenToday ? "var(--color-ink)" : "var(--color-warning)" }}>
-            {isOpenToday && closeTime
-              ? `עד ${closeTime}`
-              : isOpenToday
-              ? "פתוח"
-              : nextOpenTime
-              ? `נתראה מחר ב${nextOpenTime}`
-              : "סגור"}
-          </p>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
@@ -266,9 +306,9 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               width: 40,
               height: 40,
               borderRadius: "var(--shape-radius-circle)",
-              border: "1px solid color-mix(in srgb, var(--color-on-accent) 8%, transparent)",
-              background: "color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
-              color: "var(--color-text-disabled)",
+              border: "none",
+              background: "var(--color-neutral-blue)",
+              color: "var(--color-brand)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -276,7 +316,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               flexShrink: 0,
             }}
           >
-            <Info size={16} strokeWidth={2.2} />
+            <Clock3 size={20} strokeWidth={2.15} />
           </button>
 
         <button
@@ -287,8 +327,8 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
             width: "auto",
             border: "none",
             borderRadius: "var(--shape-radius-pill)",
-            background: isPending ? "color-mix(in srgb, var(--color-neutral-blue) 55%, transparent)" : "var(--color-neutral-blue)",
-            color: "var(--color-ink)",
+            background: isPending ? "color-mix(in srgb, var(--color-violet-500) 55%, transparent)" : "var(--color-violet-500)",
+            color: "var(--color-neutral-deep)",
             padding: "0 22px",
             fontFamily: "var(--font-family-sans)",
             fontWeight: "var(--font-weight-black)",
@@ -581,11 +621,22 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               ✕
             </button>
 
-            <p style={{ margin: "0 0 16px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-2xl)", color: "var(--color-ink)" }}>
+            <p style={{ margin: "0 0 12px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-2xl)", color: "var(--color-ink)" }}>
               שעות פתיחה
             </p>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 12 }}>
+              <button type="button" onClick={() => moveHoursWeek(-1)} disabled={hoursWeekOffset === 0 || isHoursWeekPending} aria-label="חזרה לשבוע הנוכחי" style={{ ...hoursWeekButtonStyle, opacity: hoursWeekOffset === 0 ? 0.35 : 1 }}>
+                <ChevronRight size={18} strokeWidth={2.4} />
+              </button>
+              <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-sm)", color: "var(--color-text-disabled)" }}>
+                {isHoursWeekPending ? "טוען..." : hoursWeekOffset === 0 ? "השבוע הנוכחי" : "השבוע הבא"}
+              </span>
+              <button type="button" onClick={() => moveHoursWeek(1)} disabled={hoursWeekOffset === 1 || isHoursWeekPending} aria-label="מעבר לשבוע הבא" style={{ ...hoursWeekButtonStyle, opacity: hoursWeekOffset === 1 ? 0.35 : 1 }}>
+                <ChevronLeft size={18} strokeWidth={2.4} />
+              </button>
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {rows.map((row) => (
+              {hoursRows.map((row) => (
                 <div
                   key={row.day_key}
                   style={{
@@ -600,7 +651,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>
                     <span style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-md)", color: "var(--color-ink)" }}>
-                      {row.day_label}
+                      {row.day_label} · {formatDate(row.date)}
                     </span>
                     {row.note && (
                       <span
@@ -634,3 +685,16 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
     </section>
   );
 }
+
+const hoursWeekButtonStyle: React.CSSProperties = {
+  width: 36,
+  height: 36,
+  borderRadius: "var(--shape-radius-circle)",
+  border: "none",
+  background: "var(--color-neutral-blue)",
+  color: "var(--color-brand)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+};

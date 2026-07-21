@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState, useTransition } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { getOpeningHoursWeek, updateOpeningHours, type OpeningHourWithDate } from "./actions";
 
 type State = {
@@ -47,6 +47,7 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
   const [weekOffset, setWeekOffset] = useState(0);
   const [weekStart, setWeekStart] = useState(rows[0]?.date ?? "");
   const [visibleRows, setVisibleRows] = useState(rows);
+  const [expandedDayKey, setExpandedDayKey] = useState<string | null>(rows[0]?.day_key ?? null);
   const [isLoadingWeek, startWeekTransition] = useTransition();
   const [state, formAction, isPending] = useActionState(async (_state: State, formData: FormData) => {
     return updateOpeningHours(formData);
@@ -63,6 +64,7 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
     startWeekTransition(async () => {
       const nextRows = await getOpeningHoursWeek(nextWeekStart);
       setVisibleRows(nextRows);
+      setExpandedDayKey(nextRows[0]?.day_key ?? null);
     });
   }
 
@@ -113,28 +115,36 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
         <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-extrabold)" }}>טוען שבוע...</p>
       )}
 
-      {visibleRows.map((row) => (
+      {visibleRows.map((row) => {
+        const isExpanded = expandedDayKey === row.day_key;
+
+        return (
         <div
           key={row.date}
           style={{
             background: "var(--color-surface-raised)",
             border: "1px solid var(--color-border-subtle)",
             borderRadius: "var(--shape-radius-2xl)",
-            padding: 14,
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
+            overflow: "hidden",
           }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-            <div>
-              <p style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>{row.day_label}</p>
-              <p style={{ margin: "3px 0 0", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)" }}>
-                {formatShortDate(row.date)} · הערה תוצג כצ׳יפ ליד היום
-              </p>
-            </div>
-            <label style={{ display: "flex", alignItems: "center", gap: 7, fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)", color: "var(--color-green-700)" }}>
-              <input name={`${row.day_key}_date`} type="hidden" value={row.date} />
+          <input name={`${row.day_key}_date`} type="hidden" value={row.date} />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, padding: 14 }}>
+            <button
+              type="button"
+              onClick={() => setExpandedDayKey(isExpanded ? null : row.day_key)}
+              aria-expanded={isExpanded}
+              style={{ minWidth: 0, flex: 1, border: "none", background: "transparent", padding: 0, display: "flex", alignItems: "center", gap: 10, textAlign: "right", cursor: "pointer", color: "inherit" }}
+            >
+              <ChevronDown size={19} strokeWidth={2.4} style={{ flexShrink: 0, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }} />
+              <div style={{ minWidth: 0 }}>
+                <p style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>{row.day_label}</p>
+                <p style={{ margin: "3px 0 0", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)" }}>
+                  {formatShortDate(row.date)} · {row.is_open ? `${trimSeconds(row.open_time) || "08:00"}–${trimSeconds(row.close_time) || "20:00"}` : "סגור"}
+                </p>
+              </div>
+            </button>
+            <label style={{ display: "flex", alignItems: "center", gap: 7, fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)", color: row.is_open ? "var(--color-green-700)" : "var(--color-text-secondary)", flexShrink: 0 }}>
               <input
                 name={`${row.day_key}_is_open`}
                 type="checkbox"
@@ -146,7 +156,12 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
             </label>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+          <div style={{ display: isExpanded ? "flex" : "none", flexDirection: "column", gap: 10, padding: "0 14px 14px", borderTop: "1px solid var(--color-border-subtle)" }}>
+              <p style={{ margin: "3px 0 0", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)" }}>
+                {formatShortDate(row.date)} · הערה תוצג כצ׳יפ ליד היום
+              </p>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
             <label style={{ display: "flex", flexDirection: "column", gap: 5, fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-extrabold)", color: "var(--color-text-secondary)" }}>
               פתיחה
               <input
@@ -167,9 +182,9 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
                 style={inputStyle}
               />
             </label>
-          </div>
+              </div>
 
-          <label style={{ display: "flex", flexDirection: "column", gap: 5, fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-extrabold)", color: "var(--color-text-secondary)" }}>
+              <label style={{ display: "flex", flexDirection: "column", gap: 5, fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-extrabold)", color: "var(--color-text-secondary)" }}>
             הערה בצ׳יפ
             <input
               name={`${row.day_key}_note`}
@@ -179,9 +194,11 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
               placeholder="לדוגמה: ראש השנה"
               style={inputStyle}
             />
-          </label>
+              </label>
+          </div>
         </div>
-      ))}
+        );
+      })}
 
       {state.error && (
         <p style={{ margin: 0, color: "var(--color-danger)", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-extrabold)" }}>{state.error}</p>
