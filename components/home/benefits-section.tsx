@@ -30,7 +30,7 @@ function categoryEmoji(category: string): string {
 }
 
 function categoryBg(category: string): string {
-  return CATEGORY_BG[category] ?? "color-mix(in srgb, var(--color-surface-raised) 06%, transparent)";
+  return CATEGORY_BG[category] ?? "color-mix(in srgb, var(--color-on-accent) 6%, transparent)";
 }
 
 function categoryColor(category: string): string {
@@ -88,7 +88,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                 boxSizing: "border-box",
               }}
             >
-              <div style={{ width: 54, height: 54, borderRadius: "var(--shape-radius-circle)", background: categoryBg(category), display: "flex", alignItems: "center", justifyContent: "center", fontSize: "var(--font-size-4xl)", flexShrink: 0, overflow: "hidden", border: "1px solid color-mix(in srgb, var(--color-surface-raised) 08%, transparent)" }}>
+              <div style={{ width: 54, height: 54, borderRadius: "var(--shape-radius-circle)", background: categoryBg(category), display: "flex", alignItems: "center", justifyContent: "center", fontSize: "var(--font-size-4xl)", flexShrink: 0, overflow: "hidden", border: "1px solid color-mix(in srgb, var(--color-on-accent) 8%, transparent)" }}>
                 {benefit.image_url ? (
                   <img
                     src={benefit.image_url}
@@ -140,7 +140,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
           position: "fixed",
           inset: 0,
           zIndex: 1000,
-          background: "color-mix(in srgb, var(--color-overlay) 5%, transparent)",
+          background: "color-mix(in srgb, var(--color-overlay) 50%, transparent)",
           display: "flex",
           alignItems: "flex-end",
         }}
@@ -152,7 +152,7 @@ export function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
             maxHeight: "86dvh",
             borderRadius: "var(--shape-radius-sheet)",
             background: "var(--color-surface)",
-            border: "1px solid color-mix(in srgb, var(--color-ink) 08%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--color-ink) 8%, transparent)",
             borderBottom: "none",
             overflow: "hidden",
             direction: "rtl",

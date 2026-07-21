@@ -137,7 +137,7 @@ function EditBenefitModal({ benefit, categories, onClose }: { benefit: Benefit; 
             background: "var(--color-surface-raised)",
           }}
         >
-          <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+          <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
             עריכת הטבה
           </h2>
           <button type="button" onClick={onClose} aria-label="סגירת חלון" style={closeBtn}>
@@ -192,7 +192,7 @@ function BenefitCard({ benefit, categories }: { benefit: Benefit; categories: st
   }
 
   return (
-    <div style={{ background: "var(--color-surface-raised)", border: expired ? "1px solid var(--color-text-on-dark)" : "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-md)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)", padding: 14, opacity: expired ? 0.78 : 1, minWidth: 0 }}>
+    <div style={{ background: "var(--color-surface-raised)", border: expired ? "1px solid var(--color-text-on-dark)" : "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-md)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)", padding: 14, opacity: expired ? 0.78 : 1, minWidth: 0 }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 12, minHeight: "100%" }}>
         <div style={{ display: "flex", gap: 12, minWidth: 0 }}>
           <div style={{ flexShrink: 0 }}>
@@ -205,7 +205,7 @@ function BenefitCard({ benefit, categories }: { benefit: Benefit; categories: st
           </div>
           <div style={{ minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3, flexWrap: "wrap" }}>
-              <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-lg)", color: "var(--color-admin-dark)", overflowWrap: "anywhere" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-lg)", color: "var(--color-admin-ink)", overflowWrap: "anywhere" }}>
                 {benefit.business}
               </p>
               <span style={{ fontSize: "var(--font-size-xs)", fontWeight: "var(--font-weight-semibold)", background: expired ? "var(--color-surface-soft)" : "var(--color-surface-soft)", color: expired ? "var(--color-text-secondary)" : "var(--color-slate-600)", border: "1px solid var(--color-border-subtle)", padding: "2px 7px", borderRadius: "var(--shape-radius-pill)" }}>
@@ -346,7 +346,7 @@ const closeBtn: React.CSSProperties = {
   border: "1px solid var(--color-border-subtle)",
   borderRadius: "var(--shape-radius-sm)",
   background: "var(--color-surface-raised)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
   fontSize: "var(--font-size-3xl)",
   lineHeight: 1,
   cursor: "pointer",
@@ -362,10 +362,10 @@ const sectionHeadingStyle: React.CSSProperties = {
   fontFamily: "var(--font-family-sans)",
   fontSize: "var(--font-size-lg)",
   fontWeight: "var(--font-weight-black)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
 };
 const btnPrimary = (p: boolean): React.CSSProperties => ({
-  padding: "9px 20px", background: p ? "var(--color-text-tertiary)" : "var(--color-brand-blue)", color: "var(--color-surface-raised)",
+  padding: "9px 20px", background: p ? "var(--color-text-tertiary)" : "var(--color-brand-blue)", color: "var(--color-on-accent)",
   border: "none", borderRadius: "var(--shape-radius-sm)", fontFamily: "var(--font-family-sans)",
   fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-base)", cursor: p ? "not-allowed" : "pointer",
 });

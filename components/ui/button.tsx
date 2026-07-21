@@ -8,9 +8,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-r from-fuchsia-500 via-pink-500 to-violet-500 text-white shadow-[0_12px_24px_color-mix(in srgb, var(--color-magenta) 24%, transparent)] hover:shadow-[0_18px_30px_color-mix(in srgb, var(--color-purple-bright) 28%, transparent)] hover:scale-[1.02]",
+        default: "bg-gradient-to-r from-violet-500 via-fuchsia-500 to-purple-500 text-[var(--color-on-accent)] shadow-[0_12px_24px_color-mix(in_srgb,var(--color-brand)_28%,transparent)] hover:shadow-[0_18px_30px_color-mix(in_srgb,var(--color-purple-bright)_34%,transparent)] hover:scale-[1.02]",
         outline:
-          "border border-violet-200 bg-white/80 text-violet-700 hover:bg-violet-50 hover:text-violet-900 aria-expanded:bg-violet-50 aria-expanded:text-violet-900 dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "border border-[var(--color-border-subtle)] bg-[var(--color-surface-raised)] text-[var(--color-ink)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-on-accent)] aria-expanded:bg-[var(--color-surface-soft)] aria-expanded:text-[var(--color-on-accent)]",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:

@@ -60,7 +60,7 @@ export function CheckInButton() {
       {open && (
         <div
           onClick={() => setOpen(false)}
-          style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 3%, transparent)", zIndex: 50 }}
+          style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 30%, transparent)", zIndex: 50 }}
         />
       )}
 

@@ -128,7 +128,7 @@ export function TopBar() {
               cursor: "pointer",
             }}
           >
-            <Menu size={19} strokeWidth={2} color="var(--color-admin-dark)" />
+            <Menu size={19} strokeWidth={2} color="var(--color-ink)" />
           </button>
         </div>
       </header>
@@ -138,7 +138,7 @@ export function TopBar() {
         <>
           <div
             onClick={() => setOpen(false)}
-            style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 3%, transparent)", zIndex: 100 }}
+            style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 30%, transparent)", zIndex: 100 }}
           />
           <div
             style={{

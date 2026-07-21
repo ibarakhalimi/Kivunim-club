@@ -91,7 +91,7 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
           <ChevronRight size={17} strokeWidth={2.4} />
         </button>
         <div style={{ minWidth: 0, textAlign: "center" }}>
-          <p style={{ margin: "0 0 2px", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+          <p style={{ margin: "0 0 2px", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
             {weekOffset === 0 ? "השבוע הנוכחי" : weekOffset > 0 ? `עוד ${weekOffset} שבועות` : `לפני ${Math.abs(weekOffset)} שבועות`}
           </p>
           <p style={{ margin: 0, fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)", direction: "ltr" }}>
@@ -128,7 +128,7 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
             <div>
-              <p style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>{row.day_label}</p>
+              <p style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>{row.day_label}</p>
               <p style={{ margin: "3px 0 0", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)" }}>
                 {formatShortDate(row.date)} · הערה תוצג כצ׳יפ ליד היום
               </p>
@@ -199,7 +199,7 @@ export function OpeningHoursForm({ rows }: { rows: OpeningHourWithDate[] }) {
           borderRadius: "var(--shape-radius-2xl)",
           border: "none",
           background: isPending ? "var(--color-text-tertiary)" : "var(--color-success)",
-          color: "var(--color-surface-raised)",
+          color: "var(--color-on-accent)",
           fontSize: "var(--font-size-lg)",
           fontWeight: "var(--font-weight-black)",
           fontFamily: "var(--font-family-sans)",
@@ -222,7 +222,7 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "var(--font-family-sans)",
   fontSize: "var(--font-size-base)",
   fontWeight: "var(--font-weight-bold)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
   outline: "none",
 };
 
@@ -232,7 +232,7 @@ const weekButtonStyle: React.CSSProperties = {
   borderRadius: "var(--shape-radius-lg)",
   border: "1px solid var(--color-text-on-dark)",
   background: "var(--color-surface-raised)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

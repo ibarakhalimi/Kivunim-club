@@ -34,7 +34,7 @@ export default async function AdminPage() {
           fontFamily: "var(--font-family-sans)",
           fontWeight: "var(--font-weight-black)",
           fontSize: "var(--font-size-5xl)",
-          color: "var(--color-admin-dark)",
+          color: "var(--color-admin-ink)",
         }}
       >
         ברוך הבא למערכת ניהול
@@ -77,7 +77,7 @@ export default async function AdminPage() {
           border: "1px solid var(--color-border-subtle)",
           borderRadius: "var(--shape-radius-2xl)",
           padding: 16,
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
+          boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)",
         }}
       >
         <div className="kv-admin-metrics-grid">

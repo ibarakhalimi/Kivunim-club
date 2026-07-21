@@ -35,7 +35,7 @@ export function ContentCreatePanel({
           border: "none",
           borderRadius: "var(--shape-radius-md)",
           background: "var(--color-admin-dark)",
-          color: "var(--color-surface-raised)",
+          color: "var(--color-on-accent)",
           display: "inline-flex",
           alignItems: "center",
           gap: 8,
@@ -94,7 +94,7 @@ export function ContentCreatePanel({
                 background: "var(--color-surface-raised)",
               }}
             >
-              <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+              <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
                 הוספת {label}
               </h2>
               <button
@@ -107,7 +107,7 @@ export function ContentCreatePanel({
                   border: "1px solid var(--color-border-subtle)",
                   borderRadius: "var(--shape-radius-sm)",
                   background: "var(--color-surface-raised)",
-                  color: "var(--color-admin-dark)",
+                  color: "var(--color-admin-ink)",
                   fontSize: "var(--font-size-3xl)",
                   lineHeight: 1,
                   cursor: "pointer",

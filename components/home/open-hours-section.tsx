@@ -266,8 +266,8 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               width: 40,
               height: 40,
               borderRadius: "var(--shape-radius-circle)",
-              border: "1px solid color-mix(in srgb, var(--color-surface-raised) 08%, transparent)",
-              background: "color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-on-accent) 8%, transparent)",
+              background: "color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
               color: "var(--color-text-disabled)",
               display: "flex",
               alignItems: "center",
@@ -319,7 +319,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
             fontSize: "var(--font-size-base)",
             whiteSpace: "nowrap",
             pointerEvents: "none",
-            border: "1px solid color-mix(in srgb, var(--color-surface-raised) 1%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--color-on-accent) 10%, transparent)",
           }}
         >
           כיף שבאת!
@@ -341,7 +341,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               zIndex: 61,
               background: "var(--color-surface)",
               borderRadius: "var(--shape-radius-sheet)",
-              border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
               borderBottom: "none",
               direction: "rtl",
               padding: "22px 18px 42px",
@@ -425,7 +425,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                         style={{
                           position: "absolute",
                           inset: 22,
-                          border: "2px solid color-mix(in srgb, var(--color-brand) 7%, transparent)",
+                          border: "2px solid color-mix(in srgb, var(--color-brand) 70%, transparent)",
                           borderRadius: "var(--shape-radius-3xl)",
                           boxShadow: "0 0 0 999px color-mix(in srgb, var(--color-admin-dark) 28%, transparent)",
                         }}
@@ -494,7 +494,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                     width: "100%",
                     border: "none",
                     borderRadius: "var(--shape-radius-xl)",
-                    background: scanState === "camera" && !scanError ? "color-mix(in srgb, var(--color-brand) 4%, transparent)" : "var(--color-brand)",
+                    background: scanState === "camera" && !scanError ? "color-mix(in srgb, var(--color-brand) 40%, transparent)" : "var(--color-brand)",
                     color: "var(--color-ink)",
                     padding: "13px 16px",
                     fontFamily: "var(--font-family-sans)",
@@ -549,7 +549,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
         <>
           <div
             onClick={() => setHoursOpen(false)}
-            style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 5%, transparent)", zIndex: 50 }}
+            style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 50%, transparent)", zIndex: 50 }}
           />
           <div
             style={{
@@ -558,7 +558,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
               zIndex: 51,
               background: "var(--color-surface)",
               borderRadius: "var(--shape-radius-sheet)",
-              border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
               borderBottom: "none",
               direction: "rtl",
               padding: "24px 20px 44px",
@@ -594,8 +594,8 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                     alignItems: "center",
                     padding: "10px 14px",
                     borderRadius: "var(--shape-radius-lg)",
-                    border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
-                    background: row.is_open ? "color-mix(in srgb, var(--color-success-bright) 08%, transparent)" : "var(--color-neutral-dark)",
+                    border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
+                    background: row.is_open ? "color-mix(in srgb, var(--color-success-bright) 8%, transparent)" : "var(--color-neutral-dark)",
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>
@@ -606,7 +606,7 @@ export function OpenHoursSection({ rows }: { rows: OpeningHourRow[] }) {
                       <span
                         style={{
                           borderRadius: "var(--shape-radius-pill)",
-                          background: row.is_open ? "color-mix(in srgb, var(--color-success-bright) 15%, transparent)" : "color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+                          background: row.is_open ? "color-mix(in srgb, var(--color-success-bright) 15%, transparent)" : "color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
                           color: row.is_open ? "var(--color-success-bright)" : "var(--color-neutral-700)",
                           padding: "2px 7px",
                           fontFamily: "var(--font-family-sans)",

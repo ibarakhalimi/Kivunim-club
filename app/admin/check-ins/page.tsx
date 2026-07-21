@@ -78,7 +78,7 @@ export default async function CheckInsPage() {
     <div dir="rtl" style={{ minHeight: "100dvh", background: "var(--color-surface-muted)", padding: "24px 16px 60px", fontFamily: "var(--font-family-sans)" }}>
       <a href="/admin" style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)", textDecoration: "none", fontWeight: "var(--font-weight-medium)" }}>← חזרה לניהול</a>
 
-      <h1 style={{ margin: "16px 0 4px", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-4xl)", color: "var(--color-admin-dark)" }}>
+      <h1 style={{ margin: "16px 0 4px", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-4xl)", color: "var(--color-admin-ink)" }}>
         דשבורד הגעות
       </h1>
       <p style={{ margin: "0 0 28px", fontSize: "var(--font-size-base)", color: "var(--color-text-secondary)" }}>מעקב אחר כניסות לסביבת הלימודים</p>
@@ -91,8 +91,8 @@ export default async function CheckInsPage() {
       </div>
 
       {/* Bar chart by day */}
-      <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-lg)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)", padding: "18px 16px", marginBottom: 20 }}>
-        <h2 style={{ margin: "0 0 16px", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>כניסות לפי יום</h2>
+      <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-lg)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)", padding: "18px 16px", marginBottom: 20 }}>
+        <h2 style={{ margin: "0 0 16px", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>כניסות לפי יום</h2>
         {sortedDays.length === 0 ? (
           <p style={{ color: "var(--color-text-tertiary)", fontSize: "var(--font-size-base)" }}>אין נתונים עדיין</p>
         ) : (
@@ -106,7 +106,7 @@ export default async function CheckInsPage() {
                     <span style={{ fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-slate-600)" }}>
                       {formatDayKey(day + "T12:00:00")}
                     </span>
-                    <span style={{ fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-bold)", color: "var(--color-admin-dark)" }}>{count}</span>
+                    <span style={{ fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-bold)", color: "var(--color-admin-ink)" }}>{count}</span>
                   </div>
                   <div style={{ height: 8, background: "var(--color-surface-soft)", borderRadius: "var(--shape-radius-pill)", overflow: "hidden" }}>
                     <div style={{ height: "100%", width: `${pct}%`, background: "var(--color-brand-blue)", borderRadius: "var(--shape-radius-pill)" }} />
@@ -119,9 +119,9 @@ export default async function CheckInsPage() {
       </div>
 
       {/* Check-ins table */}
-      <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-lg)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)", overflow: "hidden" }}>
+      <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-lg)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)", overflow: "hidden" }}>
         <div style={{ padding: "14px 16px 12px", borderBottom: "1px solid var(--color-border-subtle)" }}>
-          <h2 style={{ margin: 0, fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>רשימת כניסות</h2>
+          <h2 style={{ margin: 0, fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>רשימת כניסות</h2>
         </div>
 
         {checkIns.length === 0 ? (
@@ -148,7 +148,7 @@ export default async function CheckInsPage() {
                     alignItems: "center",
                   }}
                 >
-                  <span style={{ fontSize: "var(--font-size-base)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-admin-dark)" }}>{name}</span>
+                  <span style={{ fontSize: "var(--font-size-base)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-admin-ink)" }}>{name}</span>
                   <span style={{ fontSize: "var(--font-size-md)", color: "var(--color-slate-600)" }}>{formatDate(row.checked_in_at)}</span>
                   <span style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-tertiary)" }}>{formatTime(row.checked_in_at)}</span>
                   <span style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)", fontWeight: "var(--font-weight-semibold)" }}>{source}</span>
@@ -164,9 +164,9 @@ export default async function CheckInsPage() {
 
 function KpiCard({ label, value, emoji }: { label: string; value: number; emoji: string }) {
   return (
-    <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-lg)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)", padding: "16px 12px", textAlign: "center" }}>
+    <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-lg)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)", padding: "16px 12px", textAlign: "center" }}>
       <div style={{ fontSize: "var(--font-size-4xl)", marginBottom: 6 }}>{emoji}</div>
-      <div style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-5xl)", color: "var(--color-admin-dark)", lineHeight: 1 }}>{value}</div>
+      <div style={{ fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-5xl)", color: "var(--color-admin-ink)", lineHeight: 1 }}>{value}</div>
       <div style={{ fontFamily: "var(--font-family-sans)", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-text-tertiary)", marginTop: 4 }}>{label}</div>
     </div>
   );

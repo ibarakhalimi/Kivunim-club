@@ -71,7 +71,7 @@ export const cardStyle: React.CSSProperties = {
   background: "var(--color-surface-raised)",
   border: "1px solid var(--color-border-subtle)",
   borderRadius: "var(--shape-radius-lg)",
-  boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
+  boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)",
   padding: "20px 18px",
 };
 export const headingStyle: React.CSSProperties = {
@@ -79,7 +79,7 @@ export const headingStyle: React.CSSProperties = {
   fontFamily: "var(--font-family-sans)",
   fontWeight: "var(--font-weight-bold)",
   fontSize: "var(--font-size-2xl)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
 };
 export const labelStyle: React.CSSProperties = {
   fontSize: "var(--font-size-md)",
@@ -94,7 +94,7 @@ export const inputStyle: React.CSSProperties = {
   border: "1px solid var(--color-text-on-dark)",
   borderRadius: "var(--shape-radius-sm)",
   background: "var(--color-surface-raised)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
@@ -106,7 +106,7 @@ const submitStyle = (pending: boolean): React.CSSProperties => ({
   marginTop: 4,
   padding: "11px 24px",
   background: pending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
-  color: "var(--color-surface-raised)",
+  color: "var(--color-on-accent)",
   border: "none",
   borderRadius: "var(--shape-radius-sm)",
   fontFamily: "var(--font-family-sans)",

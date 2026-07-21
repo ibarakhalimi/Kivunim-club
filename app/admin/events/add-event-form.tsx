@@ -227,14 +227,14 @@ export function ImagePicker({
           <button
             type="button"
             onClick={() => { onPreview(null); if (inputRef.current) inputRef.current.value = ""; }}
-            style={{ position: "absolute", top: 8, left: 8, width: 28, height: 28, background: "color-mix(in srgb, var(--color-overlay) 6%, transparent)", color: "var(--color-surface-raised)", border: "none", borderRadius: "var(--shape-radius-circle)", fontSize: "var(--font-size-sm)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+            style={{ position: "absolute", top: 8, left: 8, width: 28, height: 28, background: "color-mix(in srgb, var(--color-overlay) 60%, transparent)", color: "var(--color-surface-raised)", border: "none", borderRadius: "var(--shape-radius-circle)", fontSize: "var(--font-size-sm)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
           >
             ✕
           </button>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            style={{ position: "absolute", bottom: 8, left: 8, padding: "4px 10px", background: "color-mix(in srgb, var(--color-overlay) 6%, transparent)", color: "var(--color-surface-raised)", border: "none", borderRadius: "var(--shape-radius-pill)", fontSize: "var(--font-size-sm)", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", cursor: "pointer" }}
+            style={{ position: "absolute", bottom: 8, left: 8, padding: "4px 10px", background: "color-mix(in srgb, var(--color-overlay) 60%, transparent)", color: "var(--color-surface-raised)", border: "none", borderRadius: "var(--shape-radius-pill)", fontSize: "var(--font-size-sm)", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-semibold)", cursor: "pointer" }}
           >
             החלף
           </button>
@@ -266,7 +266,7 @@ export const cardStyle: React.CSSProperties = {
   background: "var(--color-surface-raised)",
   border: "1px solid var(--color-border-subtle)",
   borderRadius: "var(--shape-radius-lg)",
-  boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
+  boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)",
   padding: "20px 18px",
 };
 export const headingStyle: React.CSSProperties = {

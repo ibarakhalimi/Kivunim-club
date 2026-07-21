@@ -27,7 +27,7 @@ export function Hero() {
           display: "inline-block",
           padding: "5px 16px",
           background: "var(--color-brand-blue)",
-          color: "var(--color-surface-raised)",
+          color: "var(--color-on-accent)",
           borderRadius: "var(--shape-radius-pill)",
           fontFamily: "var(--font-family-sans)",
           fontWeight: "var(--font-weight-semibold)",

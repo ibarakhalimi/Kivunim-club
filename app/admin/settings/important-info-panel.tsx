@@ -96,7 +96,7 @@ function RichTextEditor({
           fontSize: "var(--font-size-base)",
           fontWeight: "var(--font-weight-semibold)",
           lineHeight: 1.65,
-          color: "var(--color-admin-dark)",
+          color: "var(--color-admin-ink)",
           outline: "none",
           resize: "vertical",
           direction: "rtl",
@@ -228,7 +228,7 @@ function InfoPageForm({ page, mode = "edit" }: { page: ImportantInfoPage; mode?:
           borderRadius: "var(--shape-radius-xl)",
           border: "none",
           background: isPending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
-          color: "var(--color-surface-raised)",
+          color: "var(--color-on-accent)",
           fontSize: "var(--font-size-base)",
           fontWeight: "var(--font-weight-black)",
           fontFamily: "var(--font-family-sans)",
@@ -287,7 +287,7 @@ function InfoPageAccordionItem({
         }}
       >
         <span style={{ minWidth: 0 }}>
-          <span style={{ display: "block", marginBottom: 5, fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+          <span style={{ display: "block", marginBottom: 5, fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
             {page.title}
           </span>
           {page.subtitle && (
@@ -377,7 +377,7 @@ export function ImportantInfoPanel({ pages }: { pages: ImportantInfoPage[] }) {
               <Plus size={18} strokeWidth={2.4} />
             </span>
             <span style={{ minWidth: 0 }}>
-              <span style={{ display: "block", marginBottom: 3, fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+              <span style={{ display: "block", marginBottom: 3, fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
                 הוספת עמוד מידע חדש
               </span>
               <span style={{ display: "block", fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)" }}>
@@ -420,7 +420,7 @@ const toolbarButtonStyle: React.CSSProperties = {
   borderRadius: "var(--shape-radius-md)",
   border: "1px solid var(--color-text-on-dark)",
   background: "var(--color-surface-raised)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -443,6 +443,6 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "var(--font-family-sans)",
   fontSize: "var(--font-size-base)",
   fontWeight: "var(--font-weight-bold)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
   outline: "none",
 };

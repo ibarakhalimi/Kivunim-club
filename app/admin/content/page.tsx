@@ -54,7 +54,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
         fontFamily: "var(--font-family-sans)",
       }}
     >
-      <h1 style={{ margin: "0 0 4px", fontSize: "var(--font-size-5xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+      <h1 style={{ margin: "0 0 4px", fontSize: "var(--font-size-5xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
         ניהול תוכן
       </h1>
       <p style={{ margin: "0 0 20px", fontSize: "var(--font-size-base)", fontWeight: "var(--font-weight-semibold)", color: "var(--color-text-secondary)" }}>
@@ -105,7 +105,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
         <section>
           <ContentCreatePanel activeTab={activeTab} />
           <div style={{ marginTop: 28 }}>
-            <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+            <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
               עדכונים קיימים
             </h2>
             <UpdateList updates={updates ?? []} />
@@ -118,7 +118,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
           <ContentCreatePanel activeTab={activeTab} />
           {events && events.length > 0 && (
             <div style={{ marginTop: 28 }}>
-              <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+              <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
                 כל האירועים
               </h2>
               <EventList events={events} />
@@ -132,7 +132,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
           <ContentCreatePanel activeTab={activeTab} benefitCategories={benefitCategories} />
           {benefits && benefits.length > 0 && (
             <div style={{ marginTop: 28 }}>
-              <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+              <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
                 כל ההטבות
               </h2>
               <BenefitList benefits={benefits} />
@@ -144,7 +144,7 @@ export default async function AdminContentPage({ searchParams }: AdminContentPag
       {activeTab === "info" && (
         <section>
           <div style={{ marginTop: 4 }}>
-            <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+            <h2 style={{ margin: "0 0 14px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
               עמודי מידע
             </h2>
             <ImportantInfoPanel pages={importantInfoPages} />

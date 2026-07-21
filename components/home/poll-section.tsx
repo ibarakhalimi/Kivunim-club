@@ -113,7 +113,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
                   borderRadius: "var(--shape-radius-md)",
                   overflow: "hidden",
                   background: isChosen ? "color-mix(in srgb, var(--color-violet-500) 12%, transparent)" : "var(--color-neutral-dark)",
-                  border: `1px solid ${isChosen ? "color-mix(in srgb, var(--color-violet-500) 3%, transparent)" : "color-mix(in srgb, var(--color-surface-raised) 06%, transparent)"}`,
+                  border: `1px solid ${isChosen ? "color-mix(in srgb, var(--color-violet-500) 30%, transparent)" : "color-mix(in srgb, var(--color-on-accent) 6%, transparent)"}`,
                 }}
               >
                 <div style={{ position: "relative", padding: "10px 12px" }}>
@@ -122,7 +122,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
                       position: "absolute",
                       inset: 0,
                       width: `${pct}%`,
-                      background: isChosen ? "color-mix(in srgb, var(--color-violet-500) 12%, transparent)" : "color-mix(in srgb, var(--color-surface-raised) 04%, transparent)",
+                      background: isChosen ? "color-mix(in srgb, var(--color-violet-500) 12%, transparent)" : "color-mix(in srgb, var(--color-on-accent) 4%, transparent)",
                       transition: "width 0.4s ease",
                     }}
                   />
@@ -148,7 +148,7 @@ function PollCard({ poll }: { poll: CommunityPoll }) {
                 width: "100%",
                 padding: "10px 12px",
                 background: "var(--color-neutral-dark)",
-                border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+                border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
                 borderRadius: "var(--shape-radius-md)",
                 fontFamily: "var(--font-family-sans)",
                 fontWeight: "var(--font-weight-bold)",

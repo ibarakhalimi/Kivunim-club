@@ -88,7 +88,7 @@ export function SettingsTabs({
           border: "1px solid var(--color-border-subtle)",
           borderRadius: "var(--shape-radius-2xl)",
           padding: 16,
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
+          boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
@@ -108,7 +108,7 @@ export function SettingsTabs({
             <activeTab.Icon size={20} strokeWidth={2.25} />
           </span>
           <div>
-            <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+            <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
               {activeTab.title}
             </h2>
             <p style={{ margin: "3px 0 0", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-semibold)", lineHeight: 1.45, color: "var(--color-text-secondary)" }}>

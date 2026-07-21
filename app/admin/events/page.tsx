@@ -23,7 +23,7 @@ export default async function AdminEventsPage() {
         <a href="/admin" style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)", textDecoration: "none", fontWeight: "var(--font-weight-medium)" }}>
           ← פאנל ניהול
         </a>
-        <h1 style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-4xl)", color: "var(--color-admin-dark)" }}>
+        <h1 style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-4xl)", color: "var(--color-admin-ink)" }}>
           אירועים
         </h1>
       </div>
@@ -32,7 +32,7 @@ export default async function AdminEventsPage() {
 
       {events && events.length > 0 && (
         <div style={{ marginTop: 28 }}>
-          <h2 style={{ margin: "0 0 14px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+          <h2 style={{ margin: "0 0 14px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
             כל האירועים
           </h2>
           <EventList events={events} />

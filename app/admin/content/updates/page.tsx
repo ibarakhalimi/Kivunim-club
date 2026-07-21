@@ -32,7 +32,7 @@ export default async function AdminUpdatesPage() {
             fontFamily: "var(--font-family-sans)",
             fontWeight: "var(--font-weight-bold)",
             fontSize: "var(--font-size-4xl)",
-            color: "var(--color-admin-dark)",
+            color: "var(--color-admin-ink)",
           }}
         >
           עדכונים
@@ -42,7 +42,7 @@ export default async function AdminUpdatesPage() {
       <AddUpdateForm />
 
       <div style={{ marginTop: 28 }}>
-        <h2 style={{ margin: "0 0 14px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+        <h2 style={{ margin: "0 0 14px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
           עדכונים קיימים
         </h2>
         <UpdateList updates={updates ?? []} />

@@ -53,7 +53,7 @@ export function AdminSidebar() {
         width: 236,
         minHeight: "100dvh",
         background: "var(--color-admin-dark)",
-        borderLeft: "1px solid color-mix(in srgb, var(--color-surface-raised) 08%, transparent)",
+        borderLeft: "1px solid color-mix(in srgb, var(--color-on-accent) 8%, transparent)",
         padding: "20px 14px",
         boxSizing: "border-box",
         position: "sticky",
@@ -63,7 +63,7 @@ export function AdminSidebar() {
       }}
     >
       <div style={{ marginBottom: 22, padding: "0 6px" }}>
-        <p style={{ margin: "0 0 4px", fontSize: "var(--font-size-2xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-surface-raised)" }}>
+        <p style={{ margin: "0 0 4px", fontSize: "var(--font-size-2xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-on-accent)" }}>
           פאנל ניהול
         </p>
         <p style={{ margin: 0, fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-tertiary)" }}>
@@ -88,7 +88,7 @@ export function AdminSidebar() {
                   gap: 10,
                   textDecoration: "none",
                   background: active ? "var(--color-surface-tinted)" : "transparent",
-                  color: active ? "var(--color-admin-dark)" : "var(--color-text-on-dark)",
+                  color: active ? "var(--color-admin-ink)" : "var(--color-text-on-dark)",
                   fontSize: "var(--font-size-base)",
                   fontWeight: "var(--font-weight-black)",
                 }}

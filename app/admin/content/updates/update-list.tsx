@@ -115,7 +115,7 @@ function UpdateRow({ update }: { update: Update }) {
           <p style={{ margin: "0 0 4px", fontSize: "var(--font-size-sm)", color: "var(--color-text-tertiary)", fontWeight: "var(--font-weight-semibold)" }}>
             {formatDate(update.published_at)}
           </p>
-          <p style={{ margin: "0 0 5px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+          <p style={{ margin: "0 0 5px", fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-extrabold)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
             {update.title}
           </p>
           <p style={{ margin: 0, fontSize: "var(--font-size-base)", lineHeight: 1.5, color: "var(--color-slate-600)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
@@ -186,7 +186,7 @@ const iconButton: React.CSSProperties = {
 const primaryButton = (pending: boolean): React.CSSProperties => ({
   padding: "9px 20px",
   background: pending ? "var(--color-text-tertiary)" : "var(--color-amber-800)",
-  color: "var(--color-surface-raised)",
+  color: "var(--color-on-accent)",
   border: "none",
   borderRadius: "var(--shape-radius-sm)",
   fontFamily: "var(--font-family-sans)",

@@ -134,7 +134,7 @@ export default function RegisterSuccessPage() {
                 width: "100%",
                 padding: "15px 0",
                 background: "var(--color-brand)",
-                color: "var(--color-surface-raised)",
+                color: "var(--color-on-accent)",
                 border: "none",
                 borderRadius: "var(--shape-radius-3xl)",
                 fontFamily: "var(--font-family-sans)",

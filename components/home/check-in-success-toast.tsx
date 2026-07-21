@@ -33,7 +33,7 @@ export function CheckInSuccessToast({ show }: { show: boolean }) {
         width: "min(calc(100vw - 32px), 360px)",
         borderRadius: "var(--shape-radius-pill)",
         background: "var(--color-surface)",
-        border: "1px solid color-mix(in srgb, var(--color-surface-raised) 1%, transparent)",
+        border: "1px solid color-mix(in srgb, var(--color-on-accent) 10%, transparent)",
         color: "var(--color-ink)",
         boxShadow: "0 18px 42px color-mix(in srgb, var(--color-overlay) 28%, transparent)",
         padding: "12px 18px",

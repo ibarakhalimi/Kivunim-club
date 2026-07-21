@@ -93,7 +93,7 @@ export function ContactSettingsPanel({
             borderRadius: "var(--shape-radius-2xl)",
             border: "none",
             background: isPending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)",
-            color: "var(--color-surface-raised)",
+            color: "var(--color-on-accent)",
             fontSize: "var(--font-size-lg)",
             fontWeight: "var(--font-weight-black)",
             fontFamily: "var(--font-family-sans)",
@@ -106,7 +106,7 @@ export function ContactSettingsPanel({
 
       <section style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <div>
-          <h3 style={{ margin: "0 0 4px", fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+          <h3 style={{ margin: "0 0 4px", fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
             פניות מהאפליקציה
           </h3>
           <p style={{ margin: 0, fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-secondary)" }}>
@@ -131,7 +131,7 @@ export function ContactSettingsPanel({
             >
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10, marginBottom: 8 }}>
                 <div>
-                  <p style={{ margin: "0 0 3px", fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+                  <p style={{ margin: "0 0 3px", fontSize: "var(--font-size-lg)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
                     {inquiry.user_name ?? "משתמש"}
                   </p>
                   <p style={{ margin: 0, fontSize: "var(--font-size-xs)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-tertiary)" }}>
@@ -149,7 +149,7 @@ export function ContactSettingsPanel({
                 </p>
               )}
 
-              <p style={{ margin: 0, fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-semibold)", lineHeight: 1.55, color: "var(--color-admin-hover)", whiteSpace: "pre-wrap" }}>
+              <p style={{ margin: 0, fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-semibold)", lineHeight: 1.55, color: "var(--color-text-secondary)", whiteSpace: "pre-wrap" }}>
                 {inquiry.message}
               </p>
             </article>
@@ -185,6 +185,6 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "var(--font-family-sans)",
   fontSize: "var(--font-size-base)",
   fontWeight: "var(--font-weight-bold)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
   outline: "none",
 };

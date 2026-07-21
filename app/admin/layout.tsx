@@ -35,7 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             top: 0 !important;
             z-index: 30 !important;
             border-left: none !important;
-            border-bottom: 1px solid color-mix(in srgb, var(--color-surface-raised) 08%, transparent) !important;
+            border-bottom: 1px solid color-mix(in srgb, var(--color-on-accent) 8%, transparent) !important;
             padding: 12px 10px !important;
           }
 

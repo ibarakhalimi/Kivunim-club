@@ -104,10 +104,10 @@ export function FeaturedSlider({ updates }: { updates: FeaturedUpdate[] }) {
                 height: 232,
                 borderRadius: "var(--shape-radius-3xl)",
                 background: "var(--color-surface)",
-                border: "1px solid color-mix(in srgb, var(--color-surface-raised) 45%, transparent)",
+                border: "1px solid color-mix(in srgb, var(--color-on-accent) 45%, transparent)",
                 padding: "14px 18px 18px",
                 boxSizing: "border-box",
-                boxShadow: "0 12px 30px color-mix(in srgb, var(--color-ink) 08%, transparent)",
+                boxShadow: "0 12px 30px color-mix(in srgb, var(--color-ink) 8%, transparent)",
                 direction: "rtl",
               }}
             >
@@ -127,7 +127,7 @@ export function FeaturedSlider({ updates }: { updates: FeaturedUpdate[] }) {
                     width: "fit-content",
                     margin: 0,
                     borderRadius: "var(--shape-radius-pill)",
-                    background: "color-mix(in srgb, var(--color-brand) 1%, transparent)",
+                    background: "color-mix(in srgb, var(--color-brand) 10%, transparent)",
                     padding: "4px 9px",
                     fontFamily: "var(--font-family-sans)",
                     fontWeight: "var(--font-weight-black)",
@@ -209,7 +209,7 @@ export function FeaturedSlider({ updates }: { updates: FeaturedUpdate[] }) {
                 borderRadius: "var(--shape-radius-pill)",
                 border: "none",
                 padding: 0,
-                background: isActive ? "var(--color-brand)" : "color-mix(in srgb, var(--color-ink) 2%, transparent)",
+                background: isActive ? "var(--color-brand)" : "color-mix(in srgb, var(--color-ink) 20%, transparent)",
                 cursor: "pointer",
                 transition: "width 0.18s ease, background 0.18s ease",
               }}

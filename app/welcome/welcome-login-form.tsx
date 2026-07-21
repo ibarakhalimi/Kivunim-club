@@ -33,7 +33,7 @@ const primaryButtonStyle: React.CSSProperties = {
   border: "none",
   borderRadius: "var(--shape-radius-xl)",
   background: "var(--color-warm-ink)",
-  color: "var(--color-surface-raised)",
+  color: "var(--color-on-accent)",
   fontFamily: "var(--font-family-sans)",
   fontWeight: "var(--font-weight-black)",
   fontSize: "var(--font-size-lg)",

@@ -174,7 +174,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
             maxHeight: "86dvh",
             borderRadius: "var(--shape-radius-sheet)",
             background: "var(--color-surface)",
-            border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
             borderBottom: "none",
             overflow: "hidden",
             direction: "rtl",
@@ -210,9 +210,9 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                   width: 36,
                   height: 36,
                   borderRadius: "var(--shape-radius-circle)",
-                  border: "1px solid color-mix(in srgb, var(--color-surface-raised) 45%, transparent)",
+                  border: "1px solid color-mix(in srgb, var(--color-on-accent) 45%, transparent)",
                   background: "color-mix(in srgb, var(--color-ink) 38%, transparent)",
-                  color: "var(--color-surface-raised)",
+                  color: "var(--color-on-accent)",
                   fontSize: "var(--font-size-3xl)",
                   lineHeight: 1,
                   cursor: "pointer",
@@ -261,7 +261,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
               flexShrink: 0,
               padding: "12px 16px 22px",
               background: "var(--color-surface)",
-              borderTop: "1px solid color-mix(in srgb, var(--color-ink) 08%, transparent)",
+              borderTop: "1px solid color-mix(in srgb, var(--color-ink) 8%, transparent)",
             }}
           >
             {selectedEvent.registration_url ? (
@@ -276,7 +276,7 @@ export function EventsSection({ events }: { events: ClubEvent[] }) {
                   minHeight: 50,
                   borderRadius: "var(--shape-radius-2xl)",
                   background: "var(--color-brand)",
-                  color: "var(--color-surface-raised)",
+                  color: "var(--color-on-accent)",
                   fontFamily: "var(--font-family-sans)",
                   fontWeight: "var(--font-weight-black)",
                   fontSize: "var(--font-size-lg)",

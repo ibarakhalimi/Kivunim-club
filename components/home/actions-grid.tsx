@@ -26,7 +26,7 @@ const drawerStyle = (open: boolean): React.CSSProperties => ({
   zIndex: open ? 51 : -1,
   background: "var(--color-surface)",
   borderRadius: "var(--shape-radius-sheet)",
-  border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+  border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
   borderBottom: "none",
   direction: "rtl",
   padding: "0 20px 52px",
@@ -38,7 +38,7 @@ const drawerStyle = (open: boolean): React.CSSProperties => ({
 const backdropStyle = (open: boolean): React.CSSProperties => ({
   position: "fixed",
   inset: 0,
-  background: "color-mix(in srgb, var(--color-overlay) 5%, transparent)",
+  background: "color-mix(in srgb, var(--color-overlay) 50%, transparent)",
   zIndex: 50,
   opacity: open ? 1 : 0,
   pointerEvents: open ? "auto" : "none",
@@ -62,7 +62,7 @@ const fieldLabelStyle: React.CSSProperties = {
 
 const fieldStyle: React.CSSProperties = {
   width: "100%",
-  border: "1px solid color-mix(in srgb, var(--color-surface-raised) 08%, transparent)",
+  border: "1px solid color-mix(in srgb, var(--color-on-accent) 8%, transparent)",
   borderRadius: "var(--shape-radius-md)",
   background: "var(--color-app-bg)",
   padding: "10px 12px",
@@ -106,7 +106,7 @@ function ContactForm() {
         style={{
           border: "none",
           borderRadius: "var(--shape-radius-lg)",
-          background: pending ? "color-mix(in srgb, var(--color-brand) 4%, transparent)" : "var(--color-brand)",
+          background: pending ? "color-mix(in srgb, var(--color-brand) 40%, transparent)" : "var(--color-brand)",
           color: "var(--color-surface-raised)",
           padding: "12px 14px",
           fontFamily: "var(--font-family-sans)",
@@ -144,7 +144,7 @@ function IdeaForm() {
         style={{
           border: "none",
           borderRadius: "var(--shape-radius-lg)",
-          background: pending ? "color-mix(in srgb, var(--color-brand) 4%, transparent)" : "var(--color-brand)",
+          background: pending ? "color-mix(in srgb, var(--color-brand) 40%, transparent)" : "var(--color-brand)",
           color: "var(--color-surface-raised)",
           padding: "12px 14px",
           fontFamily: "var(--font-family-sans)",
@@ -396,7 +396,7 @@ export function ActionsGrid({
                 alignItems: "center",
                 gap: 14,
                 background: "var(--color-app-bg)",
-                border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+                border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
                 borderRadius: "var(--shape-radius-lg)",
                 padding: "12px 16px",
                 cursor: "pointer",
@@ -507,7 +507,7 @@ export function ActionsGrid({
         {selectedInfoPage ? (
           <div
             style={{
-              border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
               borderRadius: "var(--shape-radius-2xl)",
               background: "var(--color-app-bg)",
               padding: "14px",
@@ -539,7 +539,7 @@ export function ActionsGrid({
                   onClick={() => setSelectedInfoPage(page)}
                   style={{
                     width: "100%",
-                    border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+                    border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
                     borderRadius: "var(--shape-radius-xl)",
                     background: "var(--color-app-bg)",
                     padding: "12px",

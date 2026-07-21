@@ -70,7 +70,7 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
         <a href="/admin" style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)", textDecoration: "none", fontWeight: "var(--font-weight-medium)" }}>
           ← פאנל ניהול
         </a>
-        <h1 style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-4xl)", color: "var(--color-admin-dark)" }}>
+        <h1 style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-4xl)", color: "var(--color-admin-ink)" }}>
           פניות
         </h1>
       </div>
@@ -133,7 +133,7 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
             >
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
                 <div>
-                  <p style={{ margin: "0 0 4px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+                  <p style={{ margin: "0 0 4px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
                     {inquiry.user_name ?? "משתמש"}
                   </p>
                   <p style={{ margin: 0, fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-tertiary)" }}>
@@ -151,7 +151,7 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
                 </p>
               )}
 
-              <p style={{ margin: 0, fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-base)", lineHeight: 1.65, color: "var(--color-admin-hover)", whiteSpace: "pre-wrap" }}>
+              <p style={{ margin: 0, fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-base)", lineHeight: 1.65, color: "var(--color-text-secondary)", whiteSpace: "pre-wrap" }}>
                 {inquiry.message}
               </p>
             </article>
@@ -175,7 +175,7 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
             >
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
                 <div>
-                  <p style={{ margin: "0 0 4px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-dark)" }}>
+                  <p style={{ margin: "0 0 4px", fontWeight: "var(--font-weight-black)", fontSize: "var(--font-size-xl)", color: "var(--color-admin-ink)" }}>
                     {idea.user_name ?? "משתמש"}
                   </p>
                   <p style={{ margin: 0, fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-sm)", color: "var(--color-text-tertiary)" }}>
@@ -193,7 +193,7 @@ export default async function AdminInquiriesPage({ searchParams }: AdminInquirie
                 </p>
               )}
 
-              <p style={{ margin: 0, fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-base)", lineHeight: 1.65, color: "var(--color-admin-hover)", whiteSpace: "pre-wrap" }}>
+              <p style={{ margin: 0, fontWeight: "var(--font-weight-medium)", fontSize: "var(--font-size-base)", lineHeight: 1.65, color: "var(--color-text-secondary)", whiteSpace: "pre-wrap" }}>
                 {idea.idea_text}
               </p>
             </article>

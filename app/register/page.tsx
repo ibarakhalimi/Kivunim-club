@@ -541,7 +541,7 @@ function InstitutionInput({ value, onChange }: { value: string; onChange: (v: st
                 fontFamily: "var(--font-family-sans)",
                 color: "var(--color-ink)",
                 cursor: "pointer",
-                borderBottom: "1px solid color-mix(in srgb, var(--color-surface-tinted) 08%, transparent)",
+                borderBottom: "1px solid color-mix(in srgb, var(--color-surface-tinted) 8%, transparent)",
               }}
             >
               {inst}
@@ -583,7 +583,7 @@ const primaryBtnStyle: React.CSSProperties = {
   width: "100%",
   padding: "15px 0",
   background: "var(--color-brand)",
-  color: "var(--color-surface-raised)",
+  color: "var(--color-on-accent)",
   border: "none",
   borderRadius: "var(--shape-radius-3xl)",
   fontFamily: "var(--font-family-sans)",

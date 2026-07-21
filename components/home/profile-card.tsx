@@ -161,7 +161,7 @@ export function ProfileCard() {
               fontWeight: "var(--font-weight-bold)",
               fontSize: "var(--font-size-sm)",
               lineHeight: 1.15,
-              color: "color-mix(in srgb, var(--color-ink) 7%, transparent)",
+              color: "color-mix(in srgb, var(--color-ink) 70%, transparent)",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -229,7 +229,7 @@ export function ProfileCard() {
       <>
         <div
           onClick={() => setOpen(false)}
-          style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 5%, transparent)", zIndex: 100 }}
+          style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, var(--color-overlay) 50%, transparent)", zIndex: 100 }}
         />
         <div
           style={{
@@ -240,7 +240,7 @@ export function ProfileCard() {
             zIndex: 101,
             background: "var(--color-surface)",
             borderRadius: "var(--shape-radius-sheet)",
-            border: "1px solid color-mix(in srgb, var(--color-surface-raised) 06%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--color-on-accent) 6%, transparent)",
             borderBottom: "none",
             direction: "rtl",
             padding: "24px 20px 48px",
@@ -333,9 +333,9 @@ export function ProfileCard() {
             style={{
               width: "100%",
               padding: "13px 0",
-              background: "color-mix(in srgb, var(--color-ios-danger) 1%, transparent)",
+              background: "color-mix(in srgb, var(--color-ios-danger) 10%, transparent)",
               color: "var(--color-ios-danger)",
-              border: "1px solid color-mix(in srgb, var(--color-ios-danger) 3%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-ios-danger) 30%, transparent)",
               borderRadius: "var(--shape-radius-md)",
               fontFamily: "var(--font-family-sans)",
               fontWeight: "var(--font-weight-bold)",

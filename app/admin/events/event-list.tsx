@@ -99,7 +99,7 @@ function EventRow({ event }: { event: Event }) {
     : "ללא עלות";
 
   return (
-    <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-md)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)", padding: "14px 16px" }}>
+    <div style={{ background: "var(--color-surface-raised)", border: "1px solid var(--color-border-subtle)", borderRadius: "var(--shape-radius-md)", boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)", padding: "14px 16px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div style={{ display: "flex", gap: 12, flex: 1, minWidth: 0 }}>
           {event.image_url && (
@@ -111,7 +111,7 @@ function EventRow({ event }: { event: Event }) {
           )}
           <div style={{ minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
-              <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-lg)", color: "var(--color-admin-dark)" }}>
+              <p style={{ margin: 0, fontFamily: "var(--font-family-sans)", fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-lg)", color: "var(--color-admin-ink)" }}>
                 {event.title}
               </p>
               {event.is_featured && (
@@ -164,7 +164,7 @@ const iconBtn: React.CSSProperties = {
   alignItems: "center", justifyContent: "center", flexShrink: 0,
 };
 const btnPrimary = (pending: boolean): React.CSSProperties => ({
-  padding: "9px 20px", background: pending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)", color: "var(--color-surface-raised)",
+  padding: "9px 20px", background: pending ? "var(--color-text-tertiary)" : "var(--color-brand-blue)", color: "var(--color-on-accent)",
   border: "none", borderRadius: "var(--shape-radius-sm)", fontFamily: "var(--font-family-sans)",
   fontWeight: "var(--font-weight-bold)", fontSize: "var(--font-size-base)", cursor: pending ? "not-allowed" : "pointer",
 });

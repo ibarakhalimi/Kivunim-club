@@ -40,7 +40,7 @@ export function WelcomeStrip({ name, points, tier }: WelcomeStripProps) {
             gap: 5,
             padding: "4px 10px 5px",
             background: "var(--color-brand)",
-            color: "var(--color-ink)",
+            color: "var(--color-on-accent)",
             borderRadius: "var(--shape-radius-pill)",
             fontSize: "var(--font-size-sm)",
             fontWeight: "var(--font-weight-bold)",

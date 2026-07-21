@@ -24,7 +24,7 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
         border: "1px solid var(--color-border-subtle)",
         borderRadius: "var(--shape-radius-2xl)",
         padding: 16,
-        boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 05%, transparent)",
+        boxShadow: "0 1px 3px color-mix(in srgb, var(--color-overlay) 5%, transparent)",
         marginBottom: 14,
       }}
     >
@@ -45,7 +45,7 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
           <ShieldCheck size={20} strokeWidth={2.25} />
         </span>
         <div>
-          <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>
+          <h2 style={{ margin: 0, fontSize: "var(--font-size-xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>
             מצב בדיקה
           </h2>
           <p style={{ margin: "3px 0 0", fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-semibold)", lineHeight: 1.45, color: "var(--color-text-secondary)" }}>
@@ -66,7 +66,7 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
           padding: "9px 12px",
           fontSize: "var(--font-size-md)",
           fontWeight: "var(--font-weight-black)",
-          color: "var(--color-admin-dark)",
+          color: "var(--color-admin-ink)",
           cursor: "pointer",
         }}
       >
@@ -95,7 +95,7 @@ export function AppSettingsForm({ settings }: { settings: AppSettings }) {
           borderRadius: "var(--shape-radius-xl)",
           border: "none",
           background: isPending ? "var(--color-text-tertiary)" : "var(--color-success)",
-          color: "var(--color-surface-raised)",
+          color: "var(--color-on-accent)",
           fontSize: "var(--font-size-base)",
           fontWeight: "var(--font-weight-black)",
           fontFamily: "var(--font-family-sans)",

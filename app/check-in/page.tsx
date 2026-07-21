@@ -112,7 +112,7 @@ function CheckInResult({ ok, title, description }: { ok: boolean; title: string;
             height: 46,
             borderRadius: "var(--shape-radius-2xl)",
             background: ok ? "var(--color-success)" : "var(--color-orange-600)",
-            color: "var(--color-surface-raised)",
+            color: "var(--color-on-accent)",
             textDecoration: "none",
             fontSize: "var(--font-size-base)",
             fontWeight: "var(--font-weight-black)",

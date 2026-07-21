@@ -26,7 +26,7 @@ export default async function AdminSettingsPage() {
         <a href="/admin" style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-secondary)", textDecoration: "none", fontWeight: "var(--font-weight-bold)" }}>
           ← פאנל ניהול
         </a>
-        <h1 style={{ margin: 0, fontSize: "var(--font-size-4xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-dark)" }}>הגדרות</h1>
+        <h1 style={{ margin: 0, fontSize: "var(--font-size-4xl)", fontWeight: "var(--font-weight-black)", color: "var(--color-admin-ink)" }}>הגדרות</h1>
       </div>
 
       <AppSettingsForm settings={appSettings} />
