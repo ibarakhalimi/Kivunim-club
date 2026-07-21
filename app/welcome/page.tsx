@@ -77,7 +77,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
                 alt="לוגו האגודה"
                 width={126}
                 height={126}
-                style={{ display: "block" }}
+                style={{ display: "block", filter: "brightness(0) invert(1)" }}
               />
             </div>
           </div>
@@ -101,7 +101,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
         </Suspense>
 
         {/* CTA button */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "85%" }}>
           <p
             style={{
               margin: 0,
@@ -114,7 +114,7 @@ export default async function WelcomePage({ searchParams }: WelcomePageProps) {
           >
             פעם ראשונה פה?
           </p>
-          <Link href={registerHref} style={{ textDecoration: "none" }}>
+          <Link href={registerHref} style={{ width: "100%", display: "block", textDecoration: "none" }}>
             <div
               style={{
                 width: "100%",
