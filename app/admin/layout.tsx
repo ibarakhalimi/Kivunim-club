@@ -23,6 +23,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           min-width: 0;
         }
 
+        .kv-admin-rich-text-editor,
+        .kv-admin-rich-text-editor * {
+          color: var(--color-admin-ink) !important;
+        }
+
         @media (max-width: 760px) {
           .kv-admin-shell {
             display: block;

@@ -146,6 +146,7 @@ export function RichTextEditor({
         <ToolbarButton label="P" title="פסקה" onClick={() => applyCommand("formatBlock", "p")} />
       </div>
       <div
+        className="kv-admin-rich-text-editor"
         ref={editorRef}
         contentEditable
         suppressContentEditableWarning
@@ -159,7 +160,8 @@ export function RichTextEditor({
           fontFamily: "var(--font-family-sans)",
           fontSize: "var(--font-size-base)",
           lineHeight: 1.65,
-          color: "var(--color-admin-dark)",
+          color: "var(--color-admin-ink)",
+          caretColor: "var(--color-admin-ink)",
           outline: "none",
           direction: "rtl",
         }}
@@ -290,7 +292,8 @@ export const inputStyle: React.CSSProperties = {
   border: "1px solid var(--color-text-on-dark)",
   borderRadius: "var(--shape-radius-sm)",
   background: "var(--color-surface-raised)",
-  color: "var(--color-admin-dark)",
+  color: "var(--color-admin-ink)",
+  caretColor: "var(--color-admin-ink)",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",

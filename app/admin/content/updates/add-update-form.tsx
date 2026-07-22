@@ -95,6 +95,7 @@ export const inputStyle: React.CSSProperties = {
   borderRadius: "var(--shape-radius-sm)",
   background: "var(--color-surface-raised)",
   color: "var(--color-admin-ink)",
+  caretColor: "var(--color-admin-ink)",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
